@@ -1,0 +1,21 @@
+<!--bookdetail.wxml-->
+<toast toast="{{toast}}"></toast>
+
+<view class="container booklist">
+  <!-- <view class="search-container">
+    <input type="text" placeholder="搜索书籍" confirm-type="search"/>
+    <icon type="search" size="16" color="#828282"/>
+  </view> -->
+  <view class="shelves">
+    <view class="books">
+      <view wx:for="{{myBooks}}" wx:key="item.bookid" hover-start-time="2000" class="book-item {{ removing ? 'shake' : '' }}">
+        <image src="{{item.img_url}}" data-bookid="{{item.bookid}}" bindtap="bookClick" bindlongtap="bookLongClick"></image>
+        <icon wx:if="{{removing}}" type="clear" size="16" color="#f76260" data-bookid="{{item.bookid}}" bindtap="removeBook" />
+      </view>
+      <view hover-start-time="2000" class="book-item add" bindtap="gotoShop">
+        <view class="image"></view>  
+        <icon class="iconfont icon-add"></icon>
+      </view>
+    </view>
+  </view>
+</view>  

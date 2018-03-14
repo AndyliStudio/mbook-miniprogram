@@ -1,0 +1,143 @@
+/* pages/booklist/booklist.wxss */
+
+page {
+  height: 100%;
+}
+
+.booklist {
+  padding: 48rpx 0;
+}
+
+.booklist .search-container {
+  position: relative;
+  height: 100%;
+}
+
+.booklist .search-container>input {
+  display: block;
+  margin: 20rpx 70rpx;
+  padding: 12rpx 20rpx;
+  font-size: 32rpx;
+  color: #828282;
+  -webkit-box-shadow: 0px 2px 20px 5px #f5f7f6;
+  -moz-box-shadow: 0px 2px 20px 5px #f5f7f6;
+  box-shadow: 0px 2px 20px 5px #f5f7f6;
+}
+
+.booklist .search-container>icon {
+  position: absolute;
+  right: 85rpx;
+  top: 50%;
+  margin-top: -20rpx;
+  z-index: 2;
+}
+
+.booklist .shelves {
+  height: 100%;
+  background: url('https://fs.andylistudio.com/mbook/shalves.png') no-repeat;
+  background-repeat: repeat-y;
+  background-color: #ffffff;
+  background-size: 100% auto;
+}
+
+.booklist .books {
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0 60rpx;
+}
+
+.books .book-item {
+  width: 180rpx;
+  margin-right: 45rpx;
+  margin-top: 12rpx;
+  margin-bottom: 64rpx;
+  position: relative;
+}
+
+.books .book-item:nth-child(3n+0) {
+  margin-right: 0;
+}
+
+.books .book-item>image {
+  width: 100%;
+  height: 240rpx;
+  border-radius: 6rpx;
+  box-shadow: 4rpx 4rpx 2rpx #f5f7f6;
+  position: relative;
+  top: 1rpx;
+}
+
+.books .book-item>icon {
+  position: absolute;
+  top: -14rpx;
+  right: -16rpx;
+  background: #ffffff;
+  border-radius: 50%;
+}
+
+.books .add .image {
+  box-sizing: border-box;
+  background-color: #dddddd;
+  width: 100%;
+  height: 240rpx;
+  border-radius: 6rpx;
+  position: relative;
+  top: 1rpx;
+}
+
+.books .add .icon-add {
+  width: 100rpx;
+  height: 100rpx;
+  top: 50%;
+  left: 50%;
+  margin-top: -50rpx;
+  margin-left: -50rpx;
+  text-align: center;
+  line-height: 100rpx;
+  background: none;
+  font-size: 40rpx;
+}
+
+@keyframes shake {
+  from,
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+  10%,
+  40%,
+  70% {
+    transform: translate3d(-10rpx, 0, 0);
+  }
+  25%,
+  55%,
+  85% {
+    transform: translate3d(10rpx, 0, 0);
+  }
+}
+
+.shake {
+  animation-duration: .5s;
+  animation-fill-mode: both;
+  animation-name: shake;
+}
+
+@keyframes zoomOutRight {
+  40% {
+    opacity: 1;
+    transform: scale3d(.8, .8, .8) translate3d(-42rpx, 0, 0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(.1) translate3d(2000px, 2000px, 0);
+    transform-origin: right center;
+  }
+}
+
+.zoomOutRight {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+  animation-name: zoomOutRight;
+}

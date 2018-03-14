@@ -1,0 +1,322 @@
+/**index.wxss**/
+page{
+  height: 100%;
+}
+
+.loading{
+  height: 100%;
+  position: relative;
+}
+
+.loading>image{
+  height: 200rpx;
+  width: 200rpx;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -100rpx;
+  margin-left: -100rpx;
+}
+
+.index {
+  background: #f4f4f4;
+}
+
+.index .swiper-box {
+  width: 100%;
+  max-height: 220rpx;
+  overflow: hidden;
+}
+
+.index .swiper-box navigator {
+  width: 100%;
+  height: 100%;
+}
+
+.index .slide-image {
+  width: 100%;
+  height: 100%;
+}
+
+.index .nav {
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 30rpx 20rpx;
+  background: #fff;
+  margin-bottom: 15rpx;
+}
+
+.index .nav .nav-item {
+  width: 100rpx;
+  text-align: center;
+}
+
+.index .nav .nav-item icon {
+  display: block;
+  width: 90rpx;
+  height: 90rpx;
+  line-height: 90rpx;
+  font-size: 50rpx;
+  color: #fff;
+  border-radius: 30rpx;
+  margin: 0 auto;
+}
+
+.index .nav .nav-item text {
+  display: block;
+  font-size: 30rpx;
+  margin-top: 15rpx;
+  color: #333;
+}
+
+.index .theme {
+  padding: 0 32rpx;
+  margin-bottom: 15rpx;
+  background: #fff;
+}
+
+.index .theme .theme-title {
+  text-align: center;
+  font-size: 36rpx;
+  color: #333;
+  position: relative;
+  margin-bottom: 30rpx;
+}
+
+.index .theme .theme-title icon {
+  margin-left: 15rpx;
+}
+
+.index .theme .theme-title .flush {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-60%);
+  font-size: 30rpx;
+  height: 100%;
+  color: #4990e2;
+  text-align: right;
+}
+
+.index .theme .theme-title .flush icon {
+  font-size: 32rpx;
+  position: relative;
+  top: 4rpx;
+  left: -6rpx;
+}
+
+.index .theme .more {
+  text-align: center;
+  font-size: 30rpx;
+  border-top: 1px solid #eee;
+  padding: 30rpx 0;
+}
+
+.index .theme .layout1,
+.index .theme .layout2,
+.index .theme .layout3,
+.index .theme .layout4 {
+  padding-bottom: 30rpx;
+}
+
+
+/* layout1: 栏目布局1 */
+
+.index .layout1 .book-item.item0 {
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+  margin-bottom: 30rpx;
+}
+
+.index .layout1 .book-item.item0 .book-img {
+  width: 210rpx;
+  height: 270rpx;
+  background-color: #dddddd;
+}
+
+.index .layout1 .book-item.item0 .book-info {
+  flex: 1;
+  padding-left: 20rpx;
+  color: #333;
+}
+
+.index .layout1 .book-item.item0 .book-name {
+  display: block;
+  font-size: 32rpx;
+}
+
+.index .layout1 .book-item.item0 .book-des {
+  font-size: 28rpx;
+  margin-top: 30rpx;
+  text-align: justify;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}
+
+.index .layout1 .book-item.item0 .book-author {
+  display: block;
+  font-size: 30rpx;
+  color: #999;
+}
+
+.index .layout1 .book-item.item0 .book-author icon {
+  font-size: 30rpx;
+  margin-right: 20rpx;
+}
+
+.index .layout1 .book-item.item1,
+.index .layout1 .book-item.item2,
+.index .layout1 .book-item.item3 {
+  flex: 0 0 33.3333%;
+  display: inline-block;
+  width: 33.33%;
+}
+
+.index .layout1 .book-item.item1 .book-img,
+.index .layout1 .book-item.item2 .book-img,
+.index .layout1 .book-item.item3 .book-img {
+  display: block;
+  width: 210rpx;
+  height: 270rpx;
+  background-color: #dddddd;
+}
+
+.index .layout1 .book-item.item1 .book-des,
+.index .layout1 .book-item.item2 .book-des,
+.index .layout1 .book-item.item3 .book-des {
+  display: none;
+}
+
+.index .layout1 .book-item.item1 .book-author,
+.index .layout1 .book-item.item2 .book-author,
+.index .layout1 .book-item.item3 .book-author {
+  display: none;
+}
+
+.index .layout1 .book-item.item1 .book-name,
+.index .layout1 .book-item.item2 .book-name,
+.index .layout1 .book-item.item3 .book-name {
+  display: block;
+  font-size: 28rpx;
+  margin-top: 4rpx;
+}
+
+
+/* layout2: 栏目布局2 */
+
+.index .layout2 .book-item {
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+  margin-bottom: 30rpx;
+}
+
+.index .layout2 .book-item .book-img {
+  width: 210rpx;
+  height: 270rpx;
+  background-color: #dddddd;
+}
+
+.index .layout2 .book-item .book-info {
+  flex: 1;
+  padding-left: 20rpx;
+  color: #333;
+}
+
+.index .layout2 .book-item .book-name {
+  display: block;
+  font-size: 32rpx;
+}
+
+.index .layout2 .book-item .book-des {
+  font-size: 28rpx;
+  margin-top: 30rpx;
+  text-align: justify;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}
+
+.index .layout2 .book-item .book-author {
+  display: block;
+  font-size: 30rpx;
+  color: #999;
+}
+
+.index .layout2 .book-item .book-author icon {
+  font-size: 30rpx;
+  margin-right: 20rpx;
+}
+
+
+/* layout3: 栏目布局3 */
+
+.index .layout3 .book-item {
+  flex: 0 0 33.3333%;
+  display: inline-block;
+  width: 33.33%;
+}
+
+.index .layout3 .book-item .book-img {
+  display: block;
+  width: 210rpx;
+  height: 270rpx;
+  background-color: #dddddd;  
+}
+
+.index .layout3 .book-item .book-des {
+  display: none;
+}
+
+.index .layout3 .book-item .book-author {
+  display: none;
+}
+
+.index .layout3 .book-item .book-name {
+  display: block;
+  font-size: 28rpx;
+  margin-top: 4rpx;
+}
+
+.index .icon-zanwushuju {
+  font-size: 240rpx;
+  color: #9e9e9e;
+}
+
+
+/* 修改轮播图样式 */
+
+.index .swiper-box .wx-swiper-dots.wx-swiper-dots-horizontal {
+  margin-bottom: 2rpx;
+}
+
+.index .swiper-box .wx-swiper-dot {
+  width: 24rpx;
+  display: inline-flex;
+  height: 3rpx;
+  margin-left: 15rpx;
+  justify-content: space-between;
+}
+
+.index .swiper-box .wx-swiper-dot::before {
+  content: '';
+  flex-grow: 1;
+  background: #cccccc;
+  border-radius: 8rpx
+}
+
+.index .swiper-box .wx-swiper-dot-active::before {
+  background: #4990e2;
+}

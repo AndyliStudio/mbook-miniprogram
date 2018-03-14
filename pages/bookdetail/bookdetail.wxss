@@ -1,0 +1,306 @@
+.detail {
+  line-height: 1.8;
+  font-size: 12px;
+}
+
+.detail .headBackgroundContainer {
+  width: 100%;
+  height: 484rpx;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.detail .headBackground {
+  margin-left: -28rpx;
+  margin-top: -28rpx;
+  width: 110%;
+  height: 600rpx;
+  -webkit-filter: blur(28rpx) brightness(60%);
+}
+
+.detail .head {
+  color: #fff;
+  font-size: 24rpx;
+  padding: 40rpx;
+}
+
+.detail .head .headImg {
+  width: 210rpx;
+  height: 290rpx;
+  vertical-align: text-top;
+  float: left;
+}
+
+.detail .head .bookInfo {
+  overflow: auto;
+  margin-bottom: 40rpx;
+}
+
+.detail .head .bookInfo .left-text {
+  color: rgba(255, 255, 255, 0.9);
+  margin-left: 40rpx;
+  float: left;
+  display: inline-block;
+}
+
+.detail .head .bookInfo .left-text .bookName {
+  font-size: 32rpx;
+  color: #fff;
+  margin-bottom: 24rpx;
+}
+
+.detail .head .bookInfo .left-text view {
+  margin-bottom: 12rpx;
+}
+
+.detail .head .btn-group {
+  line-height: 0rpx;
+  font-size: 0;
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/*两个图标*/
+
+.detail .head .btn-group .addToList, .read {
+  font-size: 28rpx;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 315rpx;
+  padding: 20rpx 10rpx;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8rpx;
+  height: 72rpx;
+}
+
+.detail .head .btn-group  icon {
+  display: inline-block;
+  height: 32rpx;
+  line-height: 32rpx;
+  vertical-align: middle;
+  position:relative;
+  top:-22rpx;
+  margin-right:10rpx;
+  font-size:45rpx;
+}
+
+.detail .head .btn-group .false icon{
+  top: -10rpx;
+}
+
+.detail .head .btn-group text{
+  display: inline-block;
+  height: 32rpx;
+  line-height: 32rpx;
+  vertical-align: middle;
+}
+
+.detail .head .btn-group image {
+  vertical-align: text-top;
+  margin-top: -4rpx;
+  margin-right: 10rpx;
+  height: 38rpx;
+  width: 38rpx;
+}
+
+.detail .book-des {
+  font-size: 28rpx;
+  padding: 40rpx;
+}
+
+.detail .book-des .read-more {
+  padding-left: 10rpx;
+  color: #fd9941;
+  font-size: 24rpx;
+}
+
+.detail .book-des .des-content {
+  text-align: justify;
+}
+
+.detail .comments.bottom{
+  margin-bottom: 140rpx;
+}
+
+.detail .comments .title {
+  border-bottom: 1rpx solid #dcdcdc;
+  padding: 0 30rpx;
+  height: 80rpx;
+  font-size: 32rpx;
+  line-height: 80rpx;
+}
+
+.detail .comments .title .add-comment {
+  color: #fd9941;
+  float: right;
+}
+
+.detail .comments .comment-list {
+  margin-top: -1rpx;
+  background: #f5f5f5;
+}
+
+.detail .comment-item {
+  background: #fff;
+  padding: 20rpx;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.detail .comment-item .headImg {
+  float: left;
+  width: 70rpx;
+  height: 70rpx;
+  margin-right: 20rpx;
+  border-radius: 40rpx;
+  display: inline-block;
+  border: 1rpx solid #eee;
+}
+
+.detail .comment-item .comment-right {
+  float: left;
+  width: 610rpx;
+  display: inline-block;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #e1e1e1;
+  position: relative;
+}
+
+.detail .comment-item .comment-right .reader-name {
+  color: #666;
+  font-size: 24rpx;
+}
+
+.detail .comment-item .comment-right .comment {
+  text-align: justify;
+  color: #333;
+  font-size: 26rpx;
+}
+
+.detail .comment-item .comment-right .comment-more {
+  background: #efefef;
+  font-size: 22rpx;
+  padding: 4rpx 10rpx;
+}
+
+.detail .comment-item .comment-right .create-time {
+  font-size: 20rpx;
+  color: #808080;
+}
+
+.detail .childComments {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+}
+
+.detail .childComments .childItem-time {
+  padding-left: 20rpx;
+  font-size: 20rpx;
+  color: #808080;
+}
+
+.detail .comment-right .toolbar {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.detail .likeNum {
+  position: relative;
+  top: 9rpx;
+  color: #cccccc;
+  vertical-align: middle;
+  margin-right: 26rpx;
+  margin-left: 3rpx;
+}
+
+.detail .icon-zan1{
+  color: #cccccc;
+  font-size: 36rpx;
+  vertical-align: middle;
+}
+
+.detail .icon-comment{
+  color: #cccccc;
+  font-size: 32rpx;
+  vertical-align: middle;
+}
+
+.detail .likeNum.selected {
+  color: #3399ff;
+}
+
+.detail .icon-zan1.selected{
+  color: #3399ff;
+}
+
+.detail .comment-icon {
+  background-position: -73rpx 0rpx;
+}
+
+.detail .commnet-input-bar {
+  height: 100rpx;
+  font-size: 0;
+  width: 100%;
+  padding: 0 20rpx;
+  position: fixed;
+  bottom: 0;
+  background: #fff4ea;
+  box-sizing: border-box;
+  border-top: 1rpx solid #dcdcdc;
+}
+
+.detail .comment-input {
+  height: 60rpx;
+  font-size: 28rpx;
+  padding: 0 20rpx;
+  margin: 20rpx 0;
+  display: inline-block;
+  width: 610rpx;
+  background: #fff;
+  border: 1rpx solid #dcdcdc;
+  border-radius: 10rpx;
+  box-sizing: border-box;
+}
+
+.detail .commentInputP {
+  line-height: 60rpx;
+}
+
+.detail .commnet-input-bar .cancle {
+  display: inline-block;
+  width: 100rpx;
+  height: 60rpx;
+  color: #666;
+  font-size: 28rpx;
+  text-align: center;
+  float: right;
+  margin: 20rpx 0;
+}
+
+.detail .no-comments {
+  padding-top: 50rpx;
+  text-align: center;
+  height: 100%;
+  background: #fff;
+  font-size: 30rpx;
+}
+
+.detail .no-comments > image {
+  width: 100rpx;
+  height: 100rpx;
+  display: block;
+  margin: 0rpx auto;
+  margin-bottom: 30rpx;
+}
+
+.detail .icon-zanwupinglun{
+  font-size:130rpx;
+  color:#9e9e9e;
+  margin-top:-52rpx;
+}

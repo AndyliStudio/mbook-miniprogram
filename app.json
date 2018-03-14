@@ -1,0 +1,54 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/user/user",
+    "pages/booklist/booklist",
+    "pages/shop/shop",
+    "pages/classify/classify",
+    "pages/bookdetail/bookdetail",
+    "pages/reader/reader",
+    "pages/setting/setting",
+    "pages/attendance/attendance",
+    "pages/charge/charge",
+    "pages/webpage/webpage"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#4990e2",
+    "navigationBarTitleText": "微书",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#676767",
+    "selectedColor": "#4990e2",
+    "borderStyle": "white",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/img/index.png",
+        "selectedIconPath": "static/img/index_active.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/booklist/booklist",
+        "iconPath": "static/img/book.png",
+        "selectedIconPath": "static/img/book_active.png",
+        "text": "书架"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "iconPath": "static/img/user.png",
+        "selectedIconPath": "static/img/user_active.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "connectSocket": 10000,
+    "uploadFile": 10000,
+    "downloadFile": 10000
+  },
+  "debug": true
+}

@@ -1,0 +1,55 @@
+<!--attendance.wxml-->
+<toast toast="{{toast}}"></toast>
+<view class="flex box box-tb box-align-center">
+  <view class="white-box"></view>
+  <view class="calendar box box-tb">
+    <view class="top-handle box box-lr box-pack-between box-pack-center">
+      <view class="prev box box-rl" bindtap="handleCalendar" data-handle="prev">
+        <view class="prev-handle box box-lr box-align-center box-pack-center"><icon class="iconfont icon-arrow-left"></icon></view>
+      </view>
+      <view bindtap="chooseYearAndMonth" class="date-area box box-lr box-align-center box-pack-center">{{cur_year || "--"}} 年 {{cur_month || "--"}} 月</view>
+      <view class="next box box-lr" bindtap="handleCalendar" data-handle="next">
+        <view class="next-handle box box-lr box-align-center box-pack-center"><icon class="iconfont icon-arrow-right"></icon></view>
+      </view>
+    </view>
+    <view class="tu-ding">
+      <icon class="tu-ding-left"></icon>
+      <icon class="tu-ding-right"></icon>
+    </view>
+    <view class="keep-day">连续签到{{keepTimes}}天啦~</view>
+    <view class="weeks box box-lr box-pack-center box-align-center">
+      <view class="flex week fs28" wx:for="{{weeks_ch}}" wx:key="{{index}}" data-idx="{{index}}">{{item}}</view>
+    </view>
+    <view class="days box box-lr box-wrap">
+      <view wx:if="{{hasEmptyGrid}}" class="grid white-color box box-align-center box-pack-center" wx:for="{{empytGrids}}" wx:key="{{index}}" data-idx="{{index}}"></view>
+      <view class="grid white-color box box-align-center box-pack-center" wx:for="{{days}}" wx:key="{{index}}" data-idx="{{index}}">
+        <view class="day {{item.choosed ? 'foot-bg' : ''}} box box-align-center box-pack-around">{{item.day}}</view>
+      </view>
+    </view>
+    <button class="yaoyiyao" disabled="{{hasDone}}" bindtap="doAttendance">{{hasDone ? '已签到' : '立即签到'}}</button>
+  </view>
+</view>
+<view class="rank">{{records.length > 0 ? '打败了' + present + '%的小伙伴，继续加油!' : '快去签到吧~'}}</view>
+<view class="rule">
+  <view class="title">奖励规则</view>
+  <view class="status">{{statusText}}</view>
+  <view class="text {{hasDone ? 'done' : ''}}">每天签到送50书币</view>
+  <view class="text {{keepTimes === 3 ? 'done' : ''}}">连续签到3天 额外获得100书币</view>
+  <view class="text {{keepTimes === 7 ? 'done' : ''}}">连续签到7天 额外获得150书币</view>
+  <view class="text {{keepTimes === 15 ? 'done' : ''}}">连续签到15天 额外获得200书币</view>
+  <view class="text {{keepTimes === 30 ? 'done' : ''}}">连续签到30天 额外获得300书币</view>
+</view>
+<view wx:if="{{showPicker}}" class="picker-container box box-tb">
+  <view class="picker-btns box box-lr box-pack-between box-align-center">
+    <view class="picker-btn picker-cancel" data-type="cancel" bindtap="tapPickerBtn">取消</view>
+    <view class="picker-btn picker-confirm" data-type="confirm" bindtap="tapPickerBtn">确定</view>
+  </view>
+  <picker-view class="flex" indicator-style="height: 50px;" style="width: 100%; height: 150px;" value="{{picker_value}}" bindchange="pickerChange">
+    <picker-view-column>
+      <view class="picker-view" wx:for="{{picker_year}}" wx:key="{{index}}" style="line-height: 50px">{{item}}年</view>
+    </picker-view-column>
+    <picker-view-column>
+      <view class="picker-view" wx:for="{{picker_month}}" wx:key="{{index}}" style="line-height: 50px">{{item}}月</view>
+    </picker-view-column>
+  </picker-view>
+</view>

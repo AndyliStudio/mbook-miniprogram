@@ -1,0 +1,7 @@
+<!-- 自定义组件--暂无数据 -->
+<view class="no-data">
+    <slot></slot>
+    <view class="text" wx:if="{{text ? true : false}}">{{text}}</view>
+    <view class="sub-text" wx:if="{{subText ? true : false}}">{{subText}}</view>
+    <button class="btn" type="default" size="mini" bindtap="buttonClick">{{btnText}}</button>
+</view>

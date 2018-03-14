@@ -1,0 +1,212 @@
+page {
+  height: 100%;
+}
+
+.charge {
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+}
+
+.tab {
+  height: 80rpx;
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  background: #1472e0;
+}
+
+.tab-item {
+  width: 200rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  color: #aed3f6;
+  font-size: 32rpx;
+}
+
+.tab-item.active {
+  color: #ffffff;
+  border-bottom: 8rpx solid #ffffff;
+}
+
+.notice {
+  color: #f9b14b;
+  font-size: 32rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  background: #fef6eb;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 0 20rpx;
+}
+
+.notice .icon-tips {
+  font-size: 48rpx;
+  position: relative;
+  top: -2rpx;
+  margin-right: 10rpx;
+}
+
+.notice .text {
+  font-size: 29rpx;
+}
+
+.notice .iconfont,
+.notice .text {
+  vertical-align: middle;
+  line-height: 70rpx;
+}
+
+.content {
+  flex: 1;
+}
+
+.content-item {
+  height: 100%;
+  position: relative;
+}
+
+.ad {
+  width: 100%;
+  height: 240rpx;
+}
+
+.title {
+  color: #353535;
+  font-size: 32rpx;
+  padding: 20rpx 30rpx;
+}
+
+.selector {
+  margin: 30rpx;
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-content: space-between;
+}
+
+.selector-item {
+  width: 200rpx;
+  height: 120rpx;
+  color: #888888;
+  border: 1rpx solid #888888;
+  border-radius: 6rpx;
+  margin-right: 40rpx;
+  position: relative;
+}
+
+.selector-item:nth-child(3) {
+  margin-right: 0;
+}
+
+.selector-item:nth-child(4) {
+  margin-top: 40rpx;
+}
+
+.selector-item>text {
+  display: block;
+  text-align: center;
+}
+
+.selector-item .yuebi {
+  font-size: 36rpx;
+  margin-top: 15rpx;
+}
+
+.selector-item .jiage {
+  font-size: 30rpx;
+}
+
+.selector-item.active {
+  border: 1rpx solid #1472e0;
+}
+
+.selector-item .icon-xuanzhong1 {
+  display: none;
+  position: absolute;
+  bottom: 3px;
+  right: -11rpx;
+  font-size: 40rpx;
+  width: 50rpx;
+  height: 50rpx;
+  color: #1472e0;
+}
+
+.selector-item.active .icon-xuanzhong1 {
+  display: inline-block;
+}
+
+.zhifu {
+  height: 100rpx;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #f2f2f2;
+  text-align: left;
+  padding-right: 120rpx;
+}
+
+.pay-money {
+  font-size: 32rpx;
+  color: #1472e0;
+  margin-top: 15rpx;
+}
+
+.pay-yuebi {
+  font-size: 30rpx;
+  color: #888888;
+}
+
+.pay-money,
+.pay-yuebi {
+  height: 40rpx;
+  line-height: 40rpx;
+  padding-left: 30rpx;
+}
+
+.zhifu button {
+  position: absolute;
+  width: 180rpx;
+  height: 100rpx;
+  background: #1472e0;
+  z-index: 1000;
+  right: 124rpx;
+  top: 0;
+  vertical-align: middle;
+  border-radius: 0;
+  box-sizing: border-box;
+  font-size: 32rpx;
+  line-height: 100rpx;
+}
+
+.charge-result {
+  height: 100%;
+  text-align: center;
+}
+
+.charge-result>icon {
+  margin: 140rpx 0 60rpx 0;
+}
+
+.charge-result .main-text {
+  font-size: 38rpx;
+  color: #000000;
+  font-weight: 400;
+}
+
+.charge-result .main-des {
+  font-size: 30rpx;
+  margin-top: 12rpx;
+  margin-bottom: 60rpx;
+  color: #888888;
+}
+
+.charge-result>button{
+  margin: 20rpx 30rpx 0 30rpx;
+}

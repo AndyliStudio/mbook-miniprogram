@@ -1,0 +1,9 @@
+{
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#1472e0",
+  "navigationBarTitleText": "设置",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "toast": "../../component/toast/toast"
+  }
+}

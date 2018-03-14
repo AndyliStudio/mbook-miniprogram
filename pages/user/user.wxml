@@ -1,0 +1,56 @@
+<view class="container user">
+  <view class="user-info">
+    <image class="avatar" src="{{userInfo.avatar}}"></image>
+    <view class="info">
+      <view class="username">{{userInfo.username}}</view>
+      <view class="amount"><icon class="iconfont icon-qianbi"></icon><text class="num">{{amount}}</text>书币</view>
+    </view>
+    <view class="word">{{text}}</view>
+  </view>
+  <view class="other">
+    <navigator url="/pages/setting/setting" open-type="navigate">
+      <view class="setting">
+        <icon class="iconfont icon-iconzhenghe15"></icon>
+        <text class="setting-text">设置</text>
+        <icon class="iconfont icon-arrow-right"></icon>
+      </view>
+    </navigator>
+    <navigator url="/pages/webpage/webpage?url=https://mbook.lilyplay.com/about_us" open-type="navigate">
+      <view class="about-us">
+        <icon class="iconfont icon-guanyuwomen"></icon>
+        <text class="about-us-text">关于我们</text>
+        <icon class="iconfont icon-arrow-right"></icon>
+      </view>
+    </navigator>
+    <view class="main">
+      <navigator url="/pages/attendance/attendance" open-type="navigate">
+        <view class="main-item">
+          <icon class="iconfont icon-xiaoxi"></icon>
+          <text class="main-text">消息</text>
+          <view class="border left"></view>
+        </view>
+      </navigator>
+      <navigator url="/pages/attendance/attendance" open-type="navigate">
+        <view class="main-item">
+          <icon class="iconfont icon-chongzhi"></icon>
+          <text class="main-text">账户</text>
+          <view class="border bottom"></view>
+        </view>
+      </navigator>
+      <navigator url="/pages/attendance/attendance" open-type="navigate">
+        <view class="main-item">
+          <icon class="iconfont icon-qiandao"></icon>
+          <text class="main-text">签到</text>
+          <view class="border top"></view>
+        </view>
+      </navigator>
+      <navigator url="/pages/attendance/attendance" open-type="navigate">
+        <view class="main-item">  
+          <icon class="iconfont icon-shichang"></icon>
+          <text class="main-text">读书时长</text>
+          <view class="border right"></view>
+        </view>
+      </navigator>
+    </view>
+  </view>
+</view>

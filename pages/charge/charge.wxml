@@ -1,0 +1,47 @@
+<toast toast="{{toast}}"></toast>
+<view class="container charge">
+  <view class="charge-main" wx:if="{{!chargeResult.type}}">
+    <view class="tab">
+      <view class="tab-item {{currentPageNum === 1 ? 'active' : ''}}" data-page="1" bindtap="changePage">充值</view>
+      <view class="tab-item {{currentPageNum === 2 ? 'active' : ''}}" data-page="2" bindtap="changePage">充值记录</view>
+      <view class="tab-item {{currentPageNum === 3 ? 'active' : ''}}" data-page="3" bindtap="changePage">消费记录</view>
+    </view>
+    <!-- <navigator url="/pages/webpage/webpage?url=https://mbook.andylistudio.com/activity01" open-type="navigate">
+      <view class="notice">
+        <icon class="iconfont icon-tips"></icon>
+        <text class="text">这是一段提示文件</text>
+      </view>
+    </navigator> -->
+    <view class="content">
+      <view class="content-item" wx:if="{{currentPageNum === 1}}">
+        <image class="ad" src="http://fs.andylistudio.com/mbook/charge/banner.png"></image>
+        <view class="title">
+          请选择充值的阅币数量（1元兑换100阅币）:
+        </view>
+        <view class="selector">
+          <view class="selector-item {{item.selected ? 'active' : ''}}" wx:for="{{ prises }}" wx:key="index" data-num="{{index}}" bindtap="select">
+            <text class="yuebi">{{item.yuebi}}阅币</text>
+            <text class="jiage">售价:{{item.prise}}元</text>
+            <icon class="iconfont icon-xuanzhong1"></icon>
+          </view>
+        </view>
+        <view class="zhifu" wx:if="{{payNum > 0}}">
+          <view class="pay-info">
+            <view class="pay-money">应付<text class="red-text">￥<text class="num">{{payNum}}</text></text></view>
+            <view class="pay-yuebi">将获得<text class="num">1000</text>阅币</view>
+          </view>
+          <button type="primary" loading="{{isPaying}}" bindtap="doPay">去支付</button>
+        </view>
+      </view>
+      <view class="content-item" wx:if="{{currentPageNum === 2}}">充值记录</view>
+      <view class="content-item" wx:if="{{currentPageNum === 3}}">消费记录</view>
+    </view>
+  </view>
+  <view class="charge-result" wx:if="{{chargeResult.type}}">
+    <icon type="{{chargeResult.type}}" size="110"></icon>
+    <view class="main-text">{{chargeResult.mainText}}</view>
+    <view class="main-des">{{chargeResult.desText}}</view>
+    <button type="primary" data-type="main" bindtap="btnClick">{{chargeResult.mainBtnText}}</button>
+    <button type="default" data-type="sub" bindtap="btnClick">{{chargeResult.subBtnText}}</button>
+  </view>
+</view>

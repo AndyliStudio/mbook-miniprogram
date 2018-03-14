@@ -1,0 +1,72 @@
+<!--index.wxml-->
+<toast toast="{{toast}}"></toast>
+<scroll-view class="container index" style="height:{{clientHeight}}px;" scroll-y="true" wx:if="{{loaded}}">  
+  <swiper class="swiper-box" wx:if="{{is_show_banner}}" indicator-dots="1" indicator-color="#ffffff" indicator-active-color="#a3a8f8" autoplay="1" interval="4000" duration="500">
+    <block wx:for="{{banner_urls}}" wx:key="item._id">
+      <swiper-item>
+        <navigator url="{{item.url}}">
+          <image src="{{item.img_url}}" class="slide-image" lazy-load="1"></image>
+        </navigator>
+      </swiper-item>
+    </block>
+  </swiper>
+  <view class="nav">
+    <navigator url="/pages/classify/classify">
+      <view class="nav-item">
+        <icon class="iconfont icon-fenlei1" style="background: #ffc539"></icon>
+        <text>分类</text>
+      </view>
+    </navigator>
+     <navigator url="/pages/rank/rank">
+      <view class="nav-item">
+        <icon class="iconfont icon-nvsheng" style="background: #ff6687"></icon>
+        <text>女生</text>
+      </view>
+    </navigator>
+     <navigator url="/pages/rank/rank">
+      <view class="nav-item">
+        <icon class="iconfont icon-nansheng" style="background: #6db3f7"></icon>
+        <text>男生</text>
+      </view>
+    </navigator>
+     <navigator url="/pages/search/search">
+      <view class="nav-item">
+        <icon class="iconfont icon-sousuo" style="background: #ff9654"></icon>
+        <text>搜索</text>
+      </view>
+    </navigator>
+     <navigator url="/pages/charge/charge">
+      <view class="nav-item">
+        <icon class="iconfont icon-cz" style="background: #1bdb9f"></icon>
+        <text>充值</text>
+      </view>
+    </navigator>
+  </view>
+  <view class="theme" wx:if="{{themes.length > 0 ? true : false}}" wx:for="{{themes}}" wx:key="item._id">
+    <view class="theme-title">
+      <icon class="iconfont icon-hengxian"></icon>
+      {{item.name}}
+      <icon class="iconfont icon-hengxian"></icon>
+      <view class="flush" data-themeid="{{item._id}}" bindtap="changeList" wx:if="{{item.flush}}"><text>换一批</text><icon class="iconfont icon-refresh"></icon></view>
+    </view>
+    <view class="{{'layout' + item.layout}}">
+      <view class="{{'book-item item' + bookIndex}}" wx:for="{{item.books}}" wx:for-index="bookIndex" wx:for-item="bookItem" wx:key="bookItem._id" data-bookid="{{bookItem._id}}" data-name="{{bookItem.name}}" bindtap="gotoDetail">
+        <lazyload-img class="book-img" src="{{bookItem.img_url}}"></lazyload-img>
+        <!-- <image class="book-img fade-in" src="../../static/img/book-loading.svg"></image> -->
+        <view class="book-info">
+          <text class="book-name">{{bookItem.name}}</text>
+          <text class="book-des">{{bookItem.des}}</text>
+          <view class="book-author"><icon class="iconfont icon-hezuozuozhe"></icon>{{bookItem.author}}</view>
+        </view>
+      </view>
+    </view>
+    <navigator wx:if="{{item.flush}}" url="/pages/classify/classify" open-type="switchTab"><view class="more" data-themeid="{{item._id}}">查看更多></view></navigator>
+  </view>
+  <!-- 暂无数据 -->
+  <no-data wx:if="{{themes.length == 0 ? true : false}}" text="暂无栏目信息" sub-text="服务器开小差了，点击重新获取" btn-text="重新获取" show-btn="true" bindbtnclick="getTheme">
+      <icon class="iconfont icon-zanwushuju"></icon>
+  </no-data>
+</scroll-view>
+<view class="loading" wx:if="{{!loaded}}">
+  <image src="https://fs.andylistudio.com/mbook/book-loading.svg"></image>
+</view>

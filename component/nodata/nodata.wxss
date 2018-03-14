@@ -1,0 +1,17 @@
+.no-data{
+  text-align: center;
+}
+.no-data .text{
+  color: #333;
+  font-size: 26rpx;
+}
+.no-data .sub-text{
+  color: #c3c3c3;
+  font-size: 24rpx;
+  margin-top: 10rpx;
+}
+.no-data .btn{
+  font-size: 26rpx;
+  margin-top: 20rpx;
+  margin-bottom: 50rpx;
+}

@@ -1,0 +1,51 @@
+<view class="container setting">
+  <view class="title">阅读器</view>
+  <view class="preview" style="background: {{previewBg}}; font-size: {{userSetting.reader.fontSize + 'px'}}; font-family: {{userSetting.reader.fontFamily}}; color: {{userSetting.reader.mode == '夜间' ? '#85898c' : '#000800'}}">
+    书山有路勤为径，学海无涯苦作舟
+  </view>
+  <view class="setting-item">
+    <text class="text">字体</text>
+    <picker mode="selector" data-pickerid="fontSize" bindchange="bindPickerChange" value="{{userSetting.reader.fontSize}}" range="{{allFontSize}}">
+      <view class="picker-view">
+        {{userSetting.reader.fontSize  + 'px'}}
+      </view>
+    </picker>
+  </view>
+  <view class="setting-item">
+    <text class="text">字体大小</text>
+    <picker mode="selector" data-pickerid="fontFamily" bindchange="bindPickerChange" value="{{userSetting.reader.fontFamily}}" range="{{allFontFamily}}">
+      <view class="picker-view">
+        {{userSetting.reader.fontFamily}}
+      </view>
+    </picker>
+  </view>
+  <view class="setting-item">
+    <text class="text">模式</text>
+    <picker mode="selector" data-pickerid="mode" bindchange="bindPickerChange" value="{{userSetting.reader.mode}}" range="{{allStyleMode}}">
+      <view class="picker-view">
+        {{userSetting.reader.mode}}
+      </view>
+    </picker>
+  </view>
+  <view class="title">更新</view>
+  <view class="setting-item">
+    <text class="text">更新提醒</text>
+    <switch checked bindchange="switchChange"/>
+  </view>
+  <view class="title">其他</view>
+  <navigator url="/pages/webpage/webpage?url=https://mbook.lilyplay.com/help" open-type="navigate">
+    <view class="setting-item">
+      <text class="text">帮助与反馈</text>
+      <icon class="iconfont icon-arrow-right"></icon>
+    </view>
+  </navigator>
+  <navigator url="/pages/webpage/webpage?url=https://mbook.lilyplay.com/notice" open-type="navigate">
+    <view class="setting-item">
+      <text class="text">关注公众号</text>
+      <icon class="iconfont icon-arrow-right"></icon>
+    </view>
+  </navigator>
+  <view class="setting-item">
+    <button type="default">退出当前账号</button>
+  </view>
+</view>

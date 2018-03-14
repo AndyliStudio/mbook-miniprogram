@@ -1,0 +1,10 @@
+{
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#1472e0",
+  "navigationBarTitleText": "分类",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "toast": "../../component/toast/toast",
+    "no-data": "../../component/nodata/nodata"
+  }
+}
