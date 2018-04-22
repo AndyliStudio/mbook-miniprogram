@@ -17,7 +17,6 @@ App({
     this.doLogin()
   },
   doLogin: () => {
-    let self = this
     // 微信登录
     wx.login({
       success: res => {
@@ -36,7 +35,8 @@ App({
                 // 将token存入缓存，在每次发送需要认证的请求时在header里带上token
                 wx.setStorageSync('token', res.data.token)
                 wx.setStorageSync('userinfo', res.data.userinfo)
-              } else if (!res.data.ok && !res.data.token && !res.data.registe) {
+                wx.setStorageSync('allbooks', res.data.allbooks)
+              } else if (!res.data.ok && res.data.registe === false) {
                 // 未注册
                 wx.login({
                   success: res => {
@@ -79,6 +79,11 @@ App({
                     }, 2000)
                   }
                 })
+              } else {
+                wx.showToast({ title: '登录失败', image: '/static/img/close.png' })
+                setTimeout(function(){
+                  wx.hideToast()
+                }, 2000)
               }
             },
             fail: err => {
@@ -98,6 +103,7 @@ App({
     })
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    allbooks: []
   }
 })

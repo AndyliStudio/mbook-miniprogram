@@ -1,5 +1,6 @@
 //bookdetail.js
 const config = require('../../config')
+const app = getApp()
 
 Page({
   data: {
@@ -38,7 +39,8 @@ Page({
               shortDes = des.substring(0, 70) + '...';
             }
             res.data.data.shortDes = shortDes;
-            self.setData({ 'detail': res.data.data, isInList: res.data.isInList })     
+            self.setData({ 'detail': res.data.data, isInList: res.data.isInList })
+                
             wx.hideNavigationBarLoading()
           }else{
             self.showToast('获取书籍信息失败~', 'bottom')

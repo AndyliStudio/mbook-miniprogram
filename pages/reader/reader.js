@@ -112,21 +112,40 @@ Page({
   },
   //跳出页面执行函数
   onUnload: function () {
+    let self = this
     //onUnload方法在页面被关闭时触发，我们需要将用户的当前设置存下来
+    wx.setStorageSync('reader_setting', {
+      allSliderValue: { bright: self.data.allSliderValue.bright, font: self.data.allSliderValue.font }, // 控制当前章节，亮度，字体大小
+      colorStyle: self.data.colorStyle //当前的主题
+    });
+    this.updateRead();
+  },
+  //跳出页面执行函数
+  onHide: function () {
     wx.setStorageSync('reader_setting', {
       allSliderValue: { bright: this.data.allSliderValue.bright, font: this.data.allSliderValue.font }, // 控制当前章节，亮度，字体大小
       colorStyle: this.data.colorStyle //当前的主题
     });
     this.updateRead();
   },
-  //跳出页面执行函数
-  onHide: function () {
-    //onUnload方法在页面被关闭时触发，我们需要将用户的当前设置存下来
-    wx.setStorageSync('reader_setting', {
-      allSliderValue: { bright: this.data.allSliderValue.bright, font: this.data.allSliderValue.font }, // 控制当前章节，亮度，字体大小
-      colorStyle: this.data.colorStyle //当前的主题
-    });
-    this.updateRead();
+  // 分享逻辑
+  onShareAppMessage: function (res) {
+    if (res.from === 'button') {
+      // 来自页面内转发按钮
+      console.log(res.target)
+    }
+    return {
+      title: '自定义转发标题',
+      path: '/page/user?id=123',
+      success: res => {
+        // 转发成功
+        console.log(res);
+      },
+      fail: err => {
+        // 转发失败
+        console.log(err);
+      }
+    }
   },
   handletouchmove: function(event){
     // console.log('正在执行touchmove, isMoving为：'+isMoving);
@@ -535,6 +554,8 @@ Page({
   },
   updateRead: function(){
     var self = this;
+    const bookid = self.data.bookid;
+    const factionName = self.data.factionName
     wx.request({
       method: 'POST',
       url: config.base_url + '/api/booklist/update_read',
@@ -547,6 +568,34 @@ Page({
       success: res => {
         if(res.data.ok){
           console.log(res.data.msg)
+          // 判断改书籍是否在书籍列表中，没有在的话提示用户加入加入
+          const allbooks = wx.getStorageSync('allbooks')
+          if (allbooks.indexOf(bookid) < 0) {
+            wx.showModal({
+              title: '温馨提示',
+              content: '是否将《' + factionName + '》加入书架？',
+              success: res => {
+                if (res.confirm) {
+                  wx.request({
+                    url: config.base_url + '/api/booklist/add_book?id=' + bookid,
+                    header: {
+                      'Authorization': 'Bearer ' + wx.getStorageSync('token')
+                    },
+                    success: res => {
+                      if(res.data.ok){
+                        wx.showToast({title: '加入书架成功', icon: 'success'})
+                      }else{
+                        wx.showToast({title: '加入书架失败，请重新尝试~', icon: 'error'})
+                      }
+                    },
+                    fail: err => {
+                      wx.showToast({title: '加入书架失败，请重新尝试~', icon: 'error'})
+                    }
+                  });
+                }
+              }
+            });
+          }
         }else{
           self.showToast('更新阅读进度失败', 'bottom')
         }
@@ -613,7 +662,7 @@ Page({
             })
             // 设置标题
             wx.setNavigationBarTitle({
-              title: '「' + self.data.factionTitle + '」• ' + self.data.factionTitle
+              title: '「' + self.data.factionName + '」• ' + self.data.factionTitle
             });
             // 重新计算最大分页数
             wx.createSelectorQuery().select('#content-out').boundingClientRect(function(rect){
