@@ -126,6 +126,36 @@ App({
       }
     })
   },
+  // 获取分享ID
+  fetchShareId: function() {
+    let self = this
+    wx.request({
+      method: 'GET',
+      url: config.base_url + '/api/share/new?source=0',
+      header: { 'Authorization': 'Bearer ' + wx.getStorageSync('token') },
+      success: res => {
+        if (res.data.ok) {
+          wx.setStorageSync('share_id', res.data.share_id)
+        }
+      }
+    })
+  },
+  updateShareLog: function(share_id) {
+    let self = this
+    wx.request({
+      method: 'GET',
+      url: config.base_url + '/api/share/update?share_id=' + share_id,
+      header: { 'Authorization': 'Bearer ' + wx.getStorageSync('token') },
+      success: res => {
+        if (res.data.ok) {
+          wx.showToast({ title: '获得15书币的奖励', icon: 'success' })
+          setTimeout(function(){
+            wx.hideToast()
+          }, 2000)
+        }
+      }
+    })
+  },
   globalData: {
     userInfo: null,
     allbooks: []

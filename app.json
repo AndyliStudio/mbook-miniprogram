@@ -10,7 +10,8 @@
     "pages/setting/setting",
     "pages/attendance/attendance",
     "pages/charge/charge",
-    "pages/webpage/webpage"
+    "pages/webpage/webpage",
+    "pages/activities/share/share"
   ],
   "window": {
     "backgroundTextStyle": "light",
