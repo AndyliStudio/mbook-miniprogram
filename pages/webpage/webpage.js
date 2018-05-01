@@ -8,12 +8,28 @@ Page({
   },
   onLoad: function (options) {
     let self = this
-    // 获取屏幕高度
-    if(options.url){
-      self.setData({ 'url': options.url })
+    let url = options.url
+    if(url){
+      if (options.url.indexOf('activity/share') > -1) {
+        // 获取userid
+        const userinfo = wx.getStorageSync('userinfo')
+        // 判断 url是否已经携带参数
+        if (url.indexOf('?') > -1) {
+          url += '&uid=' + userinfo._id
+        } else {
+          url += '?uid=' + userinfo._id
+        }
+        self.setData({ 'url': url })
+      } else {
+        self.setData({ 'url': url })
+      }
     }else{
       self.showToast('地址为空', 'bottom')
     }
+  },
+  // 接收来自h5页面的消息
+  reciveMessage: function(event) {
+    console.log(event.detail.data);
   },
   showToast: function(content, position){
     let self = this

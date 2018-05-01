@@ -1,5 +1,6 @@
 //login.js
 const config = require('../../config')
+const Promise = require('../../utils/bluebird.min')
 
 var currentGesture  = 0; //控制当一个手势进行的时候屏蔽其他的手势
 var leftMoveTimer = null; //控制左滑的动画计时器
@@ -130,22 +131,26 @@ Page({
   },
   // 分享逻辑
   onShareAppMessage: function (res) {
-    if (res.from === 'button') {
-      // 来自页面内转发按钮
-      console.log(res.target)
-    }
-    return {
-      title: '自定义转发标题',
-      path: '/page/user?id=123',
-      success: res => {
-        // 转发成功
-        console.log(res);
-      },
-      fail: err => {
-        // 转发失败
-        console.log(err);
+    let self = this
+    // 获取分享出去的图片地址
+    let shareParams = wx.getStorageSync('share_params')
+    if (shareParams) {
+      return {
+        title: shareParams.title,
+        path: shareParams.path,
+        imageUrl: shareParams.imageUrl,
+        success: function(res) {
+          // 转发成功
+          wx.showToast({title: '分享成功', icon: 'success'})
+        },
+        fail: function(res) {
+          // 取消分享
+        }
       }
-    }
+    } else {
+      self.showToast('获取分享参数失败', 'bottom')
+      return false
+    }   
   },
   handletouchmove: function(event){
     // console.log('正在执行touchmove, isMoving为：'+isMoving);

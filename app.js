@@ -15,6 +15,7 @@ App({
     //   }
     // })
     this.doLogin()
+    this.getShareParams()
   },
   doLogin: () => {
     // 微信登录
@@ -98,6 +99,29 @@ App({
           setTimeout(function(){
             wx.hideToast()
           }, 2000)
+        }
+      }
+    })
+  },
+  // app加载的时候获取分享配置化参数
+  getShareParams: () => {
+    wx.request({
+      method: 'GET',
+      url: config.base_url + '/api/get_setting_items?items=share',
+      success: res => {
+        if (res.data.ok) {
+          try {
+            if (typeof res.data.items.share === 'string') {
+              res.data.items.share = JSON.parse(res.data.items.share)
+            }
+            wx.setStorageSync('share_params', {
+              title: res.data.items.share.title,
+              imageUrl: res.data.items.share.imageUrl,
+              path: res.data.items.share.page,
+            })
+          } catch (err) {
+            // error handler
+          }
         }
       }
     })

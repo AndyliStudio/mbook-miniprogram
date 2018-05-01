@@ -8,8 +8,8 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "1.6.4",
-	"appid": "wx98fdadcaaeac5160",
+	"libVersion": "2.0.0",
+	"appid": "wxc7bb707dc3f735ed",
 	"projectname": "mbook-miniprogram",
 	"condition": {
 		"search": {

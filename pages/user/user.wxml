@@ -15,7 +15,7 @@
         <icon class="iconfont icon-arrow-right"></icon>
       </view>
     </navigator>
-    <navigator url="/pages/webpage/webpage?url=https://mbook.lilyplay.com/about_us" open-type="navigate">
+    <navigator url="/pages/webpage/webpage?url=https://mbook.andylistudio.com/about_us" open-type="navigate">
       <view class="about-us">
         <icon class="iconfont icon-guanyuwomen"></icon>
         <text class="about-us-text">关于我们</text>
