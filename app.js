@@ -100,6 +100,13 @@ App({
             wx.hideToast()
           }, 2000)
         }
+      },
+      fail: err => {
+        console.log(err)
+        wx.showToast({ title: '登录失败', image: '/static/img/close.png' })
+        setTimeout(function(){
+          wx.hideToast()
+        }, 2000)
       }
     })
   },

@@ -1,6 +1,7 @@
 //login.js
 const config = require('../../config')
 const Promise = require('../../utils/bluebird.min')
+const app = getApp()
 
 var currentGesture  = 0; //控制当一个手势进行的时候屏蔽其他的手势
 var leftMoveTimer = null; //控制左滑的动画计时器
@@ -58,6 +59,7 @@ Page({
     hasGotMaxNum: false, // 是否已经计算得到最大分页数
     maxPageNum: 11, // 本章的最大页数
     moveDirection: '', // 翻页方向，0表示向后翻页，1表示向前翻页
+    isShowBuy: true
   },
   onReady: function () {
     var self = this;
@@ -110,6 +112,8 @@ Page({
     self.setData({ bookid: bookid })
     // 初始化页面
     self.initPage()
+    // 此页面可分享，需要提前获取分享id
+    app.fetchShareId()
   },
   //跳出页面执行函数
   onUnload: function () {
@@ -133,13 +137,15 @@ Page({
   onShareAppMessage: function (res) {
     let self = this
     // 获取分享出去的图片地址
-    let shareParams = wx.getStorageSync('share_params')
+    const shareParams = wx.getStorageSync('share_params')
+    const shareId = wx.getStorageSync('share_id')
     if (shareParams) {
       return {
         title: shareParams.title,
-        path: shareParams.path,
+        path: shareParams.path + '?share_id' + shareId,
         imageUrl: shareParams.imageUrl,
         success: function(res) {
+          console.log(res)
           // 转发成功
           wx.showToast({title: '分享成功', icon: 'success'})
         },
@@ -308,10 +314,11 @@ Page({
             'allSliderValue.section': res.data.data.num,
             'hasGotMaxNum': false,
             'pageIndex': 1,
-            'leftValue': 0
+            'leftValue': 0,
+            'isShowBuy': !res.data.canRead,
           });
           wx.setNavigationBarTitle({
-            title: '「' + res.data.bookname + '」• ' + res.data.data.name
+            title: res.data.data.name
           });
           // 重新计算最大分页数
           wx.createSelectorQuery().select('#content-out').boundingClientRect(function(rect){
@@ -486,7 +493,8 @@ Page({
             'factionTitle': res.data.data.name,
             'allSliderValue.section': res.data.data.num,
             'pageIndex': 1,
-            'leftValue': 0
+            'leftValue': 0,
+            'isShowBuy': !res.data.canRead,
           });
           wx.setNavigationBarTitle({
             title: '「' + res.data.bookname + '」• ' + res.data.data.name
@@ -523,11 +531,12 @@ Page({
             'factionTitle': res.data.data.name,
             'content': res.data.data.content,
             'author': res.data.author,
-            'headImg': res.data.headimg
+            'headImg': res.data.headimg,
+            'isShowBuy': !res.data.canRead,
           });
           // 设置标题
           wx.setNavigationBarTitle({
-            title: '「' + res.data.bookname + '」• ' + res.data.data.name
+            title: res.data.data.name
           });
           // 动态计算最大页数
           wx.createSelectorQuery().select('#content-out').boundingClientRect(function(rect){
@@ -663,11 +672,12 @@ Page({
               'content': res.data.data.content,
               'factionTitle': res.data.data.name,
               'allSliderValue.section': res.data.data.num,
-              'hasGotMaxNum': false
+              'hasGotMaxNum': false,
+              'isShowBuy': !res.data.canRead,
             })
             // 设置标题
             wx.setNavigationBarTitle({
-              title: '「' + self.data.factionName + '」• ' + self.data.factionTitle
+              title: self.data.factionTitle
             });
             // 重新计算最大分页数
             wx.createSelectorQuery().select('#content-out').boundingClientRect(function(rect){
@@ -709,11 +719,12 @@ Page({
               'allSliderValue.section': res.data.data.num,
               'hasGotMaxNum': false,
               'pageIndex': 1, // 将pageIndex重置为第一页，
-              'leftValue': 0 // 左滑值重置为0
+              'leftValue': 0, // 左滑值重置为0
+              'isShowBuy': !res.data.canRead,
             })
             // 设置标题
             wx.setNavigationBarTitle({
-              title: '「' + self.data.factionTitle + '」• ' + self.data.factionTitle
+              title: self.data.factionTitle
             });
             // 重新计算最大分页数
             wx.createSelectorQuery().select('#content-out').boundingClientRect(function(rect){
@@ -733,6 +744,27 @@ Page({
     }else{
       self.showToast('已经翻到最后面了', 'bottom')
     }
+  },
+  // 购买该章节
+  buyChapter: function () {
+    let self = this
+    wx.request({
+      url: config.base_url + '/api/chapter/buy?bookid=' + self.data.bookid + '&chapter_num=' + self.data.currentSectionNum,
+      header: { 'Authorization': 'Bearer ' + wx.getStorageSync('token') },
+      success:res => {
+        if(res.data.ok){
+          // 隐藏购买提示
+          self.setData({
+            'isShowBuy': false
+          })
+        }else{
+          self.showToast('购买失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
+        }
+      },
+      fail: err => {
+        self.showToast('购买失败', 'bottom')
+      }
+    })
   },
   showToast: function (content, position) {
     let self = this
