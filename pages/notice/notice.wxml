@@ -1,0 +1,22 @@
+<view class="comments">
+    <view class="h">
+        <view class="item {{ showType == 0 ? 'active' : ''}}" bindtap="switchTab">
+            <view class="txt">系统通知{{systemNoticeCount ? '(' + systemNoticeCount + ')' : ''}}</view>
+        </view>
+        <view class="item {{ showType == 0 ? '' : 'active'}}" bindtap="switchTab">
+            <view class="txt">评论回复{{replyCommentCount ? '(' + replyCommentCount + ')' : ''}}</view>
+        </view>
+    </view>
+  <view class="b">
+    <view class="item" wx:for="{{comments}}" wx:key="{{item.commentid}}" data-bookid="{{item.bookid}}" bindtap="gotoBookDetail">
+      <view class="info">
+        <view class="user">
+          <image src="{{item.avatar}}"></image>
+          <text>{{item.name}}</text>
+        </view>
+        <view class="time">{{item.time}}</view>
+      </view>
+      <view class="comment">{{item.content}}</view>
+    </view>
+  </view>
+</view>

@@ -23,7 +23,7 @@
       </view>
     </navigator>
     <view class="main">
-      <navigator url="/pages/attendance/attendance" open-type="navigate">
+      <navigator url="/pages/notice/notice" open-type="navigate">
         <view class="main-item">
           <icon class="iconfont icon-xiaoxi"></icon>
           <text class="main-text">消息</text>

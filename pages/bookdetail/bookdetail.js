@@ -16,7 +16,6 @@ Page({
   },
   onLoad: function (options) {
     let self = this
-    wx.setNavigationBarTitle({ title: options.name })
     wx.showNavigationBarLoading()
     self.getBookDetail(options.id)
     self.getCommentList(options.id)
@@ -40,7 +39,7 @@ Page({
             }
             res.data.data.shortDes = shortDes;
             self.setData({ 'detail': res.data.data, isInList: res.data.isInList })
-                
+            wx.setNavigationBarTitle({ title: res.data.data.name })
             wx.hideNavigationBarLoading()
           }else{
             self.showToast('获取书籍信息失败~', 'bottom')

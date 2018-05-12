@@ -1,0 +1,8 @@
+{
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#1472e0",
+  "navigationBarTitleText": "我的消息",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "toast": "../../component/toast/toast"  }
+}
