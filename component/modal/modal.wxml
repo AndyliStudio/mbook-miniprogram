@@ -1,0 +1,9 @@
+<!-- 自定义组件--弹窗 -->
+<view class="modal">
+    <view class="content">
+    	<view class="title">{{title}}</view>
+    	<icon type="cancel" size="22" color="#B2B2B2" bindtap="closeModal"></icon>
+    	<slot></slot>
+    	<button wx:if="{{showBtn ? true : false}}" class="btn" type="default" size="mini" bindtap="buttonClick">{{btnText}}</button>
+    </view>
+</view>

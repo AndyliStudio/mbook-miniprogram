@@ -1,0 +1,62 @@
+@keyframes modalSlideIn {
+  from {
+    transform: translateY(150%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+view, input, text {
+  font-size: 28rpx;
+  color: #333;
+}
+.modal{
+  height:100vh;
+	background:rgba(0,0,0,.4);
+	position:absolute;
+	width:100%;
+	z-index:1000;
+}
+.modal .content {
+	width: 84%;
+	height: auto;
+	min-height: 400rpx;
+	background: #ffffff;
+	border-radius: 15rpx;
+	margin: 0 auto;
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+	padding-bottom: 50rpx;
+}
+.modal .content > icon {
+	position: absolute;
+	top: 18rpx;
+	right: 18rpx;
+}
+.modal .content .title {
+	font-size: 36rpx;
+	font-weight: bold;
+	text-align: center;
+	height: 80rpx;
+	line-height: 80rpx;
+	color: #333333;
+  border-bottom: 1px solid #d7d7d7;
+}
+.modal .btn {
+	display: block;
+	width: 240rpx;
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	box-sizing: border-box;
+	border: none;
+	background-image: linear-gradient(to top, #23a0fc 0%, #52b6ff 100%);
+	margin: 40rpx auto 30rpx auto;
+	color: #ffffff;
+	font-size: 32rpx;
+	padding: 6rpx;
+	box-sizing: border-box;
+}

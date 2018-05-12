@@ -1,0 +1,184 @@
+.account {
+	position: relative;
+}
+.panel {
+	width: 84%;
+	margin: 0 auto;
+	-webkit-box-shadow:0px 5px 10px 5px #f3f3f3;  
+	-moz-box-shadow:0px 5px 10px 5px #f3f3f3;  
+	box-shadow:0px 5px 20px 5px #f3f3f3;
+	border-radius: 10rpx;
+	box-sizing: border-box;
+	padding: 40rpx;
+	text-align: center;
+	font-size: 36rpx;
+	color: #40424e;
+}
+
+.main-text {
+	font-size: 32rpx;
+}
+
+.num {
+	font-size: 60rpx;
+	font-weight: bold;
+	color: #212735;
+	padding: 0 10rpx;
+}
+
+.charge-btn {
+	width: 85%;
+	box-sizing: border-box;
+	border: none;
+  	background-image: linear-gradient(to top, #23a0fc 0%, #52b6ff 100%);
+  	margin-top: 40rpx;
+  	margin-bottom: 30rpx;
+  	color: #ffffff;
+  	font-size: 36rpx;
+  	padding: 10rpx;
+  	box-sizing: border-box;
+}
+
+.tab {
+  height: 80rpx;
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  /*border-bottom: 1px solid rgba(0,0,0,.15);*/
+  box-sizing: border-box;
+  margin-top: 60rpx;
+  margin-bottom: 20rpx;
+}
+
+.tab-item {
+  width: 200rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  color: #40424e;
+  font-size: 32rpx;
+}
+
+.tab-item.active {
+  color: #aed3f6;
+  border-bottom: 8rpx solid #aed3f6;
+}
+
+.content {
+  flex: 1;
+}
+
+.content-item {
+  height: 100%;
+  position: relative;
+}
+
+.award-item {
+	width: 100%;
+	padding: 15rpx 30rpx;
+	border-bottom: 1px solid #d7d7d7;
+	position: relative;
+	box-sizing: border-box;
+}
+
+.award-item:last-child {
+	border-bottom: none;
+}
+
+.award-item .award-num {
+	color: #E64340;
+	font-weight: bold;
+	font-size: 44rpx;
+}
+
+.award-item .award-num .right {
+	margin-right: 6rpx;
+}
+
+.award-item .award-des {
+	font-size: 32rpx;
+  	color: #40424e;
+}
+
+.award-item .award-time {
+	position: absolute;
+	top: 12rpx;
+	right: 30rpx;
+	font-size: 32rpx;
+  	color: #40424e;
+}
+
+.buy-item {
+	width: 100%;
+	padding: 15rpx 30rpx;
+	border-bottom: 1px solid #d7d7d7;
+	position: relative;
+	box-sizing: border-box;
+	height: 230rpx;
+}
+
+.buy-item:last-child {
+	border-bottom: none;
+}
+
+.buy-item .book-img {
+	display: inline-block;
+	width: 150rpx;
+	height: 200rpx;
+	position: absolute;
+	left: 30rpx;
+	top: 12rpx;
+}
+
+.buy-item .buy-num {
+	color: #1AAD19;
+	font-weight: bold;
+	font-size: 44rpx;
+	position: absolute;
+	top: 12rpx;
+	right: 30rpx;
+}
+
+.buy-item .buy-num .right {
+	margin-right: 6rpx;
+}
+
+.buy-item .buy-des {
+	font-size: 32rpx;
+	line-height: 1.6em;
+  	color: #40424e;
+  	padding-left: 170rpx;
+}
+
+.no-data {
+	text-align: center;
+  	color: #40424e;
+  	font-size: 32rpx;
+  	padding: 20rpx 0;
+}
+
+.loadmore {
+	text-align: center;
+  	color: #40424e;
+  	font-size: 32rpx;
+  	padding: 20rpx 0;
+	border-bottom: 1px solid #d7d7d7;
+}
+.charge-modal{
+	text-align: center;
+}
+.charge-modal .wxname {
+	display: inline-block;
+	padding: 4px 10px;
+	background: #aed3f6;
+	color: #ffffff;
+	text-align: center;
+	margin: 20rpx auto;
+}
+.charge-modal .des {
+	font-size: 32rpx;
+	text-align: center;
+	padding: 0 15rpx;
+}

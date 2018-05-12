@@ -4,6 +4,7 @@ const config = require('../../config')
 Page({
   data: {
     toast: { show: false, content: '', position: 'bottom' }, // 提示信息
+    modal: { title: '温馨提示', showBtn: true, btnText: '复制微信号' },
     clientHeight: '',
     banner_urls: [],
     is_show_banner: true,

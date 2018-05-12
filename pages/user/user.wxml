@@ -30,7 +30,7 @@
           <view class="border left"></view>
         </view>
       </navigator>
-      <navigator url="/pages/attendance/attendance" open-type="navigate">
+      <navigator url="/pages/account/account" open-type="navigate">
         <view class="main-item">
           <icon class="iconfont icon-chongzhi"></icon>
           <text class="main-text">账户</text>

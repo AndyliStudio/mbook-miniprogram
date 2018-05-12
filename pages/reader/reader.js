@@ -480,6 +480,7 @@ Page({
   showThisSection: function (event) {
     var self = this;
     var chapterid = event.currentTarget.dataset.chapterid;
+    self.setData({ 'isShowMulu': 0 });
     //根据章节id去得到章节内容
     wx.request({
       method: 'GET',

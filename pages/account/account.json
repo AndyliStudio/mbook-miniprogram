@@ -1,11 +1,10 @@
 {
   "backgroundTextStyle": "light",
   "navigationBarBackgroundColor": "#1472e0",
-  "navigationBarTitleText": "首页",
+  "navigationBarTitleText": "我的账户",
   "navigationBarTextStyle": "white",
   "usingComponents": {
     "toast": "../../component/toast/toast",
-    "no-data": "../../component/nodata/nodata",
     "lazyload-img": "../../component/lazyload-img/lazyload-img",
     "modal": "../../component/modal/modal"
   }

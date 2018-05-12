@@ -1,0 +1,41 @@
+<toast toast="{{toast}}"></toast>
+<modal class="charge-modal" wx:if="{{modal.show}}" title="{{modal.title}}" showBtn="{{modal.showBtn}}" btnText="{{modal.btnText}}" bindbtnclick="pasteWxCode" bindclose="closeModal">
+  <view class="wxname">dreamldk</view>
+  <view class="des">暂不支持微信支付，请添加客服微信，按照1元兑换10书币的价格转账之后，客服会为您充值书币。</view>
+</modal>
+<view class="account">
+	<view class="panel">
+		<view class="main-text"><text class="num">{{amount}}</text>书币</view>
+		<button class="charge-btn" bindtap="gotoCharge">充值</button>
+	</view>
+	<view class="tab">
+      <view class="tab-item {{currentPageNum === 1 ? 'active' : ''}}" data-page="1" bindtap="changePage">奖励和充值</view>
+      <view class="tab-item {{currentPageNum === 2 ? 'active' : ''}}" data-page="2" bindtap="changePage">消费记录</view>
+    </view>
+    <view class="content">
+      <view class="content-item" wx:if="{{currentPageNum === 1}}">
+      	<view class="award-item" wx:if="{{awards.length > 0}}" wx:for="{{awards}}" wx:key="{{index}}">
+      		<view class="award-num"><text class="right">+</text>{{item.amount}}</view>
+      		<view class="award-des">{{item.des}}</view>
+      		<view class="award-time">{{item.create_time}}</view>
+      	</view>
+      	<view class="loadmore" data-page="1" wx:if="{{showAwardLoadmore}}" bindtap="loadMore">加载更多>></view>
+      	<view class="no-data" wx:if="{{!awards.length}}">
+      		暂无奖励记录
+      	</view>
+      </view>
+      <view class="content-item" wx:if="{{currentPageNum === 2}}">
+      	<view class="buy-item" wx:if="{{buys.length > 0}}" wx:for="{{buys}}" wx:key="{{index}}">
+      		<lazyload-img class="book-img" src="{{item.img_url}}"></lazyload-img>
+      		<view class="buy-num"><text class="right">-</text>{{item.amount}}</view>
+      		<view class="buy-des">购买书名: {{item.book_name}}</view>
+      		<view class="buy-des">购买章节: 第{{item.chapter_num}}章</view>
+      		<view class="buy-des">时间: {{item.create_time}}</view>
+      	</view>
+      	<view class="loadmore" data-page="2" wx:if="{{showBuyLoadmore}}" bindtap="loadMore">加载更多>></view>
+      	<view class="no-data" wx:if="{{!buys.length}}">
+      		暂无消费记录
+      	</view>
+      </view>
+    </view>
+</view>
