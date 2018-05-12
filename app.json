@@ -13,7 +13,8 @@
     "pages/webpage/webpage",
     "pages/activities/share/share",
     "pages/search/search",
-    "pages/notice/notice"
+    "pages/notice/notice",
+    "pages/readtime/readtime"
   ],
   "window": {
     "backgroundTextStyle": "light",

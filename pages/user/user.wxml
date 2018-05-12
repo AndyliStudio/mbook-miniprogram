@@ -44,7 +44,7 @@
           <view class="border top"></view>
         </view>
       </navigator>
-      <navigator url="/pages/attendance/attendance" open-type="navigate">
+      <navigator url="/pages/readtime/readtime" open-type="navigate">
         <view class="main-item">  
           <icon class="iconfont icon-shichang"></icon>
           <text class="main-text">读书时长</text>

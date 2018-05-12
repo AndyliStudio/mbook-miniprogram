@@ -1,3 +1,4 @@
+<toast toast="{{toast}}"></toast>
 <scroll-view class="container" style="height: 100%;">
   <view class="search-header">
     <view class="input-box">

@@ -1,3 +1,4 @@
+<toast toast="{{toast}}"></toast>
 <view class="share-container">
   <view class=".header-bg"></view>
   <view class="header">

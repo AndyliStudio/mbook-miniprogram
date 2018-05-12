@@ -1,0 +1,56 @@
+page {
+	height: 100vh；
+}
+.read-time {
+	height: 100vh;
+	overflow: hidden;
+	position: relative;
+}
+.panel {
+	width: 84%;
+	margin: 0 auto;
+	-webkit-box-shadow:0px 5px 10px 5px #f3f3f3;  
+	-moz-box-shadow:0px 5px 10px 5px #f3f3f3;  
+	box-shadow:0px 5px 20px 5px #f3f3f3;
+	border-radius: 10rpx;
+	box-sizing: border-box;
+	padding: 40rpx;
+	text-align: center;
+	font-size: 36rpx;
+	color: #40424e;
+}
+
+.award-text {
+	margin-top: 20rpx;
+}
+
+.award-text .num {
+	font-size: 50rpx;
+	font-weight: bold;
+	color: #212735;
+	padding: 0 10rpx;
+}
+
+.award-btn {
+	width: 85%;
+	box-sizing: border-box;
+	border: none;
+  	background-image: linear-gradient(to top, #23a0fc 0%, #52b6ff 100%);
+  	margin-top: 40rpx;
+  	margin-bottom: 30rpx;
+  	color: #ffffff;
+  	font-size: 36rpx;
+  	padding: 10rpx;
+  	box-sizing: border-box;
+}
+
+.des {
+	position: absolute;
+	bottom: 20rpx;
+	text-align: center;
+	width: 100%;
+	font-size:32rpx;
+	color: #40424e;
+	padding: 0 20rpx;
+	box-sizing: border-box;
+}

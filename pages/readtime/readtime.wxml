@@ -1,0 +1,9 @@
+<toast toast="{{toast}}"></toast>
+<view class="read-time">
+	<view class="panel">
+		<view class="main-text">累计阅读时长{{minute}}分钟</view>
+		<view class="award-text">可兑换<text class="num">{{num}}</text>书币</view>
+		<button class="award-btn" bindtap="getAward">兑换</button>
+	</view>
+	<view class="des">每30分钟的阅读时长可兑换5书币，阅读时长会在每周末自动清零，请及时兑换。</view>
+</view>
