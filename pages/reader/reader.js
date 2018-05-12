@@ -112,8 +112,6 @@ Page({
     self.setData({ bookid: bookid })
     // 初始化页面
     self.initPage()
-    // 此页面可分享，需要提前获取分享id
-    app.fetchShareId()
   },
   //跳出页面执行函数
   onUnload: function () {
@@ -138,11 +136,12 @@ Page({
     let self = this
     // 获取分享出去的图片地址
     const shareParams = wx.getStorageSync('share_params')
-    const shareId = wx.getStorageSync('share_id')
+    const now = new Date()
+    const code = wx.getStorageSync('share_code') + now.getTime()
     if (shareParams) {
       return {
         title: shareParams.title,
-        path: shareParams.path + '?share_id' + shareId,
+        path: shareParams.path + '?code' + code,
         imageUrl: shareParams.imageUrl,
         success: function(res) {
           console.log(res)
@@ -784,5 +783,5 @@ Page({
         }
       })
     }, 3000)
-  },
+  }
 });

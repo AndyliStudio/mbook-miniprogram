@@ -5,11 +5,11 @@
   <view class="calendar box box-tb">
     <view class="top-handle box box-lr box-pack-between box-pack-center">
       <view class="prev box box-rl" bindtap="handleCalendar" data-handle="prev">
-        <view class="prev-handle box box-lr box-align-center box-pack-center"><icon class="iconfont icon-arrow-left"></icon></view>
+        <view class="prev-handle box box-lr box-align-center box-pack-center">前一个月</view>
       </view>
       <view bindtap="chooseYearAndMonth" class="date-area box box-lr box-align-center box-pack-center">{{cur_year || "--"}} 年 {{cur_month || "--"}} 月</view>
       <view class="next box box-lr" bindtap="handleCalendar" data-handle="next">
-        <view class="next-handle box box-lr box-align-center box-pack-center"><icon class="iconfont icon-arrow-right"></icon></view>
+        <view class="next-handle box box-lr box-align-center box-pack-center">后一个月</view>
       </view>
     </view>
     <view class="tu-ding">
@@ -33,11 +33,11 @@
 <view class="rule">
   <view class="title">奖励规则</view>
   <view class="status">{{statusText}}</view>
-  <view class="text {{hasDone ? 'done' : ''}}">每天签到送50书币</view>
-  <view class="text {{keepTimes === 3 ? 'done' : ''}}">连续签到3天 额外获得100书币</view>
-  <view class="text {{keepTimes === 7 ? 'done' : ''}}">连续签到7天 额外获得150书币</view>
-  <view class="text {{keepTimes === 15 ? 'done' : ''}}">连续签到15天 额外获得200书币</view>
-  <view class="text {{keepTimes === 30 ? 'done' : ''}}">连续签到30天 额外获得300书币</view>
+  <view class="text {{hasDone ? 'done' : ''}}">每天签到送5书币</view>
+  <view class="text {{keepTimes === 3 ? 'done' : ''}}">连续签到3天 额外获得10书币</view>
+  <view class="text {{keepTimes === 7 ? 'done' : ''}}">连续签到7天 额外获得15书币</view>
+  <view class="text {{keepTimes === 15 ? 'done' : ''}}">连续签到15天 额外获得20书币</view>
+  <view class="text {{keepTimes === 30 ? 'done' : ''}}">连续签到30天 额外获得30书币</view>
 </view>
 <view wx:if="{{showPicker}}" class="picker-container box box-tb">
   <view class="picker-btns box box-lr box-pack-between box-align-center">

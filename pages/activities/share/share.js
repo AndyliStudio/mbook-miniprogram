@@ -6,28 +6,56 @@ Page({
   data: {
     toast: { show: false, content: '', position: 'bottom' }, // 提示信息
     url: '',
+    shareInfo: {
+      todayAwardNum: 0,
+      todayInviteNum: 0,
+      totalAwardNum: 0,
+      totalInviteNum: 0
+    },
     loaded: false
   },
   onLoad: function (options) {
     let self = this
-    // 如果url中存在share_id，调用更新分享记录的接口
-    if (options.share_id) {
-      app.updateShareLog(options.share_id)
+    // 加载缓存中拿到的用户分享信息
+    const shareInfo = wx.getStorageSync('share_info')
+    if (shareInfo) {
+      self.setData({ 'shareInfo': shareInfo })
+    }
+    // 如果url中存在code并且code符合规范，调用更新分享记录的接口
+    const reg = /^[A-Za-z0-9-]+_\d+$/
+    if (options.code && reg.test(options.code)) {
+      app.updateShareLog(options.code).then(res => {
+        if (res === true) {
+          // 更新奖励
+          self.flushAward()
+        }
+      })
     }
     self.setData({ 'loaded': true })
-    self.getShareInfo()
-    app.fetchShareId()
+  },
+  flushAward: function() {
+    let self = this
+    app.getShareInfo().then(res => {
+      if(res === true) {
+        // 更新奖励
+        const shareInfo = wx.getStorageSync('share_info')
+        if (shareInfo) {
+          self.setData({ 'shareInfo': shareInfo })
+        }
+      }
+    })
   },
   // 分享逻辑
   onShareAppMessage: function (res) {
     let self = this
     // 获取分享出去的图片地址
     const shareParams = wx.getStorageSync('share_params')
-    const shareId = wx.getStorageSync('share_id')
+    const now = new Date()
+    const code = wx.getStorageSync('share_code') + now.getTime()
     if (shareParams) {
       return {
         title: shareParams.title,
-        path: shareParams.path + '?share_id' + shareId,
+        path: shareParams.path + '?code' + code,
         imageUrl: shareParams.imageUrl,
         success: function(res) {
           console.log(res)
@@ -43,12 +71,8 @@ Page({
       return false
     }   
   },
-  // 接收来自h5页面的消息
-  getShareInfo: function() {
-    
-  },
   gotoIndex: function() {
-    wx.navigateTo({
+    wx.switchTab({
       url: '/pages/index/index'
     })
   },

@@ -11,7 +11,8 @@
     "pages/attendance/attendance",
     "pages/charge/charge",
     "pages/webpage/webpage",
-    "pages/activities/share/share"
+    "pages/activities/share/share",
+    "pages/search/search"
   ],
   "window": {
     "backgroundTextStyle": "light",

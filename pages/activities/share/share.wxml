@@ -2,10 +2,15 @@
   <view class=".header-bg"></view>
   <view class="header">
     <view class="info">
-      <text>今日获得书币: <text class="padding-left">{{todayGetNum}}</text></text>
-      <text>累计获得的书币: <text class="padding-right">{{todayGetNum}}</text></text>
+      <text>今日获得书币: <text class="padding-left">{{shareInfo.todayAwardNum}}</text></text>
+      <text>累计获得的书币: <text class="padding-right">{{shareInfo.totalAwardNum}}</text></text>
+    </view>
+    <view class="info">
+      <text>今日邀请人数: <text class="padding-left">{{shareInfo.todayInviteNum}}</text></text>
+      <text>累计邀请人数: <text class="padding-right">{{shareInfo.totalInviteNum}}</text></text>
     </view>
     <view class="operation">
+      <button class="flush-btn" bindtap="flushAward">刷新奖励</button>
       <button class="share-btn" open-type="share">去分享</button>
       <button class="back-btn" bindtap="gotoIndex">回到首页</button>
     </view>

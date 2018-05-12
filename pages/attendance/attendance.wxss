@@ -137,12 +137,14 @@
 }
 
 .prev-handle {
-  width: 75rpx;
+  width: 150rpx;
+  font-size: 30rpx;
   height: 100%;
 }
 
 .next-handle {
-  width: 75rpx;
+  width: 150rpx;
+  font-size: 30rpx;
   height: 100%;
 }
 
@@ -464,6 +466,11 @@ page {
 }
 
 .rule .text.done::after {
-  content: '√';
-  float: right;
+  content: "\e61a";
+  font-family:"iconfont" !important;
+  font-size: 30rpx;
+  margin-left: 20rpx;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

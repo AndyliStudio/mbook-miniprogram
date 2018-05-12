@@ -1,0 +1,70 @@
+<scroll-view class="container" style="height: 100%;">
+  <view class="search-header">
+    <view class="input-box">
+      <image class="icon" src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/search2-2fb94833aa.png"></image>
+      <input name="input" class="keywrod" focus="true" value="{{keyword}}" confirm-type="search" bindinput="inputChange" bindfocus="inputFocus"
+        bindconfirm="onKeywordConfirm" confirm-type="search" placeholder="{{defaultKeyword}}" />
+      <image class="del" wx:if="{{keyword}}" bindtap="clearKeyword" src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/clearIpt-f71b83e3c2.png"></image>
+    </view>
+    <view class="right" bindtap="closeSearch">取消</view>
+  </view>
+  <view class="no-search" wx:if="{{ !searchStatus}}">
+    <view class="serach-keywords search-history" wx:if="{{!keyword  && historyKeyword.length}}">
+      <view class="h">
+        <text class="title">历史记录</text>
+        <i class="icon iconfont icon-shanchu" bindtap="clearHistory"></i>
+      </view>
+      <view class="b">
+        <view class="item" bindtap="onKeywordTap" data-keyword="{{item}}" wx:for="{{historyKeyword}}" hover-class="navigator-hover">{{item}}</view>
+      </view>
+    </view>
+    <view class="serach-keywords search-hot" wx:if="{{!keyword}}">
+      <view class="h">
+        <text class="title">热门搜索</text>
+      </view>
+      <view class="b">
+        <view class="item {{item.is_hot === 1 ? 'active' : ''}}" hover-class="navigator-hover" bindtap="onKeywordTap" data-keyword="{{item.keyword}}"
+          wx:for="{{hotKeyword}}">{{item}}</view>
+      </view>
+    </view>
+    <view class="shelper-list" wx:if="{{keyword}}">
+      <view class="item" hover-class="navigator-hover" wx:for="{{helpKeyword}}" bindtap="onKeywordTap" data-keyword="{{item}}">{{item}}</view>
+    </view>
+  </view>
+
+  <view class="search-result" wx:if="{{ searchStatus && goodsList.length}}">
+    <view class="sort">
+      <view class="sort-box">
+        <view class="item {{currentSortType == 'default' ? 'active' : ''}}" bindtap="openSortFilter" id="defaultSort">
+          <text class="txt">综合</text>
+        </view>
+        <view class="item {{currentSortType == 'category' ? 'active' : ''}}" bindtap="openSortFilter" id="categoryFilter">
+          <text class="txt">分类</text>
+        </view>
+      </view>
+      <view class="sort-box-category" wx-if="{{categoryFilter}}">
+        <view class="item {{item.checked ? 'active' : ''}}" wx:for="{{filterCategory}}" wx:key="cate-{{index}}" data-category-index="{{index}}"
+          bindtap="selectCategory">{{item}}</view>
+      </view>
+    </view>
+    <!-- 搜索结果 -->
+    <view class="books">
+      <navigator url="/pages/bookdetail/bookdetail?id={{item._id}}&name={{item.name}}" wx:for="{{goodsList}}" wx:key="item._id">
+        <view class="book-item">
+          <lazyload-img class="book-img" src="{{item.img_url}}"></lazyload-img>
+          <!-- <image class="book-img fade-in" src="../../static/img/book-loading.svg"></image> -->
+          <view class="book-info">
+            <text class="book-name">{{item.name}}</text>
+            <text class="book-des">{{item.des}}</text>
+            <view class="book-author">
+              <icon class="iconfont icon-hezuozuozhe"></icon>{{item.author}}</view>
+          </view>
+        </view>
+      </navigator>
+    </view>
+  </view>
+
+  <view class="search-result-empty" wx:if="{{!goodsList.length && searchStatus}}">
+    <no-data text="无搜索结果" sub-text="您搜索的书籍暂未上架"></no-data>
+  </view>
+</scroll-view>

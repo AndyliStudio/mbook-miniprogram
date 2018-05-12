@@ -3,5 +3,5 @@
     <slot></slot>
     <view class="text" wx:if="{{text ? true : false}}">{{text}}</view>
     <view class="sub-text" wx:if="{{subText ? true : false}}">{{subText}}</view>
-    <button class="btn" type="default" size="mini" bindtap="buttonClick">{{btnText}}</button>
+    <button wx:if="{{showBtn ? true : false}}" class="btn" type="default" size="mini" bindtap="buttonClick">{{btnText}}</button>
 </view>

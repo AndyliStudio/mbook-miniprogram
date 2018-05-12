@@ -1,0 +1,11 @@
+{
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#1472e0",
+  "navigationBarTitleText": "搜索",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "toast": "../../component/toast/toast",
+    "no-data": "../../component/nodata/nodata",
+    "lazyload-img": "../../component/lazyload-img/lazyload-img"
+  }
+}

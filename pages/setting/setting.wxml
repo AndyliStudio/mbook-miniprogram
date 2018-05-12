@@ -45,7 +45,7 @@
       <icon class="iconfont icon-arrow-right"></icon>
     </view>
   </navigator>
-  <view class="setting-item">
+  <!-- <view class="setting-item">
     <button type="default">退出当前账号</button>
-  </view>
+  </view> -->
 </view>

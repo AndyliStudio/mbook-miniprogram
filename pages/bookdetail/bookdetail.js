@@ -157,11 +157,16 @@ Page({
   toWriteComment: function (event) {
     let self = this
     if(event.currentTarget.id == 'write'){
-      self.setData({commentInputHide: false})
+      self.setData({commentInputHide: false, commentType: null})
     }else{
-      let commentid = event.currentTarget.dataset.commentid
-      let username = event.currentTarget.dataset.username
-      self.setData({commentInputHide: false, commentType: {id: commentid, username: username}});
+      const commentid = event.currentTarget.dataset.commentid
+      const username = event.currentTarget.dataset.username
+      const storeUsername = (wx.getStorageSync('userinfo') || {}).username
+      if (storeUsername === username) {
+        self.showToast('自己不能回复自己', 'bottom')
+      } else {
+        self.setData({commentInputHide: false, commentType: {id: commentid, username: username}});
+      }
     }
   },
   hideCommentBar: function () {
@@ -187,9 +192,9 @@ Page({
           wx.showToast({title: '发布书评成功', icon: 'success'})
           let comments = self.data.comments
           comments.unshift(res.data.data)
-          // 清空当前评论内容，并修改comments
-          self.setData({'comments': comments, 'currentCommentValue': ''})
-          
+          // 清空当前评论内容，重新加载comment
+          self.setData({'currentCommentValue': ''})
+          self.getCommentList(self.data.bookid)
         }else{
           self.showToast( res.data.msg || '发布书评失败~', 'bottom')  
         }

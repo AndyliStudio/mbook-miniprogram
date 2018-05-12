@@ -27,5 +27,7 @@ Component({
       this.triggerEvent('btnclick', btnClickDetail, btnClickOption)
     }
   },
-  ready: function () { }
+  ready: function () {
+    console.log(this.data.showBtn)
+  }
 })

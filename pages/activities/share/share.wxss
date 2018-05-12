@@ -43,7 +43,7 @@ page {
   text-align: center;
 }
 
-.header .share-btn, .header .invite-btn {
+.header .flush-btn, .header .share-btn, .header .back-btn {
   display: inline-block;
   width: 240rpx;
   height: 80rpx;
