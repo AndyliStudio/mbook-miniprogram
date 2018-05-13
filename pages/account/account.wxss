@@ -106,7 +106,7 @@
 	position: absolute;
 	top: 12rpx;
 	right: 30rpx;
-	font-size: 32rpx;
+	font-size: 30rpx;
   	color: #40424e;
 }
 

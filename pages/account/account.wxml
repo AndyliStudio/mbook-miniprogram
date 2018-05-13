@@ -30,7 +30,7 @@
       		<view class="buy-num"><text class="right">-</text>{{item.amount}}</view>
       		<view class="buy-des">购买书名: {{item.book_name}}</view>
       		<view class="buy-des">购买章节: 第{{item.chapter_num}}章</view>
-      		<view class="buy-des">时间: {{item.create_time}}</view>
+      		<view class="buy-des time">时间: {{item.create_time}}</view>
       	</view>
       	<view class="loadmore" data-page="2" wx:if="{{showBuyLoadmore}}" bindtap="loadMore">加载更多>></view>
       	<view class="no-data" wx:if="{{!buys.length}}">

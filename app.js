@@ -162,7 +162,7 @@ App({
               wx.hideToast()
             }, 2000)
           } else {
-            resolve(false)
+            resolve(res.data.msg)
           }
         },
         fail: err => {

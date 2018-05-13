@@ -30,52 +30,105 @@ page {
 }
 
 .header .info {
-  font-size: 28prx;
+  font-size: 32rpx;
   color: #ffffff;
-  text-align: center;
+  text-align: left;
+  padding: 0 20rpx;
+  display: inline-block;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
 }
 
-.header .info > span:first-child {
-  margin-right: 100rpx;
+.header .info .label{
+  display: inline-block;
+  width: 220rpx;
+  text-align: left;
+}
+
+.header .info .label.second{
+  margin-left: 30rpx;
+}
+.header .info .padding{
+  display: inline-block;
+  padding-left: 20rpx;
+  width: 80rpx;
+  font-size: 36rpx;
 }
 
 .header .operation {
   text-align: center;
+  display: flex;
+  display: -webkit-flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  margin-top: 50rpx;
 }
 
-.header .flush-btn, .header .share-btn, .header .back-btn {
+.header .operation > button {
   display: inline-block;
-  width: 240rpx;
+  width: 200rpx;
   height: 80rpx;
   line-height: 80rpx;
-  border-radius: 25rpx;
+  border-radius: 10rpx;
   background: #565f8f;
   outline: none;
   border: none;
   box-shadow: 1rpx 1rpx 1rpx 1rpx #ffffff;
   color: #ffffff;
   font-size: 28rpx;
+  margin-bottom: 20rpx;
 }
-
-.header .share-btn {
-  margin-right: 60rpx;
+.wxfriend {
+  margin-top: -150rpx;
+  padding: 0 20rpx;
 }
-
-.rule {
-  font-size: 24rpx;
-  margin-top: 40rpx;
-}
-
-.rule .title {
-  font-size: 30rpx;
+.wxfriend .title {
+  font-size: 34rpx;
   font-weight: bold;
   text-align: center;
   padding-left: 0;
+  color: #ffffff;
 }
 
-.rule > p {
-  padding-left: 30rpx;
-  line-height: 1.5em;
-  margin: 0;
+.wxfriend .des {
+  margin-top: 20rpx;
+  color: #f8f8f8;
+  font-size: 28rpx;
+  text-align: center;
+}
+.wxfriend .wx-text {
+  color: #f8f8f8;
+  font-size: 32rpx;
+}
+.wxfriend > image {
+  display: block;
+  width: 300rpx;
+  height: 300rpx;
+  margin: 0 auto;
+}
+.wxfriend .link {
+  text-decoration: underline;
+  color: #f8f8f8;
+}
+.wxfriend .save {
+  text-align: center;
+  font-size: 32rpx;
+  padding: 10rpx 0;
+}
+.rule {
+  font-size: 30rpx;
+  margin-top: 40rpx;
+  margin-bottom: 50rpx;
+  padding: 0 25rpx;
+  color: #f8f8f8;
+}
+
+.rule .title {
+  font-size: 34rpx;
+  font-weight: bold;
+  text-align: center;
+  padding-left: 0;
   color: #ffffff;
 }

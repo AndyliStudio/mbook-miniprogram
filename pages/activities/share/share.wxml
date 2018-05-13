@@ -3,12 +3,12 @@
   <view class=".header-bg"></view>
   <view class="header">
     <view class="info">
-      <text>今日获得书币: <text class="padding-left">{{shareInfo.todayAwardNum}}</text></text>
-      <text>累计获得的书币: <text class="padding-right">{{shareInfo.totalAwardNum}}</text></text>
+      <text class="label">今日获得书币: </text><text class="padding">{{shareInfo.todayAwardNum}}</text>
+      <text class="label second">累计获得的书币: </text><text class="padding">{{shareInfo.totalAwardNum}}</text>
     </view>
     <view class="info">
-      <text>今日邀请人数: <text class="padding-left">{{shareInfo.todayInviteNum}}</text></text>
-      <text>累计邀请人数: <text class="padding-right">{{shareInfo.totalInviteNum}}</text></text>
+      <text class="label">今日邀请人数: </text><text class="padding">{{shareInfo.todayInviteNum}}</text>
+      <text class="label second">累计邀请人数: </text><text class="padding">{{shareInfo.totalInviteNum}}</text>
     </view>
     <view class="operation">
       <button class="flush-btn" bindtap="flushAward">刷新奖励</button>
@@ -16,9 +16,17 @@
       <button class="back-btn" bindtap="gotoIndex">回到首页</button>
     </view>
   </view>
+  <view class="wxfriend">
+    <view class="title">--<text>分享到朋友圈</text>--</view>
+    <view class="des">请点击下载此二维码，并使用此二维码作为图片发送到朋友圈</view>
+    <view class="wx-text">一起来读书吧，接收我的邀请立即获得15书币哦~</view>
+    <view class="save link" bindtap="pasteWxCode">复制文字</view>
+    <image src="{{wxcode}}" alt="二维码加载中..."></image>
+    <view class="save link" bindtap="saveImage">保存二维码图片到本地</view>
+  </view>
   <view class="rule">
     <view class="title">--<text>分享规则</text>--</view>
-    <view>1. 每天登陆获得10书币；</view>
+    <view>1. 每天登陆后可以签到得到5书币，连续签到会有额外奖励；</view>
     <view>2. 邀请好友一次登录获得15书币；</view>
     <view>3. 分享到微信群获得20书币；</view>
     <view>4. 每天获得书币的最大上限为200；</view>
