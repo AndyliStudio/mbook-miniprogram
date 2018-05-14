@@ -13,10 +13,10 @@ page {
   top: 0;
   width: 750rpx;
   height: 91rpx;
+  line-height: 91rpx;
   display: flex;
   background: #fff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-  padding: 0 31.25rpx;
   font-size: 32rpx;
   color: #333;
   box-sizing: border-box;
