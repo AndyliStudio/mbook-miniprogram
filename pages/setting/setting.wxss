@@ -1,54 +1,56 @@
-.setting-item{
-	height: 80rpx;
-	padding: 0 40rpx;
+.setting-item {
+  height: 80rpx;
+  padding: 0 40rpx;
 }
-.picker{
-	height: 80rpx;
-	line-height: 80rpx;
+.picker {
+  height: 80rpx;
+  line-height: 80rpx;
 }
-.setting-item .text{
-	display: inline-block;
-	width: 30%;
-	height: 80rpx;
-	line-height: 80rpx;
-	font-weight: bold;
-	position: relative;
-	top: 4rpx;
-	box-sizing: border-box;
-}
-
-.setting-item > .value, .setting-item > picker{
-	display: inline-block;
-	width: 70%;
-	height: 80rpx;
-	line-height: 80rpx;
-	vertical-align: middle;
-	text-align: right;
+.setting-item .text {
+  display: inline-block;
+  width: 30%;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-weight: bold;
+  position: relative;
+  top: 4rpx;
+  box-sizing: border-box;
 }
 
-.setting-item switch, .setting-item .icon-arrow-right{
-	float: right;
+.setting-item > .value,
+.setting-item > picker {
+  display: inline-block;
+  width: 70%;
+  height: 80rpx;
+  line-height: 80rpx;
+  vertical-align: middle;
+  text-align: right;
 }
 
-.setting-item button{
-	width: 80%;
-	margin: 30rpx auto;
-	box-sizing: border-box;
-	font-size: 32rpx;
+.setting-item switch,
+.setting-item .icon-arrow-right {
+  float: right;
 }
 
-.title{
-	text-align: left;
-	background: transparent;
-	height: 80rpx;
-	line-height: 80rpx;
-	padding-left: 40rpx;
-	font-size: 26rpx;
-	color: #888888;
+.setting-item button {
+  width: 80%;
+  margin: 30rpx auto;
+  box-sizing: border-box;
+  font-size: 32rpx;
 }
 
-.preview{
-	margin: 20rpx 50rpx;
-	padding: 50rpx 20rpx;
-	text-align: center;
+.title {
+  text-align: left;
+  background: transparent;
+  height: 80rpx;
+  line-height: 80rpx;
+  padding-left: 40rpx;
+  font-size: 26rpx;
+  color: #888888;
+}
+
+.preview {
+  margin: 20rpx 50rpx;
+  padding: 50rpx 20rpx;
+  text-align: center;
 }

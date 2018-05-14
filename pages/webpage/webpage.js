@@ -6,10 +6,10 @@ Page({
     toast: { show: false, content: '', position: 'bottom' }, // 提示信息
     url: ''
   },
-  onLoad: function (options) {
+  onLoad: function(options) {
     let self = this
     let url = options.url
-    if(url){
+    if (url) {
       if (options.url.indexOf('activity/share') > -1) {
         // 获取userid
         const userinfo = wx.getStorageSync('userinfo')
@@ -19,23 +19,23 @@ Page({
         } else {
           url += '?uid=' + userinfo._id
         }
-        self.setData({ 'url': url })
+        self.setData({ url: url })
       } else {
-        self.setData({ 'url': url })
+        self.setData({ url: url })
       }
-    }else{
+    } else {
       self.showToast('地址为空', 'bottom')
     }
   },
   // 接收来自h5页面的消息
   reciveMessage: function(event) {
-    console.log(event.detail.data);
+    console.log(event.detail.data)
   },
-  showToast: function(content, position){
+  showToast: function(content, position) {
     let self = this
-    self.setData({ 'toast': { show: true, content: content, position: position } })
-    setTimeout(function(){
-      self.setData({ 'toast': { show: false, content: '', position: 'bottom' } })
+    self.setData({ toast: { show: true, content: content, position: position } })
+    setTimeout(function() {
+      self.setData({ toast: { show: false, content: '', position: 'bottom' } })
     }, 3000)
   }
 })

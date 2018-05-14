@@ -4,7 +4,7 @@ const utils = require('./utils/util')
 const Promise = require('./utils/bluebird.min')
 
 App({
-  onLaunch: function () {
+  onLaunch: function() {
     // wx.checkSession({
     //   success: function(){
     //     //session 未过期，并且在本生命周期一直有效
@@ -66,7 +66,7 @@ App({
                                 } else {
                                   reject(false)
                                   wx.showToast({ title: res.data.msg ? res.data.msg : '注册失败', image: '/static/img/close.png' })
-                                  setTimeout(function(){
+                                  setTimeout(function() {
                                     wx.hideToast()
                                   }, 2000)
                                 }
@@ -74,7 +74,7 @@ App({
                               fail: err => {
                                 reject(err)
                                 wx.showToast({ title: '注册失败', image: '/static/img/close.png' })
-                                setTimeout(function(){
+                                setTimeout(function() {
                                   wx.hideToast()
                                 }, 2000)
                               }
@@ -86,7 +86,7 @@ App({
                     fail: err => {
                       reject(err)
                       wx.showToast({ title: '注册失败', image: '/static/img/close.png' })
-                      setTimeout(function(){
+                      setTimeout(function() {
                         wx.hideToast()
                       }, 2000)
                     }
@@ -94,7 +94,7 @@ App({
                 } else {
                   reject(false)
                   wx.showToast({ title: '登录失败', image: '/static/img/close.png' })
-                  setTimeout(function(){
+                  setTimeout(function() {
                     wx.hideToast()
                   }, 2000)
                 }
@@ -102,7 +102,7 @@ App({
               fail: err => {
                 reject(err)
                 wx.showToast({ title: '登录失败', image: '/static/img/close.png' })
-                setTimeout(function(){
+                setTimeout(function() {
                   wx.hideToast()
                 }, 2000)
               }
@@ -110,7 +110,7 @@ App({
           } else {
             reject(false)
             wx.showToast({ title: '登录失败', image: '/static/img/close.png' })
-            setTimeout(function(){
+            setTimeout(function() {
               wx.hideToast()
             }, 2000)
           }
@@ -118,7 +118,7 @@ App({
         fail: err => {
           reject(err)
           wx.showToast({ title: '登录失败', image: '/static/img/close.png' })
-          setTimeout(function(){
+          setTimeout(function() {
             wx.hideToast()
           }, 2000)
         }
@@ -131,7 +131,7 @@ App({
       wx.request({
         method: 'GET',
         url: config.base_url + '/api/share/info',
-        header: { 'Authorization': 'Bearer ' + wx.getStorageSync('token') },
+        header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
         success: res => {
           if (res.data.ok) {
             wx.setStorageSync('share_params', JSON.parse(res.data.shareSetting))
@@ -153,12 +153,12 @@ App({
       wx.request({
         method: 'GET',
         url: config.base_url + '/api/share/update?share_id=' + share_id,
-        header: { 'Authorization': 'Bearer ' + wx.getStorageSync('token') },
+        header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
         success: res => {
-          if (res.data.ok ) {
+          if (res.data.ok) {
             resolve(true)
             wx.showToast({ title: '获得15书币的奖励', icon: 'success' })
-            setTimeout(function(){
+            setTimeout(function() {
               wx.hideToast()
             }, 2000)
           } else {
@@ -169,7 +169,7 @@ App({
           reject(err)
         }
       })
-    })   
+    })
   },
   globalData: {
     userInfo: null,

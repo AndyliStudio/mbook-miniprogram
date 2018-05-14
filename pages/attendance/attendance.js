@@ -14,7 +14,7 @@ Page({
     records: [],
     statusText: ''
   },
-  onLoad: function () {
+  onLoad: function() {
     const date = new Date()
     const cur_year = date.getFullYear()
     const cur_month = date.getMonth() + 1
@@ -69,7 +69,7 @@ Page({
       days.forEach((dayItem, dayIndex) => {
         let day = dayItem.day <= 9 ? '0' + dayItem.day : dayItem.day
         let key = 'days[' + dayIndex + '].choosed'
-        if((year + '/' + month + '/' + day) === item){
+        if (year + '/' + month + '/' + day === item) {
           days[dayIndex].choosed = true
         }
       })
@@ -119,7 +119,7 @@ Page({
     const days = this.data.days
     days[idx].choosed = !days[idx].choosed
     this.setData({
-      days,
+      days
     })
   },
   chooseYearAndMonth() {
@@ -139,8 +139,8 @@ Page({
       picker_value: [idx_year, idx_month],
       picker_year,
       picker_month,
-      showPicker: true,
-    });
+      showPicker: true
+    })
   },
   pickerChange(e) {
     const val = e.detail.value
@@ -150,8 +150,8 @@ Page({
   tapPickerBtn(e) {
     const type = e.currentTarget.dataset.type
     const o = {
-      showPicker: false,
-    };
+      showPicker: false
+    }
     if (type === 'confirm') {
       o.cur_year = choose_year
       o.cur_month = choose_month
@@ -161,22 +161,22 @@ Page({
 
     this.setData(o)
   },
-  doAttendance(){
+  doAttendance() {
     let self = this
     wx.request({
       method: 'GET',
-      header: { 'Authorization': 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
       url: config.base_url + '/api/attendance',
       success: res => {
-        if(res.data.ok){
-          self.setData({ 'hasDone': true, 'keepTimes': res.data.keep_times, 'records': res.data.records, 'present': res.data.present })
+        if (res.data.ok) {
+          self.setData({ hasDone: true, keepTimes: res.data.keep_times, records: res.data.records, present: res.data.present })
           self.calculateEmptyGrids(self.data.cur_year, self.data.cur_month)
           self.calculateDays(self.data.cur_year, self.data.cur_month)
           wx.showToast({ title: '签到成功', icon: 'success' })
-          setTimeout(function(){
+          setTimeout(function() {
             wx.hideToast()
           }, 1000)
-        }else{
+        } else {
           self.showToast('获取签到记录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
       },
@@ -185,27 +185,27 @@ Page({
       }
     })
   },
-  getMyAttendance(){
+  getMyAttendance() {
     let self = this
     wx.request({
       method: 'GET',
-      header: { 'Authorization': 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
       url: config.base_url + '/api/attendance/me',
       success: res => {
-        if(res.data.ok){
+        if (res.data.ok) {
           // 设定statusText
           let statusText = ''
-          if(res.data.keep_times >= 0 && res.data.keep_times < 3){
-            statusText = '还差' + (3-res.data.keep_times) + '天获得100积分'
-          }else if(res.data.keep_times >= 3 && res.data.keep_times < 15){
-            statusText = '还差' + (15-res.data.keep_times) + '天获得150积分'
-          }else if(res.data.keep_times >= 15 && res.data.keep_times < 30){
-            statusText = '还差' + (30-res.data.keep_times) + '天获得200积分'
+          if (res.data.keep_times >= 0 && res.data.keep_times < 3) {
+            statusText = '还差' + (3 - res.data.keep_times) + '天获得100积分'
+          } else if (res.data.keep_times >= 3 && res.data.keep_times < 15) {
+            statusText = '还差' + (15 - res.data.keep_times) + '天获得150积分'
+          } else if (res.data.keep_times >= 15 && res.data.keep_times < 30) {
+            statusText = '还差' + (30 - res.data.keep_times) + '天获得200积分'
           }
-          self.setData({ 'hasDone': res.data.has_done, 'keepTimes': res.data.keep_times, 'records': res.data.records, 'present': res.data.present, 'statusText': statusText })
+          self.setData({ hasDone: res.data.has_done, keepTimes: res.data.keep_times, records: res.data.records, present: res.data.present, statusText: statusText })
           self.calculateEmptyGrids(self.data.cur_year, self.data.cur_month)
           self.calculateDays(self.data.cur_year, self.data.cur_month)
-        }else{
+        } else {
           self.showToast('获取签到记录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
       },
@@ -214,11 +214,11 @@ Page({
       }
     })
   },
-  showToast: function (content, position) {
+  showToast: function(content, position) {
     let self = this
-    self.setData({ 'toast': { show: true, content: content, position: position } })
-    setTimeout(function () {
-      self.setData({ 'toast': { show: false, content: '', position: 'bottom' } })
+    self.setData({ toast: { show: true, content: content, position: position } })
+    setTimeout(function() {
+      self.setData({ toast: { show: false, content: '', position: 'bottom' } })
     }, 3000)
   }
 })

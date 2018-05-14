@@ -1,4 +1,4 @@
-var util = require('../../utils/util.js');
+var util = require('../../utils/util.js')
 const config = require('../../config')
 
 var app = getApp()
@@ -22,42 +22,41 @@ Page({
     categoryId: 0
   },
   //事件处理函数
-  closeSearch: function () {
+  closeSearch: function() {
     wx.navigateBack()
   },
-  clearKeyword: function () {
+  clearKeyword: function() {
     this.setData({
       keyword: '',
       searchStatus: false
-    });
+    })
   },
-  onLoad: function () {
-
-    this.getSearchKeyword();
+  onLoad: function() {
+    this.getSearchKeyword()
   },
   getSearchKeyword() {
     let self = this
     wx.request({
-    	url: config.base_url + '/api/book/search_hot',
-    	method: 'GET',
-    	success: res => {
-    		self.setData({
+      url: config.base_url + '/api/book/search_hot',
+      method: 'GET',
+      success: res => {
+        self.setData({
           historyKeyword: wx.getStorageSync('history_keyword'),
           defaultKeyword: res.data.default || '请输入搜索关键字',
           hotKeyword: res.data.list
         })
-    	}
+      }
     })
   },
 
-  inputChange: function (e) {
+  inputChange: function(e) {
     this.setData({
       keyword: e.detail.value,
       searchStatus: false
     })
     this.getHelpKeyword()
   },
-  getHelpKeyword: function () {
+  getHelpKeyword: function() {
     let self = this
     wx.request({
       url: config.base_url + '/api/book/search_help?keyword=' + self.data.keyword,
@@ -71,7 +70,7 @@ Page({
       }
     })
   },
-  inputFocus: function () {
+  inputFocus: function() {
     this.setData({
       searchStatus: false,
       goodsList: []
@@ -81,14 +80,14 @@ Page({
       this.getHelpKeyword()
     }
   },
-  clearHistory: function () {
+  clearHistory: function() {
     this.setData({
       historyKeyword: []
     })
     wx.removeStorageSync('history_keyword')
   },
-  getGoodsList: function () {
-    let self = this;
+  getGoodsList: function() {
+    let self = this
     wx.request({
       url: config.base_url + '/api/book/search?keyword=' + self.data.keyword,
       method: 'GET',
@@ -98,8 +97,8 @@ Page({
             searchStatus: true,
             categoryFilter: false,
             goodsList: res.data.list,
-            filterCategory: res.data.classification,
-          });
+            filterCategory: res.data.classification
+          })
         } else {
           self.showToast('搜索书籍失败', 'bottom')
         }
@@ -110,8 +109,8 @@ Page({
       }
     })
   },
-  onKeywordTap: function (event) {
-    this.getSearchResult(event.target.dataset.keyword);
+  onKeywordTap: function(event) {
+    this.getSearchResult(event.target.dataset.keyword)
   },
   getSearchResult(keyword) {
     this.setData({
@@ -119,78 +118,78 @@ Page({
       page: 1,
       categoryId: 0,
       goodsList: []
-    });
+    })
 
-    this.getGoodsList();
+    this.getGoodsList()
   },
-  openSortFilter: function (event) {
-    let currentId = event.currentTarget.id;
+  openSortFilter: function(event) {
+    let currentId = event.currentTarget.id
     switch (currentId) {
       case 'categoryFilter':
         this.setData({
-          'categoryFilter': !this.data.categoryFilter,
-          'currentSortOrder': 'asc'
-        });
-        break;
+          categoryFilter: !this.data.categoryFilter,
+          currentSortOrder: 'asc'
+        })
+        break
       case 'priceSort':
-        let tmpSortOrder = 'asc';
+        let tmpSortOrder = 'asc'
         if (this.data.currentSortOrder == 'asc') {
-          tmpSortOrder = 'desc';
+          tmpSortOrder = 'desc'
         }
         this.setData({
-          'currentSortType': 'price',
-          'currentSortOrder': tmpSortOrder,
-          'categoryFilter': false
-        });
+          currentSortType: 'price',
+          currentSortOrder: tmpSortOrder,
+          categoryFilter: false
+        })
 
-        this.getGoodsList();
-        break;
+        this.getGoodsList()
+        break
       default:
         //综合排序
         this.setData({
-          'currentSortType': 'default',
-          'currentSortOrder': 'desc',
-          'categoryFilter': false
-        });
-        this.getGoodsList();
+          currentSortType: 'default',
+          currentSortOrder: 'desc',
+          categoryFilter: false
+        })
+        this.getGoodsList()
     }
   },
-  selectCategory: function (event) {
-    let currentIndex = event.target.dataset.categoryIndex;
-    let filterCategory = this.data.filterCategory;
-    let currentCategory = null;
+  selectCategory: function(event) {
+    let currentIndex = event.target.dataset.categoryIndex
+    let filterCategory = this.data.filterCategory
+    let currentCategory = null
     for (let key in filterCategory) {
       if (key == currentIndex) {
-        filterCategory[key].selected = true;
-        currentCategory = filterCategory[key];
+        filterCategory[key].selected = true
+        currentCategory = filterCategory[key]
       } else {
-        filterCategory[key].selected = false;
+        filterCategory[key].selected = false
       }
     }
     this.setData({
-      'filterCategory': filterCategory,
-      'categoryFilter': false,
+      filterCategory: filterCategory,
+      categoryFilter: false,
       categoryId: currentCategory.id,
       page: 1,
       goodsList: []
-    });
-    this.getGoodsList();
+    })
+    this.getGoodsList()
   },
   onKeywordConfirm(event) {
-    this.getSearchResult(event.detail.value);
+    this.getSearchResult(event.detail.value)
   },
-  showToast: function (content, position) {
+  showToast: function(content, position) {
     let self = this
     self.setData({
-      'toast': {
+      toast: {
         show: true,
         content: content,
         position: position
       }
     })
-    setTimeout(function () {
+    setTimeout(function() {
       self.setData({
-        'toast': {
+        toast: {
           show: false,
           content: '',
           position: 'bottom'

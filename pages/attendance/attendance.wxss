@@ -124,7 +124,7 @@
   color: #ffffff;
   font-size: 36rpx;
   padding: 0 5%;
-  opacity: .7;
+  opacity: 0.7;
 }
 
 .prev {
@@ -204,7 +204,7 @@
 }
 
 .right-triangle::after {
-  content: "";
+  content: '';
   display: block;
   width: 0;
   height: 0;
@@ -216,7 +216,7 @@
 }
 
 .left-triangle::before {
-  content: "";
+  content: '';
   display: block;
   width: 0;
   height: 0;
@@ -466,11 +466,11 @@ page {
 }
 
 .rule .text.done::after {
-  content: "\e61a";
-  font-family:"iconfont" !important;
+  content: '\e61a';
+  font-family: 'iconfont' !important;
   font-size: 30rpx;
   margin-left: 20rpx;
-  font-style:normal;
+  font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

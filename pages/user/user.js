@@ -8,23 +8,23 @@ Page({
     amount: 0,
     text: ''
   },
-  onShow: function(){
+  onShow: function() {
     this.getInfo()
   },
-  onLoad: function () {
+  onLoad: function() {
     // 获取屏幕高度
-    this.setData({ 'userInfo': wx.getStorageSync('userinfo') })
+    this.setData({ userInfo: wx.getStorageSync('userinfo') })
   },
-  getInfo: function(){
+  getInfo: function() {
     let self = this
     wx.request({
       url: config.base_url + '/api/user/amount',
-      header: { 'Authorization': 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
       success: res => {
-        if(res.data.ok){
-          self.setData({ 'text': res.data.data.text, amount: res.data.data.amount })
+        if (res.data.ok) {
+          self.setData({ text: res.data.data.text, amount: res.data.data.amount })
           wx.setStorageSync('amount', res.data.data.amount)
-        }else{
+        } else {
           self.showToast('获取个人信息失败', 'bottom')
         }
       },
@@ -33,11 +33,11 @@ Page({
       }
     })
   },
-  showToast: function(content, position){
+  showToast: function(content, position) {
     let self = this
-    self.setData({ 'toast': { show: true, content: content, position: position } })
-    setTimeout(function(){
-      self.setData({ 'toast': { show: false, content: '', position: 'bottom' } })
+    self.setData({ toast: { show: true, content: content, position: position } })
+    setTimeout(function() {
+      self.setData({ toast: { show: false, content: '', position: 'bottom' } })
     }, 3000)
   }
 })

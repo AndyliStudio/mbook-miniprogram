@@ -17,7 +17,7 @@ Page({
     picPage: 1,
     size: 20
   },
-  getCommentList: function () {
+  getCommentList: function() {
     let self = this
     // 写死系统消息
     if (self.data.showType === 0) {
@@ -32,18 +32,20 @@ Page({
         allCommentList: [],
         allPage: 1,
         systemNoticeCount: 1,
-        comments: [{
-          commentid: 1,
-          avatar: 'https://fs.andylistudio.com/1526117366025.jpeg',
-          name: 'mbook小助手',
-          time: registeStr,
-          content: '欢迎来到mbook，在这里开启您的阅读之旅吧~'
-        }]
+        comments: [
+          {
+            commentid: 1,
+            avatar: 'https://fs.andylistudio.com/1526117366025.jpeg',
+            name: 'mbook小助手',
+            time: registeStr,
+            content: '欢迎来到mbook，在这里开启您的阅读之旅吧~'
+          }
+        ]
       })
     } else {
       wx.request({
         url: config.base_url + '/api/comment/my',
-        header: { 'Authorization': 'Bearer ' + wx.getStorageSync('token') },
+        header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
         method: 'GET',
         success: res => {
           if (res.data.ok) {
@@ -66,10 +68,10 @@ Page({
       })
     }
   },
-  onLoad: function (options) {
+  onLoad: function(options) {
     this.getCommentList()
   },
-  switchTab: function () {
+  switchTab: function() {
     this.setData({
       showType: this.data.showType == 1 ? 0 : 1
     })
@@ -84,7 +86,7 @@ Page({
       })
     }
   },
-  onReachBottom: function () {
+  onReachBottom: function() {
     if (this.data.showType == 0) {
       if (this.data.systemNoticeCount / this.data.size < this.data.allPage) {
         return false
@@ -104,10 +106,10 @@ Page({
     }
     this.getCommentList()
   },
-  showToast: function (content, position) {
+  showToast: function(content, position) {
     let self = this
     self.setData({ toast: { show: true, content: content, position: position } })
-    setTimeout(function () {
+    setTimeout(function() {
       self.setData({ toast: { show: false, content: '', position: 'bottom' } })
     }, 3000)
   }
