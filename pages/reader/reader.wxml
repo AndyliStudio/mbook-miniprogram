@@ -1,5 +1,8 @@
 <!--index.wxml-->
 <toast toast="{{toast}}"></toast>
+<modal class="charge-modal" wx:if="{{modal.show}}" title="{{modal.title}}" showBtn="{{modal.showBtn}}" btnText="{{modal.btnText}}" bindbtnclick="pasteWxCode" bindclose="closeModal">
+  <view class="des">书币不足，您可以通过分享、签到、充值的方式获得书币。</view>
+</modal>
 <view class="container reader" style="background-color: {{colorStyle.content_bg}}">
 	<view class="content" bind:touchstart="handletouchtart" bind:touchmove="handletouchmove" bind:touchend="handletouchend" style="height:{{windows.windows_height+'px'}};font-family: {{currentFontFamily == '使用系统字体' ? 'inherit' : currentFontFamily}};font-size:{{allSliderValue.font + 'rpx'}};color:{{colorStyle.styleNum == '4'? '#85898c': '#000800'}}">
 		<view id="content-out" style="overflow: {{hasGotMaxNum ? 'hidden' : 'auto'}}; height: {{hasGotMaxNum ?'100%' : 'auto'}}">

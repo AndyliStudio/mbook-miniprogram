@@ -126,7 +126,7 @@ Page({
     this.setData({ 'modal.show': false })
   },
   loadMore: function(event) {
-    let page = parseInt(event.currentTarg22222cvyyyet.dataset.page)
+    let page = parseInt(event.currentTarget.dataset.page)
     if (page === 1) {
       this.setData({ awardPage: this.data.awardPage + 1 })
       this.getAward()

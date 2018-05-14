@@ -32,6 +32,7 @@ page {
   line-height: 59rpx;
   padding: 0 20rpx;
   background: #f4f4f4;
+  margin-left: 20rpx;
 }
 
 .search-header .icon {

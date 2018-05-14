@@ -16,7 +16,7 @@
         <i class="icon iconfont icon-shanchu" bindtap="clearHistory"></i>
       </view>
       <view class="b">
-        <view class="item" bindtap="onKeywordTap" data-keyword="{{item}}" wx:for="{{historyKeyword}}" hover-class="navigator-hover">{{item}}</view>
+        <view class="item" bindtap="onKeywordTap" data-keyword="{{item}}" wx:for="{{historyKeyword}}" wx:key="{{index}}" hover-class="navigator-hover">{{item}}</view>
       </view>
     </view>
     <view class="serach-keywords search-hot" wx:if="{{!keyword}}">
@@ -24,12 +24,12 @@
         <text class="title">热门搜索</text>
       </view>
       <view class="b">
-        <view class="item {{item.is_hot === 1 ? 'active' : ''}}" hover-class="navigator-hover" bindtap="onKeywordTap" data-keyword="{{item.keyword}}"
-          wx:for="{{hotKeyword}}">{{item}}</view>
+        <view class="item {{item.is_hot === 1 ? 'active' : ''}}" hover-class="navigator-hover" bindtap="onKeywordTap" data-keyword="{{item}}"
+          wx:for="{{hotKeyword}}" wx:key="{{index}}">{{item}}</view>
       </view>
     </view>
     <view class="shelper-list" wx:if="{{keyword}}">
-      <view class="item" hover-class="navigator-hover" wx:for="{{helpKeyword}}" bindtap="onKeywordTap" data-keyword="{{item}}">{{item}}</view>
+      <view class="item" hover-class="navigator-hover" wx:for="{{helpKeyword}}" wx:key="{{index}}" bindtap="onKeywordTap" data-keyword="{{item}}">{{item}}</view>
     </view>
   </view>
 

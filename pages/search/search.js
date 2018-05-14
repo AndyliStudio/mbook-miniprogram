@@ -13,7 +13,7 @@ Page({
     currentSortType: 'default',
     currentSortOrder: '',
     filterCategory: [],
-    defaultKeyword: {},
+    defaultKeyword: '',
     hotKeyword: [],
     page: 1,
     size: 20,
@@ -104,8 +104,10 @@ Page({
         }
         // 写入搜索历史
         let oldHistory = wx.getStorageSync('history_keyword') || []
-        oldHistory.push(self.data.keyword)
-        wx.setStorageSync('history_keyword', oldHistory)
+        if (oldHistory.indexOf(self.data.keyword) < 0) {
+          oldHistory.push(self.data.keyword)
+          wx.setStorageSync('history_keyword', oldHistory)
+        }
       }
     })
   },
