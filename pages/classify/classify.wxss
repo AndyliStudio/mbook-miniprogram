@@ -1,5 +1,5 @@
 /* pages/fenlei/fenlei.wxss */
-page{
+page {
   height: 100%;
 }
 
@@ -10,16 +10,15 @@ page{
 }
 
 .classify-container .tab {
-  overflow-x:auto;
-  white-space:nowrap;
-  height:7.4%;
-  top:0;
-  left:0;
-  padding:0 15rpx;
-  font-weight:bold;
+  overflow-x: auto;
+  white-space: nowrap;
+  height: 7.4%;
+  top: 0;
+  left: 0;
+  padding: 0 15rpx;
+  font-weight: bold;
   border-bottom: 1px solid #dddddd;
 }
-
 
 /*可滑动但是不显示滚动条*/
 
@@ -33,7 +32,7 @@ page{
   line-height: 80rpx;
   height: 80rpx;
   display: inline-block;
-  margin-right: 30rpx;
+  margin-right: 45rpx;
   width: 120rpx;
   text-align: center;
   font-size: 30rpx;
@@ -45,13 +44,13 @@ page{
 }
 
 .classify-container .tab .tab-item .tabLine {
-  height:6rpx;
-  width:30rpx;
-  border-radius:3rpx;
-  margin:0 auto;
-  background-color:#1472e0;
-  z-index:1000;
-  margin-top:-15rpx;
+  height: 6rpx;
+  width: 30rpx;
+  border-radius: 3rpx;
+  margin: 0 auto;
+  background-color: #1472e0;
+  z-index: 1000;
+  margin-top: -15rpx;
 }
 
 .classify-container .tab-content {
@@ -67,15 +66,15 @@ page{
   margin-bottom: 20rpx;
 }
 
-.classify-container .book-item>image {
-  height:180rpx;
-  width:140rpx;
-  box-shadow:4rpx 4rpx 2rpx #888;
-  display:inline-block;
-  position:absolute;
-  top:50%;
-  margin-top:-84rpx;
-  left:10px;
+.classify-container .book-item > image {
+  height: 180rpx;
+  width: 140rpx;
+  box-shadow: 4rpx 4rpx 2rpx #888;
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  margin-top: -84rpx;
+  left: 10px;
 }
 
 .classify-container .book-item .bookInfo {
@@ -87,12 +86,12 @@ page{
 }
 
 .classify-container .book-item .bookInfo::after {
-  content: "";
+  content: '';
   display: none;
   clear: both;
 }
 
-.classify-container .book-item>text {
+.classify-container .book-item > text {
   display: block;
   color: #4d5154;
 }
@@ -103,7 +102,7 @@ page{
   color: #4c4d4f;
 }
 
-.classify-container .bookInfo .des{
+.classify-container .bookInfo .des {
   font-size: 24rpx;
   color: #888888;
   margin-right: 10rpx;
@@ -118,13 +117,13 @@ page{
 }
 
 .classify-container .bookInfo .bookDes {
-  font-size:24rpx;
-  color:#5a5f62;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  display:-webkit-box;
-  -webkit-line-clamp:3;
-  -webkit-box-orient:vertical;
+  font-size: 24rpx;
+  color: #5a5f62;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 .classify-container .bookInfo .text-underline {
@@ -133,7 +132,7 @@ page{
   color: #888;
 }
 
-.classify-container .bookInfo>icon {
+.classify-container .bookInfo > icon {
   position: absolute;
   right: 20rpx;
   top: 10rpx;

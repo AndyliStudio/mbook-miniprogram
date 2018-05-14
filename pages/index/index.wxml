@@ -17,22 +17,22 @@
         <text>分类</text>
       </view>
     </navigator>
-    <navigator url="/pages/rank/rank">
-      <view class="nav-item">
-        <icon class="iconfont icon-nvsheng" style="background: #ff6687"></icon>
-        <text>女生</text>
-      </view>
-    </navigator>
-    <navigator url="/pages/rank/rank">
-      <view class="nav-item">
-        <icon class="iconfont icon-nansheng" style="background: #6db3f7"></icon>
-        <text>男生</text>
-      </view>
-    </navigator>
     <navigator url="/pages/search/search">
       <view class="nav-item">
         <icon class="iconfont icon-sousuo" style="background: #ff9654"></icon>
         <text>搜索</text>
+      </view>
+    </navigator>
+    <navigator url="/pages/account/account">
+      <view class="nav-item">
+        <icon class="iconfont icon-chongzhi" style="background: #ff6687"></icon>
+        <text>账户</text>
+      </view>
+    </navigator>
+    <navigator url="/pages/notice/notice">
+      <view class="nav-item">
+        <icon class="iconfont icon-xiaoxi" style="background: #6db3f7"></icon>
+        <text>消息</text>
       </view>
     </navigator>
     <!-- <navigator url="/pages/charge/charge">

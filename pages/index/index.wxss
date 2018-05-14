@@ -1,14 +1,14 @@
 /**index.wxss**/
-page{
+page {
   height: 100%;
 }
 
-.loading{
+.loading {
   height: 100%;
   position: relative;
 }
 
-.loading>image{
+.loading > image {
   height: 200rpx;
   width: 200rpx;
   position: absolute;
@@ -123,7 +123,6 @@ page{
   padding-bottom: 30rpx;
 }
 
-
 /* layout1: 栏目布局1 */
 
 .index .layout1 .book-item.item0 {
@@ -210,7 +209,6 @@ page{
   margin-top: 4rpx;
 }
 
-
 /* layout2: 栏目布局2 */
 
 .index .layout2 .book-item {
@@ -218,8 +216,9 @@ page{
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
-  align-items: stretch;
+  align-items: center;
   margin-bottom: 30rpx;
+  height: 270rpx;
 }
 
 .index .layout2 .book-item .book-img {
@@ -241,7 +240,7 @@ page{
 
 .index .layout2 .book-item .book-des {
   font-size: 28rpx;
-  margin-top: 30rpx;
+  margin-top: 20rpx;
   text-align: justify;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -260,9 +259,12 @@ page{
   margin-right: 20rpx;
 }
 
-
 /* layout3: 栏目布局3 */
-
+.index .layout3 {
+  display: flex;
+  display: -webkit-flex;
+  align-items: flex-start;
+}
 .index .layout3 .book-item {
   flex: 0 0 33.3333%;
   display: inline-block;
@@ -273,7 +275,7 @@ page{
   display: block;
   width: 210rpx;
   height: 270rpx;
-  background-color: #dddddd;  
+  background-color: #dddddd;
 }
 
 .index .layout3 .book-item .book-des {
@@ -295,7 +297,6 @@ page{
   color: #9e9e9e;
 }
 
-
 /* 修改轮播图样式 */
 
 .index .swiper-box .wx-swiper-dots.wx-swiper-dots-horizontal {
@@ -314,7 +315,7 @@ page{
   content: '';
   flex-grow: 1;
   background: #cccccc;
-  border-radius: 8rpx
+  border-radius: 8rpx;
 }
 
 .index .swiper-box .wx-swiper-dot-active::before {
