@@ -26,12 +26,12 @@ Page({
     allSliderValue: {
       section: 1,
       bright: 1,
-      font: 14 //单位px
+      font: 32 //单位rpx
     },
     isShowFontSelector: 0, //是否显示选择字体详情板块
     allFontFamily: ['使用系统字体', '微软雅黑', '黑体', 'Arial', '楷体', '等线'],
     currentFontFamily: '使用系统字体',
-    lineHeight: 14, //单位px
+    lineHeight: 32, //单位rpx
     control: {
       all: 0,
       control_tab: 0,
