@@ -83,10 +83,7 @@ Page({
       })
       // 设置系统亮度
       wx.setScreenBrightness({
-        value: userSetting.allSliderValue.bright || self.data.allSliderValue.bright,
-        success: () => {
-          console.log('设置系统亮度成功')
-        }
+        value: userSetting.allSliderValue.bright || self.data.allSliderValue.bright
       })
     } else {
       // 获取系统亮度，将亮度值默认设置为系统亮度
@@ -144,10 +141,9 @@ Page({
     if (shareParams) {
       return {
         title: shareParams.title,
-        path: shareParams.path + '?code' + code,
+        path: shareParams.page + '?code' + code,
         imageUrl: shareParams.imageUrl,
         success: function(res) {
-          console.log(res)
           // 转发成功
           wx.showToast({ title: '分享成功', icon: 'success' })
         },
@@ -261,7 +257,6 @@ Page({
           }, 75)
           self.setData({ pageIndex: ++currentIndex })
         } else {
-          console.log('开始加载下一章')
           self.loadNextChapter()
         }
       } else if (self.data.moveDirection === 1) {
@@ -291,7 +286,6 @@ Page({
           }, 75)
           self.setData({ pageIndex: --currentIndex })
         } else {
-          console.log('开始加载上一章')
           self.loadPreChapter()
         }
       }
@@ -567,7 +561,6 @@ Page({
                     },
                     hasGotMaxNum: true
                   })
-                  console.log('最大分页数: ' + self.data.maxPageNum)
                 }
               })
             })
@@ -598,7 +591,6 @@ Page({
       },
       success: res => {
         if (res.data.ok) {
-          console.log(res.data.msg)
           // 判断改书籍是否在书籍列表中，没有在的话提示用户加入加入
           const allbooks = wx.getStorageSync('allbooks')
           if (allbooks.indexOf(bookid) < 0) {

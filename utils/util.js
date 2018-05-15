@@ -46,7 +46,6 @@ const transDate = date => {
  */
 const getCurrentPageUrl = () => {
   let pages = getCurrentPages() //获取加载的页面
-  console.log(pages)
   let currentPage = pages[pages.length - 1] //获取当前页面的对象
   let url = currentPage.is //当前页面url
   return url

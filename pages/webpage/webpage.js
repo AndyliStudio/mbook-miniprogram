@@ -28,9 +28,7 @@ Page({
     }
   },
   // 接收来自h5页面的消息
-  reciveMessage: function(event) {
-    console.log(event.detail.data)
-  },
+  reciveMessage: function(event) {},
   showToast: function(content, position) {
     let self = this
     self.setData({ toast: { show: true, content: content, position: position } })

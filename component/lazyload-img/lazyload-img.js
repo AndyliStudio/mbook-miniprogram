@@ -17,12 +17,10 @@ Component({
     loaded: false
   },
   methods: {
-    imgLoad: function (event) {
+    imgLoad: function(event) {
       // 图片加载完成,将地址改成真实地址
       this.data.loaded = true
     },
-    imgError: function(event){
-      console.log(event)
-    }
+    imgError: function(event) {}
   }
 })

@@ -57,14 +57,13 @@ Page({
     // 获取分享出去的图片地址
     const shareParams = wx.getStorageSync('share_params')
     const now = new Date()
-    const code = wx.getStorageSync('share_code') + now.getTime()
+    const code = wx.getStorageSync('share_code') + '_' + now.getTime()
     if (shareParams) {
       return {
         title: shareParams.title,
-        path: shareParams.path + '?code' + code,
+        path: shareParams.page + '?code=' + code,
         imageUrl: shareParams.imageUrl,
         success: function(res) {
-          console.log(res)
           // 转发成功
           wx.showToast({ title: '分享成功', icon: 'success' })
         },

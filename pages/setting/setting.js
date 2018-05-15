@@ -27,9 +27,7 @@ Page({
   bindPickerChange: function(event) {
     let self = this
     let pickerid = event.currentTarget.dataset.pickerid
-    console.log(pickerid)
     if (pickerid === 'fontSize') {
-      console.log(event.detail.value)
       self.setData({ 'userSetting.reader.fontSize': self.data.allFontSize[event.detail.value] })
       // 更新缓存
       wx.setStorageSync('user_setting', self.data.userSetting)

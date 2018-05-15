@@ -132,7 +132,6 @@ Page({
               })
             },
             fail: err => {
-              console.log(err)
               wx.hideLoading()
               let errorMsg = ''
               if (err && err.errMsg) {
