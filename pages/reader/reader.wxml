@@ -21,6 +21,7 @@
 		<view class="buy-inner">
 			<button class="buy-btn" bindtap="buyChapter">购买该章节</button>
 			<button class="share-btn" open-type="share">邀请好友‧免费</button>
+			<button class="cancel-btn" bindtap="buyCancel">取消购买</button>
 		</view>
 	</view>
 	<view class="control" style="width:{{windows.windows_width+'px'}};display:{{(control.control_tab == '1' && control.all == '1')? 'flex': 'none'}};background-color:{{colorStyle.control_bg}};border-top: 1px solid {{colorStyle.slider_noactive_bg}}">

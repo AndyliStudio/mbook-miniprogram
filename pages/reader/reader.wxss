@@ -98,11 +98,16 @@ page {
 }
 
 .reader .buy-inner .buy-btn {
-  bottom: 250rpx;
+  bottom: 360rpx;
 }
 
 .reader .buy-inner .share-btn {
-  bottom: 100rpx;
+  bottom: 210rpx;
+}
+
+.reader .buy-inner .cancel-btn {
+  bottom: 60rpx;
+  color: #f72528;
 }
 
 /* 底部控制条的样式 */
