@@ -15,11 +15,13 @@ Page({
     currentCommentValue: ''
   },
   onShow: function(options) {
-    let self = this
     wx.showNavigationBarLoading()
-    self.getBookDetail(options.id)
-    self.getCommentList(options.id)
-    self.setData({ bookid: options.id })
+    this.getBookDetail(this.data.bookid)
+    this.getCommentList(this.data.bookid)
+    this.setData({ bookid: this.data.bookid })
+  },
+  onLoad: function(options) {
+    this.setData({ bookid: options.id })
   },
   getBookDetail: function(id) {
     let self = this

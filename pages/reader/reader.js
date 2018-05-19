@@ -73,26 +73,27 @@ Page({
       self.setData({ showReaderTips: false })
     }
     //读取用户设置
-    var userSetting = wx.getStorageSync('reader_setting')
-    if (userSetting) {
+    let localSetting = wx.getStorageSync('userinfo') || {}
+    if (localSetting && localSetting.setting) {
+      let userSetting = localSetting.setting
       self.setData({
-        'allSliderValue.bright': userSetting.allSliderValue.bright || self.data.allSliderValue.bright,
-        'allSliderValue.font': userSetting.allSliderValue.font || self.data.allSliderValue.font,
-        colorStyle: userSetting.colorStyle || self.data.colorStyle
+        'allSliderValue.bright': userSetting.reader.bright || self.data.allSliderValue.bright,
+        'allSliderValue.font': userSetting.reader.fontSize || self.data.allSliderValue.font,
+        colorStyle: self.transColorStyle(userSetting.reader.mode) || self.data.colorStyle,
+        currentFontFamily: userSetting.reader.fontFamily || self.data.currentFontFamily
       })
       // 设置系统亮度
-      wx.setScreenBrightness({
-        value: userSetting.allSliderValue.bright || self.data.allSliderValue.bright
-      })
-    } else {
+      // wx.setScreenBrightness({
+      //   value: userSetting.allSliderValue.bright || self.data.allSliderValue.bright
+      // })
       // 获取系统亮度，将亮度值默认设置为系统亮度
-      wx.getScreenBrightness({
-        success: res => {
-          self.setData({
-            'allSliderValue.bright': res.value
-          })
-        }
-      })
+      // wx.getScreenBrightness({
+      //   success: res => {
+      //     self.setData({
+      //       'allSliderValue.bright': res.value
+      //     })
+      //   }
+      // })
     }
     // 设置背景色
     wx.setNavigationBarColor({
@@ -114,21 +115,32 @@ Page({
   },
   //跳出页面执行函数
   onUnload: function() {
-    let self = this
     //onUnload方法在页面被关闭时触发，我们需要将用户的当前设置存下来
-    wx.setStorageSync('reader_setting', {
-      allSliderValue: { bright: self.data.allSliderValue.bright, font: self.data.allSliderValue.font }, // 控制当前章节，亮度，字体大小
-      colorStyle: self.data.colorStyle //当前的主题
-    })
-    this.updateRead()
+    let localSetting = wx.getStorageSync('userinfo') || {}
+    if (localSetting && localSetting.setting) {
+      localSetting.setting.reader = {
+        bright: this.data.allSliderValue.bright,
+        fontSize: this.data.allSliderValue.font,
+        fontFamily: this.data.currentFontFamily,
+        mode: this.transMode(this.data.colorStyle.styleNum)
+      }
+    }
+    wx.setStorageSync('userinfo', localSetting)
+    this.updateRead(localSetting.setting)
   },
   //跳出页面执行函数
   onHide: function() {
-    wx.setStorageSync('reader_setting', {
-      allSliderValue: { bright: this.data.allSliderValue.bright, font: this.data.allSliderValue.font }, // 控制当前章节，亮度，字体大小
-      colorStyle: this.data.colorStyle //当前的主题
-    })
-    this.updateRead()
+    let localSetting = wx.getStorageSync('userinfo') || {}
+    if (localSetting && localSetting.setting) {
+      localSetting.setting.reader = {
+        bright: this.data.allSliderValue.bright,
+        fontSize: this.data.allSliderValue.font,
+        fontFamily: this.data.currentFontFamily,
+        mode: this.transMode(this.data.colorStyle.styleNum)
+      }
+    }
+    wx.setStorageSync('userinfo', localSetting)
+    this.updateRead(localSetting.setting)
   },
   // 分享逻辑
   onShareAppMessage: function(res) {
@@ -381,6 +393,67 @@ Page({
       }
     })
   },
+  transMode() {
+    if (this.data.colorStyle.styleNum === 1) {
+      return '默认'
+    } else if (this.data.colorStyle.styleNum === 2) {
+      return '淡黄'
+    } else if (this.data.colorStyle.styleNum === 3) {
+      return '护眼'
+    } else if (this.data.colorStyle.styleNum === 4) {
+      return '夜间'
+    } else {
+      return '默认'
+    }
+  },
+  transColorStyle: function(cname) {
+    if (cname === '默认') {
+      return {
+        content_bg: '#f8f7fc',
+        styleNum: 1,
+        slider_active_bg: '#757e87',
+        slider_noactive_bg: '#dfdfdf',
+        control_bg: '#ffffff',
+        control_fontColor: '#616469'
+      }
+    } else if (cname === '淡黄') {
+      return {
+        content_bg: '#f6f0da',
+        styleNum: 2,
+        slider_active_bg: '#766f69',
+        slider_noactive_bg: '#dad4c4',
+        control_bg: '#faf4e4',
+        control_fontColor: '#60594f'
+      }
+    } else if (cname === '护眼') {
+      return {
+        content_bg: '#c0edc6',
+        styleNum: 3,
+        slider_active_bg: '#657568',
+        slider_noactive_bg: '#aeccd6',
+        control_bg: '#ccf1d0',
+        control_fontColor: '#44644c'
+      }
+    } else if (cname === '夜间') {
+      return {
+        content_bg: '#1d1c21',
+        styleNum: 4,
+        slider_active_bg: '#53565d',
+        slider_noactive_bg: '#23282c',
+        control_bg: '#10131a',
+        control_fontColor: '#5b5e65'
+      }
+    } else {
+      return {
+        content_bg: '#f8f7fc',
+        styleNum: 1,
+        slider_active_bg: '#757e87',
+        slider_noactive_bg: '#dfdfdf',
+        control_bg: '#ffffff',
+        control_fontColor: '#616469'
+      }
+    }
+  },
   //点击切换颜色
   switchColorStyle: function(event) {
     var self = this
@@ -582,7 +655,7 @@ Page({
       }
     })
   },
-  updateRead: function() {
+  updateRead: function(setting) {
     var self = this
     const bookid = self.data.bookid
     const factionName = self.data.factionName
@@ -594,7 +667,8 @@ Page({
         bookid: self.data.bookid,
         chapter_num: self.data.currentSectionNum,
         chapter_page_index: self.data.pageIndex,
-        read_time: new Date().getTime() - self.data.startReadTime.getTime()
+        read_time: new Date().getTime() - self.data.startReadTime.getTime(),
+        setting: setting
       },
       success: res => {
         if (res.data.ok) {

@@ -1,13 +1,13 @@
 <view class="container setting">
   <view class="title">阅读器</view>
-  <view class="preview" style="background: {{previewBg}}; font-size: {{userSetting.reader.fontSize + 'px'}}; font-family: {{userSetting.reader.fontFamily}}; color: {{userSetting.reader.mode == '夜间' ? '#85898c' : '#000800'}}">
+  <view class="preview" style="background: {{previewBg}}; font-size: {{userSetting.reader.fontSize + 'rpx'}}; font-family: {{userSetting.reader.fontFamily}}; color: {{userSetting.reader.mode == '夜间' ? '#85898c' : '#000800'}}">
     书山有路勤为径，学海无涯苦作舟
   </view>
   <view class="setting-item">
     <text class="text">字体</text>
     <picker mode="selector" data-pickerid="fontSize" bindchange="bindPickerChange" value="{{userSetting.reader.fontSize}}" range="{{allFontSize}}">
       <view class="picker-view">
-        {{userSetting.reader.fontSize  + 'px'}}
+        {{userSetting.reader.fontSize}}
       </view>
     </picker>
   </view>
@@ -30,12 +30,12 @@
   <view class="title">更新</view>
   <view class="setting-item">
     <text class="text">更新提醒</text>
-    <switch checked bindchange="switchChange"/>
+    <switch checked="{{userSetting.updateNotice}}" bindchange="switchChange"/>
   </view>
   <view class="title">支付</view>
   <view class="setting-item">
     <text class="text">自动购买下一章</text>
-    <switch bindchange="autoBuy"/>
+    <switch checked="{{userSetting.autoBuy ? true : false}}" bindchange="autoBuy"/>
   </view>
   <view class="title">其他</view>
   <navigator url="/pages/webpage/webpage?url=https://mbook.andylistudio.com/help" open-type="navigate">

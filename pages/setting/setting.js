@@ -7,14 +7,16 @@ Page({
     toast: { show: false, content: '', position: 'bottom' }, // 提示信息
     userSetting: {
       updateNotice: true,
+      autoBuy: false,
       reader: {
         fontSize: 14,
         fontFamily: '使用系统字体',
         mode: '默认'
       }
     },
+    initMode: '默认',
     allFontFamily: ['使用系统字体', '微软雅黑', '黑体', 'Arial', '楷体', '等线'],
-    allFontSize: [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+    allFontSize: [24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48],
     allStyleMode: ['默认', '淡黄', '护眼', '夜间'],
     previewBg: '#ffffff'
   },
@@ -28,20 +30,20 @@ Page({
     let self = this
     let pickerid = event.currentTarget.dataset.pickerid
     if (pickerid === 'fontSize') {
-      self.setData({ 'userSetting.reader.fontSize': self.data.allFontSize[event.detail.value] })
+      self.setData({ 'userSetting.reader.fontSize': self.data.allFontSize[parseInt(event.detail.value)] })
     } else if (pickerid === 'fontFamily') {
       self.setData({ 'userSetting.reader.fontFamily': self.data.allFontFamily[event.detail.value] })
     } else if (pickerid === 'mode') {
-      self.setData({ 'userSetting.reader.mode': self.data.allStyleMode[event.detail.value], previewBg: self.getBackGround(self.data.allStyleMode[event.detail.value]) })
+      self.setData({ 'userSetting.reader.mode': self.data.allStyleMode[parseInt(event.detail.value)], previewBg: self.getBackGround(self.data.allStyleMode[event.detail.value]) })
     }
   },
   switchChange: function(event) {
     let self = this
-    self.setData({ 'userSetting.updateNotice': event.detail.value })
+    self.setData({ 'userSetting.updateNotice': !!event.detail.value })
   },
   autoBuy: function(event) {
     let self = this
-    self.setData({ 'userSetting.autoBuy': event.detail.value })
+    self.setData({ 'userSetting.autoBuy': !!event.detail.value })
   },
   getBackGround: function(color) {
     if (color == '默认') {
@@ -52,15 +54,18 @@ Page({
       return '#c0edc6'
     } else if (color == '夜间') {
       return '#1d1c21'
+    } else {
+      return '#f8f7fc'
     }
   },
   getUserSetting: function() {
     let self = this
     // 判断本地缓存中是否存在设置缓存
-    let localSetting = wx.getStorageSync('user_setting')
-    if (localSetting) {
+    let localSetting = wx.getStorageSync('userinfo') || {}
+    if (0 && localSetting && localSetting.setting) {
+      let userSetting = localSetting.setting
       // 存在
-      self.setData({ userSetting: localSetting, previewBg: self.getBackGround(localSetting.reader.mode) })
+      self.setData({ userSetting: userSetting, previewBg: self.getBackGround(userSetting.reader.mode) })
     } else {
       wx.request({
         url: config.base_url + '/api/user/get_user_setting',
@@ -68,7 +73,8 @@ Page({
         success: res => {
           if (res.data.ok) {
             self.setData({ userSetting: res.data.data, previewBg: self.getBackGround(res.data.data.reader.mode) })
-            wx.setStorageSync('user_setting', self.data.userSetting)
+            localSetting.setting = res.data.data
+            wx.setStorageSync('userinfo', localSetting)
           } else if (res.data.authfail) {
             wx.navigateTo({
               url: '../authfail/authfail'
@@ -83,22 +89,47 @@ Page({
       })
     }
   },
+  updateSetting: function() {
+    let self = this
+    wx.request({
+      url: config.base_url + '/api/user/put_user_setting',
+      method: 'PUT',
+      data: {
+        setting: self.data.userSetting
+      },
+      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      success: res => {
+        if (res.data.ok) {
+          // self.setData({ userSetting: res.data.data, previewBg: self.getBackGround(res.data.data.reader.mode) })
+          // localSetting.setting = res.data.data
+          // wx.setStorageSync('userinfo', localSetting)
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../authfail/authfail'
+          })
+        } else {
+          self.showToast('更新设置失败', 'bottom')
+        }
+      },
+      fail: err => {
+        self.showToast('更新设置失败', 'bottom')
+      }
+    })
+  },
   //跳出页面执行函数
   onUnload: function() {
-    let self = this
+    let localSetting = wx.getStorageSync('userinfo') || {}
+    localSetting.setting = this.data.userSetting
     //onUnload方法在页面被关闭时触发，我们需要将用户的当前设置存下来
-    wx.setStorageSync('reader_setting', {
-      allSliderValue: { bright: self.data.allSliderValue.bright, font: self.data.allSliderValue.font }, // 控制当前章节，亮度，字体大小
-      colorStyle: self.data.colorStyle //当前的主题
-    })
-    this.updateRead()
+    wx.setStorageSync('userinfo', localSetting)
+    this.updateSetting()
   },
   //跳出页面执行函数
   onHide: function() {
-    wx.setStorageSync('reader_setting', {
-      allSliderValue: { bright: this.data.allSliderValue.bright, font: this.data.allSliderValue.font }, // 控制当前章节，亮度，字体大小
-      colorStyle: this.data.colorStyle //当前的主题
-    })
+    let localSetting = wx.getStorageSync('userinfo') || {}
+    localSetting.setting = this.data.userSetting
+    //onUnload方法在页面被关闭时触发，我们需要将用户的当前设置存下来
+    wx.setStorageSync('userinfo', localSetting)
     this.updateSetting()
   },
   showToast: function(content, position) {
