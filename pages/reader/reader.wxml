@@ -1,12 +1,26 @@
 <!--index.wxml-->
 <toast toast="{{toast}}"></toast>
-<modal class="charge-modal" wx:if="{{modal.show}}" title="{{modal.title}}" showBtn="{{modal.showBtn}}" btnText="{{modal.btnText}}" bindbtnclick="pasteWxCode" bindclose="closeModal">
-  <view class="des">书币不足，您可以通过分享、签到、充值的方式获得书币。</view>
+<modal class="reader-modal" data-model="modal.show" visible="{{modal.show}}" title="{{modal.title}}" position="{{modal.position}}" fullscreen="{{modal.options.fullscreen}}" opacity="{{modal.opacity}}" show-close="{{modal.options.showclose}}" show-footer="{{modal.options.showfooter}}" close-on-click-modal="{{modal.options.closeonclickmodal}}" confirm-text="{{modal.options.confirmText}}" bindconfirm="handleModalConfirm">
+  <view wx:if="{{modal.name === 'buyfail'}}">
+  	<view class="des">书币不足，您可以通过分享、签到、充值的方式获得书币。</view>
+    <button class="btn" open-type="share">分享给朋友</button>
+    <button class="btn" bindtap="gotoAccount">立即充值</button>
+    <button class="btn" bindtap="gotoAttendance">前往签到</button>
+  </view>
+	<view wx:if="{{modal.name === 'secret'}}">
+  	<view class="des">请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。</view>
+    <button class="btn" open-type="contact">联系客服</button>
+    <button class="btn" bindtap="hasSecret">我已有秘钥</button>
+  </view>
+	<view wx:if="{{modal.name === 'input'}}">
+	  <input class="secret-input" type="text" bindinput="bindKeyInput" />
+    <button class="btn" bindtap="finishSecretInput">现在解锁</button>
+  </view>
 </modal>
 <view class="container reader" style="background-color: {{colorStyle.content_bg}}">
-	<view class="content" bind:touchstart="handletouchtart" bind:touchmove="handletouchmove" bind:touchend="handletouchend" style="height:{{windows.windows_height+'px'}};font-family: {{currentFontFamily == '使用系统字体' ? 'inherit' : currentFontFamily}};font-size:{{allSliderValue.font + 'rpx'}};color:{{colorStyle.styleNum == '4'? '#85898c': '#000800'}}">
+	<view class="content" bind:touchstart="handletouchtart" bind:touchmove="handletouchmove" bind:touchend="handletouchend" style="height:{{windows.windows_height+'px'}};">
 		<view id="content-out" style="overflow: {{hasGotMaxNum ? 'hidden' : 'auto'}}; height: {{hasGotMaxNum ?'100%' : 'auto'}}">
-			<text style="column-width: {{windows.windows_width+'px'}}; left: {{leftValue + 'px'}}">{{content}}</text>
+			<text style="column-width: {{windows.windows_width+'px'}}; left: {{leftValue + 'px'}};font-family: {{currentFontFamily == '使用系统字体' ? 'inherit' : currentFontFamily}};font-size: {{allSliderValue.font + 'rpx'}}; color: {{colorStyle.styleNum == '4'? '#85898c': '#000800'}};">{{content}}</text>
 		</view>
 	</view>
 	<view class="tips" wx:if="{{showReaderTips}}" bindtap="closeReaderTips">
@@ -20,6 +34,7 @@
 	<view class="buy" style="display: {{isShowBuy ? 'block' : 'none'}}">
 		<view class="buy-inner">
 			<button class="buy-btn" bindtap="buyChapter">购买该章节</button>
+			<button class="buy-total" bindtap="buyTotal">输入秘钥购买整本书</button>
 			<button class="share-btn" open-type="share">邀请好友‧免费</button>
 			<button class="cancel-btn" bindtap="buyCancel">取消购买</button>
 		</view>

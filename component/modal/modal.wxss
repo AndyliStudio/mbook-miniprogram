@@ -7,56 +7,94 @@
     transform: translateY(0);
   }
 }
-view, input, text {
+
+view,
+input,
+text {
   font-size: 28rpx;
   color: #333;
 }
-.modal{
-  height:100vh;
-	background:rgba(0,0,0,.4);
-	position:absolute;
-	width:100%;
-	z-index:1000;
+
+.dialog-wxapp {
+  width: 100vw;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 9999;
 }
-.modal .content {
-	width: 84%;
-	height: auto;
-	min-height: 400rpx;
-	background: #ffffff;
-	border-radius: 15rpx;
-	margin: 0 auto;
-	position: relative;
-	top: 50%;
-	transform: translateY(-50%);
-	padding-bottom: 50rpx;
+
+.dialog-wxapp-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  width: 100vw;
+  height: 100%;
 }
-.modal .content > icon {
-	position: absolute;
-	top: 18rpx;
-	right: 18rpx;
+
+.dialog-wxapp-main {
+  position: fixed;
+  z-index: 10001;
+  width: 100vw;
 }
-.modal .content .title {
-	font-size: 36rpx;
-	font-weight: bold;
-	text-align: center;
-	height: 80rpx;
-	line-height: 80rpx;
-	color: #333333;
-  border-bottom: 1px solid #d7d7d7;
+
+.dialog-wxapp-container {
+  margin: 0 auto;
+  background: #fff;
+  z-index: 10001;
+  border-radius: 3px;
+  box-sizing: border-box;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.1);
+  padding: 30rpx;
 }
-.modal .btn {
-	display: block;
-	width: 240rpx;
-	position: absolute;
-	bottom: 0;
-	left: 50%;
-	transform: translateX(-50%);
-	box-sizing: border-box;
-	border: none;
-	background-image: linear-gradient(to top, #23a0fc 0%, #52b6ff 100%);
-	margin: 40rpx auto 30rpx auto;
-	color: #ffffff;
-	font-size: 32rpx;
-	padding: 6rpx;
-	box-sizing: border-box;
+
+.dialog-wxapp-container__title {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.dialog-wxapp-container__title view {
+  font-size: 36rpx;
+  color: #333;
+}
+
+.dialog-wxapp-container__title image {
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.dialog-wxapp-container__body {
+  padding-top: 10rpx;
+}
+
+.dialog-wxapp-container__footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: 10rpx;
+}
+
+.dialog-wxapp-container__footer > view {
+  font-size: 28rpx;
+  padding: 12rpx 20rpx;
+}
+
+.dialog-wxapp-container__footer .dialog-wxapp-container__footer__cancel {
+  color: #999;
+  margin-right: 15rpx;
+}
+
+.dialog-wxapp-container__footer .dialog-wxapp-container__footer__confirm {
+  background: #09bb07;
+  color: #fff;
+  border-radius: 3px;
+}
+
+.dialog-wxapp-animation {
+  animation: modalSlideIn 0.4s ease;
+  animation-fill-mode: forwards;
 }

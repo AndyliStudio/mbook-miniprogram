@@ -98,15 +98,19 @@ page {
 }
 
 .reader .buy-inner .buy-btn {
-  bottom: 360rpx;
+  bottom: 460rpx;
+}
+
+.reader .buy-inner .buy-total {
+  bottom: 320rpx;
 }
 
 .reader .buy-inner .share-btn {
-  bottom: 210rpx;
+  bottom: 180rpx;
 }
 
 .reader .buy-inner .cancel-btn {
-  bottom: 60rpx;
+  bottom: 40rpx;
   color: #f72528;
 }
 
@@ -510,6 +514,28 @@ page {
 
 .mulu-detail .mulu-swiper .factionNum {
   margin-right: 40rpx;
+}
+
+.reader-modal .des {
+  font-size: 32rpx;
+  text-align: left;
+  padding: 30rpx 15rpx;
+}
+.reader-modal .btn {
+  font-size: 34rpx;
+  margin: 15rpx 0;
+}
+
+.reader-modal .secret-input {
+  border: 1px solid #4990e2;
+  height: 80rpx;
+  font-size: 36rpx;
+  padding: 0 15rpx;
+  width: 100%;
+  margin-top: 50rpx;
+  margin-bottom: 40rpx;
+  border-radius: 10rpx;
+  box-sizing: border-box;
 }
 
 @keyframes slideShow {

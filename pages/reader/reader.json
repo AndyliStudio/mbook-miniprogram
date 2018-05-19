@@ -4,6 +4,7 @@
   "navigationBarTitleText": "",
   "navigationBarTextStyle": "white",
   "usingComponents": {
-    "toast": "../../component/toast/toast"
+    "toast": "../../component/toast/toast",
+    "modal": "../../component/modal/modal"
   }
 }

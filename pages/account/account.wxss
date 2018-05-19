@@ -179,6 +179,10 @@
 }
 .charge-modal .des {
   font-size: 32rpx;
-  text-align: center;
-  padding: 0 15rpx;
+  text-align: left;
+  padding: 30rpx 15rpx;
+}
+.charge-modal .contact-btn {
+  font-size: 34rpx;
+  margin: 10rpx 0;
 }

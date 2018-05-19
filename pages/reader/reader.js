@@ -14,7 +14,22 @@ var currentPageIndex = 0 // 当前是分栏的第几页
 Page({
   data: {
     toast: { show: false, content: '', position: 'bottom' }, // 提示信息
-    modal: { show: false, title: '温馨提示', showBtn: true, btnText: '前往分享' },
+    modal: { 
+      show: false,
+      name: '',
+      inputValue: '',
+      title: '温馨提示',
+      opacity: 0.6,
+      position: 'center',
+      width: '80%',
+      options: {
+        fullscreen: false,
+        showclose: true,
+        showfooter: true,
+        closeonclickmodal: true,
+        confirmText: '',
+      }
+    },
     bookid: '',
     factionName: '',
     author: '',
@@ -330,7 +345,24 @@ Page({
           if (res.data.canRead && res.data.doAutoBuy) {
             self.showToast('已为您自动给购买该章节', 'bottom')
           } else if (!res.data.canRead && res.data.autoBuy) {
-            self.showToast('您的余额已不足自动购买下一章节', 'bottom')
+            // self.setData({
+            //   'modal': {
+            //     show: true,
+            //     name: 'buyfail',
+            //     inputValue: '',
+            //     title: '温馨提示',
+            //     opacity: 0.6,
+            //     position: 'center',
+            //     width: '80%',
+            //     options: {
+            //       fullscreen: false,
+            //       showclose: true,
+            //       showfooter: false,
+            //       closeonclickmodal: true,
+            //       confirmText: '',
+            //     }
+            //   }
+            // })
           }
           wx.setNavigationBarTitle({
             title: res.data.data.name
@@ -584,7 +616,25 @@ Page({
           if (res.data.canRead && res.data.doAutoBuy) {
             self.showToast('已为您自动给购买该章节', 'bottom')
           } else if (!res.data.canRead && res.data.autoBuy) {
-            self.showToast('您的余额已不足自动购买下一章节', 'bottom')
+            // self.setData({
+            //   'modal': {
+            //     show: true,
+            //     name: 'buyfail',
+            //     inputValue: '',
+            //     title: '温馨提示',
+            //     inputValue: '',
+            //     opacity: 0.6,
+            //     position: 'center',
+            //     width: '80%',
+            //     options: {
+            //       fullscreen: false,
+            //       showclose: true,
+            //       showfooter: false,
+            //       closeonclickmodal: true,
+            //       confirmText: '',
+            //     }
+            //   }
+            // })
           }
           wx.setNavigationBarTitle({
             title: '「' + res.data.bookname + '」• ' + res.data.data.name
@@ -637,7 +687,25 @@ Page({
           if (res.data.canRead && res.data.doAutoBuy) {
             self.showToast('已为您自动给购买该章节', 'bottom')
           } else if (!res.data.canRead && res.data.autoBuy) {
-            self.showToast('您的余额已不足自动购买下一章节', 'bottom')
+            // self.setData({
+            //   'modal': {
+            //     show: true,
+            //     name: 'buyfail',
+            //     inputValue: '',
+            //     title: '温馨提示',
+            //     inputValue: '',
+            //     opacity: 0.6,
+            //     position: 'center',
+            //     width: '80%',
+            //     options: {
+            //       fullscreen: false,
+            //       showclose: true,
+            //       showfooter: false,
+            //       closeonclickmodal: true,
+            //       confirmText: '',
+            //     }
+            //   }
+            // })
           }
           // 设置标题
           wx.setNavigationBarTitle({
@@ -796,7 +864,24 @@ Page({
             if (res.data.canRead && res.data.doAutoBuy) {
               self.showToast('已为您自动给购买该章节', 'bottom')
             } else if (!res.data.canRead && res.data.autoBuy) {
-              self.showToast('您的余额已不足自动购买下一章节', 'bottom')
+              // self.setData({
+              //   'modal': {
+              //     show: true,
+              //     name: 'buyfail',
+              //     inputValue: '',
+              //     title: '温馨提示',
+              //     opacity: 0.6,
+              //     position: 'center',
+              //     width: '80%',
+              //     options: {
+              //       fullscreen: false,
+              //       showclose: true,
+              //       showfooter: false,
+              //       closeonclickmodal: true,
+              //       confirmText: '',
+              //     }
+              //   }
+              // })
             }
             // 设置标题
             wx.setNavigationBarTitle({
@@ -857,7 +942,24 @@ Page({
             if (res.data.canRead && res.data.doAutoBuy) {
               self.showToast('已为您自动给购买该章节', 'bottom')
             } else if (!res.data.canRead && res.data.autoBuy) {
-              self.showToast('您的余额已不足自动购买下一章节', 'bottom')
+              // self.setData({
+              //   'modal': {
+              //     show: true,
+              //     name: 'buyfail',
+              //     inputValue: '',
+              //     title: '温馨提示',
+              //     opacity: 0.6,
+              //     position: 'center',
+              //     width: '80%',
+              //     options: {
+              //       fullscreen: false,
+              //       showclose: true,
+              //       showfooter: false,
+              //       closeonclickmodal: true,
+              //       confirmText: '',
+              //     }
+              //   }
+              // })
             }
             // 设置标题
             wx.setNavigationBarTitle({
@@ -909,13 +1011,21 @@ Page({
         } else {
           // 费用不足
           if (res.data.nomoney) {
-            wx.showModal({
-              title: '温馨提示',
-              content: '书币不足，您可以通过分享、签到、充值的方式获得书币。',
-              showCancel: false,
-              success: function(res) {
-                if (res.confirm) {
-                  // do nothing
+            self.setData({
+              'modal': {
+                show: true,
+                name: 'buyfail',
+                inputValue: '',
+                title: '温馨提示',
+                opacity: 0.6,
+                position: 'center',
+                width: '80%',
+                options: {
+                  fullscreen: false,
+                  showclose: true,
+                  showfooter: false,
+                  closeonclickmodal: true,
+                  confirmText: '',
                 }
               }
             })
@@ -930,8 +1040,80 @@ Page({
     })
   },
   // 取消购买，返回上一次阅读章节
+  buyTotal: function() {
+    this.setData({
+      'modal': {
+        show: true,
+        name: 'secret',
+        inputValue: '',
+        title: '温馨提示',
+        opacity: 0.6,
+        position: 'center',
+        width: '80%',
+        options: {
+          fullscreen: false,
+          showclose: true,
+          showfooter: false,
+          closeonclickmodal: true,
+          confirmText: '',
+        }
+      }
+    })
+  },
+  hasSecret: function() {
+    this.setData({
+      'modal.title': '请输入秘钥',
+      'modal.name': 'input'
+    })
+  },
+  bindKeyInput: function(e) {
+    this.setData({
+      'modal.inputValue': e.detail.value
+    })
+  },
+  finishSecretInput: function() {
+    let self = this
+    if (!self.data.modal.inputValue) {
+      self.showToast('请输入秘钥', 'bottom')
+      return false
+    }
+    wx.request({
+      url: config.base_url + '/api/secret/open?bookid=' + self.data.bookid + '&secret=' + self.data.modal.inputValue,
+      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      success: res => {
+        if (res.data.ok) {
+          // 隐藏购买提示
+          self.setData({
+            'modal.show': false
+          })
+          self.initPage(self.data.currentSectionNum)
+          wx.showToast({ title: '解锁成功', icon: 'success' })
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../authfail/authfail'
+          })
+        } else {
+          self.showToast('解锁失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
+        }
+      },
+      fail: err => {
+        self.showToast('解锁失败，请重试', 'bottom')
+      }
+    })
+  },
+  // 取消购买，返回上一次阅读章节
   buyCancel: function() {
     this.initPage(this.data.backupSectionNum - 1 > 0 ? this.data.backupSectionNum - 1 : 1)
+  },
+  gotoAccount: function() {
+    wx.navigateTo({
+      url: '../account/account'
+    })
+  },
+  gotoAttendance: function() {
+    wx.navigateTo({
+      url: '../attendance/attendance'
+    })
   },
   showToast: function(content, position) {
     let self = this

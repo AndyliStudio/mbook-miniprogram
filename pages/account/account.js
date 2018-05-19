@@ -5,7 +5,20 @@ const util = require('../../utils/util')
 Page({
   data: {
     toast: { show: false, content: '', position: 'bottom' }, // 提示信息
-    modal: { show: false, title: '温馨提示', showBtn: true, btnText: '复制微信号' },
+    modal: { 
+      show: false,
+      title: '温馨提示',
+      opacity: 0.6,
+      position: 'center',
+      width: '80%',
+      options: {
+        fullscreen: false,
+        showclose: true,
+        showfooter: true,
+        closeonclickmodal: true,
+        confirmText: '',
+      }
+    },
     currentPageNum: 1,
     amount: 0,
     awards: [],
@@ -118,9 +131,6 @@ Page({
       }
     })
   },
-  gotoCharge: function() {
-    this.setData({ 'modal.show': true })
-  },
   pasteWxCode: function() {
     let self = this
     wx.setClipboardData({
@@ -134,9 +144,6 @@ Page({
       }
     })
   },
-  closeModal: function() {
-    this.setData({ 'modal.show': false })
-  },
   loadMore: function(event) {
     let page = parseInt(event.currentTarget.dataset.page)
     if (page === 1) {
@@ -146,6 +153,23 @@ Page({
       this.setData({ buyPage: this.data.buyPage + 1 })
       this.getBuys()
     }
+  },
+  // modal相关的方法
+  gotoCharge: function() {
+    this.setData({ 'modal': {
+      show: true,
+      title: '温馨提示',
+      opacity: 0.6,
+      position: 'center',
+      width: '80%',
+      options: {
+        fullscreen: false,
+        showclose: true,
+        showfooter: false,
+        closeonclickmodal: true,
+        confirmText: '',
+      }
+    }})
   },
   showToast: function(content, position) {
     let self = this
