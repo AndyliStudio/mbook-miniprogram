@@ -7,7 +7,7 @@ Page({
     minute: 0,
     num: 0
   },
-  onLoad: function() {
+  onShow: function() {
     this.getInfo()
   },
   getInfo: function() {
@@ -40,6 +40,10 @@ Page({
               wx.hideLoading()
             }, 2000)
             self.setData({ minute: 0, num: 0 })
+          } else if (res.data.authfail) {
+            wx.navigateTo({
+              url: '../authfail/authfail'
+            })
           } else {
             self.showToast('获取阅读时长失败', 'bottom')
           }

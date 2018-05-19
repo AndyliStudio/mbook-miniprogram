@@ -15,7 +15,7 @@ Page({
     awardPage: 1,
     buyPage: 1
   },
-  onLoad: function() {
+  onShow: function() {
     this.getInfo()
   },
   changePage: function(event) {
@@ -52,6 +52,10 @@ Page({
           self.setData({
             showBuyLoadmore: self.data.buys.length >= res.data.total ? false : true
           })
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../authfail/authfail'
+          })
         } else {
           self.showToast('获取奖励和充值记录失败', 'bottom')
         }
@@ -79,6 +83,10 @@ Page({
           self.setData({
             showAwardLoadmore: self.data.awards.length >= res.data.total ? false : true
           })
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../authfail/authfail'
+          })
         } else {
           self.showToast('获取奖励和充值记录失败', 'bottom')
         }
@@ -97,6 +105,10 @@ Page({
         if (res.data.ok) {
           self.setData({ amount: res.data.data.amount })
           wx.setStorageSync('amount', res.data.data.amount)
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../authfail/authfail'
+          })
         } else {
           self.showToast('获取书币数量失败', 'bottom')
         }

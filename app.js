@@ -161,6 +161,10 @@ App({
             setTimeout(function() {
               wx.hideToast()
             }, 2000)
+          } else if (res.data.authfail) {
+            wx.navigateTo({
+              url: '../authfail/authfail'
+            })
           } else {
             resolve(res.data.msg)
           }

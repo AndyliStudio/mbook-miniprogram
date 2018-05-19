@@ -14,6 +14,10 @@ Page({
     records: [],
     statusText: ''
   },
+  onShow: function() {
+    // 获取我的签到记录
+    this.getMyAttendance()
+  },
   onLoad: function() {
     const date = new Date()
     const cur_year = date.getFullYear()
@@ -26,8 +30,6 @@ Page({
       cur_month,
       weeks_ch
     })
-    // 获取我的签到记录
-    this.getMyAttendance()
   },
   getThisMonthDays(year, month) {
     return new Date(year, month, 0).getDate()
@@ -176,6 +178,10 @@ Page({
           setTimeout(function() {
             wx.hideToast()
           }, 1000)
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../authfail/authfail'
+          })
         } else {
           self.showToast('获取签到记录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
@@ -205,6 +211,10 @@ Page({
           self.setData({ hasDone: res.data.has_done, keepTimes: res.data.keep_times, records: res.data.records, present: res.data.present, statusText: statusText })
           self.calculateEmptyGrids(self.data.cur_year, self.data.cur_month)
           self.calculateDays(self.data.cur_year, self.data.cur_month)
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../authfail/authfail'
+          })
         } else {
           self.showToast('获取签到记录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }

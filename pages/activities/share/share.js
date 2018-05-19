@@ -15,10 +15,11 @@ Page({
     wxcode: '',
     loaded: false
   },
-  onLoad: function(options) {
+  onShow: function(options) {
     let self = this
     // 加载缓存中拿到的用户分享信息
     const shareInfo = wx.getStorageSync('share_info')
+    const shareParams = wx.getStorageSync('share_info')
     if (shareInfo) {
       self.setData({ shareInfo: shareInfo })
     }
@@ -36,7 +37,10 @@ Page({
         }
       })
     }
-    self.setData({ loaded: true })
+    self.setData({
+      loaded: true,
+      shareText: shareParams && shareParams.title ? shareParams.title : '一起来读书吧，接收我的邀请立即获得15书币哦~'
+    })
     self.getWxCode()
   },
   flushAward: function() {
@@ -117,6 +121,10 @@ Page({
         success: res => {
           if (res.data.ok) {
             self.setData({ wxcode: res.data.img_url })
+          } else if (res.data.authfail) {
+            wx.navigateTo({
+              url: '../authfail/authfail'
+            })
           } else {
             self.showToast('获取分享朋友圈二维码失败', 'bottom')
           }
@@ -132,7 +140,7 @@ Page({
   pasteWxCode: function() {
     let self = this
     wx.setClipboardData({
-      data: '一起来读书吧，接收我的邀请立即获得15书币哦~',
+      data: self.data.shareText,
       success: function(res) {
         wx.showToast({ title: '复制成功', icon: 'success' })
         setTimeout(function() {

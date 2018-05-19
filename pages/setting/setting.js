@@ -18,7 +18,7 @@ Page({
     allStyleMode: ['默认', '淡黄', '护眼', '夜间'],
     previewBg: '#ffffff'
   },
-  onLoad: function() {
+  onShow: function() {
     let self = this
     // 获取屏幕高度
     // self.setData({ 'userInfo': wx.getStorageSync('userinfo') })
@@ -29,20 +29,19 @@ Page({
     let pickerid = event.currentTarget.dataset.pickerid
     if (pickerid === 'fontSize') {
       self.setData({ 'userSetting.reader.fontSize': self.data.allFontSize[event.detail.value] })
-      // 更新缓存
-      wx.setStorageSync('user_setting', self.data.userSetting)
     } else if (pickerid === 'fontFamily') {
       self.setData({ 'userSetting.reader.fontFamily': self.data.allFontFamily[event.detail.value] })
-      wx.setStorageSync('user_setting', self.data.userSetting)
     } else if (pickerid === 'mode') {
       self.setData({ 'userSetting.reader.mode': self.data.allStyleMode[event.detail.value], previewBg: self.getBackGround(self.data.allStyleMode[event.detail.value]) })
-      wx.setStorageSync('user_setting', self.data.userSetting)
     }
   },
   switchChange: function(event) {
     let self = this
     self.setData({ 'userSetting.updateNotice': event.detail.value })
-    wx.setStorageSync('user_setting', self.data.userSetting)
+  },
+  autoBuy: function(event) {
+    let self = this
+    self.setData({ 'userSetting.autoBuy': event.detail.value })
   },
   getBackGround: function(color) {
     if (color == '默认') {
@@ -70,6 +69,10 @@ Page({
           if (res.data.ok) {
             self.setData({ userSetting: res.data.data, previewBg: self.getBackGround(res.data.data.reader.mode) })
             wx.setStorageSync('user_setting', self.data.userSetting)
+          } else if (res.data.authfail) {
+            wx.navigateTo({
+              url: '../authfail/authfail'
+            })
           } else {
             self.showToast('获取设置失败', 'bottom')
           }
@@ -79,6 +82,24 @@ Page({
         }
       })
     }
+  },
+  //跳出页面执行函数
+  onUnload: function() {
+    let self = this
+    //onUnload方法在页面被关闭时触发，我们需要将用户的当前设置存下来
+    wx.setStorageSync('reader_setting', {
+      allSliderValue: { bright: self.data.allSliderValue.bright, font: self.data.allSliderValue.font }, // 控制当前章节，亮度，字体大小
+      colorStyle: self.data.colorStyle //当前的主题
+    })
+    this.updateRead()
+  },
+  //跳出页面执行函数
+  onHide: function() {
+    wx.setStorageSync('reader_setting', {
+      allSliderValue: { bright: this.data.allSliderValue.bright, font: this.data.allSliderValue.font }, // 控制当前章节，亮度，字体大小
+      colorStyle: this.data.colorStyle //当前的主题
+    })
+    this.updateSetting()
   },
   showToast: function(content, position) {
     let self = this

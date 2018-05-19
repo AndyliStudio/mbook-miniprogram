@@ -58,6 +58,10 @@ Page({
                 return item
               })
             })
+          } else if (res.data.authfail) {
+            wx.navigateTo({
+              url: '../authfail/authfail'
+            })
           } else {
             self.showToast('获取评论失败', 'bottom')
           }
@@ -68,7 +72,7 @@ Page({
       })
     }
   },
-  onLoad: function(options) {
+  onShow: function(options) {
     this.getCommentList()
   },
   switchTab: function() {

@@ -15,7 +15,8 @@
     "pages/search/search",
     "pages/notice/notice",
     "pages/readtime/readtime",
-    "pages/account/account"
+    "pages/account/account",
+    "pages/authfail/authfail"
   ],
   "window": {
     "backgroundTextStyle": "light",

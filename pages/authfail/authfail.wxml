@@ -1,0 +1,4 @@
+<view class="authfail">
+  <p class="des">您的登录状态已经过期，请点击下方按钮重新登录。</p>
+  <button class="login-btn" bindtap="doLogin">重新登录</button>
+</view>

@@ -1,6 +1,5 @@
 //login.js
 const config = require('../../config')
-const Promise = require('../../utils/bluebird.min')
 const app = getApp()
 
 var currentGesture = 0 //控制当一个手势进行的时候屏蔽其他的手势
@@ -328,6 +327,10 @@ Page({
               })
             })
             .exec()
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../authfail/authfail'
+          })
         } else {
           self.showToast('获取章节内容失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
@@ -512,6 +515,10 @@ Page({
               })
             })
             .exec()
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../authfail/authfail'
+          })
         } else {
           self.showToast('获取章节内容失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
@@ -607,6 +614,10 @@ Page({
                     success: res => {
                       if (res.data.ok) {
                         wx.showToast({ title: '加入书架成功', icon: 'success' })
+                      } else if (res.data.authfail) {
+                        wx.navigateTo({
+                          url: '../authfail/authfail'
+                        })
                       } else {
                         wx.showToast({ title: '加入书架失败，请重新尝试~', icon: 'error' })
                       }
@@ -619,6 +630,10 @@ Page({
               }
             })
           }
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../authfail/authfail'
+          })
         } else {
           self.showToast('更新阅读进度失败', 'bottom')
         }
@@ -702,6 +717,10 @@ Page({
                 })
               })
               .exec()
+          } else if (res.data.authfail) {
+            wx.navigateTo({
+              url: '../authfail/authfail'
+            })
           } else {
             self.showToast('加载上一章失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
           }
@@ -750,6 +769,10 @@ Page({
                 })
               })
               .exec()
+          } else if (res.data.authfail) {
+            wx.navigateTo({
+              url: '../authfail/authfail'
+            })
           } else {
             self.showToast('加载下一章失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
           }
@@ -773,6 +796,10 @@ Page({
           // 隐藏购买提示
           self.setData({
             isShowBuy: false
+          })
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../authfail/authfail'
           })
         } else {
           // 费用不足

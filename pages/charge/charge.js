@@ -20,9 +20,8 @@ Page({
       subCallback: null
     }
   },
-  onLoad: function(options) {
-    let self = this
-    self.getChargeGood()
+  onShow: function(options) {
+    this.getChargeGood()
   },
   showToast: function(content, position) {
     let self = this
@@ -178,6 +177,10 @@ Page({
                 }
               })
             }
+          })
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../authfail/authfail'
           })
         } else {
           wx.hideLoading()

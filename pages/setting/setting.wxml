@@ -32,6 +32,11 @@
     <text class="text">更新提醒</text>
     <switch checked bindchange="switchChange"/>
   </view>
+  <view class="title">支付</view>
+  <view class="setting-item">
+    <text class="text">自动购买下一章</text>
+    <switch bindchange="autoBuy"/>
+  </view>
   <view class="title">其他</view>
   <navigator url="/pages/webpage/webpage?url=https://mbook.andylistudio.com/help" open-type="navigate">
     <view class="setting-item">

@@ -10,11 +10,7 @@ Page({
     removing: false // 是否处于删除书籍的状态
   },
   onShow: function() {
-    let self = this
-    self.getMyBookList()
-  },
-  onLoad: function() {
-    let self = this
+    this.getMyBookList()
   },
   getMyBookList: function() {
     let self = this
@@ -24,6 +20,10 @@ Page({
       success: res => {
         if (res.data.ok) {
           self.setData({ myBooks: res.data.list })
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../authfail/authfail'
+          })
         } else {
           self.showToast('获取我的书单失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
@@ -67,6 +67,10 @@ Page({
             myBooks: self.data.myBooks.filter(item => {
               return item.bookid !== bookid
             })
+          })
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../authfail/authfail'
           })
         } else {
           self.showToast(res.data.msg || '从书架中移除失败，请重新尝试~', 'bottom')

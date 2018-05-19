@@ -14,7 +14,7 @@ Page({
     commentType: null, // 评论类型，是回复别人还是评论书籍
     currentCommentValue: ''
   },
-  onLoad: function(options) {
+  onShow: function(options) {
     let self = this
     wx.showNavigationBarLoading()
     self.getBookDetail(options.id)
@@ -41,6 +41,10 @@ Page({
             self.setData({ detail: res.data.data, isInList: res.data.isInList })
             wx.setNavigationBarTitle({ title: res.data.data.name })
             wx.hideNavigationBarLoading()
+          } else if (res.data.authfail) {
+            wx.navigateTo({
+              url: '../authfail/authfail'
+            })
           } else {
             self.showToast('获取书籍信息失败~', 'bottom')
           }
@@ -66,6 +70,10 @@ Page({
               return item
             })
             self.setData({ comments: res.data.list })
+          } else if (res.data.authfail) {
+            wx.navigateTo({
+              url: '../authfail/authfail'
+            })
           } else {
             self.showToast(res.data.msg || '获取评论失败~', 'bottom')
           }
@@ -97,6 +105,10 @@ Page({
           if (res.data.ok) {
             self.showToast('从书架中移除成功', 'bottom')
             self.setData({ isInList: false })
+          } else if (res.data.authfail) {
+            wx.navigateTo({
+              url: '../authfail/authfail'
+            })
           } else {
             self.showToast(res.data.msg || '从书架中移除失败，请重新尝试~', 'bottom')
           }
@@ -115,6 +127,10 @@ Page({
           if (res.data.ok) {
             wx.showToast({ title: '加入书架成功', icon: 'success' })
             self.setData({ isInList: true })
+          } else if (res.data.authfail) {
+            wx.navigateTo({
+              url: '../authfail/authfail'
+            })
           } else {
             self.showToast(res.data.msg || '加入书架失败，请重新尝试~', 'bottom')
           }
@@ -137,6 +153,10 @@ Page({
           let key1 = 'comments[' + index + '].like_num'
           let key2 = 'comments[' + index + '].is_like'
           self.setData({ [key1]: res.data.current, [key2]: self.data.comments[index].is_like ? false : true })
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../authfail/authfail'
+          })
         } else {
           self.showToast(res.data.msg || '点赞失败~', 'bottom')
         }
@@ -194,6 +214,10 @@ Page({
           // 清空当前评论内容，重新加载comment
           self.setData({ currentCommentValue: '' })
           self.getCommentList(self.data.bookid)
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../authfail/authfail'
+          })
         } else {
           self.showToast(res.data.msg || '发布书评失败~', 'bottom')
         }

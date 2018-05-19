@@ -24,6 +24,10 @@ Page({
         if (res.data.ok) {
           self.setData({ text: res.data.data.text, amount: res.data.data.amount })
           wx.setStorageSync('amount', res.data.data.amount)
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../authfail/authfail'
+          })
         } else {
           self.showToast('获取个人信息失败', 'bottom')
         }

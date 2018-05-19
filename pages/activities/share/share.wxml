@@ -19,7 +19,7 @@
   <view class="wxfriend">
     <view class="title">--<text>分享到朋友圈</text>--</view>
     <view class="des">请点击下载此二维码，并使用此二维码作为图片发送到朋友圈</view>
-    <view class="wx-text">一起来读书吧，接收我的邀请立即获得15书币哦~</view>
+    <view class="wx-text">{{shareText}}</view>
     <view class="save link" bindtap="pasteWxCode">复制文字</view>
     <image src="{{wxcode}}" alt="二维码加载中..."></image>
     <view class="save link" bindtap="saveImage">保存二维码图片到本地</view>
