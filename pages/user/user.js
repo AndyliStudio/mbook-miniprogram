@@ -37,6 +37,19 @@ Page({
       }
     })
   },
+  // 复制用户ID
+  copyUserId() {
+    let self = this
+    wx.setClipboardData({
+      data: self.data.userInfo._id,
+      success: function(res) {
+        wx.showToast({ title: '复制ID成功', icon: 'success' })
+        setTimeout(function() {
+          wx.hideToast()
+        }, 2000)
+      }
+    })
+  },
   showToast: function(content, position) {
     let self = this
     self.setData({ toast: { show: true, content: content, position: position } })

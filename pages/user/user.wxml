@@ -1,10 +1,11 @@
 <view class="container user">
   <view class="user-info">
-    <image class="avatar" src="{{userInfo.avatar}}"></image>
+    <image class="avatar" src="{{userInfo.avatar}}" bindtap="copyUserId"></image>
     <view class="info">
       <view class="username">{{userInfo.username}}</view>
       <view class="amount"><icon class="iconfont icon-qianbi"></icon><text class="num">{{amount}}</text>书币</view>
     </view>
+    <view class="des">点击头像可复制用户ID</view>
     <view class="word">{{text}}</view>
   </view>
   <view class="other">

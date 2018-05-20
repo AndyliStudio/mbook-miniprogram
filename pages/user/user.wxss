@@ -33,7 +33,15 @@ page {
 
 .user-info .info .username {
   color: #333333;
-  font-size: 38rpx;
+  font-size: 36rpx;
+}
+
+.user-info .des {
+  position: absolute;
+  left: 8%;
+  top: 160rpx;
+  color: #7689ab;
+  font-size: 28rpx;
 }
 
 .user-info .info .amount {

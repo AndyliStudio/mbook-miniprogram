@@ -40,7 +40,7 @@
         "pagePath": "pages/booklist/booklist",
         "iconPath": "static/img/book.png",
         "selectedIconPath": "static/img/book_active.png",
-        "text": "书架"
+        "text": "阅读记录"
       },
       {
         "pagePath": "pages/user/user",

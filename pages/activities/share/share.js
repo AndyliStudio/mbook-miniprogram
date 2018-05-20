@@ -12,10 +12,11 @@ Page({
       totalAwardNum: 0,
       totalInviteNum: 0
     },
+    code: '',
     wxcode: '',
     loaded: false
   },
-  onShow: function(options) {
+  onShow: function() {
     let self = this
     // 加载缓存中拿到的用户分享信息
     const shareInfo = wx.getStorageSync('share_info')
@@ -25,8 +26,8 @@ Page({
     }
     // 如果url中存在code并且code符合规范，调用更新分享记录的接口
     const reg = /^[A-Za-z0-9-]+_\d+$/
-    if (options.code && reg.test(options.code)) {
-      app.updateShareLog(options.code).then(res => {
+    if (self.data.code && reg.test(self.data.code)) {
+      app.updateShareLog(self.data.code).then(res => {
         if (res === true) {
           // 更新奖励
           self.flushAward()
@@ -42,6 +43,11 @@ Page({
       shareText: shareParams && shareParams.title ? shareParams.title : '一起来读书吧，接收我的邀请立即获得15书币哦~'
     })
     self.getWxCode()
+  },
+  onLoad: function(options) {
+    this.setData({
+      code: options.code || ''
+    })
   },
   flushAward: function() {
     let self = this

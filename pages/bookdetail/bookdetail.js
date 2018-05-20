@@ -9,6 +9,7 @@ Page({
     isInList: false,
     bookid: '',
     showAllDes: false,
+    goodInfo: '',
     comments: [],
     commentInputHide: true,
     commentType: null, // 评论类型，是回复别人还是评论书籍
@@ -40,7 +41,20 @@ Page({
               shortDes = des.substring(0, 70) + '...'
             }
             res.data.data.shortDes = shortDes
-            self.setData({ detail: res.data.data, isInList: res.data.isInList })
+            let goodInfo = ''
+            console.log(res.data.data.good.type)
+            if (res.data.data.good.type === 'free') {
+              goodInfo = '全书免费'
+            } else if (res.data.data.good.type === 'normal') {
+              goodInfo = '每章需要 ' + res.data.data.good.prise + ' 书币'
+            } else if (res.data.data.good.type === 'limit_chapter') {
+              goodInfo = '前' + res.data.data.good['limit_chapter'] + '免费，后续章节每章 ' + res.data.data.good.prise + ' 书币'
+            } else if (res.data.data.good.type === 'limit_date') {
+              goodInfo = res.data.data.good['limit_start_time'] + ' 至 ' + res.data.data.good['limit_end_time'] + '免费，后续章节每章 ' + res.data.data.good.prise + ' 书币'
+            } else {
+              goodInfo = '全书免费'
+            }
+            self.setData({ detail: res.data.data, isInList: res.data.isInList, goodInfo: goodInfo })
             wx.setNavigationBarTitle({ title: res.data.data.name })
             wx.hideNavigationBarLoading()
           } else if (res.data.authfail) {
