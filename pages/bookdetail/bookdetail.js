@@ -72,7 +72,11 @@ Page({
             } else {
               goodInfo = '全书免费'
             }
+            // 如果当前书籍没在书架中，自动加入书架
             self.setData({ detail: res.data.data, isInList: res.data.isInList, goodInfo: goodInfo })
+            if (!res.data.isInList) {
+              self.addOrRemove()
+            }
             wx.setNavigationBarTitle({ title: res.data.data.name })
             wx.hideNavigationBarLoading()
           } else if (res.data.authfail) {
@@ -223,7 +227,7 @@ Page({
         },
         success: function(res) {
           if (res.data.ok) {
-            self.showToast('从书架中移除成功', 'bottom')
+            // self.showToast('从书架中移除成功', 'bottom')
             self.setData({ isInList: false })
           } else if (res.data.authfail) {
             wx.navigateTo({
@@ -245,7 +249,7 @@ Page({
         },
         success: function(res) {
           if (res.data.ok) {
-            wx.showToast({ title: '加入书架成功', icon: 'success' })
+            // wx.showToast({ title: '加入书架成功', icon: 'success' })
             self.setData({ isInList: true })
           } else if (res.data.authfail) {
             wx.navigateTo({

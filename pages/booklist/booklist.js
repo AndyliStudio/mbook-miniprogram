@@ -86,7 +86,7 @@ Page({
     this.setData({ removing: false })
   },
   gotoShop: function() {
-    wx.navigateTo({ url: '/pages/shop/shop' })
+    wx.navigateTo({ url: '/pages/search/search' })
   },
   showToast: function(content, position) {
     let self = this
