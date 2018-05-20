@@ -321,3 +321,9 @@ page {
 .index .swiper-box .wx-swiper-dot-active::before {
   background: #4990e2;
 }
+
+.index-modal .des {
+  font-size: 32rpx;
+  text-align: left;
+  padding: 30rpx 15rpx;
+}

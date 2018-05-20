@@ -137,6 +137,33 @@ App({
             wx.setStorageSync('share_params', JSON.parse(res.data.shareSetting))
             wx.setStorageSync('share_info', res.data.shareInfo)
             wx.setStorageSync('share_code', res.data.code)
+            wx.setStorageSync('wxcode', res.data.wxcode)
+            wx.setStorageSync('index_dialog', res.data.indexDialog)
+            // 弹框
+            // if (res.data.indexDialog) {
+            //   const dialog = JSON.parse(res.data.indexDialog)
+            //   let currentPage = getCurrentPages().pop()
+            //   if (currentPage) {
+            //     let data = {
+            //       modal: {
+            //         show: true,
+            //         title: dialog.title,
+            //         content: dialog.content,
+            //         opacity: 0.6,
+            //         position: 'center',
+            //         width: '80%',
+            //         options: {
+            //           fullscreen: false,
+            //           showclose: true,
+            //           showfooter: true,
+            //           closeonclickmodal: true,
+            //           confirmText: '确认'
+            //         }
+            //       }
+            //     }
+            //     currentPage.setData(data)
+            //   }
+            // }
             resolve(true)
           } else {
             resolve(false)

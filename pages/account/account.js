@@ -5,7 +5,7 @@ const util = require('../../utils/util')
 Page({
   data: {
     toast: { show: false, content: '', position: 'bottom' }, // 提示信息
-    modal: { 
+    modal: {
       show: false,
       title: '温馨提示',
       opacity: 0.6,
@@ -16,9 +16,10 @@ Page({
         showclose: true,
         showfooter: true,
         closeonclickmodal: true,
-        confirmText: '',
+        confirmText: ''
       }
     },
+    wxcode: '',
     currentPageNum: 1,
     amount: 0,
     awards: [],
@@ -30,6 +31,10 @@ Page({
   },
   onShow: function() {
     this.getInfo()
+  },
+  onLoad: function() {
+    let globalSetting = wx.getStorageSync('global_setting')
+    this.setData({ wxcode: globalSetting.wxcode || 'haitianyise_hl' })
   },
   changePage: function(event) {
     let page = parseInt(event.currentTarget.dataset.page)
@@ -131,13 +136,16 @@ Page({
       }
     })
   },
-  pasteWxCode: function() {
+  // 复制微信号
+  copyWxcode: function() {
     let self = this
     wx.setClipboardData({
-      data: 'dreamldk',
+      data: self.data.wxcode,
       success: function(res) {
-        self.setData({ 'modal.show': false })
         wx.showToast({ title: '复制成功', icon: 'success' })
+        self.setData({
+          'modal.show': false
+        })
         setTimeout(function() {
           wx.hideToast()
         }, 2000)
@@ -156,20 +164,22 @@ Page({
   },
   // modal相关的方法
   gotoCharge: function() {
-    this.setData({ 'modal': {
-      show: true,
-      title: '温馨提示',
-      opacity: 0.6,
-      position: 'center',
-      width: '80%',
-      options: {
-        fullscreen: false,
-        showclose: true,
-        showfooter: false,
-        closeonclickmodal: true,
-        confirmText: '',
+    this.setData({
+      modal: {
+        show: true,
+        title: '温馨提示',
+        opacity: 0.6,
+        position: 'center',
+        width: '80%',
+        options: {
+          fullscreen: false,
+          showclose: true,
+          showfooter: false,
+          closeonclickmodal: true,
+          confirmText: ''
+        }
       }
-    }})
+    })
   },
   showToast: function(content, position) {
     let self = this

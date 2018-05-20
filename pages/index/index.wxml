@@ -1,5 +1,8 @@
 <!--index.wxml-->
 <toast toast="{{toast}}"></toast>
+<modal class="index-modal" data-model="modal.show" visible="{{modal.show}}" title="{{modal.title}}" position="{{modal.position}}" fullscreen="{{modal.options.fullscreen}}" opacity="{{modal.opacity}}" show-close="{{modal.options.showclose}}" show-footer="{{modal.options.showfooter}}" close-on-click-modal="{{modal.options.closeonclickmodal}}" confirm-text="{{modal.options.confirmText}}" bindconfirm="handleModalConfirm">
+  <view class="des">{{modal.content}}</view>
+</modal>
 <scroll-view class="container index" style="height:{{clientHeight}}px;" scroll-y="true" wx:if="{{loaded}}">  
   <swiper class="swiper-box" wx:if="{{is_show_banner}}" indicator-dots="1" indicator-color="#ffffff" indicator-active-color="#a3a8f8" autoplay="1" interval="4000" duration="500">
     <block wx:for="{{banner_urls}}" wx:key="item._id">
