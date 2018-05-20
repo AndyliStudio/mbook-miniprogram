@@ -5,6 +5,23 @@ const app = getApp()
 Page({
   data: {
     toast: { show: false, content: '', position: 'bottom' }, // 提示信息
+    modal: {
+      show: false,
+      name: '',
+      inputValue: '',
+      title: '温馨提示',
+      opacity: 0.6,
+      position: 'center',
+      width: '80%',
+      options: {
+        fullscreen: false,
+        showclose: true,
+        showfooter: true,
+        closeonclickmodal: true,
+        confirmText: ''
+      }
+    },
+    wxcode: '',
     detail: {},
     isInList: false,
     bookid: '',
@@ -22,7 +39,8 @@ Page({
     this.setData({ bookid: this.data.bookid })
   },
   onLoad: function(options) {
-    this.setData({ bookid: options.id })
+    let globalSetting = wx.getStorageSync('global_setting')
+    this.setData({ bookid: options.id, wxcode: globalSetting.wxcode || 'haitianyise_hl' })
   },
   getBookDetail: function(id) {
     let self = this
@@ -108,6 +126,92 @@ Page({
         this.setData({ showAllDes: true })
       }
     }
+  },
+  // 输入秘钥解锁
+  openSecret: function() {
+    this.setData({
+      modal: {
+        show: true,
+        name: 'secret',
+        title: '温馨提示',
+        inputValue: '',
+        opacity: 0.6,
+        position: 'center',
+        width: '80%',
+        options: {
+          fullscreen: false,
+          showclose: true,
+          showfooter: false,
+          closeonclickmodal: true,
+          confirmText: ''
+        }
+      }
+    })
+  },
+  // 打开复制客服微信的弹窗
+  openContact: function() {
+    this.setData({
+      'modal.name': 'contact'
+    })
+  },
+  // 我已有秘钥
+  hasSecret: function() {
+    this.setData({
+      'modal.title': '请输入秘钥',
+      'modal.name': 'input'
+    })
+  },
+  bindKeyInput: function(e) {
+    this.setData({
+      'modal.inputValue': e.detail.value
+    })
+  },
+  // 完成秘钥输入
+  finishSecretInput: function() {
+    let self = this
+    if (!self.data.modal.inputValue) {
+      self.showToast('请输入秘钥', 'bottom')
+      return false
+    }
+    wx.request({
+      url: config.base_url + '/api/secret/open?bookid=' + self.data.bookid + '&secret=' + self.data.modal.inputValue,
+      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      success: res => {
+        if (res.data.ok) {
+          // 隐藏购买提示
+          self.setData({
+            'modal.show': false
+          })
+          self.initPage(self.data.currentSectionNum)
+          wx.showToast({ title: '解锁成功', icon: 'success' })
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../authfail/authfail'
+          })
+        } else {
+          self.showToast('解锁失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
+        }
+      },
+      fail: err => {
+        self.showToast('解锁失败，请重试', 'bottom')
+      }
+    })
+  },
+  // 复制微信号
+  copyWxcode: function() {
+    let self = this
+    wx.setClipboardData({
+      data: self.data.wxcode,
+      success: function(res) {
+        wx.showToast({ title: '复制成功', icon: 'success' })
+        self.setData({
+          'modal.show': false
+        })
+        setTimeout(function() {
+          wx.hideToast()
+        }, 2000)
+      }
+    })
   },
   addOrRemove: function() {
     let self = this

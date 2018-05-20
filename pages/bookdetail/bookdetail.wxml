@@ -1,6 +1,20 @@
 <!--bookdetail.wxml-->
 <toast toast="{{toast}}"></toast>
-
+<modal class="detail-modal" data-model="modal.show" visible="{{modal.show}}" title="{{modal.title}}" position="{{modal.position}}" fullscreen="{{modal.options.fullscreen}}" opacity="{{modal.opacity}}" show-close="{{modal.options.showclose}}" show-footer="{{modal.options.showfooter}}" close-on-click-modal="{{modal.options.closeonclickmodal}}" confirm-text="{{modal.options.confirmText}}" bindconfirm="handleModalConfirm">
+	<view wx:if="{{modal.name === 'secret'}}">
+  	<view class="des">请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。</view>
+    <button class="btn" bindtap="openContact">联系客服</button>
+    <button class="btn" bindtap="hasSecret">我已有秘钥</button>
+  </view>
+	<view wx:if="{{modal.name === 'input'}}">
+	  <input class="secret-input" type="text" bindinput="bindKeyInput" />
+    <button class="btn" bindtap="finishSecretInput">现在解锁</button>
+  </view>
+  <view wx:if="{{modal.name === 'contact'}}">
+  	<view class="des">请添加微信号<text class="bold">{{wxcode}}</text>为好友。</view>
+    <button class="btn" bindtap="copyWxcode">复制客服微信</button>
+  </view>
+</modal>
 <view class="container detail">
   <view class="head">
     <view class="headBackgroundContainer">
@@ -24,15 +38,19 @@
         <view class="iconfont icon-yuedu"></view>
         <text>立即阅读</text>
       </view>
-      <view class="addToList" bindtap="addOrRemove">
-        <view class="true" hidden="{{isInList}}">
+      <view class="addToList" bindtap="openSecret">
+        <view>
+          <view class="iconfont icon-miyao"></view>
+          <text>秘钥解锁</text>
+        </view>
+        <!-- <view class="true" hidden="{{isInList}}">
           <view class="iconfont icon-add"></view>
           <text>加入书架</text>
         </view>
         <view class="false" hidden="{{!isInList}}">
           <view type="success_no_circle" color="#ffffff" size="20"></view>
           <text>从书架中移除</text>
-        </view>
+        </view> -->
       </view>
     </view>
   </view>
