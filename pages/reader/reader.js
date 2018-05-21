@@ -77,7 +77,8 @@ Page({
     maxPageNum: 11, // 本章的最大页数
     moveDirection: '', // 翻页方向，0表示向后翻页，1表示向前翻页
     isShowBuy: true, // 是否显示购买章节界面
-    startReadTime: null // 进入阅读器开始阅读时间
+    startReadTime: null, // 进入阅读器开始阅读时间
+    secretTips: ''
   },
   onReady: function() {
     var self = this
@@ -125,7 +126,8 @@ Page({
     var self = this
     //动态设置标题
     var bookid = options.bookid || '5a0d7a6ec38abf73e8e65cb3'
-    self.setData({ bookid: bookid, startReadTime: new Date() })
+    var secretTips = wx.getStorageSync('global_setting').secret_tips || '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
+    self.setData({ bookid: bookid, startReadTime: new Date(), secretTips: secretTips })
     // 初始化页面
     self.initPage()
   },

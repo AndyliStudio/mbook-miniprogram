@@ -30,9 +30,10 @@ Page({
     comments: [],
     commentInputHide: true,
     commentType: null, // 评论类型，是回复别人还是评论书籍
-    currentCommentValue: ''
+    currentCommentValue: '',
+    secretTips: ''
   },
-  onShow: function(options) {
+  onShow: function() {
     wx.showNavigationBarLoading()
     this.getBookDetail(this.data.bookid)
     this.getCommentList(this.data.bookid)
@@ -40,7 +41,8 @@ Page({
   },
   onLoad: function(options) {
     let globalSetting = wx.getStorageSync('global_setting')
-    this.setData({ bookid: options.id, wxcode: globalSetting.wxcode || 'haitianyise_hl' })
+    let secretTips = globalSetting.secret_tips || '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
+    this.setData({ bookid: options.id, wxcode: globalSetting.wxcode || 'haitianyise_hl', secretTips: secretTips })
   },
   getBookDetail: function(id) {
     let self = this

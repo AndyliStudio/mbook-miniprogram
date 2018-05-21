@@ -27,14 +27,16 @@ Page({
     showBuyLoadmore: false,
     showAwardLoadmore: false,
     awardPage: 1,
-    buyPage: 1
+    buyPage: 1,
+    chargeTips: ''
   },
   onShow: function() {
     this.getInfo()
   },
   onLoad: function() {
     let globalSetting = wx.getStorageSync('global_setting')
-    this.setData({ wxcode: globalSetting.wxcode || 'haitianyise_hl' })
+    let chargeTips = globalSetting.charge_tips || '暂不支持微信支付，请加客服(haitianyise_hl)为好友，按照1元兑换10书币的价格转账之后，客服人员会为您充值书币。'
+    this.setData({ wxcode: globalSetting.wxcode || 'haitianyise_hl', chargeTips: chargeTips })
   },
   changePage: function(event) {
     let page = parseInt(event.currentTarget.dataset.page)

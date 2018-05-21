@@ -22,6 +22,9 @@ App({
         self.getShareInfo().then(res2 => {
           if (res2 === true) {
             self.globalData.hasGotShareInfo = true
+            wx.navigateTo({
+              url: './pages/authfail/authfail?page=reauth'
+            })
           }
         })
       }
@@ -84,6 +87,12 @@ App({
                                 }, 2000)
                               }
                             })
+                          },
+                          fail: err => {
+                            // 用户授权失败，前往重新授权页面
+                            wx.navigateTo({
+                              url: '../authfail/authfail?page=reauth'
+                            })
                           }
                         })
                       }
@@ -142,8 +151,12 @@ App({
             wx.setStorageSync('share_params', JSON.parse(res.data.shareSetting))
             wx.setStorageSync('share_info', res.data.shareInfo)
             wx.setStorageSync('share_code', res.data.code)
-            wx.setStorageSync('wxcode', res.data.wxcode)
-            wx.setStorageSync('index_dialog', res.data.indexDialog)
+            wx.setStorageSync('global_setting', {
+              wxcode: res.data.wxcode,
+              index_dialog: res.data.indexDialog,
+              charge_tips: res.data.chargeTips,
+              secret_tips: res.data.secretTips
+            })
             // 弹框
             // if (res.data.indexDialog) {
             //   const dialog = JSON.parse(res.data.indexDialog)

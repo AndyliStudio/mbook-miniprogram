@@ -1,7 +1,7 @@
 <toast toast="{{toast}}"></toast>
 <modal class="charge-modal" data-model="modal.show" visible="{{modal.show}}" title="{{modal.title}}" position="{{modal.position}}" fullscreen="{{modal.options.fullscreen}}" opacity="{{modal.opacity}}" show-close="{{modal.options.showclose}}" show-footer="{{modal.options.showfooter}}" close-on-click-modal="{{modal.options.closeonclickmodal}}" confirm-text="{{modal.options.confirmText}}" bindconfirm="handleModalConfirm">
   <view>
-  	<view class="des">暂不支持微信支付，请加客服({{wxcode}})为好友，按照1元兑换10书币的价格转账之后，客服人员会为您充值书币。</view>
+  	<view class="des">{{chargeTips}}</view>
     <button class="contact-btn" bindtap="copyWxcode">复制客服微信</button>
   </view>
 </modal>

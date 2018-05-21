@@ -4,7 +4,12 @@ const app = getApp()
 
 Page({
   data: {
-    toast: { show: false, content: '', position: 'bottom' } // 提示信息
+    toast: { show: false, content: '', position: 'bottom' }, // 提示信息
+    page: ''
+  },
+  onLoad: function(options) {
+    let page = options.page || ''
+    this.setData({ page: page })
   },
   doLogin: function() {
     let self = this
@@ -18,6 +23,27 @@ Page({
         // 返回上一页
         wx.navigateBack({
           delta: 1
+        })
+      }
+    })
+  },
+  afterGetUserInfo: function() {
+    app.doLogin().then(res => {
+      if (res === true) {
+        app.globalData.hasLogined = true
+        app.getShareInfo().then(res2 => {
+          if (res2 === true) {
+            app.globalData.hasGotShareInfo = true
+            wx.showToast({
+              title: '授权完成',
+              icon: 'success',
+              duration: 0
+            })
+            // 返回上一页
+            wx.navigateBack({
+              delta: 1
+            })
+          }
         })
       }
     })

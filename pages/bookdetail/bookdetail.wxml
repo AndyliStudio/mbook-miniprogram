@@ -2,7 +2,7 @@
 <toast toast="{{toast}}"></toast>
 <modal class="detail-modal" data-model="modal.show" visible="{{modal.show}}" title="{{modal.title}}" position="{{modal.position}}" fullscreen="{{modal.options.fullscreen}}" opacity="{{modal.opacity}}" show-close="{{modal.options.showclose}}" show-footer="{{modal.options.showfooter}}" close-on-click-modal="{{modal.options.closeonclickmodal}}" confirm-text="{{modal.options.confirmText}}" bindconfirm="handleModalConfirm">
 	<view wx:if="{{modal.name === 'secret'}}">
-  	<view class="des">请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。</view>
+  	<view class="des">{{secretTips}}</view>
     <button class="btn" bindtap="openContact">联系客服</button>
     <button class="btn" bindtap="hasSecret">我已有秘钥</button>
   </view>

@@ -1,4 +1,11 @@
 <view class="authfail">
-  <p class="des">您的登录状态已经过期，请点击下方按钮重新登录。</p>
-  <button class="login-btn" bindtap="doLogin">重新登录</button>
+  <!--  重新授权页面 -->
+  <block vx:if="{{page === 'reauth'}}">
+    <p class="des">小程序需要获取您的用户信息来为您注册账号，点击下方按钮重新授权。</p>
+    <button class="btn" open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="afterGetUserInfo">重新授权</button>
+  </block>
+  <block wx:if="{{page === ''}}">
+    <p class="des">您的登录状态已经过期，请点击下方按钮重新登录。</p>
+    <button class="btn" bindtap="doLogin">重新登录</button>
+  </block>
 </view>
