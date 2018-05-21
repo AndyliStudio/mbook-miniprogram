@@ -18,7 +18,12 @@ App({
     let self = this
     this.doLogin().then(res => {
       if (res === true) {
-        self.getShareInfo()
+        self.globalData.hasLogined = true
+        self.getShareInfo().then(res2 => {
+          if (res2 === true) {
+            self.globalData.hasGotShareInfo = true
+          }
+        })
       }
     })
   },
@@ -204,6 +209,8 @@ App({
   },
   globalData: {
     userInfo: null,
+    hasLogined: false,
+    hasGotShareInfo: false,
     allbooks: []
   }
 })

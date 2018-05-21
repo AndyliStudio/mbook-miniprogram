@@ -14,7 +14,7 @@ var currentPageIndex = 0 // 当前是分栏的第几页
 Page({
   data: {
     toast: { show: false, content: '', position: 'bottom' }, // 提示信息
-    modal: { 
+    modal: {
       show: false,
       name: '',
       inputValue: '',
@@ -27,7 +27,7 @@ Page({
         showclose: true,
         showfooter: true,
         closeonclickmodal: true,
-        confirmText: '',
+        confirmText: ''
       }
     },
     bookid: '',
@@ -760,37 +760,37 @@ Page({
       success: res => {
         if (res.data.ok) {
           // 判断改书籍是否在书籍列表中，没有在的话提示用户加入加入
-          const allbooks = wx.getStorageSync('allbooks')
-          if (allbooks.indexOf(bookid) < 0) {
-            wx.showModal({
-              title: '温馨提示',
-              content: '是否将《' + factionName + '》加入书架？',
-              success: res => {
-                if (res.confirm) {
-                  wx.request({
-                    url: config.base_url + '/api/booklist/add_book?id=' + bookid,
-                    header: {
-                      Authorization: 'Bearer ' + wx.getStorageSync('token')
-                    },
-                    success: res => {
-                      if (res.data.ok) {
-                        wx.showToast({ title: '加入书架成功', icon: 'success' })
-                      } else if (res.data.authfail) {
-                        wx.navigateTo({
-                          url: '../authfail/authfail'
-                        })
-                      } else {
-                        wx.showToast({ title: '加入书架失败，请重新尝试~', icon: 'error' })
-                      }
-                    },
-                    fail: err => {
-                      wx.showToast({ title: '加入书架失败，请重新尝试~', icon: 'error' })
-                    }
-                  })
-                }
-              }
-            })
-          }
+          // const allbooks = wx.getStorageSync('allbooks')
+          // if (allbooks.indexOf(bookid) < 0) {
+          //   wx.showModal({
+          //     title: '温馨提示',
+          //     content: '是否将《' + factionName + '》加入书架？',
+          //     success: res => {
+          //       if (res.confirm) {
+          //         wx.request({
+          //           url: config.base_url + '/api/booklist/add_book?id=' + bookid,
+          //           header: {
+          //             Authorization: 'Bearer ' + wx.getStorageSync('token')
+          //           },
+          //           success: res => {
+          //             if (res.data.ok) {
+          //               wx.showToast({ title: '加入书架成功', icon: 'success' })
+          //             } else if (res.data.authfail) {
+          //               wx.navigateTo({
+          //                 url: '../authfail/authfail'
+          //               })
+          //             } else {
+          //               wx.showToast({ title: '加入书架失败，请重新尝试~', icon: 'error' })
+          //             }
+          //           },
+          //           fail: err => {
+          //             wx.showToast({ title: '加入书架失败，请重新尝试~', icon: 'error' })
+          //           }
+          //         })
+          //       }
+          //     }
+          //   })
+          // }
         } else if (res.data.authfail) {
           wx.navigateTo({
             url: '../authfail/authfail'
@@ -1012,7 +1012,7 @@ Page({
           // 费用不足
           if (res.data.nomoney) {
             self.setData({
-              'modal': {
+              modal: {
                 show: true,
                 name: 'buyfail',
                 inputValue: '',
@@ -1025,7 +1025,7 @@ Page({
                   showclose: true,
                   showfooter: false,
                   closeonclickmodal: true,
-                  confirmText: '',
+                  confirmText: ''
                 }
               }
             })
@@ -1042,7 +1042,7 @@ Page({
   // 取消购买，返回上一次阅读章节
   buyTotal: function() {
     this.setData({
-      'modal': {
+      modal: {
         show: true,
         name: 'secret',
         inputValue: '',
@@ -1055,7 +1055,7 @@ Page({
           showclose: true,
           showfooter: false,
           closeonclickmodal: true,
-          confirmText: '',
+          confirmText: ''
         }
       }
     })
@@ -1064,6 +1064,23 @@ Page({
     this.setData({
       'modal.title': '请输入秘钥',
       'modal.name': 'input'
+    })
+  },
+  // 复制微信号
+  copyWxcode: function() {
+    let self = this
+    let globalSetting = wx.getStorageSync('global_setting')
+    wx.setClipboardData({
+      data: globalSetting.wxcode || 'haitianyise_hl',
+      success: function(res) {
+        wx.showToast({ title: '复制成功', icon: 'success' })
+        self.setData({
+          'modal.show': false
+        })
+        setTimeout(function() {
+          wx.hideToast()
+        }, 2000)
+      }
     })
   },
   bindKeyInput: function(e) {

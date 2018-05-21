@@ -8,7 +8,7 @@
 }
 .setting-item .text {
   display: inline-block;
-  width: 30%;
+  width: 40%;
   height: 80rpx;
   line-height: 80rpx;
   font-weight: bold;
@@ -20,7 +20,7 @@
 .setting-item > .value,
 .setting-item > picker {
   display: inline-block;
-  width: 70%;
+  width: 60%;
   height: 80rpx;
   line-height: 80rpx;
   vertical-align: middle;

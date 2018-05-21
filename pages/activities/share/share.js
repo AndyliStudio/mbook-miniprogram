@@ -18,31 +18,61 @@ Page({
   },
   onShow: function() {
     let self = this
-    // 加载缓存中拿到的用户分享信息
-    const shareInfo = wx.getStorageSync('share_info')
-    const shareParams = wx.getStorageSync('share_info')
-    if (shareInfo) {
-      self.setData({ shareInfo: shareInfo })
-    }
-    // 如果url中存在code并且code符合规范，调用更新分享记录的接口
-    const reg = /^[A-Za-z0-9-]+_\d+$/
-    if (self.data.code && reg.test(self.data.code)) {
-      app.updateShareLog(self.data.code).then(res => {
-        if (res === true) {
-          // 更新奖励
-          self.flushAward()
-        } else {
-          if (typeof res === 'string') {
-            self.showToast(res)
-          }
+    // 等待用户登录完成
+    let waitLoginCount = 0
+    let waitLoginTimer = setInterval(function() {
+      if (app.globalData.hasLogined) {
+        self.getWxCode()
+        clearInterval(waitLoginTimer)
+      } else if (waitLoginCount >= 33) {
+        clearInterval(waitLoginTimer)
+        wx.navigateTo({
+          url: '../../authfail/authfail'
+        })
+      } else {
+        waitLoginCount++
+      }
+    }, 300)
+    // 等待获取用户分享信息完成
+    let waitGotShareInfoCount = 0
+    let waitGotShareInfoTimer = setInterval(function() {
+      if (app.globalData.hasGotShareInfo) {
+        // 加载缓存中拿到的用户分享信息
+        const shareInfo = wx.getStorageSync('share_info')
+        const shareParams = wx.getStorageSync('share_params')
+        if (shareInfo) {
+          self.setData({ shareInfo: shareInfo })
         }
-      })
-    }
-    self.setData({
-      loaded: true,
-      shareText: shareParams && shareParams.title ? shareParams.title : '一起来读书吧，接收我的邀请立即获得15书币哦~'
-    })
-    self.getWxCode()
+        // 如果url中存在code并且code符合规范，调用更新分享记录的接口
+        const reg = /^[A-Za-z0-9-]+_\d+$/
+        if (self.data.code && reg.test(self.data.code)) {
+          app.updateShareLog(self.data.code).then(res => {
+            if (res === true) {
+              // 更新奖励
+              self.flushAward()
+            } else {
+              if (typeof res === 'string') {
+                if (!res.data.inviteself) {
+                  self.showToast(res)
+                }
+              }
+            }
+          })
+        }
+        self.setData({
+          loaded: true,
+          shareText: shareParams && shareParams.title ? shareParams.title : '一起来读书吧，接收我的邀请立即获得15书币哦~'
+        })
+        clearInterval(waitGotShareInfoTimer)
+      } else if (waitLoginCount >= 33) {
+        clearInterval(waitGotShareInfoTimer)
+        wx.navigateTo({
+          url: '../../authfail/authfail'
+        })
+      } else {
+        waitGotShareInfoCount++
+      }
+    }, 300)
   },
   onLoad: function(options) {
     this.setData({
@@ -75,7 +105,7 @@ Page({
         imageUrl: shareParams.imageUrl,
         success: function(res) {
           // 转发成功
-          wx.showToast({ title: '分享成功', icon: 'success' })
+          // wx.showToast({ title: '分享成功', icon: 'success' })
         },
         fail: function(res) {
           // 取消分享

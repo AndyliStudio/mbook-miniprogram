@@ -9,7 +9,7 @@
   </view>
 	<view wx:if="{{modal.name === 'secret'}}">
   	<view class="des">请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。</view>
-    <button class="btn" open-type="contact">联系客服</button>
+    <button class="btn" bindtap="copyWxCode">复制客服微信</button>
     <button class="btn" bindtap="hasSecret">我已有秘钥</button>
   </view>
 	<view wx:if="{{modal.name === 'input'}}">

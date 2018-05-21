@@ -60,7 +60,6 @@ Page({
             }
             res.data.data.shortDes = shortDes
             let goodInfo = ''
-            console.log(res.data.data.good.type)
             if (res.data.data.good.type === 'free') {
               goodInfo = '全书免费'
             } else if (res.data.data.good.type === 'normal') {
