@@ -22,9 +22,6 @@ App({
         self.getShareInfo().then(res2 => {
           if (res2 === true) {
             self.globalData.hasGotShareInfo = true
-            wx.navigateTo({
-              url: './pages/authfail/authfail?page=reauth'
-            })
           }
         })
       }

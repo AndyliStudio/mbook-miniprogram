@@ -38,18 +38,18 @@
     <switch checked="{{userSetting.autoBuy ? true : false}}" bindchange="autoBuy"/>
   </view>
   <view class="title">其他</view>
-  <navigator url="/pages/webpage/webpage?url=https://mbook.andylistudio.com/help" open-type="navigate">
+  <!-- <navigator url="/pages/webpage/webpage?url=https://mbook.andylistudio.com/help" open-type="navigate">
     <view class="setting-item">
       <text class="text">帮助与反馈</text>
       <icon class="iconfont icon-arrow-right"></icon>
     </view>
-  </navigator>
-  <navigator url="/pages/webpage/webpage?url=https://mbook.andylistudio.com/notice" open-type="navigate">
+  </navigator> -->
+  <!-- <navigator url="/pages/webpage/webpage?url=https://mbook.andylistudio.com/notice" open-type="navigate">
     <view class="setting-item">
       <text class="text">关注公众号</text>
       <icon class="iconfont icon-arrow-right"></icon>
     </view>
-  </navigator>
+  </navigator> -->
   <!-- <view class="setting-item">
     <button type="default">退出当前账号</button>
   </view> -->
