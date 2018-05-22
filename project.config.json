@@ -1,7 +1,7 @@
 {
 	"description": "项目配置文件",
 	"setting": {
-		"urlCheck": false,
+		"urlCheck": true,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
@@ -9,7 +9,7 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.0.0",
-	"appid": "wx98fdadcaaeac5160",
+	"appid": "wxca5ba024f99576d6",
 	"projectname": "mbook-miniprogram",
 	"condition": {
 		"search": {

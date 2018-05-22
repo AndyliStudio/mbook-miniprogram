@@ -1,0 +1,34 @@
+<view class="aboutus">
+  <view class="header">
+    <image class="logo" src="https://fs.andylistudio.com/1526991381158.jpeg"></image>
+    <view class="name">兰亭书城</view>
+  </view>
+  <view class="infos">
+    <view class="infos-item">
+      <text class="left">官方微信</text>
+      <text class="right">bcydushu</text>
+    </view>
+    <!-- <view class="infos-item">
+      <text class="left">官方微博</text>
+      <text class="right">带你去月光倾城的地方</text>
+    </view> -->
+    <!-- <view class="infos-item">
+      <text class="left">官方网站</text>
+      <text class="right">www.andylistudio.com</text>
+    </view> -->
+    <view class="infos-item">
+      <text class="left">客服电话</text>
+      <text class="right">17379459575</text>
+    </view>
+    <view class="infos-item">
+      <text class="left">邮箱</text>
+      <text class="right">wangjitonghua@163.com</text>
+    </view>
+  </view>
+  <view class="footer">
+    <view>兰亭书城 版权所有</view>
+    <view>p Copyright 2018-2019 兰亭书城. All Rights Reserved.</view>
+  </view>
+</view>
+          
+

@@ -1,0 +1,65 @@
+page {
+  height: 100%;
+  width: 100%;
+}
+
+.aboutus{
+  height: 100%;
+  overflow: hidden;
+  padding: 4em 1em 2em 1em;
+  box-sizing: border-box;
+  font-size: 1em;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  color: #353535;
+}
+
+.aboutus .logo{
+  display: block;
+  width: 4.6em;
+  height: 4.6em;
+  border-radius: .4em;
+  margin: 0 auto;
+}
+
+.aboutus .name{
+  text-align: center;
+  margin: 1em 0;
+}
+
+.aboutus .infos{
+  list-style: none;
+  padding: 0;
+  margin-left: -1em;
+  margin-right: -1em;
+}
+
+.aboutus .infos .infos-item{
+  height: 3em;
+  line-height: 3em;
+  border-bottom: 1px solid #d7d7d7;
+  overflow: hidden;
+}
+
+.aboutus .infos .left{
+  float: left;
+  margin-left: .9em;
+  font-size: 1.1em;
+}
+
+.aboutus .infos .right{
+  float: right;
+  margin-right: 1em;
+  font-size: .9em;
+  color: #888888;
+}
+
+.aboutus .footer{
+  text-align: center;
+  font-size: .8em;
+}
+
+.aboutus .footer > p{
+  margin: 0;
+}
