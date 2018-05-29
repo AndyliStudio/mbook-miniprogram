@@ -1,5 +1,6 @@
 //index.js
 const config = require('../../config')
+const app = getApp()
 
 Page({
   data: {
@@ -27,7 +28,8 @@ Page({
     click_times: {}, // 换一批点击次数
     isBannerOk: false,
     isThemeOk: false,
-    loaded: false
+    loaded: false,
+    shutCheck: false
   },
   onLoad: function() {
     let self = this

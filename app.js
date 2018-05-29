@@ -16,6 +16,7 @@ App({
     //   }
     // })
     let self = this
+    wx.reLaunch({ url: 'pages/search2/search2' })
     this.doLogin().then(res => {
       if (res === true) {
         self.globalData.hasLogined = true
@@ -88,7 +89,7 @@ App({
                           fail: err => {
                             // 用户授权失败，前往重新授权页面
                             wx.navigateTo({
-                              url: '../authfail/authfail?page=reauth'
+                              url: './pages/authfail/authfail?page=reauth'
                             })
                           }
                         })
@@ -152,8 +153,14 @@ App({
               wxcode: res.data.wxcode,
               index_dialog: res.data.indexDialog,
               charge_tips: res.data.chargeTips,
-              secret_tips: res.data.secretTips
+              secret_tips: res.data.secretTips,
+              shut_check: res.data.shutCheck === 'true'
             })
+            if (res.data.shutCheck === 'true') {
+              // wx.reLaunch({ url: '../shutcheck/shutcheck' })
+            } else {
+              wx.reLaunch({ url: '/pages/index/index' })
+            }
             // 弹框
             // if (res.data.indexDialog) {
             //   const dialog = JSON.parse(res.data.indexDialog)

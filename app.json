@@ -1,5 +1,7 @@
 {
   "pages": [
+    "pages/search2/search2",
+    "pages/shutcheck/shutcheck",
     "pages/index/index",
     "pages/user/user",
     "pages/booklist/booklist",
