@@ -88,9 +88,14 @@ App({
                           },
                           fail: err => {
                             // 用户授权失败，前往重新授权页面
-                            wx.navigateTo({
-                              url: './pages/authfail/authfail?page=reauth'
-                            })
+                            let timmer = setInterval(function() {
+                              if (getCurrentPages().pop()) {
+                                wx.navigateTo({
+                                  url: '../authfail/authfail?page=reauth'
+                                })
+                                clearInterval(timmer)
+                              }
+                            }, 1000)
                           }
                         })
                       }

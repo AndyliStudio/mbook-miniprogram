@@ -64,7 +64,7 @@ page {
 .search-header .right {
   margin-top: 24rpx;
   margin-left: 31rpx;
-  margin-right: 6rpx;
+  margin-right: 15rpx;
   width: 64rpx;
   height: 43rpx;
   line-height: 43rpx;

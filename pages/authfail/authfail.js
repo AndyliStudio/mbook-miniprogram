@@ -39,10 +39,18 @@ Page({
               icon: 'success',
               duration: 0
             })
-            // 返回上一页
-            wx.navigateBack({
-              delta: 1
-            })
+            let shutCheck = wx.getStorageSync('global_setting').shut_check
+            if (shutCheck) {
+              // 返回上一页
+              wx.navigateTo({
+                url: '../search2/search2'
+              })
+            } else {
+              // 返回上一页
+              wx.navigateBack({
+                delta: 1
+              })
+            }
           }
         })
       }
