@@ -19,7 +19,7 @@ page {
 
 .reader .content text {
   height: 100%;
-  line-height: 1.6em;
+  line-height: 54rpx;
   column-gap: 10px;
   position: relative;
   display: block;

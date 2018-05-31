@@ -165,6 +165,7 @@ page {
   display: block;
   font-size: 30rpx;
   color: #999;
+  margin-top: -4rpx;
 }
 
 .index .layout1 .book-item.item0 .book-author icon {
@@ -206,7 +207,7 @@ page {
 .index .layout1 .book-item.item3 .book-name {
   display: block;
   font-size: 28rpx;
-  margin-top: 4rpx;
+  margin-top: 8rpx;
 }
 
 /* layout2: 栏目布局2 */
@@ -252,6 +253,7 @@ page {
   display: block;
   font-size: 30rpx;
   color: #999;
+  margin-top: -4rpx;
 }
 
 .index .layout2 .book-item .book-author icon {
@@ -289,7 +291,7 @@ page {
 .index .layout3 .book-item .book-name {
   display: block;
   font-size: 28rpx;
-  margin-top: 4rpx;
+  margin-top: 8rpx;
 }
 
 .index .icon-zanwushuju {

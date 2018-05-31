@@ -31,7 +31,8 @@ Page({
     commentInputHide: true,
     commentType: null, // 评论类型，是回复别人还是评论书籍
     currentCommentValue: '',
-    secretTips: ''
+    secretTips: '',
+    hasUnLock: true // 用户是否已经解锁过改章节
   },
   onShow: function() {
     wx.showNavigationBarLoading()
@@ -55,7 +56,7 @@ Page({
             // devide des into shortDes and des;
             let shortDes = ''
             // format des
-            let des = res.data.data.des
+            let des = res.data.data.des.replace(/[\n\r\s]+/, '')
             res.data.data.des = des.replace(/( ){2,}/, ' ')
             if (des.length > 95) {
               shortDes = des.substring(0, 70) + '...'
@@ -66,10 +67,10 @@ Page({
               goodInfo = '全书免费'
             } else if (res.data.data.good.type === 'normal') {
               goodInfo = '每章需要 ' + res.data.data.good.prise + ' 书币'
-            } else if (res.data.data.good.type === 'limit_chapter') {
-              goodInfo = '前' + res.data.data.good['limit_chapter'] + '免费，后续章节每章 ' + res.data.data.good.prise + ' 书币'
+            } else if (res.data.data.good.type === 'limit_chapter') {
+              goodInfo = '前' + res.data.data.good['limit_chapter'] + '免费，后续章节每章 ' + res.data.data.good.prise + ' 书币'
             } else if (res.data.data.good.type === 'limit_date') {
-              goodInfo = res.data.data.good['limit_start_time'] + ' 至 ' + res.data.data.good['limit_end_time'] + '免费，后续章节每章 ' + res.data.data.good.prise + ' 书币'
+              goodInfo = res.data.data.good['limit_start_date'] + ' 至 ' + res.data.data.good['limit_end_date'] + '免费，后续章节每章 ' + res.data.data.good.prise + ' 书币'
             } else {
               goodInfo = '全书免费'
             }
@@ -187,7 +188,6 @@ Page({
           self.setData({
             'modal.show': false
           })
-          self.initPage(self.data.currentSectionNum)
           wx.showToast({ title: '解锁成功', icon: 'success' })
         } else if (res.data.authfail) {
           wx.navigateTo({

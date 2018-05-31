@@ -1,6 +1,7 @@
 .detail {
   line-height: 1.8;
   font-size: 12px;
+  overflow-x: hidden;
 }
 
 .detail .headBackgroundContainer {
@@ -26,6 +27,7 @@
   font-size: 24rpx;
   padding: 40rpx;
   position: relative;
+  box-sizing: border-box;
 }
 
 .detail .head .headImg {
@@ -128,6 +130,7 @@
 .detail .book-des {
   font-size: 28rpx;
   padding: 40rpx;
+  box-sizing: border-box;
 }
 
 .detail .book-des .read-more {
@@ -150,6 +153,7 @@
   height: 80rpx;
   font-size: 32rpx;
   line-height: 80rpx;
+  box-sizing: border-box;
 }
 
 .detail .comments .title .add-comment {
@@ -166,7 +170,8 @@
   background: #fff;
   padding: 20rpx;
   box-sizing: border-box;
-  overflow: auto;
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .detail .comment-item .headImg {
@@ -203,6 +208,7 @@
   background: #efefef;
   font-size: 22rpx;
   padding: 4rpx 10rpx;
+  box-sizing: border-box;
 }
 
 .detail .comment-item .comment-right .create-time {
@@ -326,6 +332,7 @@
   font-size: 32rpx;
   text-align: left;
   padding: 30rpx 15rpx;
+  box-sizing: border-box;
 }
 .detail-modal .btn {
   font-size: 34rpx;
