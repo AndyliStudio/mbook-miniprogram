@@ -52,7 +52,7 @@ Page({
     })()
     self.getBanner()
     self.getTheme()
-    const dialogLocal = wx.getStorageSync('index_dialog')
+    const dialogLocal = wx.getStorageSync('global_setting').index_dialog
     if (dialogLocal) {
       const dialog = JSON.parse(dialogLocal)
       self.setData({
