@@ -1,7 +1,7 @@
 <view class="aboutus">
   <view class="header">
-    <image class="logo" src="https://fs.andylistudio.com/1526991381158.jpeg"></image>
-    <view class="name">兰亭书城</view>
+    <image class="logo" src="https://fs.andylistudio.com/1528167654519.jpeg"></image>
+    <view class="name">言情微阅读</view>
   </view>
   <view class="infos">
     <view class="infos-item">
@@ -26,8 +26,8 @@
     </view>
   </view>
   <view class="footer">
-    <view>兰亭书城 版权所有</view>
-    <view>p Copyright 2018-2019 兰亭书城. All Rights Reserved.</view>
+    <view>言情微阅读 版权所有</view>
+    <view>p Copyright 2018-2019 言情微阅读. All Rights Reserved.</view>
   </view>
 </view>
           
