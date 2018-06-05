@@ -27,6 +27,7 @@ App({
         })
       }
     })
+    this.getGlobalSetting()
   },
   doLogin: () => {
     return new Promise((resolve, reject) => {
@@ -151,46 +152,8 @@ App({
         header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
         success: res => {
           if (res.data.ok) {
-            wx.setStorageSync('share_params', JSON.parse(res.data.shareSetting))
             wx.setStorageSync('share_info', res.data.shareInfo)
             wx.setStorageSync('share_code', res.data.code)
-            wx.setStorageSync('global_setting', {
-              wxcode: res.data.wxcode,
-              index_dialog: res.data.indexDialog,
-              charge_tips: res.data.chargeTips,
-              secret_tips: res.data.secretTips,
-              shut_check: res.data.shutCheck === 'true'
-            })
-            if (res.data.shutCheck === 'true') {
-              // wx.reLaunch({ url: '../shutcheck/shutcheck' })
-            } else {
-              wx.reLaunch({ url: '/pages/index/index' })
-            }
-            // 弹框
-            // if (res.data.indexDialog) {
-            //   const dialog = JSON.parse(res.data.indexDialog)
-            //   let currentPage = getCurrentPages().pop()
-            //   if (currentPage) {
-            //     let data = {
-            //       modal: {
-            //         show: true,
-            //         title: dialog.title,
-            //         content: dialog.content,
-            //         opacity: 0.6,
-            //         position: 'center',
-            //         width: '80%',
-            //         options: {
-            //           fullscreen: false,
-            //           showclose: true,
-            //           showfooter: true,
-            //           closeonclickmodal: true,
-            //           confirmText: '确认'
-            //         }
-            //       }
-            //     }
-            //     currentPage.setData(data)
-            //   }
-            // }
             resolve(true)
           } else {
             resolve(false)
@@ -200,6 +163,37 @@ App({
           reject(err)
         }
       })
+    })
+  },
+  getGlobalSetting: function() {
+    wx.showLoading()
+    wx.request({
+      method: 'GET',
+      url: config.base_url + '/api/get_setting_items?items=share|wxcode|index_dialog|charge_tips|secret_tips|shut_check',
+      success: res => {
+        if (res.data.ok) {
+          wx.setStorageSync('share_params', JSON.parse(res.data.items.share))
+          wx.setStorageSync('global_setting', {
+            wxcode: res.data.items.wxcode,
+            index_dialog: res.data.items.index_dialog,
+            charge_tips: res.data.items.charge_tips,
+            secret_tips: res.data.items.secret_tips,
+            shut_check: res.data.items.shut_check === 'true'
+          })
+          if (res.data.items.shut_check === 'true') {
+            // wx.reLaunch({ url: '../shutcheck/shutcheck' })
+          } else {
+            wx.reLaunch({ url: '/pages/index/index' })
+          }
+        } else {
+          wx.showToast({ title: res.data.msg || '获取应用设置失败', icon: 'none', image: './static/img/close.png' })
+        }
+        wx.hideLoading()
+      },
+      fail: err => {
+        wx.showToast({ title: '获取应用设置失败', icon: 'none', image: './static/img/close.png' })
+        wx.hideLoading()
+      }
     })
   },
   updateShareLog: function(share_id, callback) {

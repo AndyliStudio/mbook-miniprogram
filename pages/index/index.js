@@ -52,9 +52,9 @@ Page({
     })()
     self.getBanner()
     self.getTheme()
-    const dialogLocal = wx.getStorageSync('global_setting').index_dialog
-    if (dialogLocal) {
-      const dialog = JSON.parse(dialogLocal)
+    const globalSetting = wx.getStorageSync('global_setting')
+    const dialog = globalSetting ? JSON.parse(globalSetting.index_dialog) : ''
+    if (dialog && dialog.show === 'true') {
       self.setData({
         modal: {
           show: true,
