@@ -43,7 +43,7 @@ Page({
         self.setData({
           historyKeyword: wx.getStorageSync('history_keyword'),
           defaultKeyword: res.data.default || '请输入搜索关键字',
-          hotKeyword: res.data.list
+          hotKeyword: ['家', '春', '秋']
         })
       }
     })
@@ -64,7 +64,9 @@ Page({
       success: res => {
         if (res.data.ok) {
           self.setData({
-            helpKeyword: res.data.list
+            helpKeyword: res.data.list.filter(item => {
+              return item === '家' || item === '春' || item === '秋'
+            })
           })
         }
       }
@@ -96,7 +98,9 @@ Page({
           self.setData({
             searchStatus: true,
             categoryFilter: false,
-            goodsList: res.data.list,
+            goodsList: res.data.list.filter(item => {
+              return item.name === '家' || item.name === '春' || item.name === '秋'
+            }),
             filterCategory: res.data.classification
           })
         } else {

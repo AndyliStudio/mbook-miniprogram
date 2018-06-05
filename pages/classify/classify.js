@@ -4,7 +4,7 @@ const config = require('../../config')
 Page({
   data: {
     toast: { show: false, content: '', position: 'bottom' }, // 提示信息
-    classifyTypes: ['玄幻·奇幻', '修真·仙侠', '都市·青春', '历史·军事', '网游·竞技', '科幻·灵异', '言情·穿越', '耽美·同人', '侦探·推理'],
+    classifyTypes: ['全部', '玄幻·奇幻', '修真·仙侠', '都市·青春', '历史·军事', '网游·竞技', '科幻·灵异', '言情·穿越', '耽美·同人', '侦探·推理'],
     page: 1,
     total: 0,
     classifyData: [],

@@ -28,9 +28,8 @@
     <view class="title">--<text>分享规则</text>--</view>
     <view>1. 每天登陆后可以签到得到5书币，连续签到会有额外奖励；</view>
     <view>2. 邀请好友一次登录获得15书币；</view>
-    <view>3. 分享到微信群获得20书币；</view>
-    <view>4. 每天获得书币的最大上限为200；</view>
-    <view>5. 本活动的最终解释权归兰亭读书所有；</view>
+    <view>3. 每天获得书币的最大上限为200；</view>
+    <view>4. 本活动的最终解释权归言情微阅读所有；</view>
   </view>
 </view>
 <view class="loading" wx:if="{{!loaded}}">
