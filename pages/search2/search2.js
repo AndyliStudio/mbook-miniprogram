@@ -48,7 +48,6 @@ Page({
       }
     })
   },
-
   inputChange: function(e) {
     this.setData({
       keyword: e.detail.value,

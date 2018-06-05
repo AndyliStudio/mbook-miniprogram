@@ -2,6 +2,8 @@
 const config = require('./config')
 const utils = require('./utils/util')
 const Promise = require('./utils/bluebird.min')
+const fundebug = require('./utils/fundebug.0.0.3.min.js')
+fundebug.apikey = "eab7454c3be52ce64b79f013bd96e35af6e3144c0a144594c8dbc3a7ae170fd8"
 
 App({
   onLaunch: function() {
@@ -15,19 +17,22 @@ App({
     //     self.doLogin() //重新登录
     //   }
     // })
-    let self = this
-    wx.reLaunch({ url: 'pages/search2/search2' })
-    this.doLogin().then(res => {
-      if (res === true) {
-        self.globalData.hasLogined = true
-        self.getShareInfo().then(res2 => {
-          if (res2 === true) {
-            self.globalData.hasGotShareInfo = true
-          }
-        })
-      }
-    })
-    this.getGlobalSetting()
+    try {
+      let self = this
+      this.doLogin().then(res => {
+        if (res === true) {
+          self.globalData.hasLogined = true
+          self.getShareInfo().then(res2 => {
+            if (res2 === true) {
+              self.globalData.hasGotShareInfo = true
+            }
+          })
+        }
+      })
+      this.getGlobalSetting()
+    } catch (err) {
+      fundebug.notify("Debug", "Hello Fundebug!");
+    }
   },
   doLogin: () => {
     return new Promise((resolve, reject) => {
@@ -180,6 +185,7 @@ App({
             secret_tips: res.data.items.secret_tips,
             shut_check: res.data.items.shut_check === 'true'
           })
+          console.log(res.data.items, res.data.items.shut_check === 'true')
           if (res.data.items.shut_check === 'true') {
             // wx.reLaunch({ url: '../shutcheck/shutcheck' })
           } else {
