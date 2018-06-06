@@ -171,7 +171,6 @@ App({
       url: config.base_url + '/api/get_setting_items?items=share|wxcode|index_dialog|charge_tips|secret_tips|shut_check',
       success: res => {
         if (res.data.ok) {
-          utils.debug(JSON.stringify(res))
           wx.setStorageSync('share_params', JSON.parse(res.data.items.share))
           wx.setStorageSync('global_setting', {
             wxcode: res.data.items.wxcode,
@@ -183,8 +182,9 @@ App({
           if (res.data.items.shut_check === 'true') {
             // wx.reLaunch({ url: '../shutcheck/shutcheck' })
           } else {
-            wx.reLaunch({ url: '/pages/index/index' })
-            utils.debug(JSON.stringify({routers: getCurrentPages(), msg: '我已经执行了relaunch'}))
+            setTimeout(function() {
+              wx.reLaunch({ url: '/pages/index/index' })
+            }, 100)
           }
         } else {
           wx.showToast({ title: res.data.msg || '获取应用设置失败', icon: 'none', image: './static/img/close.png' })
