@@ -17,22 +17,23 @@ App({
     //     self.doLogin() //重新登录
     //   }
     // })
+    let self = this
     try {
-      let self = this
-      this.doLogin().then(res => {
-        if (res === true) {
-          self.globalData.hasLogined = true
-          self.getShareInfo().then(res2 => {
-            if (res2 === true) {
-              self.globalData.hasGotShareInfo = true
-            }
-          })
-        }
-      })
-      this.getGlobalSetting()
+      console.log(a)
     } catch (err) {
-      fundebug.notify("Debug", "Hello Fundebug!");
+
     }
+    this.doLogin().then(res => {
+      if (res === true) {
+        self.globalData.hasLogined = true
+        self.getShareInfo().then(res2 => {
+          if (res2 === true) {
+            self.globalData.hasGotShareInfo = true
+          }
+        })
+      }
+    })
+    this.getGlobalSetting()
   },
   doLogin: () => {
     return new Promise((resolve, reject) => {
@@ -185,7 +186,6 @@ App({
             secret_tips: res.data.items.secret_tips,
             shut_check: res.data.items.shut_check === 'true'
           })
-          console.log(res.data.items, res.data.items.shut_check === 'true')
           if (res.data.items.shut_check === 'true') {
             // wx.reLaunch({ url: '../shutcheck/shutcheck' })
           } else {
@@ -228,6 +228,10 @@ App({
         }
       })
     })
+  },
+  onError: function(error) {
+    console.log(error)
+
   },
   globalData: {
     userInfo: null,
