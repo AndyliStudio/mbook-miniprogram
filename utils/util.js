@@ -1,3 +1,5 @@
+const fundebug = require('./fundebug.0.4.0.min.js')
+fundebug.apikey = "7607e80084ba331e7f1a7afbe7416f9c05fcc8599bc845a46a400f4588d1f487"
 /**
  * 格式化日期，转变成'2017/11/19 00:00:00'
  */
@@ -76,9 +78,17 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+/*
+ * 微信小程序调试函数
+ */
+const debug = message => {
+  fundebug.notifyError(message)
+}
+
 module.exports = {
   formatTime: formatTime,
   transDate: transDate,
   getCurrentPages: getCurrentPageUrl,
-  getCurrentPageUrlWithArgs: getCurrentPageUrlWithArgs
+  getCurrentPageUrlWithArgs: getCurrentPageUrlWithArgs,
+  debug: debug
 }

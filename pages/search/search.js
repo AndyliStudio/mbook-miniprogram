@@ -97,7 +97,13 @@ Page({
             searchStatus: true,
             categoryFilter: false,
             goodsList: res.data.list,
-            filterCategory: res.data.classification
+            filterCategory:  res.data.classification.map((item, index) => {
+              return {
+                name: item,
+                index: index,
+                checked: false
+              }
+            })
           })
         } else {
           self.showToast('搜索书籍失败', 'bottom')
@@ -159,19 +165,16 @@ Page({
   selectCategory: function(event) {
     let currentIndex = event.target.dataset.categoryIndex
     let filterCategory = this.data.filterCategory
-    let currentCategory = null
-    for (let key in filterCategory) {
-      if (key == currentIndex) {
-        filterCategory[key].selected = true
-        currentCategory = filterCategory[key]
+    filterCategory.forEach(item => {
+      if(item.index === currentIndex) {
+        item.checked = true
       } else {
-        filterCategory[key].selected = false
+        item.checked = false
       }
-    }
+    })
     this.setData({
       filterCategory: filterCategory,
       categoryFilter: false,
-      categoryId: currentCategory.id,
       page: 1,
       goodsList: []
     })

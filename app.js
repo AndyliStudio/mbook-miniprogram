@@ -2,8 +2,6 @@
 const config = require('./config')
 const utils = require('./utils/util')
 const Promise = require('./utils/bluebird.min')
-const fundebug = require('./utils/fundebug.0.0.3.min.js')
-fundebug.apikey = "eab7454c3be52ce64b79f013bd96e35af6e3144c0a144594c8dbc3a7ae170fd8"
 
 App({
   onLaunch: function() {
@@ -18,11 +16,6 @@ App({
     //   }
     // })
     let self = this
-    try {
-      console.log(a)
-    } catch (err) {
-
-    }
     this.doLogin().then(res => {
       if (res === true) {
         self.globalData.hasLogined = true
@@ -178,6 +171,7 @@ App({
       url: config.base_url + '/api/get_setting_items?items=share|wxcode|index_dialog|charge_tips|secret_tips|shut_check',
       success: res => {
         if (res.data.ok) {
+          utils.debug(JSON.stringify(res))
           wx.setStorageSync('share_params', JSON.parse(res.data.items.share))
           wx.setStorageSync('global_setting', {
             wxcode: res.data.items.wxcode,
@@ -190,6 +184,7 @@ App({
             // wx.reLaunch({ url: '../shutcheck/shutcheck' })
           } else {
             wx.reLaunch({ url: '/pages/index/index' })
+            utils.debug(JSON.stringify({routers: getCurrentPages(), msg: '我已经执行了relaunch'}))
           }
         } else {
           wx.showToast({ title: res.data.msg || '获取应用设置失败', icon: 'none', image: './static/img/close.png' })
@@ -230,8 +225,7 @@ App({
     })
   },
   onError: function(error) {
-    console.log(error)
-
+    utils.debug(error)
   },
   globalData: {
     userInfo: null,

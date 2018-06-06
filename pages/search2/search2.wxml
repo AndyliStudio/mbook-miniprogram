@@ -45,7 +45,7 @@
       </view>
       <view class="sort-box-category" wx-if="{{categoryFilter}}">
         <view class="item {{item.checked ? 'active' : ''}}" wx:for="{{filterCategory}}" wx:key="cate-{{index}}" data-category-index="{{index}}"
-          bindtap="selectCategory">{{item}}</view>
+          bindtap="selectCategory">{{item.name}}</view>
       </view>
     </view>
     <!-- 搜索结果 -->
