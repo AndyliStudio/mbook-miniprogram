@@ -79,6 +79,7 @@ App({
                               },
                               fail: err => {
                                 reject(err)
+                                utils.debug('调用注册接口失败：' + JSON.stringify(err))
                                 wx.showToast({ title: '注册失败', image: '/static/img/close.png' })
                                 setTimeout(function() {
                                   wx.hideToast()
@@ -87,6 +88,7 @@ App({
                             })
                           },
                           fail: err => {
+                            utils.debug('获取用户信息失败：' + JSON.stringify(err))
                             // 用户授权失败，前往重新授权页面
                             let timmer = setInterval(function() {
                               if (getCurrentPages().pop()) {
@@ -102,7 +104,8 @@ App({
                     },
                     fail: err => {
                       reject(err)
-                      wx.showToast({ title: '注册失败', image: '/static/img/close.png' })
+                      utils.debug('获取登录信息失败：' + JSON.stringify(err))
+                      wx.showToast({ title: '获取登录信息失败', image: '/static/img/close.png' })
                       setTimeout(function() {
                         wx.hideToast()
                       }, 2000)
@@ -110,6 +113,7 @@ App({
                   })
                 } else {
                   reject(false)
+                  utils.debug('调用登录接口失败：' + JSON.stringify(res))
                   wx.showToast({ title: '登录失败', image: '/static/img/close.png' })
                   setTimeout(function() {
                     wx.hideToast()
@@ -118,6 +122,7 @@ App({
               },
               fail: err => {
                 reject(err)
+                utils.debug('调用登录接口失败：' + JSON.stringify(err))
                 wx.showToast({ title: '登录失败', image: '/static/img/close.png' })
                 setTimeout(function() {
                   wx.hideToast()
@@ -126,6 +131,7 @@ App({
             })
           } else {
             reject(false)
+            utils.debug('获取微信登录信息失败，code不存在：' + JSON.stringify(err))
             wx.showToast({ title: '登录失败', image: '/static/img/close.png' })
             setTimeout(function() {
               wx.hideToast()
@@ -134,6 +140,7 @@ App({
         },
         fail: err => {
           reject(err)
+          utils.debug('获取微信登录信息失败：' + JSON.stringify(err))
           wx.showToast({ title: '登录失败', image: '/static/img/close.png' })
           setTimeout(function() {
             wx.hideToast()
@@ -159,6 +166,7 @@ App({
           }
         },
         fail: err => {
+          utils.debug('获取分享信息失败：' + JSON.stringify(err))
           reject(err)
         }
       })
@@ -192,6 +200,7 @@ App({
         wx.hideLoading()
       },
       fail: err => {
+        utils.debug('获取全局设置失败：' + JSON.stringify(err))
         wx.showToast({ title: '获取应用设置失败', icon: 'none', image: './static/img/close.png' })
         wx.hideLoading()
       }
@@ -219,6 +228,7 @@ App({
           }
         },
         fail: err => {
+          utils.debug('领取分享奖励失败：' + JSON.stringify(err))
           reject(err)
         }
       })

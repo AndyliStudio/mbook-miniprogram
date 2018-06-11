@@ -17,6 +17,13 @@
     <button class="btn" bindtap="finishSecretInput">现在解锁</button>
   </view>
 </modal>
+<view class="loading" wx:if="{{loading}}">
+  <image src="https://fs.andylistudio.com/mbook/book-loading.svg"></image>
+</view>
+<!-- 加载失败 -->
+<view class="load-fail" wx:if="{{loadFail}}">
+  <no-data style="height: 100%; position: relative;" text="章节加载失败" sub-text="网络可能出现点问题，点击重新获取" btn-text="重新获取" show-btn="true" bindbtnclick="loadAgain"></no-data>
+</view>
 <view class="container reader" style="background-color: {{colorStyle.content_bg}}">
 	<view class="content" bind:touchstart="handletouchtart" bind:touchmove="handletouchmove" bind:touchend="handletouchend" style="height:{{windows.windows_height+'px'}};">
 		<view id="content-out" style="overflow: {{hasGotMaxNum ? 'hidden' : 'auto'}}; height: {{hasGotMaxNum ?'100%' : 'auto'}}">

@@ -1,4 +1,3 @@
-//index.js
 const config = require('../../config')
 const app = getApp()
 

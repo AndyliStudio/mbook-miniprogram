@@ -75,7 +75,7 @@ Page({
               goodInfo = '全书免费'
             }
             // 如果当前书籍没在书架中，自动加入书架
-            self.setData({ detail: res.data.data, isInList: res.data.isInList, goodInfo: goodInfo })
+            self.setData({ detail: res.data.data, isInList: res.data.isInList, goodInfo: goodInfo, hasUnLock: res.data.data.hasUnLock })
             if (!res.data.isInList) {
               self.addOrRemove()
             }
@@ -186,7 +186,8 @@ Page({
         if (res.data.ok) {
           // 隐藏购买提示
           self.setData({
-            'modal.show': false
+            'modal.show': false,
+            'hasUnLock': true
           })
           wx.showToast({ title: '解锁成功', icon: 'success' })
         } else if (res.data.authfail) {

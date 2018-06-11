@@ -77,10 +77,12 @@ Page({
             url: '../authfail/authfail'
           })
         } else {
+          util.debug('获取奖励和充值记录失败：' + JSON.stringify(res))
           self.showToast('获取奖励和充值记录失败', 'bottom')
         }
       },
       fail: err => {
+        util.debug('获取奖励和充值记录失败：' + JSON.stringify(err))
         self.showToast('获取奖励和充值记录失败', 'bottom')
       }
     })
@@ -108,10 +110,12 @@ Page({
             url: '../authfail/authfail'
           })
         } else {
+          util.debug('获取奖励和充值记录失败：' + JSON.stringify(res))
           self.showToast('获取奖励和充值记录失败', 'bottom')
         }
       },
       fail: err => {
+        util.debug('获取奖励和充值记录失败：' + JSON.stringify(err))
         self.showToast('获取奖励和充值记录失败', 'bottom')
       }
     })
@@ -130,10 +134,12 @@ Page({
             url: '../authfail/authfail'
           })
         } else {
+          util.debug('获取书币数量失败：' + JSON.stringify(res))
           self.showToast('获取书币数量失败', 'bottom')
         }
       },
       fail: err => {
+        util.debug('获取书币数量失败：' + JSON.stringify(err))
         self.showToast('获取书币数量失败', 'bottom')
       }
     })

@@ -2,6 +2,28 @@ page {
   height: 100%;
 }
 
+.load-fail {
+  height: 100%;
+  position: relative;
+  padding-top: 100rpx;
+  box-sizing: border-box;
+}
+
+.loading {
+  height: 100%;
+  position: relative;
+}
+
+.loading > image {
+  height: 200rpx;
+  width: 200rpx;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -100rpx;
+  margin-left: -100rpx;
+}
+
 .reader {
   height: 100%;
   overflow: hidden;

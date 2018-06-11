@@ -48,7 +48,6 @@ Page({
       }
     })
   },
-
   inputChange: function(e) {
     this.setData({
       keyword: e.detail.value,
@@ -89,8 +88,14 @@ Page({
   getGoodsList: function() {
     let self = this
     wx.request({
-      url: config.base_url + '/api/book/search?keyword=' + self.data.keyword,
-      method: 'GET',
+      url: config.base_url + '/api/book/search',
+      header: {
+         'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+      },
+      method: 'POST',
+      data: {
+        keyword: self.data.keyword
+      },
       success: res => {
         if (res.data.ok) {
           self.setData({

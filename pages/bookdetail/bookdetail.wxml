@@ -38,7 +38,7 @@
         <view class="iconfont icon-yuedu"></view>
         <text>立即阅读</text>
       </view>
-      <view class="addToList" wx:if="{{!hasUnLock}}" bindtap="openSecret">
+      <view class="addToList" wx:if="{{goodInfo !== '全书免费' && !hasUnLock}}" bindtap="openSecret">
         <view>
           <view class="iconfont icon-miyao"></view>
           <text>秘钥解锁</text>
@@ -52,7 +52,7 @@
           <text>从书架中移除</text>
         </view> -->
       </view>
-      <view class="addToList" wx:else>
+      <view class="addToList" wx:if="{{goodInfo !== '全书免费' && hasUnLock}}">
         <view>
           <view class="iconfont icon-rightline"></view>
           <text>已解锁</text>
