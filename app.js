@@ -56,6 +56,7 @@ App({
                     success: res => {
                       let code = res.code
                       if (res.code) {
+                        wx.openSetting()
                         // 获取用户信息后，发送registe请求
                         wx.getUserInfo({
                           success: res => {

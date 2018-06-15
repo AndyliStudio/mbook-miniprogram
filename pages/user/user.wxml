@@ -23,6 +23,13 @@
         <icon class="iconfont icon-arrow-right"></icon>
       </view>
     </navigator>
+    <button class="feedback" open-type="feedback">
+      <view class="about-us">
+        <icon class="iconfont icon-yijianfankui"></icon>
+        <text class="about-us-text">意见反馈</text>
+        <icon class="iconfont icon-arrow-right"></icon>
+      </view>
+    </button>
     <view class="main">
       <navigator url="/pages/notice/notice" open-type="navigate">
         <view class="main-item">
