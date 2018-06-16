@@ -76,27 +76,27 @@ Page({
       .catch(err => {
         utils.debug('获取栏目或者banner信息失败', JSON.stringify(err))
       })
-    // const globalSetting = wx.getStorageSync('global_setting')
-    // const dialog = globalSetting ? JSON.parse(globalSetting.index_dialog) : ''
-    // if (dialog && dialog.show === 'true') {
-    //   self.setData({
-    //     modal: {
-    //       show: true,
-    //       title: dialog.title,
-    //       content: dialog.content,
-    //       opacity: 0.6,
-    //       position: 'center',
-    //       width: '80%',
-    //       options: {
-    //         fullscreen: false,
-    //         showclose: true,
-    //         showfooter: true,
-    //         closeonclickmodal: true,
-    //         confirmText: '确认'
-    //       }
-    //     }
-    //   })
-    // }
+    const globalSetting = wx.getStorageSync('global_setting')
+    const dialog = globalSetting ? JSON.parse(globalSetting.index_dialog) : ''
+    if (dialog && dialog.show === 'true') {
+      self.setData({
+        modal: {
+          show: true,
+          title: dialog.title,
+          content: dialog.content,
+          opacity: 0.6,
+          position: 'center',
+          width: '80%',
+          options: {
+            fullscreen: false,
+            showclose: true,
+            showfooter: true,
+            closeonclickmodal: true,
+            confirmText: '确认'
+          }
+        }
+      })
+    }
   },
   // 设置分享
   onShareAppMessage: function(res) {
