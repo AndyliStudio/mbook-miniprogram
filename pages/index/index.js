@@ -1,4 +1,6 @@
 const config = require('../../config')
+const Promise = require('../../utils/bluebird.min')
+const utils = require('../../utils/util')
 const app = getApp()
 
 Page({
@@ -25,8 +27,6 @@ Page({
     is_show_banner: true,
     themes: [],
     click_times: {}, // 换一批点击次数
-    isBannerOk: false,
-    isThemeOk: false,
     loaded: false,
     shutCheck: false
   },
@@ -40,38 +40,63 @@ Page({
         })
       }
     })
-    // 获取banner和栏目信息
-    ;(function() {
-      let timer = setInterval(function() {
-        if (self.data.isBannerOk && self.data.isThemeOk) {
-          clearInterval(timer)
-          self.setData({ loaded: true })
-        }
-      }, 500)
-    })()
-    self.getBanner()
-    self.getTheme()
-    const globalSetting = wx.getStorageSync('global_setting')
-    const dialog = globalSetting ? JSON.parse(globalSetting.index_dialog) : ''
-    if (dialog && dialog.show === 'true') {
-      self.setData({
-        modal: {
-          show: true,
-          title: dialog.title,
-          content: dialog.content,
-          opacity: 0.6,
-          position: 'center',
-          width: '80%',
-          options: {
-            fullscreen: false,
-            showclose: true,
-            showfooter: true,
-            closeonclickmodal: true,
-            confirmText: '确认'
-          }
-        }
+    // 获取banner和栏目信息，使用promise来控制两个请求的同步
+    let bannerP = self.getBanner()
+    bannerP
+      .then(res => {
+        self.setData({ banner_urls: res.data.list })
       })
-    }
+      .catch(err => {
+        self.setData({ is_show_banner: false })
+        self.showToast('获取banner信息失败', 'bottom')
+        utils.debug('获取banner信息失败', JSON.stringify(err))
+      })
+    let themeP = self.getTheme()
+    themeP
+      .then(res => {
+        self.setData({ themes: res.data.list })
+        // 初始化换一批的点击次数
+        res.data.list.forEach(item => {
+          if (item.flush) {
+            let tmpObj = {}
+            tmpObj[item._id] = 2
+            self.setData({ click_times: Object.assign(self.data.click_times, tmpObj) })
+          }
+        })
+      })
+      .catch(err => {
+        self.showToast('获取栏目信息失败', 'bottom')
+        utils.debug('获取栏目信息失败', JSON.stringify(err))
+      })
+    // 当两个请求完成之后隐藏loading
+    Promise.all([bannerP, themeP])
+      .then(results => {
+        self.setData({ loaded: true })
+      })
+      .catch(err => {
+        utils.debug('获取栏目或者banner信息失败', JSON.stringify(err))
+      })
+    // const globalSetting = wx.getStorageSync('global_setting')
+    // const dialog = globalSetting ? JSON.parse(globalSetting.index_dialog) : ''
+    // if (dialog && dialog.show === 'true') {
+    //   self.setData({
+    //     modal: {
+    //       show: true,
+    //       title: dialog.title,
+    //       content: dialog.content,
+    //       opacity: 0.6,
+    //       position: 'center',
+    //       width: '80%',
+    //       options: {
+    //         fullscreen: false,
+    //         showclose: true,
+    //         showfooter: true,
+    //         closeonclickmodal: true,
+    //         confirmText: '确认'
+    //       }
+    //     }
+    //   })
+    // }
   },
   // 设置分享
   onShareAppMessage: function(res) {
@@ -107,52 +132,40 @@ Page({
   },
   getBanner: function() {
     let self = this
-    wx.request({
-      url: config.base_url + '/api/banner/list',
-      success: function(res) {
-        if (res.data.ok) {
-          self.setData({ banner_urls: res.data.list })
-        } else {
-          // 隐藏banner
-          self.setData({ is_show_banner: false })
-          self.showToast('获取banner信息失败', 'bottom')
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url: config.base_url + '/api/banner/list',
+        success: function(res) {
+          if (res.data.ok) {
+            resolve(res)
+          } else {
+            // 隐藏banner
+            reject(res)
+          }
+        },
+        fail: function(err) {
+          reject(err)
         }
-      },
-      fail: function(err) {
-        self.setData({ is_show_banner: false })
-        self.showToast('获取banner信息失败', 'bottom')
-      },
-      complete: function() {
-        self.setData({ isBannerOk: true })
-      }
+      })
     })
   },
   getTheme: function() {
     let self = this
-    wx.request({
-      url: config.base_url + '/api/theme/index_list',
-      success: function(res) {
-        if (res.data.ok) {
-          self.setData({ themes: res.data.list })
-          // 初始化换一批的点击次数
-          res.data.list.forEach(item => {
-            if (item.flush) {
-              let tmpObj = {}
-              tmpObj[item._id] = 2
-              self.setData({ click_times: Object.assign(self.data.click_times, tmpObj) })
-            }
-          })
-        } else {
-          // 隐藏banner
-          self.showToast('获取栏目信息失败', 'bottom')
+    return new Promise((resolve, reject) => {
+      wx.request({
+        url: config.base_url + '/api/theme/index_list',
+        success: function(res) {
+          if (res.data.ok) {
+            resolve(res)
+          } else {
+            // 隐藏banner
+            reject(res)
+          }
+        },
+        fail: function(err) {
+          reject(err)
         }
-      },
-      fail: function(err) {
-        self.showToast('获取栏目信息失败', 'bottom')
-      },
-      complete: function() {
-        self.setData({ isThemeOk: true })
-      }
+      })
     })
   },
   changeList: function(event) {

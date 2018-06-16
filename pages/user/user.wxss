@@ -184,16 +184,21 @@ page {
   top: 4rpx;
 }
 
+.icon-yijianfankui {
+  font-size: 42rpx;
+  margin-right: 30rpx;
+  position: relative;
+  top: 4rpx;
+}
+
 /* 意见反馈 */
 .feedback {
   display: block;
   background: none;
   border: none;
-  margin-left: 6%;
   padding: 0;
 }
 
 .feedback::after {
   border: none;
 }
-

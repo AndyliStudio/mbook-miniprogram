@@ -20,6 +20,7 @@ page {
 
 .index {
   background: #f4f4f4;
+  height: 100%;
 }
 
 .index .swiper-box {
