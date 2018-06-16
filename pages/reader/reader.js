@@ -84,7 +84,7 @@ Page({
     afterLoaded: '',
     afterData: '',
     loading: false, // 加载状态
-    loadFail: false, // 显示加载失败页面
+    loadFail: false // 显示加载失败页面
   },
   onReady: function() {
     var self = this
@@ -291,7 +291,7 @@ Page({
             self.setData({ leftValue: currentLeftValue - pingjunValue })
           }, 75)
           // 还剩下3页的时候去预加载
-          if ((self.data.maxPageNum - currentIndex <= 3) && !self.data.afterLoaded  ) {
+          if (self.data.maxPageNum - currentIndex <= 3 && !self.data.afterLoaded) {
             self.loadAfter()
           }
           self.setData({ pageIndex: ++currentIndex })
@@ -357,8 +357,7 @@ Page({
             hasGotMaxNum: false,
             pageIndex: 1,
             leftValue: 0,
-            isShowBuy: !res.data.canRead,
-            loading: false
+            isShowBuy: !res.data.canRead
           })
           if (res.data.canRead && res.data.doAutoBuy) {
             self.showToast('已为您自动给购买该章节', 'bottom')
@@ -383,16 +382,16 @@ Page({
             // })
           }
           wx.setNavigationBarTitle({
-            title: res.data.data.name
+            title: '第' + res.data.data.num + '章 ' + res.data.data.name
           })
           // 重新计算最大分页数
-          wx
-            .createSelectorQuery()
+          wx.createSelectorQuery()
             .select('#content-out')
             .boundingClientRect(function(rect) {
               self.setData({
                 maxPageNum: Math.ceil(rect.height / parseInt(self.data.windows.windows_height - 20)),
-                hasGotMaxNum: true
+                hasGotMaxNum: true,
+                loading: false
               })
             })
             .exec()
@@ -633,7 +632,7 @@ Page({
             pageIndex: 1,
             leftValue: 0,
             isShowBuy: !res.data.canRead,
-            loading: false
+            hasGotMaxNum: false
           })
           if (res.data.canRead && res.data.doAutoBuy) {
             self.showToast('已为您自动给购买该章节', 'bottom')
@@ -659,15 +658,15 @@ Page({
             // })
           }
           wx.setNavigationBarTitle({
-            title: res.data.data.name
+            title: '第' + res.data.data.num + '章 ' + res.data.data.name
           })
           // 重新计算最大分页数
-          wx
-            .createSelectorQuery()
+          wx.createSelectorQuery()
             .select('#content-out')
             .boundingClientRect(function(rect) {
               self.setData({
                 maxPageNum: Math.ceil(rect.height / parseInt(self.data.windows.windows_height - 20)),
+                loading: false,
                 hasGotMaxNum: true
               })
             })
@@ -708,7 +707,7 @@ Page({
             author: res.data.author,
             headImg: res.data.headimg,
             isShowBuy: !res.data.canRead,
-            loading: false
+            hasGotMaxNum: false
           })
           if (res.data.canRead && res.data.doAutoBuy) {
             self.showToast('已为您自动给购买该章节', 'bottom')
@@ -735,11 +734,10 @@ Page({
           }
           // 设置标题
           wx.setNavigationBarTitle({
-            title: res.data.data.name
+            title: '第' + res.data.data.num + '章 ' + res.data.data.name
           })
           // 动态计算最大页数
-          wx
-            .createSelectorQuery()
+          wx.createSelectorQuery()
             .select('#content-out')
             .boundingClientRect(function(rect) {
               // 获取屏幕高度和宽度信息
@@ -752,19 +750,19 @@ Page({
                       windows_height: res.windowHeight,
                       windows_width: res.windowWidth
                     },
-                    hasGotMaxNum: true
+                    hasGotMaxNum: true,
+                    loading: false
                   })
                 }
               })
             })
             .exec()
-
         } else if (res.data.authfail) {
           wx.navigateTo({
             url: '../authfail/authfail'
           })
           self.setData({ loading: false, loadFail: true })
-        }  else {
+        } else {
           self.setData({ loading: false, loadFail: true })
           self.showToast('获取章节内容失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
           // 展示无数据按钮
@@ -876,7 +874,7 @@ Page({
   loadPreChapter: function() {
     let self = this
     self.setData({ backupSectionNum: self.data.currentSectionNum })
-    let callback = function (res, isLoadCallback) {
+    let callback = function(res, isLoadCallback) {
       if (res.data.ok) {
         self.setData({
           bindTopValue: 0,
@@ -911,11 +909,10 @@ Page({
         }
         // 设置标题
         wx.setNavigationBarTitle({
-          title: self.data.factionTitle
+          title: '第' + res.data.data.num + '章 ' + res.data.data.name
         })
         // 重新计算最大分页数
-        wx
-          .createSelectorQuery()
+        wx.createSelectorQuery()
           .select('#content-out')
           .boundingClientRect(function(rect) {
             var maxPageNum = Math.ceil(rect.height / parseInt(self.data.windows.windows_height - 20))
@@ -971,7 +968,7 @@ Page({
   loadBefore: function() {
     let self = this
     let preChapterNum = self.data.currentSectionNum - 1
-    if ((preChapterNum > 0) && !self.data.beforeLoaded) {
+    if (preChapterNum > 0 && !self.data.beforeLoaded) {
       wx.request({
         method: 'GET',
         url: config.base_url + '/api/chapter/detail?bookid=' + self.data.bookid + '&chapter_num=' + preChapterNum,
@@ -980,7 +977,7 @@ Page({
           if (res.data.ok) {
             // 存储获得接口数据
             self.setData({ beforeLoaded: true, beforeData: res })
-          }  
+          }
         }
       })
     }
@@ -1026,11 +1023,10 @@ Page({
         }
         // 设置标题
         wx.setNavigationBarTitle({
-          title: self.data.factionTitle
+          title: '第' + res.data.data.num + '章 ' + res.data.data.name
         })
         // 重新计算最大分页数
-        wx
-          .createSelectorQuery()
+        wx.createSelectorQuery()
           .select('#content-out')
           .boundingClientRect(function(rect) {
             self.setData({
@@ -1083,7 +1079,7 @@ Page({
   loadAfter: function() {
     let self = this
     let nextChapterNum = self.data.currentSectionNum + 1
-    if ((nextChapterNum <= self.data.newestSectionNum) && !self.data.afterLoaded) {
+    if (nextChapterNum <= self.data.newestSectionNum && !self.data.afterLoaded) {
       wx.request({
         method: 'GET',
         url: config.base_url + '/api/chapter/detail?bookid=' + self.data.bookid + '&chapter_num=' + nextChapterNum,
@@ -1092,7 +1088,7 @@ Page({
           if (res.data.ok) {
             // 存储获得接口数据
             self.setData({ afterLoaded: true, afterData: res })
-          }  
+          }
         }
       })
     }

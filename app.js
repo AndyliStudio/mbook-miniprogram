@@ -200,13 +200,13 @@ App({
             }, 100)
           }
         } else {
-          wx.showToast({ title: res.data.msg || '获取应用设置失败', icon: 'none', image: './static/img/close.png' })
+          wx.showToast({ title: res.data.msg || '获取应用设置失败', image: './static/img/close.png' })
         }
         wx.hideLoading()
       },
       fail: err => {
         utils.debug('获取全局设置失败：' + JSON.stringify(err))
-        wx.showToast({ title: '获取应用设置失败', icon: 'none', image: './static/img/close.png' })
+        wx.showToast({ title: '获取应用设置失败', image: './static/img/close.png' })
         wx.hideLoading()
       }
     })
