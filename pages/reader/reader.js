@@ -66,6 +66,7 @@ Page({
     isShowMulu: 0, // 是否显示左侧栏
     allSectionData: [], // 所有章节数据
     showReaderTips: true, // 是否展示阅读提示
+    tipsText: '点击屏幕正中间\n展示控制栏',
     windows: {
       windows_height: 0,
       windows_width: 0
@@ -87,9 +88,9 @@ Page({
     loadFail: false // 显示加载失败页面
   },
   onReady: function() {
-    var self = this
+    let self = this
     // 判断是否需要显示提示
-    var showReaderTips = wx.getStorageSync('show_reader_tips')
+    let showReaderTips = wx.getStorageSync('show_reader_tips')
     if (showReaderTips || showReaderTips === '') {
       self.setData({ showReaderTips: true })
     } else {
