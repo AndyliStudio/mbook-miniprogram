@@ -239,6 +239,40 @@ App({
       })
     })
   },
+  // 前端向后端提交formId
+  reportFormId: function(formId) {
+    wx.request({
+      method: 'GET',
+      url: config.base_url + '/api/get_setting_items?items=share|wxcode|index_dialog|charge_tips|secret_tips|shut_check',
+      success: res => {
+        if (res.data.ok) {
+          wx.setStorageSync('share_params', JSON.parse(res.data.items.share))
+          wx.setStorageSync('global_setting', {
+            wxcode: res.data.items.wxcode,
+            index_dialog: res.data.items.index_dialog,
+            charge_tips: res.data.items.charge_tips,
+            secret_tips: res.data.items.secret_tips,
+            shut_check: res.data.items.shut_check === 'true'
+          })
+          if (res.data.items.shut_check === 'true') {
+            // wx.reLaunch({ url: '../shutcheck/shutcheck' })
+          } else {
+            setTimeout(function() {
+              wx.reLaunch({ url: '/pages/index/index' })
+            }, 100)
+          }
+        } else {
+          wx.showToast({ title: res.data.msg || '获取应用设置失败', image: './static/img/close.png' })
+        }
+        wx.hideLoading()
+      },
+      fail: err => {
+        utils.debug('获取全局设置失败：' + JSON.stringify(err))
+        wx.showToast({ title: '获取应用设置失败', image: './static/img/close.png' })
+        wx.hideLoading()
+      }
+    })
+  },
   onError: function(error) {
     utils.debug(error)
   },

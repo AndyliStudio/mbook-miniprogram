@@ -33,14 +33,20 @@
       </view>
     </view>
     <view class="clearfix"></view>
-    <view class="btn-group">
-      <view class="read" bindtap="goToReader">
+    <view class="btn-group">、
+      <form class="read" bindsubmit="goToReader" report-submit='true' >
+        <button class="inner-btn" form-type="submit">
+          <text class="iconfont icon-yuedu"></text>
+          <text>立即阅读</text>
+        </button>
+      </form>
+      <!-- <view class="read" bindtap="goToReader">
         <view class="iconfont icon-yuedu"></view>
         <text>立即阅读</text>
-      </view>
+      </view> -->
       <view class="addToList" wx:if="{{goodInfo !== '全书免费' && !hasUnLock}}" bindtap="openSecret">
-        <view>
-          <view class="iconfont icon-miyao"></view>
+        <view class="inner-btn">
+          <text class="iconfont icon-miyao"></text>
           <text>秘钥解锁</text>
         </view>
         <!-- <view class="true" hidden="{{isInList}}">

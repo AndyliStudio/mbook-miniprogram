@@ -187,7 +187,7 @@ Page({
           // 隐藏购买提示
           self.setData({
             'modal.show': false,
-            'hasUnLock': true
+            hasUnLock: true
           })
           wx.showToast({ title: '解锁成功', icon: 'success' })
         } else if (res.data.authfail) {
@@ -353,7 +353,9 @@ Page({
       }
     })
   },
-  goToReader: function() {
+  goToReader: function(event) {
+    const formId = event.detail.formId
+    app.reportFormId()
     wx.navigateTo({ url: '../reader/reader?bookid=' + this.data.bookid })
   },
   showToast: function(content, position) {
