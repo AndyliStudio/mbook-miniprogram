@@ -106,18 +106,6 @@ Page({
         colorStyle: self.transColorStyle(userSetting.reader.mode) || self.data.colorStyle,
         currentFontFamily: userSetting.reader.fontFamily || self.data.currentFontFamily
       })
-      // 设置系统亮度
-      // wx.setScreenBrightness({
-      //   value: userSetting.allSliderValue.bright || self.data.allSliderValue.bright
-      // })
-      // 获取系统亮度，将亮度值默认设置为系统亮度
-      // wx.getScreenBrightness({
-      //   success: res => {
-      //     self.setData({
-      //       'allSliderValue.bright': res.value
-      //     })
-      //   }
-      // })
     }
     // 设置背景色
     wx.setNavigationBarColor({
@@ -126,6 +114,9 @@ Page({
       animation: {
         duration: 0,
         timingFunc: 'easeIn'
+      },
+      fail: () => {
+        self.showToast('设置背景色失败', 'bottom')
       }
     })
   },
@@ -181,7 +172,7 @@ Page({
         imageUrl: shareParams.imageUrl,
         success: function(res) {
           // 转发成功
-          wx.showToast({ title: '分享成功', icon: 'success' })
+          // wx.showToast({ title: '分享成功', icon: 'success' })
         },
         fail: function(res) {
           // 取消分享
@@ -1068,7 +1059,7 @@ Page({
           self.setData({ loading: false })
         },
         fail(e) {
-          self.setData({ loading: false, loadFail })
+          self.setData({ loading: false, loadFail: true })
           self.showToast('加载下一章失败', 'bottom')
         }
       })

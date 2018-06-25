@@ -32,7 +32,7 @@ Page({
     commentType: null, // 评论类型，是回复别人还是评论书籍
     currentCommentValue: '',
     secretTips: '',
-    hasUnLock: true // 用户是否已经解锁过改章节
+    hasUnLock: false // 用户是否已经解锁过改章节
   },
   onShow: function() {
     wx.showNavigationBarLoading()
@@ -355,7 +355,7 @@ Page({
   },
   goToReader: function(event) {
     const formId = event.detail.formId
-    app.reportFormId()
+    app.reportFormId(formId)
     wx.navigateTo({ url: '../reader/reader?bookid=' + this.data.bookid })
   },
   showToast: function(content, position) {

@@ -27,6 +27,9 @@ Page({
       }
     })
   },
+  reLogin: function() {
+    wx.reLaunch({ url: '/pages/index/index' })
+  },
   afterGetUserInfo: function() {
     app.doLogin().then(res => {
       if (res === true) {
@@ -42,14 +45,15 @@ Page({
             let shutCheck = wx.getStorageSync('global_setting').shut_check
             if (shutCheck) {
               // 返回上一页
-              wx.navigateTo({
+              wx.reLaunch({
                 url: '../search2/search2'
               })
             } else {
               // 返回上一页
-              wx.navigateBack({
-                delta: 1
-              })
+              // wx.navigateBack({
+              //   delta: 1
+              // })
+              wx.reLaunch({ url: '/pages/index/index' })
             }
           }
         })

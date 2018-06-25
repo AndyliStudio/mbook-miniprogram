@@ -1,10 +1,14 @@
 <view class="authfail">
   <!--  重新授权页面 -->
-  <block vx:if="{{page === 'reauth'}}">
+  <block wx:if="{{page === 'reauth'}}">
     <p class="des">小程序需要获取您的用户信息来为您注册账号，点击下方按钮重新授权。</p>
     <button class="btn" open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="afterGetUserInfo">重新授权</button>
   </block>
-  <block wx:if="{{page === ''}}">
+  <block wx:elif="{{page === 'reload'}}">
+    <p class="des">登录失败，请点击下方按钮重新登录</p>
+    <button class="btn" bindtap="doLogin">重新登录</button>
+  </block>
+  <block wx:else>
     <p class="des">您的登录状态已经过期，请点击下方按钮重新登录。</p>
     <button class="btn" bindtap="doLogin">重新登录</button>
   </block>
