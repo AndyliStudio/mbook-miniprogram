@@ -1,5 +1,6 @@
 //booklist.js
 const config = require('../../config')
+const app = getApp()
 
 Page({
   data: {
@@ -33,7 +34,6 @@ Page({
       }
     })
   },
-  openReader: function(event) {},
   bookClick: function(event) {
     //检查锁
     if (this.data.lock) {
@@ -43,7 +43,9 @@ Page({
       this.setData({ removing: false })
       return
     }
-    wx.navigateTo({ url: '../reader/reader?bookid=' + event.currentTarget.dataset.bookid })
+    const formId = event.detail.formId
+    app.reportFormId(formId)
+    wx.navigateTo({ url: '../reader/reader?bookid=' + event.target.dataset.bookid })
   },
   bookLongClick: function() {
     let self = this

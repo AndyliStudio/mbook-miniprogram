@@ -33,7 +33,7 @@
       </view>
     </view>
     <view class="clearfix"></view>
-    <view class="btn-group">、
+    <view class="btn-group">
       <form class="read" bindsubmit="goToReader" report-submit='true' >
         <button class="inner-btn" form-type="submit">
           <text class="iconfont icon-yuedu"></text>

@@ -9,7 +9,11 @@
   <view class="shelves">
     <view class="books">
       <view wx:for="{{myBooks}}" wx:key="item.bookid" hover-start-time="2000" class="book-item {{ removing ? 'shake' : '' }}">
-        <image src="{{item.img_url}}" data-bookid="{{item.bookid}}" bindtap="bookClick" bindlongtap="bookLongClick"></image>
+        <form class="image" bindsubmit="bookClick" data-bookid="{{item.bookid}}" bindlongtap="bookLongClick" report-submit='true' >
+          <button class="inner-btn" form-type="submit">
+            <image src="{{item.img_url}}"></image>
+          </button>
+        </form>
         <icon wx:if="{{removing}}" type="clear" size="16" color="#f76260" data-bookid="{{item.bookid}}" bindtap="removeBook" />
       </view>
       <view hover-start-time="2000" class="book-item add" bindtap="gotoShop">
