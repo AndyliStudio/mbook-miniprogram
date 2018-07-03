@@ -3,8 +3,8 @@
 <modal class="index-modal" data-model="modal.show" visible="{{modal.show}}" title="{{modal.title}}" position="{{modal.position}}" fullscreen="{{modal.options.fullscreen}}" opacity="{{modal.opacity}}" show-close="{{modal.options.showclose}}" show-footer="{{modal.options.showfooter}}" close-on-click-modal="{{modal.options.closeonclickmodal}}" confirm-text="{{modal.options.confirmText}}" bindconfirm="handleModalConfirm">
   <view class="des">{{modal.content}}</view>
 </modal>
-<scroll-view class="container index" scroll-y="true" wx:if="{{loaded}}">  
-  <swiper class="swiper-box" wx:if="{{is_show_banner}}" indicator-dots="1" indicator-color="#ffffff" indicator-active-color="#a3a8f8" autoplay="1" interval="4000" duration="500">
+<view class="container index" scroll-y="true" wx:if="{{loaded}}">  
+  <swiper class="swiper-box" wx:if="{{is_show_banner}}" indicator-dots="1" indicator-color="#ffffff" indicator-active-color="#a3a8f8" autoplay="1" interval="4000" duration="500" circular="true">
     <block wx:for="{{banner_urls}}" wx:key="item._id">
       <swiper-item>
         <navigator url="{{item.url}}">
@@ -75,7 +75,7 @@
   <no-data wx:if="{{themes.length == 0 ? true : false}}" text="暂无栏目信息" sub-text="服务器开小差了，点击重新获取" btn-text="重新获取" show-btn="true" bindbtnclick="getTheme">
       <icon class="iconfont icon-zanwushuju"></icon>
   </no-data>
-</scroll-view>
+</view>
 <view class="loading" wx:if="{{!loaded}}">
   <image src="https://fs.andylistudio.com/mbook/book-loading.svg"></image>
 </view>

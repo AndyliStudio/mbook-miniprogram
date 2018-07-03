@@ -191,6 +191,10 @@ page {
   background-color: #dddddd;
 }
 
+.index .layout1 .book-item.item3 .book-img {
+  margin: 0 auto;
+}
+
 .index .layout1 .book-item.item1 .book-des,
 .index .layout1 .book-item.item2 .book-des,
 .index .layout1 .book-item.item3 .book-des {
@@ -209,6 +213,10 @@ page {
   display: block;
   font-size: 28rpx;
   margin-top: 8rpx;
+}
+
+.index .layout3 .book-item.item3 .book-name {
+  text-align: center;
 }
 
 /* layout2: 栏目布局2 */
