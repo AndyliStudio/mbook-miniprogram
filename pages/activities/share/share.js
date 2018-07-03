@@ -51,10 +51,8 @@ Page({
               // 更新奖励
               self.flushAward()
             } else {
-              if (typeof res === 'string') {
-                if (!res.data.inviteself) {
-                  self.showToast(res)
-                }
+              if (!res.data.inviteself) {
+                self.showToast(res.data ? (res.data.msg || '接收邀请失败') : '接收邀请失败' )
               }
             }
           })

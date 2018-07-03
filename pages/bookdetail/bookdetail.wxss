@@ -179,8 +179,8 @@
   background: #fff;
   padding: 20rpx;
   box-sizing: border-box;
-  box-sizing: border-box;
   overflow-y: auto;
+  width: 100%;
 }
 
 .detail .comment-item .headImg {

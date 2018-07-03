@@ -218,7 +218,7 @@ App({
               url: '../authfail/authfail'
             })
           } else {
-            resolve(res.data.msg)
+            resolve(res)
           }
         },
         fail: err => {
