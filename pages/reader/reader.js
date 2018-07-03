@@ -85,7 +85,8 @@ Page({
     afterLoaded: '',
     afterData: '',
     loading: false, // 加载状态
-    loadFail: false // 显示加载失败页面
+    loadFail: false, // 显示加载失败页面
+    useTransition: true // 是否使用滑动的transition动画，在切换下一章的时候应该关闭
   },
   onReady: function() {
     let self = this
@@ -207,11 +208,11 @@ Page({
     var currentIndex = self.data.pageIndex
     if (direction == 0) {
       if (currentIndex < self.data.maxPageNum) {
-        self.setData({ leftValue: self.data.leftValue - moreOrLessValue })
+        self.setData({ useTransition: true, leftValue: self.data.leftValue - moreOrLessValue })
       }
     } else {
       if (currentIndex > 1) {
-        self.setData({ leftValue: self.data.leftValue + moreOrLessValue })
+        self.setData({ useTransition: true, leftValue: self.data.leftValue + moreOrLessValue })
       }
     }
   },
@@ -258,30 +259,31 @@ Page({
       if (self.data.moveDirection === 0) {
         if (currentIndex < self.data.maxPageNum) {
           targetLeftValue = -1 * (self.data.windows.windows_width - 10) * currentIndex
-          pingjunValue = Math.abs(targetLeftValue - self.data.leftValue) / 4 //500ms其实函数只执行了4次，第一次会等待100ms才会开始函数
-          isMoving = 1 //开始计时的时候将标志置1
+          self.setData({ useTransition: true, leftValue: targetLeftValue })
+          // pingjunValue = Math.abs(targetLeftValue - self.data.leftValue) / 4 //500ms其实函数只执行了4次，第一次会等待100ms才会开始函数
+          // isMoving = 1 //开始计时的时候将标志置1
           //使用计时器实现动画效果
-          leftMoveTimer = setInterval(function() {
-            ++leftTimmerCount
-            var currentLeftValue = self.data.leftValue
-            //如果达到了目标值，立即停止计时器
-            //调试发现有些时候这个if的跳转会莫名的不成立，所以做个限制，函数被执行了4次之后，无论条件是否成立，将leftValue设置为目标值，并结束计时器
-            if (leftTimmerCount == 4) {
-              clearInterval(leftMoveTimer)
-              isMoving = 0
-              leftTimmerCount = 0
-              self.setData({ leftValue: targetLeftValue })
-              return
-            }
-            if (currentLeftValue == targetLeftValue) {
-              clearInterval(leftMoveTimer)
-              isMoving = 0
-              leftTimmerCount = 0
-              self.setData({ leftValue: targetLeftValue })
-              return
-            }
-            self.setData({ leftValue: currentLeftValue - pingjunValue })
-          }, 75)
+          // leftMoveTimer = setInterval(function() {
+          //   ++leftTimmerCount
+          //   var currentLeftValue = self.data.leftValue
+          //   //如果达到了目标值，立即停止计时器
+          //   //调试发现有些时候这个if的跳转会莫名的不成立，所以做个限制，函数被执行了4次之后，无论条件是否成立，将leftValue设置为目标值，并结束计时器
+          //   if (leftTimmerCount == 4) {
+          //     clearInterval(leftMoveTimer)
+          //     isMoving = 0
+          //     leftTimmerCount = 0
+          //     self.setData({ leftValue: targetLeftValue })
+          //     return
+          //   }
+          //   if (currentLeftValue == targetLeftValue) {
+          //     clearInterval(leftMoveTimer)
+          //     isMoving = 0
+          //     leftTimmerCount = 0
+          //     self.setData({ leftValue: targetLeftValue })
+          //     return
+          //   }
+          //   self.setData({ leftValue: currentLeftValue - pingjunValue })
+          // }, 75)
           // 还剩下3页的时候去预加载
           if (self.data.maxPageNum - currentIndex <= 3 && !self.data.afterLoaded) {
             self.loadAfter()
@@ -294,27 +296,28 @@ Page({
         //前一页和后一页相差其实是2个-320px
         if (currentIndex > 1) {
           targetLeftValue = -1 * (self.data.windows.windows_width - 10) * (currentIndex - 2)
-          pingjunValue = Math.abs(targetLeftValue - self.data.leftValue) / 4
-          isMoving = 1
-          rightMoveTimer = setInterval(function() {
-            ++rightTimmerCount
-            var currentLeftValue = self.data.leftValue
-            if (rightTimmerCount == 4) {
-              clearInterval(rightMoveTimer)
-              isMoving = 0
-              rightTimmerCount = 0
-              self.setData({ leftValue: targetLeftValue })
-              return
-            }
-            if (currentLeftValue == targetLeftValue) {
-              clearInterval(rightMoveTimer)
-              isMoving = 0
-              rightTimmerCount = 0
-              self.setData({ leftValue: targetLeftValue })
-              return
-            }
-            self.setData({ leftValue: currentLeftValue + pingjunValue })
-          }, 75)
+          self.setData({ useTransition: true, leftValue: targetLeftValue })
+          // pingjunValue = Math.abs(targetLeftValue - self.data.leftValue) / 4
+          // isMoving = 1
+          // rightMoveTimer = setInterval(function() {
+          //   ++rightTimmerCount
+          //   var currentLeftValue = self.data.leftValue
+          //   if (rightTimmerCount == 4) {
+          //     clearInterval(rightMoveTimer)
+          //     isMoving = 0
+          //     rightTimmerCount = 0
+          //     self.setData({ leftValue: targetLeftValue })
+          //     return
+          //   }
+          //   if (currentLeftValue == targetLeftValue) {
+          //     clearInterval(rightMoveTimer)
+          //     isMoving = 0
+          //     rightTimmerCount = 0
+          //     self.setData({ leftValue: targetLeftValue })
+          //     return
+          //   }
+          //   self.setData({ leftValue: currentLeftValue + pingjunValue })
+          // }, 75)
           // 还剩下3页的时候去预加载
           if (currentIndex <= 3 && !!self.data.beforeLoaded) {
             self.loadBefore()
@@ -348,6 +351,7 @@ Page({
             'allSliderValue.section': res.data.data.num,
             hasGotMaxNum: false,
             pageIndex: 1,
+            useTransition: false,
             leftValue: 0,
             isShowBuy: !res.data.canRead
           })
@@ -622,6 +626,7 @@ Page({
             factionTitle: res.data.data.name,
             'allSliderValue.section': res.data.data.num,
             pageIndex: 1,
+            useTransition: false,
             leftValue: 0,
             isShowBuy: !res.data.canRead,
             hasGotMaxNum: false
@@ -737,6 +742,7 @@ Page({
                 success: function(res) {
                   self.setData({
                     maxPageNum: Math.ceil(rect.height / parseInt(res.windowHeight - 20)),
+                    useTransition: false,
                     leftValue: -1 * (res.windowWidth - 10) * (parseInt(self.data.pageIndex || 1) - 1),
                     windows: {
                       windows_height: res.windowHeight,
@@ -911,6 +917,7 @@ Page({
             self.setData({
               maxPageNum: maxPageNum,
               pageIndex: maxPageNum, // 往前翻页，讲pageIndex重置为最后一页
+              useTransition: false,
               leftValue: -1 * (self.data.windows.windows_width - 10) * (maxPageNum - 1),
               hasGotMaxNum: true
             })
@@ -987,7 +994,8 @@ Page({
           factionTitle: res.data.data.name,
           'allSliderValue.section': res.data.data.num,
           hasGotMaxNum: false,
-          pageIndex: 1, // 将pageIndex重置为第一页，
+          pageIndex: 1, // 将pageIndex重置为第一页
+          useTransition: false,
           leftValue: 0, // 左滑值重置为0
           isShowBuy: !res.data.canRead
         })

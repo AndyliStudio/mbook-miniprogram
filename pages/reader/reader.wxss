@@ -46,6 +46,9 @@ page {
   position: relative;
   display: block;
   text-align: justify;
+  /* transition: left 0.5s;
+  -webkit-transition: left 0.5s; */
+  transition-timing-function: ease;
 }
 
 /* 提示样式 */
