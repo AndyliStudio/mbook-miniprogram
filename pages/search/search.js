@@ -58,8 +58,14 @@ Page({
   getHelpKeyword: function() {
     let self = this
     wx.request({
-      url: config.base_url + '/api/book/search_help?keyword=' + self.data.keyword,
-      method: 'GET',
+      url: config.base_url + '/api/book/search_help',
+      header: {
+         'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+      },
+      method: 'POST',
+      data: {
+        keyword: self.data.keyword
+      },
       success: res => {
         if (res.data.ok) {
           self.setData({
