@@ -1,4 +1,4 @@
-//login.js
+//reader.js
 const config = require('../../config')
 const app = getApp()
 
@@ -1057,6 +1057,7 @@ Page({
     }
     let nextChapterNum = self.data.currentSectionNum + 1
     if (nextChapterNum <= self.data.newestSectionNum) {
+      console.log('未拦截')
       self.setData({ loading: true })
       wx.request({
         method: 'GET',

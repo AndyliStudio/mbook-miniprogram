@@ -60,11 +60,11 @@ Page({
     wx.request({
       url: config.base_url + '/api/book/search_help',
       header: {
-         'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       method: 'POST',
       data: {
-        keyword: self.data.keyword
+        keyword: self.data.keyword.trim()
       },
       success: res => {
         if (res.data.ok) {
@@ -98,11 +98,11 @@ Page({
     wx.request({
       url: config.base_url + '/api/book/search',
       header: {
-         'content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+        'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       },
       method: 'POST',
       data: {
-        keyword: self.data.keyword
+        keyword: self.data.keyword.trim()
       },
       success: res => {
         if (res.data.ok) {
@@ -125,8 +125,8 @@ Page({
         }
         // 写入搜索历史
         let oldHistory = wx.getStorageSync('history_keyword') || []
-        if (oldHistory.indexOf(self.data.keyword) < 0) {
-          oldHistory.push(self.data.keyword)
+        if (oldHistory.indexOf(self.data.keyword.trim()) < 0) {
+          oldHistory.push(self.data.keyword.trim())
           wx.setStorageSync('history_keyword', oldHistory)
         }
       }
@@ -181,7 +181,7 @@ Page({
     let currentIndex = event.target.dataset.categoryIndex
     let filterCategory = this.data.filterCategory
     filterCategory.forEach(item => {
-      if(item.index === currentIndex) {
+      if (item.index === currentIndex) {
         item.checked = true
       } else {
         item.checked = false
