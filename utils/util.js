@@ -1,5 +1,5 @@
-const fundebug = require('./fundebug.0.4.0.min.js')
-fundebug.apikey = "7607e80084ba331e7f1a7afbe7416f9c05fcc8599bc845a46a400f4588d1f487"
+const fundebug = require('./fundebug.0.6.1.min.js')
+fundebug.apikey = '7607e80084ba331e7f1a7afbe7416f9c05fcc8599bc845a46a400f4588d1f487'
 /**
  * 格式化日期，转变成'2017/11/19 00:00:00'
  */
