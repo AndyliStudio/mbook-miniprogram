@@ -1,0 +1,9 @@
+{
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#1472e0",
+  "navigationBarTitleText": "言情微阅读",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "toast": "../../component/toast/toast"
+  }
+}
