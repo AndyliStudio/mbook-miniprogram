@@ -30,11 +30,11 @@ Page({
     loaded: false,
     shutCheck: false
   },
-  onLoad: function () {
+  onLoad: function() {
     let self = this
     // 获取屏幕高度
     wx.getSystemInfo({
-      success: function (res) {
+      success: function(res) {
         self.setData({
           clientHeight: res.windowHeight
         })
@@ -75,7 +75,7 @@ Page({
     }
   },
   // 设置分享
-  onShareAppMessage: function (res) {
+  onShareAppMessage: function(res) {
     let self = this
     // 获取分享出去的图片地址
     const shareParams = wx.getStorageSync('share_params')
@@ -86,11 +86,11 @@ Page({
         title: shareParams.title,
         path: shareParams.page + '?code=' + code,
         imageUrl: shareParams.imageUrl,
-        success: function (res) {
+        success: function(res) {
           // 转发成功
           // wx.showToast({ title: '分享成功', icon: 'success' })
         },
-        fail: function (res) {
+        fail: function(res) {
           // 取消分享
         }
       }
@@ -99,19 +99,19 @@ Page({
       return false
     }
   },
-  showToast: function (content, position) {
+  showToast: function(content, position) {
     let self = this
     self.setData({ toast: { show: true, content: content, position: position } })
-    setTimeout(function () {
+    setTimeout(function() {
       self.setData({ toast: { show: false, content: '', position: 'bottom' } })
     }, 3000)
   },
-  getBanner: function () {
+  getBanner: function() {
     let self = this
     return new Promise((resolve, reject) => {
       wx.request({
         url: config.base_url + '/api/banner/list',
-        success: function (res) {
+        success: function(res) {
           if (res.data.ok) {
             resolve(res)
           } else {
@@ -119,7 +119,7 @@ Page({
             reject(res)
           }
         },
-        fail: function (err) {
+        fail: function(err) {
           reject(err)
         }
       })
@@ -131,18 +131,17 @@ Page({
         self.setData({ is_show_banner: false })
         utils.debug('获取banner信息失败', JSON.stringify(err))
         // 自动重新尝试
-        setTimeout(() => {
+        setTimeout(function() {
           self.getBanner()
         }, 1000)
       })
-
   },
-  getTheme: function () {
+  getTheme: function() {
     let self = this
     return new Promise((resolve, reject) => {
       wx.request({
         url: config.base_url + '/api/theme/index_list',
-        success: function (res) {
+        success: function(res) {
           if (res.data.ok) {
             resolve(res)
           } else {
@@ -150,7 +149,7 @@ Page({
             reject(res)
           }
         },
-        fail: function (err) {
+        fail: function(err) {
           reject(err)
         }
       })
@@ -168,19 +167,19 @@ Page({
       })
       .catch(err => {
         utils.debug('获取栏目信息失败', JSON.stringify(err))
-        setTimeout(() => {
+        setTimeout(function() {
           self.getTheme()
         }, 1000)
       })
   },
-  changeList: function (event) {
+  changeList: function(event) {
     let self = this
     let theme_id = event.currentTarget.dataset.themeid
     let page = parseInt(self.data.click_times[theme_id])
     if (theme_id) {
       wx.request({
         url: config.base_url + '/api/theme/change_list?page=' + page + '&theme_id=' + theme_id,
-        success: function (res) {
+        success: function(res) {
           if (res.data.ok) {
             if (res.data.list.length > 0) {
               // 局部更新
@@ -203,16 +202,16 @@ Page({
             self.showToast('更新栏目失败', 'bottom')
           }
         },
-        fail: function (err) {
+        fail: function(err) {
           self.showToast('更新栏目失败', 'bottom')
         }
       })
     }
   },
-  gotoDetail: function (event) {
+  gotoDetail: function(event) {
     let bookid = event.currentTarget.dataset.bookid
     let name = event.currentTarget.dataset.name
     wx.navigateTo({ url: '../bookdetail/bookdetail?id=' + bookid + '&name=' + name })
   },
-  handleModalConfirm: function () { }
+  handleModalConfirm: function() {}
 })

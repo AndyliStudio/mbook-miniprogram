@@ -116,7 +116,7 @@ Page({
         duration: 0,
         timingFunc: 'easeIn'
       },
-      fail: () => {
+      fail: function() {
         self.showToast('设置背景色失败', 'bottom')
       }
     })

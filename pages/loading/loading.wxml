@@ -1,7 +1,17 @@
-<div class="loading-page">
-  <div class="product">
-    <image class="logo" src="../../static/img/logo.png"></image>
-    <text class="name"></text>
-  </div>
-  <div class="tips">欢迎回来</div>
-</div>
+<toast toast="{{toast}}"></toast>
+<toast toast="{{toast}}"></toast>
+<view class="load-page">
+  <image class="app-logo" src="../../static/img/logo.png"></image>
+  <view class="app-name">言情微阅读</view>
+  <view class="status">
+    <view class="status-item" wx:if="{{loading}}">
+      <image class="loading" src="../../static/img/loading.png"></image>
+      登录中...
+    </view>
+    <view class="status-item" wx:if="{{success}}">
+      欢迎回来
+    </view>
+    <view class="status-item" wx:if="{{buttonType === 'reLogin'}}"><button bindtap="doLogin">立即登录</button></view>
+    <view class="status-item" wx:if="{{buttonType === 'getUserInfo'}}"><button open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="afterGetUserInfo">授权小程序</button></view>
+  </view>
+</view>

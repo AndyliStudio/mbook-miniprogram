@@ -109,12 +109,12 @@ Page({
                   desText: '获得' + self.data.willGetYuebiNum + '阅币，快去阅读吧~',
                   mainBtnText: '去阅读',
                   subBtnText: '再来一单',
-                  mainCallback: () => {
+                  mainCallback: function() {
                     wx.switchTab({
                       url: '../booklist/booklist'
                     })
                   },
-                  subCallback: () => {
+                  subCallback: function() {
                     self.setData({
                       chargeResult: {
                         type: '',
@@ -156,7 +156,7 @@ Page({
                   desText: errorMsg,
                   mainBtnText: '重新下单',
                   subBtnText: '去阅读',
-                  mainCallback: () => {
+                  mainCallback: function() {
                     self.setData({
                       chargeResult: {
                         type: '',
@@ -169,7 +169,7 @@ Page({
                       }
                     })
                   },
-                  subCallback: () => {
+                  subCallback: function() {
                     wx.switchTab({
                       url: '../booklist/booklist'
                     })

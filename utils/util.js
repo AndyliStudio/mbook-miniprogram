@@ -1,6 +1,9 @@
 const fundebug = require('./fundebug.0.6.1.min.js')
 fundebug.init({
-  apikey: '7607e80084ba331e7f1a7afbe7416f9c05fcc8599bc845a46a400f4588d1f487'
+  apikey: '7607e80084ba331e7f1a7afbe7416f9c05fcc8599bc845a46a400f4588d1f487',
+  silent: false, // 开发阶段选择安静模式不发送错误警告
+  setUserInfo: true,
+  setSystemInfo: true
 })
 /**
  * 格式化日期，转变成'2017/11/19 00:00:00'
@@ -48,7 +51,7 @@ const transDate = date => {
  * 获取当前页面路径
  * @returns {String} 不带参数的路径
  */
-const getCurrentPageUrl = () => {
+const getCurrentPageUrl = function() {
   let pages = getCurrentPages() //获取加载的页面
   let currentPage = pages[pages.length - 1] //获取当前页面的对象
   let url = currentPage.is //当前页面url
@@ -59,7 +62,7 @@ const getCurrentPageUrl = () => {
  * 获取当前页面路径
  * @returns {String} 不带参数的路径
  */
-const getCurrentPageUrlWithArgs = () => {
+const getCurrentPageUrlWithArgs = function() {
   let pages = getCurrentPages() //获取加载的页面
   let currentPage = pages[pages.length - 1] //获取当前页面的对象
   let url = currentPage.is //当前页面url

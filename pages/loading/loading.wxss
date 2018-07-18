@@ -1,0 +1,78 @@
+page {
+  height: 100%;
+}
+.load-page {
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+  padding-top: 30%;
+}
+.load-page::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url(https://fs.andylistudio.com/mbook/v3/images/index-bg.jpg) repeat-y;
+  background-size: cover;
+  -webkit-filter: blur(8rpx);
+  filter: blur(8rpx);
+}
+.load-page .app-logo {
+  display: block;
+  margin: 0 auto 0rpx auto;
+  width: 300rpx;
+  height: 300rpx;
+}
+
+.load-page .app-name {
+  font-size: 36rpx;
+  text-align: center;
+}
+.load-page .status-item {
+  font-size: 32rpx;
+  line-height: 100rpx;
+  text-align: center;
+}
+.load-page .status-item .loading {
+  width: 30rpx;
+  height: 30rpx;
+  animation: circle 1.5s infinite linear;
+  -webkit-animation: circle 1.5s infinite linear;
+}
+
+.load-page .status-item > button {
+  width: 50%;
+  box-sizing: border-box;
+  border: none;
+  background-image: linear-gradient(to top, #23a0fc 0%, #52b6ff 100%);
+  margin-top: 100rpx;
+  margin-bottom: 30rpx;
+  color: #ffffff;
+  font-size: 30rpx;
+  padding: 8rpx;
+  box-sizing: border-box;
+}
+
+.load-page .status-item > button:active {
+  background-image: linear-gradient(to top, #0891f5 0%, #4091cc 100%);
+}
+
+@keyframes circle {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes circle {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
