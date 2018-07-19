@@ -14,40 +14,70 @@ Page({
     },
     code: '', // 邀请码
     wxcode: '', // 邀请二维码
+    records: [
+      {
+        name: '月光倾城',
+        type: '接收邀请',
+        time: '2018/07/17'
+      },
+      {
+        name: '月光倾城',
+        type: '接收邀请',
+        time: '2018/07/17'
+      },
+      {
+        name: '月光倾城',
+        type: '接收邀请',
+        time: '2018/07/17'
+      },
+      {
+        name: '月光倾城',
+        type: '接收邀请',
+        time: '2018/07/17'
+      }
+    ], // 邀请记录
+    hasMore: true,
+    showSharePanel: '', // 是否展示分享面板
     loaded: false
   },
   onShow: function() {
     let self = this
     // self.getWxCode()
     // 拿到的用户分享信息
-    const shareInfo = app.globalData.shareInfo
-    const shareParams = app.globalData.globalSetting.share
-    if (shareInfo) {
-      self.setData({ shareInfo: shareInfo })
-    }
-    // 如果url中存在code并且code符合规范，调用更新分享记录的接口
-    const reg = /^[A-Za-z0-9-]+_\d+$/
-    if (self.data.code && reg.test(self.data.code)) {
-      app.updateShareLog(self.data.code).then(res => {
-        if (res === true) {
-          // 更新奖励
-          self.flushAward()
-        } else {
-          if (!res.data.inviteself) {
-            self.showToast(res.data ? res.data.msg || '接收邀请失败' : '接收邀请失败')
-          }
-        }
-      })
-    }
-    self.setData({
-      loaded: true,
-      shareText: shareParams && shareParams.title ? shareParams.title : '一起来读书吧，接收我的邀请立即获得15书币哦~'
-    })
+    // const shareInfo = app.globalData.shareInfo
+    // const shareParams = app.globalData.globalSetting.share
+    // if (shareInfo) {
+    //   self.setData({ shareInfo: shareInfo })
+    // }
+    // // 如果url中存在code并且code符合规范，调用更新分享记录的接口
+    // const reg = /^[A-Za-z0-9-]+_\d+$/
+    // if (self.data.code && reg.test(self.data.code)) {
+    //   app.updateShareLog(self.data.code).then(res => {
+    //     if (res === true) {
+    //       // 更新奖励
+    //       self.flushAward()
+    //     } else {
+    //       if (!res.data.inviteself) {
+    //         self.showToast(res.data ? res.data.msg || '接收邀请失败' : '接收邀请失败')
+    //       }
+    //     }
+    //   })
+    // }
+    // self.setData({
+    //   loaded: true,
+    //   shareText: shareParams && shareParams.title ? shareParams.title : '一起来读书吧，接收我的邀请立即获得15书币哦~'
+    // })
   },
   onLoad: function(options) {
     this.setData({
       code: options.code || ''
     })
+  },
+  openSharePanel: function() {
+    this.setData({ showSharePanel: true })
+  },
+  closeSharePanel: function() {
+    this.setData({ showSharePanel: false })
   },
   updateShareLog: function(share_id) {
     let self = this
@@ -143,7 +173,7 @@ Page({
   getWxCode: function() {
     let self = this
     let now = new Date()
-    let code = wx.getStorageSync('share_code')
+    // let code = app.globalData.
     if (code) {
       wx.request({
         url: config.base_url + '/api/get_share_img?share_type=friendQ&share_id=' + code + '_' + now.getTime(),
