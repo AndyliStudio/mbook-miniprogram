@@ -10,11 +10,10 @@ Page({
     loading: true,
     success: false,
     buttonType: '',
-    text: ''
+    text: '欢迎回来'
   },
   onLoad: function() {
     let self = this
-    // 获取当前时间信息
     // 尝试自动登录
     self.doLogin()
   },
@@ -65,14 +64,23 @@ Page({
   },
   doLogin: function() {
     let self = this
-    self.setData({ loading: true, success: false, buttonType: '' })
+    self.setData({ loading: true, text: '', success: false, buttonType: '' })
     self
       .requestLogin()
       .then(res => {
         self.setData({ loading: false, success: true, buttonType: '' })
+        // 根据是否shut_check字段来决定跳转到哪个页面
+        console.log(app.globalData)
+        if (app.globalData.globalSetting.shut_check === 'true') {
+          // 跳转到屏蔽审核页面
+          wx.redirectTo({ url: '../search2/search2' })
+        } else {
+          // 正常跳转到首页
+          wx.switchTab({ url: '../index/index' })
+        }
       })
       .catch(function() {
-        self.setData({ loading: false, success: false })
+        self.setData({ loading: false, text: '', success: false })
       })
   },
   // 用户登录
@@ -93,9 +101,18 @@ Page({
             success: function(res) {
               if (res.data.ok) {
                 // 将token存入缓存，在每次发送需要认证的请求时在header里带上token
-                app.globalData.token = res.data.token
-                app.globalData.userInfo = res.data.userinfo
-                app.globalData.allbooks = res.data.allbooks
+                app.globalData.token = res.data.token // 登录token
+                app.globalData.userInfo = res.data.userinfo // 用户详情
+                app.globalData.allbooks = res.data.allbooks // 用户书籍列表
+                app.globalData.shareInfo = res.data.shareInfo // 用户分享信息
+                for (let i in res.data.globalSetting) {
+                  if (utils.isJsonString(res.data.globalSetting[i])) {
+                    res.data.globalSetting[i] = JSON.parse(res.data.globalSetting[i])
+                  }
+                }
+                app.globalData.globalSetting = res.data.globalSetting // 系统全局设置
+                app.globalData.shareCode = res.data.code // 用户分享码
+                self.setData({ text: '欢迎回来' })
                 resolve(true)
               } else if (!res.data.ok && res.data.registe === false) {
                 // 未注册，自动注册
@@ -142,9 +159,18 @@ Page({
               data: Object.assign({ identity: 'appuser', code }, userInfo),
               success: function(res) {
                 if (res.data.ok) {
-                  app.globalData.token = res.data.token
-                  app.globalData.userInfo = res.data.userinfo
-                  app.globalData.allbooks = []
+                  app.globalData.token = res.data.token // 登录token
+                  app.globalData.userInfo = res.data.userinfo // 用户详情
+                  app.globalData.allbooks = res.data.allbooks // 用户书籍列表
+                  app.globalData.shareInfo = res.data.shareInfo // 用户分享信息
+                  for (let i in res.data.globalSetting) {
+                    if (utils.isJsonString(res.data.globalSetting[i])) {
+                      res.data.globalSetting[i] = JSON.parse(res.data.globalSetting[i])
+                    }
+                  }
+                  app.globalData.globalSetting = res.data.globalSetting // 系统全局设置
+                  app.globalData.shareCode = res.data.code // 用户分享码
+                  self.setData({ text: '遇见你，真高兴~' })
                   resolve(true)
                 } else {
                   utils.debug('调用接口失败--/api/user/registe，' + JSON.stringify(res))

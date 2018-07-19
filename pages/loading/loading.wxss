@@ -39,6 +39,7 @@ page {
 .load-page .status-item .loading {
   width: 30rpx;
   height: 30rpx;
+  margin-right: 20rpx;
   animation: circle 1.5s infinite linear;
   -webkit-animation: circle 1.5s infinite linear;
 }

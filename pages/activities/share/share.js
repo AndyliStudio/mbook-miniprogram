@@ -93,21 +93,14 @@ Page({
   onShareAppMessage: function(res) {
     let self = this
     // 获取分享出去的图片地址
-    const shareParams = wx.getStorageSync('share_params')
+    const shareParams = app.globalData.globalSetting.share
     const now = new Date()
     const code = wx.getStorageSync('share_code') + '_' + now.getTime()
     if (shareParams) {
       return {
         title: shareParams.title,
         path: shareParams.page + '?code=' + code,
-        imageUrl: shareParams.imageUrl,
-        success: function(res) {
-          // 转发成功
-          // wx.showToast({ title: '分享成功', icon: 'success' })
-        },
-        fail: function(res) {
-          // 取消分享
-        }
+        imageUrl: shareParams.imageUrl
       }
     } else {
       self.showToast('获取分享参数失败', 'bottom')

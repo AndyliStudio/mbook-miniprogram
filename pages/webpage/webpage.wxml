@@ -1,2 +1,2 @@
-<view class="loading"><image src="../../static/img/book-loading.svg" alt="页面加载中..."></image></view>
+<view class="loading"><image src="//fs.andylistudio.com/mbook/v3/images/book-loading.svg" alt="页面加载中..."></image></view>
 <web-view src="{{url}}" bindmessage="reciveMessage"></web-view>

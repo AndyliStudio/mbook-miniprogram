@@ -90,10 +90,23 @@ const debug = message => {
   fundebug.notifyError(message)
 }
 
+/**
+ * 判断当前字符串是否json字符串
+ */
+const isJsonString = str => {
+  try {
+    JSON.parse(str)
+    return true
+  } catch (err) {
+    return false
+  }
+}
+
 module.exports = {
   formatTime: formatTime,
   transDate: transDate,
   getCurrentPages: getCurrentPageUrl,
   getCurrentPageUrlWithArgs: getCurrentPageUrlWithArgs,
-  debug: debug
+  debug: debug,
+  isJsonString: isJsonString
 }

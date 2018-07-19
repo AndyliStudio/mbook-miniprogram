@@ -22,27 +22,19 @@ Page({
         confirmText: ''
       }
     },
-    clientHeight: '',
     banner_urls: [],
     is_show_banner: true,
     themes: [],
     click_times: {}, // 换一批点击次数
-    loaded: false,
-    shutCheck: false
+    loaded: false
   },
   onLoad: function() {
     let self = this
-    // 获取屏幕高度
-    wx.getSystemInfo({
-      success: function(res) {
-        self.setData({
-          clientHeight: res.windowHeight
-        })
-      }
-    })
+
     // 获取banner和栏目信息，使用promise来控制两个请求的同步
     let bannerP = self.getBanner()
     let themeP = self.getTheme()
+
     // 当两个请求完成之后隐藏loading
     Promise.all([bannerP, themeP])
       .then(results => {
@@ -51,9 +43,9 @@ Page({
       .catch(err => {
         utils.debug('获取栏目或者banner信息失败', JSON.stringify(err))
       })
+
     // 展示全局弹窗
-    const globalSetting = wx.getStorageSync('global_setting')
-    const dialog = globalSetting ? JSON.parse(globalSetting.index_dialog) : ''
+    const dialog = app.globalData.globalSetting.index_dialog
     if (dialog && dialog.show === 'true') {
       self.setData({
         modal: {
@@ -78,21 +70,14 @@ Page({
   onShareAppMessage: function(res) {
     let self = this
     // 获取分享出去的图片地址
-    const shareParams = wx.getStorageSync('share_params')
+    const shareParams = app.globalData.globalSetting.share
     const now = new Date()
     const code = wx.getStorageSync('share_code') + '_' + now.getTime()
     if (shareParams) {
       return {
         title: shareParams.title,
         path: shareParams.page + '?code=' + code,
-        imageUrl: shareParams.imageUrl,
-        success: function(res) {
-          // 转发成功
-          // wx.showToast({ title: '分享成功', icon: 'success' })
-        },
-        fail: function(res) {
-          // 取消分享
-        }
+        imageUrl: shareParams.imageUrl
       }
     } else {
       self.showToast('获取分享参数失败', 'bottom')
@@ -129,7 +114,7 @@ Page({
       })
       .catch(err => {
         self.setData({ is_show_banner: false })
-        utils.debug('获取banner信息失败', JSON.stringify(err))
+        utils.debug('调用接口失败--/api/banner/list', JSON.stringify(err))
         // 自动重新尝试
         setTimeout(function() {
           self.getBanner()
