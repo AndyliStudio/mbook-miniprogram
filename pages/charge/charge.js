@@ -1,5 +1,6 @@
 // pages/setting/charge.js
 const config = require('../../config')
+const app = getApp()
 
 Page({
   data: {
@@ -81,7 +82,7 @@ Page({
     wx.request({
       method: 'POST',
       url: config.base_url + '/api/pay',
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       data: {
         chargeids: selectPrise.map(item => {
           return item.id
@@ -140,7 +141,7 @@ Page({
                   wx.request({
                     method: 'GET',
                     url: config.base_url + '/api/pay/cancel?pay_id=' + pay_id,
-                    header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+                    header: { Authorization: 'Bearer ' + app.globalData.token },
                     success: res => {}
                   })
                 }

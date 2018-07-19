@@ -1,5 +1,6 @@
 // pages/user/user.js
 const config = require('../../config')
+const app = getApp()
 
 Page({
   data: {
@@ -19,7 +20,7 @@ Page({
     let self = this
     wx.request({
       url: config.base_url + '/api/user/amount',
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           self.setData({ text: res.data.data.text, amount: res.data.data.amount })

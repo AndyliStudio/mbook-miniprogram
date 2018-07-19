@@ -1,5 +1,6 @@
 //attendance.js
 const config = require('../../config')
+const app = getApp()
 let choose_year = null
 let choose_month = null
 
@@ -167,7 +168,7 @@ Page({
     let self = this
     wx.request({
       method: 'GET',
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       url: config.base_url + '/api/attendance',
       success: res => {
         if (res.data.ok) {
@@ -195,7 +196,7 @@ Page({
     let self = this
     wx.request({
       method: 'GET',
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       url: config.base_url + '/api/attendance/me',
       success: res => {
         if (res.data.ok) {

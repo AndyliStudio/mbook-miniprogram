@@ -341,7 +341,7 @@ Page({
     wx.request({
       method: 'GET',
       url: config.base_url + '/api/chapter/detail?bookid=' + self.data.bookid + '&chapter_num=' + event.detail.value,
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success(res) {
         if (res.data.ok) {
           self.setData({
@@ -617,7 +617,7 @@ Page({
     wx.request({
       method: 'GET',
       url: config.base_url + '/api/chapter/detail?bookid=' + self.data.bookid + '&chapter_id=' + chapterid,
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success(res) {
         if (res.data.ok) {
           self.setData({
@@ -690,7 +690,7 @@ Page({
     let chapterStr = chapterNum ? '&chapter_num=' + chapterNum : ''
     wx.request({
       url: config.base_url + '/api/chapter/detail?bookid=' + self.data.bookid + chapterStr,
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           self.setData({
@@ -779,7 +779,7 @@ Page({
     wx.request({
       method: 'POST',
       url: config.base_url + '/api/booklist/update_read',
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       data: {
         bookid: self.data.bookid,
         chapter_num: self.data.currentSectionNum,
@@ -800,7 +800,7 @@ Page({
           //         wx.request({
           //           url: config.base_url + '/api/booklist/add_book?id=' + bookid,
           //           header: {
-          //             Authorization: 'Bearer ' + wx.getStorageSync('token')
+          //             Authorization: 'Bearer ' + app.globalData.token
           //           },
           //           success: res => {
           //             if (res.data.ok) {
@@ -949,7 +949,7 @@ Page({
         method: 'GET',
         url: config.base_url + '/api/chapter/detail?bookid=' + self.data.bookid + '&chapter_num=' + preChapterNum,
         header: {
-          Authorization: 'Bearer ' + wx.getStorageSync('token')
+          Authorization: 'Bearer ' + app.globalData.token
         },
         success(res) {
           callback(res)
@@ -971,7 +971,7 @@ Page({
       wx.request({
         method: 'GET',
         url: config.base_url + '/api/chapter/detail?bookid=' + self.data.bookid + '&chapter_num=' + preChapterNum,
-        header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+        header: { Authorization: 'Bearer ' + app.globalData.token },
         success(res) {
           if (res.data.ok) {
             // 存储获得接口数据
@@ -1062,7 +1062,7 @@ Page({
       wx.request({
         method: 'GET',
         url: config.base_url + '/api/chapter/detail?bookid=' + self.data.bookid + '&chapter_num=' + nextChapterNum,
-        header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+        header: { Authorization: 'Bearer ' + app.globalData.token },
         success(res) {
           callback(res)
           self.setData({ loading: false })
@@ -1084,7 +1084,7 @@ Page({
       wx.request({
         method: 'GET',
         url: config.base_url + '/api/chapter/detail?bookid=' + self.data.bookid + '&chapter_num=' + nextChapterNum,
-        header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+        header: { Authorization: 'Bearer ' + app.globalData.token },
         success(res) {
           if (res.data.ok) {
             // 存储获得接口数据
@@ -1099,7 +1099,7 @@ Page({
     let self = this
     wx.request({
       url: config.base_url + '/api/chapter/buy?bookid=' + self.data.bookid + '&chapter_num=' + self.data.currentSectionNum,
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           // 隐藏购买提示
@@ -1198,7 +1198,7 @@ Page({
     }
     wx.request({
       url: config.base_url + '/api/secret/open?bookid=' + self.data.bookid + '&secret=' + self.data.modal.inputValue,
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           // 隐藏购买提示

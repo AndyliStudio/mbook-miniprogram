@@ -5,11 +5,12 @@ const Promise = require('./utils/bluebird.min')
 
 App({
   updateShareLog: function(share_id, callback) {
+    let self = this
     return new Promise((resolve, reject) => {
       wx.request({
         method: 'GET',
         url: config.base_url + '/api/share/update?share_id=' + share_id,
-        header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+        header: { Authorization: 'Bearer ' + self.globalData.token },
         success: res => {
           if (res.data.ok) {
             resolve(true)
@@ -35,10 +36,11 @@ App({
   },
   // 前端向后端提交formId
   reportFormId: function(formId) {
+    let self = this
     wx.request({
       method: 'GET',
       url: config.base_url + '/api/upload_formid?formId=' + formId,
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + self.globalData.token },
       success: res => {
         if (!res.data.ok) {
           utils.debug('提交formId失败：' + JSON.stringify(err))
@@ -66,8 +68,11 @@ App({
     utils.debug(error)
   },
   globalData: {
-    code: '',
-    userInfo: null,
+    token: '',
+    userInfo: {}, // 用户基本信息
+    allbooks: [], // 阅读记录
+    shareInfo: {}, // 分享信息
+    shareCode: '', // 邀请码
     hasLogined: false,
     hasGotShareInfo: false,
     allbooks: []

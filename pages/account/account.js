@@ -1,6 +1,7 @@
 // pages/user/user.js
 const config = require('../../config')
 const util = require('../../utils/util')
+const app = getApp()
 
 Page({
   data: {
@@ -58,7 +59,7 @@ Page({
     let self = this
     wx.request({
       url: config.base_url + '/api/buy/list?page=' + self.data.awardPage,
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           self.setData({
@@ -91,7 +92,7 @@ Page({
     let self = this
     wx.request({
       url: config.base_url + '/api/award/list?page=' + self.data.buyPage,
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           self.setData({
@@ -124,7 +125,7 @@ Page({
     let self = this
     wx.request({
       url: config.base_url + '/api/user/amount',
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           self.setData({ amount: res.data.data.amount })

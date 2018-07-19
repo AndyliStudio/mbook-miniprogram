@@ -26,7 +26,6 @@ Page({
       wx.login({
         success: function(res) {
           if (res.code) {
-            app.globalData.code = res.code
             resolve(res.code)
           } else {
             utils.debug('调用wx.login失败，' + JSON.stringify(res))
@@ -155,7 +154,7 @@ Page({
                 }
               },
               fail: function(err) {
-                utils.debug('调用注册接口失败--/api/user/registe，' + JSON.stringify(err))
+                utils.debug('调用接口失败--/api/user/registe，' + JSON.stringify(err))
                 self.showToast('注册失败', 'bottom')
                 self.setData({ buttonType: 'reLogin' })
                 reject(false)
@@ -169,25 +168,29 @@ Page({
     })
   },
   // 重新授权之后执行
-  afterGetUserInfo() {},
+  afterGetUserInfo() {
+    this.doLogin()
+  },
   // 获取分享配置、奖励信息、以及分享码
   getShareInfo: function() {
     return new Promise((resolve, reject) => {
       wx.request({
         method: 'GET',
         url: config.base_url + '/api/share/info',
-        header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+        header: { Authorization: 'Bearer ' + app.globalData.token },
         success: res => {
           if (res.data.ok) {
-            wx.setStorageSync('share_info', res.data.shareInfo)
-            wx.setStorageSync('share_code', res.data.code)
+            app.globalData.shareInfo = res.data.shareInfo || {}
+            app.globalData.shareCode = res.data.code || ''
+            // wx.setStorageSync('share_info', res.data.shareInfo)
+            // wx.setStorageSync('share_code', res.data.code)
             resolve(true)
           } else {
             resolve(false)
           }
         },
         fail: err => {
-          utils.debug('获取分享信息失败：' + JSON.stringify(err))
+          utils.debug('调用接口失败--/api/share/info：' + JSON.stringify(err))
           // 自动重新尝试
           this.getShareInfo()
         }

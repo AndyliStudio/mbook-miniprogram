@@ -52,7 +52,7 @@ Page({
               self.flushAward()
             } else {
               if (!res.data.inviteself) {
-                self.showToast(res.data ? (res.data.msg || '接收邀请失败') : '接收邀请失败' )
+                self.showToast(res.data ? res.data.msg || '接收邀请失败' : '接收邀请失败')
               }
             }
           })
@@ -151,7 +151,7 @@ Page({
     if (code) {
       wx.request({
         url: config.base_url + '/api/get_share_img?share_type=friendQ&share_id=' + code + '_' + now.getTime(),
-        header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+        header: { Authorization: 'Bearer ' + app.globalData.token },
         success: res => {
           if (res.data.ok) {
             self.setData({ wxcode: res.data.img_url })

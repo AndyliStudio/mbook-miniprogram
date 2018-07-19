@@ -17,7 +17,7 @@ Page({
     let self = this
     wx.request({
       url: config.base_url + '/api/booklist/mylist',
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           self.setData({ myBooks: res.data.list })
@@ -61,7 +61,7 @@ Page({
     wx.request({
       url: config.base_url + '/api/booklist/remove_book?id=' + bookid,
       header: {
-        Authorization: 'Bearer ' + wx.getStorageSync('token')
+        Authorization: 'Bearer ' + app.globalData.token
       },
       success: function(res) {
         if (res.data.ok) {

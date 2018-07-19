@@ -50,7 +50,7 @@ Page({
     if (id) {
       wx.request({
         url: config.base_url + '/api/book/get_detail?id=' + id,
-        header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+        header: { Authorization: 'Bearer ' + app.globalData.token },
         success: function(res) {
           if (res.data.ok) {
             // devide des into shortDes and des;
@@ -102,7 +102,7 @@ Page({
     if (id) {
       wx.request({
         url: config.base_url + '/api/comment/list?bookid=' + id,
-        header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+        header: { Authorization: 'Bearer ' + app.globalData.token },
         success: res => {
           if (res.data.ok) {
             res.data.list = res.data.list.map(item => {
@@ -181,7 +181,7 @@ Page({
     }
     wx.request({
       url: config.base_url + '/api/secret/open?bookid=' + self.data.bookid + '&secret=' + self.data.modal.inputValue,
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           // 隐藏购买提示
@@ -225,7 +225,7 @@ Page({
       wx.request({
         url: config.base_url + '/api/booklist/remove_book?id=' + self.data.bookid,
         header: {
-          Authorization: 'Bearer ' + wx.getStorageSync('token')
+          Authorization: 'Bearer ' + app.globalData.token
         },
         success: function(res) {
           if (res.data.ok) {
@@ -247,7 +247,7 @@ Page({
       wx.request({
         url: config.base_url + '/api/booklist/add_book?id=' + self.data.bookid,
         header: {
-          Authorization: 'Bearer ' + wx.getStorageSync('token')
+          Authorization: 'Bearer ' + app.globalData.token
         },
         success: function(res) {
           if (res.data.ok) {
@@ -273,7 +273,7 @@ Page({
     let index = event.currentTarget.dataset.index
     wx.request({
       url: config.base_url + '/api/comment/like?commentid=' + commentid + '&op=' + (self.data.comments[index].is_like ? 'remove' : 'add'),
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           let key1 = 'comments[' + index + '].like_num'
@@ -326,7 +326,7 @@ Page({
     wx.request({
       method: 'POST',
       url: config.base_url + '/api/comment/add',
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       data: {
         bookid: self.data.bookid,
         content: content,

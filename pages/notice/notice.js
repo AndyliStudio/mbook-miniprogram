@@ -1,6 +1,7 @@
 // pages/notice/notice.js
 const config = require('../../config')
 const util = require('../../utils/util')
+const app = getApp()
 
 Page({
   data: {
@@ -45,7 +46,7 @@ Page({
     } else {
       wx.request({
         url: config.base_url + '/api/comment/my',
-        header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+        header: { Authorization: 'Bearer ' + app.globalData.token },
         method: 'GET',
         success: res => {
           if (res.data.ok) {

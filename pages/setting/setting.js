@@ -1,6 +1,7 @@
 // pages/setting/setting.js
 
 const config = require('../../config')
+const app = getApp()
 
 Page({
   data: {
@@ -69,7 +70,7 @@ Page({
     } else {
       wx.request({
         url: config.base_url + '/api/user/get_user_setting',
-        header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+        header: { Authorization: 'Bearer ' + app.globalData.token },
         success: res => {
           if (res.data.ok) {
             self.setData({ userSetting: res.data.data, previewBg: self.getBackGround(res.data.data.reader.mode) })
@@ -97,7 +98,7 @@ Page({
       data: {
         setting: self.data.userSetting
       },
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           // self.setData({ userSetting: res.data.data, previewBg: self.getBackGround(res.data.data.reader.mode) })
