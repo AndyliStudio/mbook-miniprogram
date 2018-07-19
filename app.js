@@ -4,36 +4,6 @@ const utils = require('./utils/util')
 const Promise = require('./utils/bluebird.min')
 
 App({
-  updateShareLog: function(share_id, callback) {
-    let self = this
-    return new Promise((resolve, reject) => {
-      wx.request({
-        method: 'GET',
-        url: config.base_url + '/api/share/update?share_id=' + share_id,
-        header: { Authorization: 'Bearer ' + self.globalData.token },
-        success: res => {
-          if (res.data.ok) {
-            resolve(true)
-            wx.showToast({ title: '获得15书币的奖励', icon: 'success' })
-            setTimeout(function() {
-              wx.hideToast()
-            }, 2000)
-          } else if (res.data.authfail) {
-            wx.navigateTo({
-              url: '../authfail/authfail'
-            })
-          } else {
-            resolve(res)
-          }
-        },
-        fail: err => {
-          utils.debug('领取分享奖励失败：' + JSON.stringify(err))
-          // 自动重新尝试
-          this.updateShareLog(share_id, callback)
-        }
-      })
-    })
-  },
   // 前端向后端提交formId
   reportFormId: function(formId) {
     let self = this

@@ -12,69 +12,72 @@ Page({
       totalAwardNum: 0,
       totalInviteNum: 0
     },
-    code: '',
-    wxcode: '',
+    code: '', // 邀请码
+    wxcode: '', // 邀请二维码
     loaded: false
   },
   onShow: function() {
     let self = this
-    // 等待用户登录完成
-    let waitLoginCount = 0
-    let waitLoginTimer = setInterval(function() {
-      if (app.globalData.hasLogined) {
-        self.getWxCode()
-        clearInterval(waitLoginTimer)
-      } else if (waitLoginCount >= 33) {
-        clearInterval(waitLoginTimer)
-        wx.navigateTo({
-          url: '../../authfail/authfail'
-        })
-      } else {
-        waitLoginCount++
-      }
-    }, 300)
-    // 等待获取用户分享信息完成
-    let waitGotShareInfoCount = 0
-    let waitGotShareInfoTimer = setInterval(function() {
-      if (app.globalData.hasGotShareInfo) {
-        // 加载缓存中拿到的用户分享信息
-        const shareInfo = wx.getStorageSync('share_info')
-        const shareParams = wx.getStorageSync('share_params')
-        if (shareInfo) {
-          self.setData({ shareInfo: shareInfo })
+    // self.getWxCode()
+    // 拿到的用户分享信息
+    const shareInfo = app.globalData.shareInfo
+    const shareParams = app.globalData.globalSetting.share
+    if (shareInfo) {
+      self.setData({ shareInfo: shareInfo })
+    }
+    // 如果url中存在code并且code符合规范，调用更新分享记录的接口
+    const reg = /^[A-Za-z0-9-]+_\d+$/
+    if (self.data.code && reg.test(self.data.code)) {
+      app.updateShareLog(self.data.code).then(res => {
+        if (res === true) {
+          // 更新奖励
+          self.flushAward()
+        } else {
+          if (!res.data.inviteself) {
+            self.showToast(res.data ? res.data.msg || '接收邀请失败' : '接收邀请失败')
+          }
         }
-        // 如果url中存在code并且code符合规范，调用更新分享记录的接口
-        const reg = /^[A-Za-z0-9-]+_\d+$/
-        if (self.data.code && reg.test(self.data.code)) {
-          app.updateShareLog(self.data.code).then(res => {
-            if (res === true) {
-              // 更新奖励
-              self.flushAward()
-            } else {
-              if (!res.data.inviteself) {
-                self.showToast(res.data ? res.data.msg || '接收邀请失败' : '接收邀请失败')
-              }
-            }
-          })
-        }
-        self.setData({
-          loaded: true,
-          shareText: shareParams && shareParams.title ? shareParams.title : '一起来读书吧，接收我的邀请立即获得15书币哦~'
-        })
-        clearInterval(waitGotShareInfoTimer)
-      } else if (waitLoginCount >= 33) {
-        clearInterval(waitGotShareInfoTimer)
-        wx.navigateTo({
-          url: '../../authfail/authfail'
-        })
-      } else {
-        waitGotShareInfoCount++
-      }
-    }, 300)
+      })
+    }
+    self.setData({
+      loaded: true,
+      shareText: shareParams && shareParams.title ? shareParams.title : '一起来读书吧，接收我的邀请立即获得15书币哦~'
+    })
   },
   onLoad: function(options) {
     this.setData({
       code: options.code || ''
+    })
+  },
+  updateShareLog: function(share_id) {
+    let self = this
+    return new Promise((resolve, reject) => {
+      wx.request({
+        method: 'GET',
+        url: config.base_url + '/api/share/update?share_id=' + share_id,
+        header: { Authorization: 'Bearer ' + self.globalData.token },
+        success: res => {
+          if (res.data.ok) {
+            resolve(true)
+            wx.showToast({ title: '获得15书币的奖励', icon: 'success' })
+
+            setTimeout(function() {
+              wx.hideToast()
+            }, 2000)
+          } else if (res.data.authfail) {
+            wx.navigateTo({
+              url: '../authfail/authfail'
+            })
+          } else {
+            reject(res)
+          }
+        },
+        fail: err => {
+          utils.debug('领取分享奖励失败：' + JSON.stringify(err))
+          // 自动重新尝试
+          this.updateShareLog(share_id, callback)
+        }
+      })
     })
   },
   flushAward: function() {

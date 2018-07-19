@@ -71,7 +71,7 @@ Page({
         self.setData({ loading: false, success: true, buttonType: '' })
         // 根据是否shut_check字段来决定跳转到哪个页面
         console.log(app.globalData)
-        if (app.globalData.globalSetting.shut_check === 'true') {
+        if (app.globalData.globalSetting.shut_check) {
           // 跳转到屏蔽审核页面
           wx.redirectTo({ url: '../search2/search2' })
         } else {
@@ -208,8 +208,6 @@ Page({
           if (res.data.ok) {
             app.globalData.shareInfo = res.data.shareInfo || {}
             app.globalData.shareCode = res.data.code || ''
-            // wx.setStorageSync('share_info', res.data.shareInfo)
-            // wx.setStorageSync('share_code', res.data.code)
             resolve(true)
           } else {
             resolve(false)
