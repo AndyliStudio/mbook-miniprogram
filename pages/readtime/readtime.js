@@ -43,7 +43,7 @@ Page({
             self.setData({ minute: 0, num: 0 })
           } else if (res.data.authfail) {
             wx.navigateTo({
-              url: '../authfail/authfail'
+              url: '../loading/loading?need_login_again=1'
             })
           } else {
             self.showToast('获取阅读时长失败', 'bottom')

@@ -181,7 +181,7 @@ Page({
           })
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           wx.hideLoading()

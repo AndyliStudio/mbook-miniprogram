@@ -181,7 +181,7 @@ Page({
           }, 1000)
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           self.showToast('获取签到记录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
@@ -214,7 +214,7 @@ Page({
           self.calculateDays(self.data.cur_year, self.data.cur_month)
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           self.showToast('获取签到记录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')

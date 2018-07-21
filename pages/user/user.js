@@ -14,7 +14,7 @@ Page({
   },
   onLoad: function() {
     // 获取屏幕高度
-    this.setData({ userInfo: wx.getStorageSync('userinfo') })
+    this.setData({ userInfo: app.globalData.userInfo })
   },
   getInfo: function() {
     let self = this
@@ -27,7 +27,7 @@ Page({
           wx.setStorageSync('amount', res.data.data.amount)
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           self.showToast('获取个人信息失败', 'bottom')

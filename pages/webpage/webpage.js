@@ -1,5 +1,6 @@
 // pages/setting/webpage.js
 const config = require('../../config')
+const app = getApp()
 
 Page({
   data: {
@@ -12,7 +13,7 @@ Page({
     if (url) {
       if (options.url.indexOf('activity/share') > -1) {
         // 获取userid
-        const userinfo = wx.getStorageSync('userinfo')
+        const userinfo = app.globalData.userInfo
         // 判断 url是否已经携带参数
         if (url.indexOf('?') > -1) {
           url += '&uid=' + userinfo._id

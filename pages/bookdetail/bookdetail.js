@@ -41,9 +41,8 @@ Page({
     this.setData({ bookid: this.data.bookid })
   },
   onLoad: function(options) {
-    let globalSetting = wx.getStorageSync('global_setting')
-    let secretTips = globalSetting.secret_tips || '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
-    this.setData({ bookid: options.id, wxcode: globalSetting.wxcode || 'haitianyise_hl', secretTips: secretTips })
+    let secretTips = app.globalData.globalSetting.secret_tips || '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
+    this.setData({ bookid: options.id, wxcode: app.globalData.globalSetting.wxcode || 'haitianyise_hl', secretTips: secretTips })
   },
   getBookDetail: function(id) {
     let self = this
@@ -83,7 +82,7 @@ Page({
             wx.hideNavigationBarLoading()
           } else if (res.data.authfail) {
             wx.navigateTo({
-              url: '../authfail/authfail'
+              url: '../loading/loading?need_login_again=1'
             })
           } else {
             self.showToast('获取书籍信息失败~', 'bottom')
@@ -112,7 +111,7 @@ Page({
             self.setData({ comments: res.data.list })
           } else if (res.data.authfail) {
             wx.navigateTo({
-              url: '../authfail/authfail'
+              url: '../loading/loading?need_login_again=1'
             })
           } else {
             self.showToast(res.data.msg || '获取评论失败~', 'bottom')
@@ -192,7 +191,7 @@ Page({
           wx.showToast({ title: '解锁成功', icon: 'success' })
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           self.showToast('解锁失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
@@ -233,7 +232,7 @@ Page({
             self.setData({ isInList: false })
           } else if (res.data.authfail) {
             wx.navigateTo({
-              url: '../authfail/authfail'
+              url: '../loading/loading?need_login_again=1'
             })
           } else {
             self.showToast(res.data.msg || '从书架中移除失败，请重新尝试~', 'bottom')
@@ -255,7 +254,7 @@ Page({
             self.setData({ isInList: true })
           } else if (res.data.authfail) {
             wx.navigateTo({
-              url: '../authfail/authfail'
+              url: '../loading/loading?need_login_again=1'
             })
           } else {
             self.showToast(res.data.msg || '加入书架失败，请重新尝试~', 'bottom')
@@ -281,7 +280,7 @@ Page({
           self.setData({ [key1]: res.data.current, [key2]: self.data.comments[index].is_like ? false : true })
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           self.showToast(res.data.msg || '点赞失败~', 'bottom')
@@ -306,7 +305,7 @@ Page({
     } else {
       const commentid = event.currentTarget.dataset.commentid
       const username = event.currentTarget.dataset.username
-      const storeUsername = (wx.getStorageSync('userinfo') || {}).username
+      const storeUsername = app.globalData.userInfo.username
       if (storeUsername === username) {
         self.showToast('自己不能回复自己', 'bottom')
       } else {
@@ -342,7 +341,7 @@ Page({
           self.getCommentList(self.data.bookid)
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           self.showToast(res.data.msg || '发布书评失败~', 'bottom')

@@ -62,7 +62,7 @@ Page({
   getUserSetting: function() {
     let self = this
     // 判断本地缓存中是否存在设置缓存
-    let localSetting = wx.getStorageSync('userinfo') || {}
+    let localSetting = app.globalData.userInfo || {}
     if (0 && localSetting && localSetting.setting) {
       let userSetting = localSetting.setting
       // 存在
@@ -78,7 +78,7 @@ Page({
             wx.setStorageSync('userinfo', localSetting)
           } else if (res.data.authfail) {
             wx.navigateTo({
-              url: '../authfail/authfail'
+              url: '../loading/loading?need_login_again=1'
             })
           } else {
             self.showToast('获取设置失败', 'bottom')
@@ -106,7 +106,7 @@ Page({
           // wx.setStorageSync('userinfo', localSetting)
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           self.showToast('更新设置失败', 'bottom')
@@ -119,7 +119,7 @@ Page({
   },
   //跳出页面执行函数
   onUnload: function() {
-    let localSetting = wx.getStorageSync('userinfo') || {}
+    let localSetting = app.globalData.userInfo || {}
     localSetting.setting = this.data.userSetting
     //onUnload方法在页面被关闭时触发，我们需要将用户的当前设置存下来
     wx.setStorageSync('userinfo', localSetting)
@@ -127,7 +127,7 @@ Page({
   },
   //跳出页面执行函数
   onHide: function() {
-    let localSetting = wx.getStorageSync('userinfo') || {}
+    let localSetting = app.globalData.userInfo || {}
     localSetting.setting = this.data.userSetting
     //onUnload方法在页面被关闭时触发，我们需要将用户的当前设置存下来
     wx.setStorageSync('userinfo', localSetting)

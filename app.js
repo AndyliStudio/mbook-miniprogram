@@ -44,6 +44,8 @@ App({
     shareInfo: {}, // 分享信息
     shareCode: '', // 邀请码
     loadedShare: false, // 是否已经加载过分享信息了
-    allbooks: []
+    allbooks: [],
+    amount: 0,
+    showReaderTips: false
   }
 })

@@ -103,7 +103,7 @@ Page({
           self.flushAward()
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../../loading/loading?need_login_again=1'
           })
         } else {
           utils.debug('调用接口失败--/api/share/update' + JSON.stringify(res))
@@ -136,6 +136,10 @@ Page({
             records = app.globalData.awardRecords.slice((self.data.page - 1) * 5, self.data.page * 5)
           }
           self.setData({ shareInfo: app.globalData.shareInfo, awardRecords: records })
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../../loading/loading?need_login_again=1'
+          })
         } else {
           utils.debug('调用接口失败--/api/share/info：' + JSON.stringify(res))
           self.showToast('获取奖励信息失败', 'bottom')
@@ -290,7 +294,7 @@ Page({
               }, 1000)
             } else if (res.data.authfail) {
               wx.navigateTo({
-                url: '../authfail/authfail'
+                url: '../../loading/loading?need_login_again=1'
               })
             } else {
               self.showToast('获取分享朋友圈二维码失败', 'bottom')

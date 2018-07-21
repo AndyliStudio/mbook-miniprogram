@@ -19,7 +19,6 @@
     "pages/notice/notice",
     "pages/readtime/readtime",
     "pages/account/account",
-    "pages/authfail/authfail",
     "pages/aboutus/aboutus"
   ],
   "window": {

@@ -22,7 +22,7 @@ Page({
     let self = this
     // 写死系统消息
     if (self.data.showType === 0) {
-      const registeTime = (wx.getStorageSync('userinfo') || {}).create_time
+      const registeTime = app.globalData.userInfo.create_time
       let registeStr = ''
       if (registeTime) {
         registeStr = util.formatTime(new Date(registeTime))
@@ -61,7 +61,7 @@ Page({
             })
           } else if (res.data.authfail) {
             wx.navigateTo({
-              url: '../authfail/authfail'
+              url: '../loading/loading?need_login_again=1'
             })
           } else {
             self.showToast('获取评论失败', 'bottom')

@@ -91,14 +91,14 @@ Page({
   onReady: function() {
     let self = this
     // 判断是否需要显示提示
-    let showReaderTips = wx.getStorageSync('show_reader_tips')
+    let showReaderTips = app.globalData.showReaderTips
     if (showReaderTips || showReaderTips === '') {
       self.setData({ showReaderTips: true })
     } else {
       self.setData({ showReaderTips: false })
     }
     //读取用户设置
-    let localSetting = wx.getStorageSync('userinfo') || {}
+    let localSetting = app.globalData.userInfo || {}
     if (localSetting && localSetting.setting) {
       let userSetting = localSetting.setting
       self.setData({
@@ -125,7 +125,7 @@ Page({
     var self = this
     //动态设置标题
     var bookid = options.bookid || '5a0d7a6ec38abf73e8e65cb3'
-    var secretTips = wx.getStorageSync('global_setting').secret_tips || '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
+    var secretTips = app.globalData.globalSetting.secret_tips || '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
     self.setData({ bookid: bookid, startReadTime: new Date(), secretTips: secretTips })
     // 初始化页面
     self.initPage()
@@ -133,7 +133,7 @@ Page({
   //跳出页面执行函数
   onUnload: function() {
     //onUnload方法在页面被关闭时触发，我们需要将用户的当前设置存下来
-    let localSetting = wx.getStorageSync('userinfo') || {}
+    let localSetting = app.globalData.userInfo || {}
     if (localSetting && localSetting.setting) {
       localSetting.setting.reader = {
         bright: this.data.allSliderValue.bright,
@@ -147,7 +147,7 @@ Page({
   },
   //跳出页面执行函数
   onHide: function() {
-    let localSetting = wx.getStorageSync('userinfo') || {}
+    let localSetting = app.globalData.userInfo || {}
     if (localSetting && localSetting.setting) {
       localSetting.setting.reader = {
         bright: this.data.allSliderValue.bright,
@@ -163,21 +163,14 @@ Page({
   onShareAppMessage: function(res) {
     let self = this
     // 获取分享出去的图片地址
-    const shareParams = wx.getStorageSync('share_params')
+    const shareParams = app.globalData.globalData.share
     const now = new Date()
-    const code = wx.getStorageSync('share_code') + now.getTime()
-    if (shareParams) {
+    const code = app.globalData.shareCode + '_' + now.getTime()
+    if (shareParams && app.globalData.shareCode) {
       return {
         title: shareParams.title,
         path: shareParams.page + '?code' + code,
-        imageUrl: shareParams.imageUrl,
-        success: function(res) {
-          // 转发成功
-          // wx.showToast({ title: '分享成功', icon: 'success' })
-        },
-        fail: function(res) {
-          // 取消分享
-        }
+        imageUrl: shareParams.imageUrl
       }
     } else {
       self.showToast('获取分享参数失败', 'bottom')
@@ -393,7 +386,7 @@ Page({
             .exec()
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
           self.setData({ loading: false, loadFail: true })
         } else {
@@ -670,7 +663,7 @@ Page({
             .exec()
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
           self.setData({ loading: false, loadFail: true })
         } else {
@@ -757,7 +750,7 @@ Page({
             .exec()
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
           self.setData({ loading: false, loadFail: true })
         } else {
@@ -807,7 +800,7 @@ Page({
           //               wx.showToast({ title: '加入书架成功', icon: 'success' })
           //             } else if (res.data.authfail) {
           //               wx.navigateTo({
-          //                 url: '../authfail/authfail'
+          //                 url: '../loading/loading?need_login_again=1'
           //               })
           //             } else {
           //               wx.showToast({ title: '加入书架失败，请重新尝试~', icon: 'error' })
@@ -823,7 +816,7 @@ Page({
           // }
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           self.showToast('更新阅读进度失败', 'bottom')
@@ -925,7 +918,7 @@ Page({
           .exec()
       } else if (res.data.authfail) {
         wx.navigateTo({
-          url: '../authfail/authfail'
+          url: '../loading/loading?need_login_again=1'
         })
         if (!isLoadCallback) {
           self.setData({ loadFail: true })
@@ -1037,7 +1030,7 @@ Page({
           .exec()
       } else if (res.data.authfail) {
         wx.navigateTo({
-          url: '../authfail/authfail'
+          url: '../loading/loading?need_login_again=1'
         })
         if (!isLoadCallback) {
           self.setData({ loadFail: true })
@@ -1108,7 +1101,7 @@ Page({
           })
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           // 费用不足
@@ -1171,7 +1164,7 @@ Page({
   // 复制微信号
   copyWxcode: function() {
     let self = this
-    let globalSetting = wx.getStorageSync('global_setting')
+    let globalSetting = app.globalData.globalSetting.wxcode
     wx.setClipboardData({
       data: globalSetting.wxcode || 'haitianyise_hl',
       success: function(res) {
@@ -1209,7 +1202,7 @@ Page({
           wx.showToast({ title: '解锁成功', icon: 'success' })
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           self.showToast('解锁失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')

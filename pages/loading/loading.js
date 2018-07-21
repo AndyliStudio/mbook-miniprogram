@@ -10,13 +10,19 @@ Page({
     loading: true,
     success: false,
     buttonType: '',
+    loginAgain: false,
     shareScene: '',
     text: '欢迎回来'
   },
   onLoad: function(options) {
     let self = this
     // 尝试自动登录
-    self.doLogin()
+    if (options.need_login_again) {
+      self.setData({ buttonType: 'reLogin', loginAgain: true, loading: false })
+      return
+    } else {
+      self.doLogin()
+    }
     console.log('首页options', options)
     if (options.code) {
       self.setData({ shareScene: options.code })
@@ -85,11 +91,18 @@ Page({
           wx.redirectTo({ url: '../search2/search2' })
         } else {
           // 正常跳转到首页
-          const reg = /^[A-Za-z0-9-]+_\d+$/
-          if (self.data.shareScene && reg.test(self.data.shareScene)) {
-            wx.redirectTo({ url: '../activities/share/share?code=' + self.data.shareScene })
+          if (!self.data.loginAgain) {
+            const reg = /^[A-Za-z0-9-]+_\d+$/
+            if (self.data.shareScene && reg.test(self.data.shareScene)) {
+              wx.redirectTo({ url: '../activities/share/share?code=' + self.data.shareScene })
+            } else {
+              wx.switchTab({ url: '../index/index' })
+            }
           } else {
-            wx.switchTab({ url: '../index/index' })
+            // 重新登录后返回上一页
+            wx.navigateBack({
+              delta: 1
+            })
           }
         }
       })

@@ -35,9 +35,8 @@ Page({
     this.getInfo()
   },
   onLoad: function() {
-    let globalSetting = wx.getStorageSync('global_setting')
-    let chargeTips = globalSetting.charge_tips || '暂不支持微信支付，请加客服(haitianyise_hl)为好友，按照1元兑换10书币的价格转账之后，客服人员会为您充值书币。'
-    this.setData({ wxcode: globalSetting.wxcode || 'haitianyise_hl', chargeTips: chargeTips })
+    let chargeTips = app.globalData.globalSetting.charge_tips || '暂不支持微信支付，请加客服(haitianyise_hl)为好友，按照1元兑换10书币的价格转账之后，客服人员会为您充值书币。'
+    this.setData({ wxcode: app.globalData.globalSetting.wxcode || 'haitianyise_hl', chargeTips: chargeTips })
   },
   changePage: function(event) {
     let page = parseInt(event.currentTarget.dataset.page)
@@ -45,7 +44,7 @@ Page({
   },
   getInfo: function() {
     let self = this
-    const amount = wx.getStorageSync('amount')
+    const amount = app.globalData.amount
     if (amount || amount === 0) {
       self.setData({ amount: amount })
       wx.setStorageSync('amount', amount)
@@ -75,7 +74,7 @@ Page({
           })
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           util.debug('获取奖励和充值记录失败：' + JSON.stringify(res))
@@ -108,7 +107,7 @@ Page({
           })
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           util.debug('获取奖励和充值记录失败：' + JSON.stringify(res))
@@ -129,10 +128,10 @@ Page({
       success: res => {
         if (res.data.ok) {
           self.setData({ amount: res.data.data.amount })
-          wx.setStorageSync('amount', res.data.data.amount)
+          app.globalData.amount = res.data.data.amount
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           util.debug('获取书币数量失败：' + JSON.stringify(res))

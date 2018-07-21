@@ -71,8 +71,8 @@ Page({
     // 获取分享出去的图片地址
     const shareParams = app.globalData.globalSetting.share
     const now = new Date()
-    const code = wx.getStorageSync('share_code') + '_' + now.getTime()
-    if (shareParams) {
+    const code = app.globalData.shareCode + '_' + now.getTime()
+    if (shareParams && app.globalData.shareCode) {
       return {
         title: shareParams.title,
         path: shareParams.page + '?code=' + code,
