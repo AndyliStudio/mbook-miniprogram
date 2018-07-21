@@ -5,6 +5,22 @@ const app = getApp()
 Page({
   data: {
     toast: { show: false, content: '', position: 'bottom' }, // 提示信息
+    modal: {
+      show: false,
+      name: '',
+      inputValue: '',
+      title: '温馨提示',
+      opacity: 0.6,
+      position: 'center',
+      width: '80%',
+      options: {
+        fullscreen: false,
+        showclose: true,
+        showfooter: true,
+        closeonclickmodal: true,
+        confirmText: ''
+      }
+    },
     url: '',
     shareInfo: {
       todayAwardNum: 0,
@@ -42,31 +58,27 @@ Page({
   },
   onShow: function() {
     let self = this
-    // self.getWxCode()
     // 拿到的用户分享信息
-    // const shareInfo = app.globalData.shareInfo
-    // const shareParams = app.globalData.globalSetting.share
-    // if (shareInfo) {
-    //   self.setData({ shareInfo: shareInfo })
-    // }
-    // // 如果url中存在code并且code符合规范，调用更新分享记录的接口
-    // const reg = /^[A-Za-z0-9-]+_\d+$/
-    // if (self.data.code && reg.test(self.data.code)) {
-    //   app.updateShareLog(self.data.code).then(res => {
-    //     if (res === true) {
-    //       // 更新奖励
-    //       self.flushAward()
-    //     } else {
-    //       if (!res.data.inviteself) {
-    //         self.showToast(res.data ? res.data.msg || '接收邀请失败' : '接收邀请失败')
-    //       }
-    //     }
-    //   })
-    // }
-    // self.setData({
-    //   loaded: true,
-    //   shareText: shareParams && shareParams.title ? shareParams.title : '一起来读书吧，接收我的邀请立即获得15书币哦~'
-    // })
+    const shareParams = app.globalData.globalSetting.share
+    self.setData({ shareInfo: app.globalData.shareInfo })
+    // 如果url中存在code并且code符合规范，调用更新分享记录的接口
+    const reg = /^[A-Za-z0-9-]+_\d+$/
+    if (self.data.code && reg.test(self.data.code)) {
+      self.updateShareLog(self.data.code).then(res => {
+        if (res === true) {
+          // 更新奖励
+          self.flushAward()
+        } else {
+          if (!res.data.inviteself) {
+            self.showToast(res.data ? res.data.msg || '接收邀请失败' : '接收邀请失败')
+          }
+        }
+      })
+    }
+    self.setData({
+      loaded: true,
+      shareText: shareParams && shareParams.title ? shareParams.title : '一起来读书吧，接收我的邀请立即获得15书币哦~'
+    })
   },
   onLoad: function(options) {
     this.setData({
@@ -81,44 +93,58 @@ Page({
   },
   updateShareLog: function(share_id) {
     let self = this
-    return new Promise((resolve, reject) => {
-      wx.request({
-        method: 'GET',
-        url: config.base_url + '/api/share/update?share_id=' + share_id,
-        header: { Authorization: 'Bearer ' + self.globalData.token },
-        success: res => {
-          if (res.data.ok) {
-            resolve(true)
-            wx.showToast({ title: '获得15书币的奖励', icon: 'success' })
-
-            setTimeout(function() {
-              wx.hideToast()
-            }, 2000)
-          } else if (res.data.authfail) {
-            wx.navigateTo({
-              url: '../authfail/authfail'
-            })
-          } else {
-            reject(res)
-          }
-        },
-        fail: err => {
-          utils.debug('领取分享奖励失败：' + JSON.stringify(err))
-          // 自动重新尝试
-          this.updateShareLog(share_id, callback)
+    wx.request({
+      method: 'GET',
+      url: config.base_url + '/api/share/update?share_id=' + share_id,
+      header: { Authorization: 'Bearer ' + self.globalData.token },
+      success: res => {
+        if (res.data.ok) {
+          wx.showToast({ title: '获得15书币的奖励', icon: 'success' })
+          setTimeout(function() {
+            wx.hideToast()
+          }, 2000)
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../authfail/authfail'
+          })
+        } else {
+          utils.debug('调用接口失败--/api/share/update' + JSON.stringify(res))
+          self.showToast('接收邀请失败', 'bottom')
         }
-      })
+      },
+      fail: err => {
+        utils.debug('调用接口失败--/api/share/update' + JSON.stringify(err))
+        self.showToast('接收邀请失败', 'bottom')
+        // 自动重新尝试
+        setTimeout(function() {
+          self.updateShareLog(share_id)
+        }, 2000)
+      }
     })
   },
   flushAward: function() {
     let self = this
-    app.getShareInfo().then(res => {
-      if (res === true) {
-        // 更新奖励
-        const shareInfo = wx.getStorageSync('share_info')
-        if (shareInfo) {
-          self.setData({ shareInfo: shareInfo })
+    // 获取分享配置、奖励信息、以及分享码
+    wx.request({
+      method: 'GET',
+      url: config.base_url + '/api/share/info',
+      header: { Authorization: 'Bearer ' + app.globalData.token },
+      success: res => {
+        if (res.data.ok) {
+          app.globalData.shareInfo = res.data.shareInfo || {}
+          self.setData({ shareInfo: app.globalData.shareInfo })
+        } else {
+          utils.debug('调用接口失败--/api/share/info：' + JSON.stringify(res))
+          self.showToast('获取奖励信息失败', 'bottom')
         }
+      },
+      fail: err => {
+        utils.debug('调用接口失败--/api/share/info：' + JSON.stringify(err))
+        self.showToast('获取奖励信息失败', 'bottom')
+        // 自动重新尝试
+        setTimeout(function() {
+          self.flushAward()
+        }, 2000)
       }
     })
   },
@@ -128,7 +154,7 @@ Page({
     // 获取分享出去的图片地址
     const shareParams = app.globalData.globalSetting.share
     const now = new Date()
-    const code = wx.getStorageSync('share_code') + '_' + now.getTime()
+    const code = app.globalData.globalSetting.shareCode + '_' + now.getTime()
     if (shareParams) {
       return {
         title: shareParams.title,
@@ -145,7 +171,29 @@ Page({
       url: '/pages/index/index'
     })
   },
-  saveImage: function() {
+  // 分享弹窗点击取消
+  handleShareModalClose() {
+    this.setData({
+      modal: {
+        show: false,
+        name: '',
+        inputValue: '',
+        title: '温馨提示',
+        opacity: 0.6,
+        position: 'center',
+        width: '80%',
+        options: {
+          fullscreen: false,
+          showclose: true,
+          showfooter: true,
+          closeonclickmodal: true,
+          confirmText: ''
+        }
+      },
+    })
+  },
+  // 分享弹窗点击确定，保存图片到本地
+  handleShareModalConfirm: function() {
     let self = this
     wx.downloadFile({
       url: self.data.wxcode, //仅为示例，并非真实的资源
@@ -156,6 +204,7 @@ Page({
             filePath: res.tempFilePath,
             success: function(res) {
               wx.showToast({ title: '保存图片成功', icon: 'success' })
+              self.handleShareModalClose();
               setTimeout(function() {
                 wx.hideToast()
               }, 2000)
@@ -173,14 +222,35 @@ Page({
   getWxCode: function() {
     let self = this
     let now = new Date()
-    // let code = app.globalData.
-    if (code) {
+    if (app.globalData.shareCode) {
+      wx.showLoading({ title: '正在生成二维码' })
       wx.request({
-        url: config.base_url + '/api/get_share_img?share_type=friendQ&share_id=' + code + '_' + now.getTime(),
+        url: config.base_url + '/api/get_share_img?share_type=friendQ&share_id=' + app.globalData.shareCode + '_' + now.getTime(),
         header: { Authorization: 'Bearer ' + app.globalData.token },
         success: res => {
           if (res.data.ok) {
             self.setData({ wxcode: res.data.img_url })
+            self.closeSharePanel()
+            setTimeout(function() {
+              wx.hideLoading()
+              self.setData({
+                modal: {
+                  show: true,
+                  title: '温馨提示',
+                  content: '',
+                  opacity: 0.6,
+                  position: 'center',
+                  width: '80%',
+                  options: {
+                    fullscreen: false,
+                    showclose: true,
+                    showfooter: true,
+                    closeonclickmodal: true,
+                    confirmText: '下载二维码'
+                  }
+                }
+              })
+            }, 1000)
           } else if (res.data.authfail) {
             wx.navigateTo({
               url: '../authfail/authfail'

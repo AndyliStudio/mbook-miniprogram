@@ -76,7 +76,8 @@ Page({
           wx.redirectTo({ url: '../search2/search2' })
         } else {
           // 正常跳转到首页
-          wx.switchTab({ url: '../index/index' })
+          // wx.switchTab({ url: '../index/index' })
+          wx.redirectTo({ url: '../activities/share/share' })
         }
       })
       .catch(function() {
@@ -197,30 +198,6 @@ Page({
   afterGetUserInfo() {
     this.doLogin()
   },
-  // 获取分享配置、奖励信息、以及分享码
-  getShareInfo: function() {
-    return new Promise((resolve, reject) => {
-      wx.request({
-        method: 'GET',
-        url: config.base_url + '/api/share/info',
-        header: { Authorization: 'Bearer ' + app.globalData.token },
-        success: res => {
-          if (res.data.ok) {
-            app.globalData.shareInfo = res.data.shareInfo || {}
-            app.globalData.shareCode = res.data.code || ''
-            resolve(true)
-          } else {
-            resolve(false)
-          }
-        },
-        fail: err => {
-          utils.debug('调用接口失败--/api/share/info：' + JSON.stringify(err))
-          // 自动重新尝试
-          this.getShareInfo()
-        }
-      })
-    })
-  },
   getGlobalSetting: function() {
     wx.showLoading()
     wx.request({
@@ -240,6 +217,7 @@ Page({
             // wx.reLaunch({ url: '../shutcheck/shutcheck' })
           } else {
             setTimeout(function() {
+              // wx.reLaunch({ url: '/pages/index/index' })
               wx.reLaunch({ url: '/pages/index/index' })
             }, 300)
           }

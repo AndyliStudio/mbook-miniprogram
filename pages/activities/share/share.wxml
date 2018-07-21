@@ -1,4 +1,8 @@
 <toast toast="{{toast}}"></toast>
+<modal class="share-modal" data-model="modal.show" hidden="{{!modal || !modal.show}}" visible="{{modal.show}}" title="{{modal.title}}" position="{{modal.position}}" fullscreen="{{modal.options.fullscreen}}" opacity="{{modal.opacity}}" show-close="{{modal.options.showclose}}" show-footer="{{modal.options.showfooter}}" close-on-click-modal="{{modal.options.closeonclickmodal}}" confirm-text="{{modal.options.confirmText}}" bindclose="handleShareModalClose" bindconfirm="handleShareModalConfirm">
+  <view class="des">请点击下载此二维码，并使用此二维码作为图片发送到朋友圈</view>
+  <image class="share-img" src="{{wxcode}}" alt="二维码加载中..."></image>
+</modal>
 <view class="share-page">
   <view class="card">
     <view class="card-title">我的奖励</view>
@@ -61,14 +65,14 @@
           <view class="icon-friend"></view>
           <view class="text">微信好友</view>
         </button>
-        <view class="panel-item" bindtap="getWxCode">
+        <button class="panel-item" bindtap="getWxCode">
           <view class="icon-friendQ"></view>
           <view class="text">朋友圈</view>
-        </view>
-        <view class="panel-item">
+        </button>
+        <button class="panel-item" bindtap="getWxCode">
           <view class="icon-qq"></view>
           <view class="text">其他</view>
-        </view>
+        </button>
       </view>
     </view>
   </view>
