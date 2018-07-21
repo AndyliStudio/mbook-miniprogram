@@ -67,19 +67,8 @@ Page({
     self.setData({ shareInfo: app.globalData.shareInfo, awardRecords: records })
     // 如果url中存在code并且code符合规范，调用更新分享记录的接口
     const reg = /^[A-Za-z0-9-]+_\d+$/
-    console.log('asdasdas', self.data.code)
     if (self.data.code && reg.test(self.data.code)) {
-      self.updateShareLog(self.data.code).then(res => {
-        console.log('领取结果', res)
-        if (res === true) {
-          // 更新奖励
-          self.flushAward()
-        } else {
-          if (!res.data.inviteself) {
-            self.showToast(res.data ? res.data.msg || '接收邀请失败' : '接收邀请失败')
-          }
-        }
-      })
+      self.updateShareLog(self.data.code)
     }
     // 判断是否需要刷新奖励信息
     if (app.globalData.loadedShare) {
