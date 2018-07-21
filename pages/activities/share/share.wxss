@@ -171,7 +171,7 @@ page {
 }
 .share-page .table .row .row-item {
   text-align: center;
-  padding: 8rpx 0;
+  padding: 15rpx 0;
 }
 .share-page .table .bodys .row .row-item {
   padding: 12rpx 0;
@@ -202,7 +202,11 @@ page {
 }
 
 .share-panel {
+  position: absolute;
   height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
 }
 
 .share-panel .modal {
@@ -217,6 +221,7 @@ page {
 
 .share-panel .panel {
   position: fixed;
+  bottom: 0;
   left: 0;
   width: 100%;
   padding: 30rpx 10%;
@@ -250,7 +255,9 @@ page {
   color: #535353;
   line-height: 1em;
   border-radius: 0;
-  position: static;
+}
+.share-panel .panel-item::after {
+  border: none;
 }
 .share-panel .panel-item .text {
   margin-top: 20rpx;

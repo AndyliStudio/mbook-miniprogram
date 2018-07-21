@@ -43,8 +43,7 @@ App({
     allbooks: [], // 阅读记录
     shareInfo: {}, // 分享信息
     shareCode: '', // 邀请码
-    hasLogined: false,
-    hasGotShareInfo: false,
+    loadedShare: false, // 是否已经加载过分享信息了
     allbooks: []
   }
 })

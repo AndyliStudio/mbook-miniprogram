@@ -30,7 +30,6 @@ Page({
   },
   onLoad: function() {
     let self = this
-
     // 获取banner和栏目信息，使用promise来控制两个请求的同步
     let bannerP = self.getBanner()
     let themeP = self.getTheme()

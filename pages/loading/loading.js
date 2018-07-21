@@ -10,12 +10,22 @@ Page({
     loading: true,
     success: false,
     buttonType: '',
+    shareScene: '',
     text: '欢迎回来'
   },
-  onLoad: function() {
+  onLoad: function(options) {
     let self = this
     // 尝试自动登录
     self.doLogin()
+    console.log('首页options', options)
+    if (options.code) {
+      self.setData({ shareScene: options.code })
+      return
+    }
+    if (options.scene) {
+      self.setData({ shareScene: decodeURIComponent(options.scene) })
+      return
+    }
   },
   // 微信登录函数
   wxLogin: function() {
@@ -76,8 +86,12 @@ Page({
           wx.redirectTo({ url: '../search2/search2' })
         } else {
           // 正常跳转到首页
-          // wx.switchTab({ url: '../index/index' })
-          wx.redirectTo({ url: '../activities/share/share' })
+          const reg = /^[A-Za-z0-9-]+_\d+$/
+          if (self.data.shareScene && reg.test(self.data.shareScene)) {
+            wx.redirectTo({ url: '../activities/share/share?code=' + self.data.shareScene })
+          } else {
+            wx.switchTab({ url: '../index/index' })
+          }
         }
       })
       .catch(function() {
@@ -106,6 +120,7 @@ Page({
                 app.globalData.userInfo = res.data.userinfo // 用户详情
                 app.globalData.allbooks = res.data.allbooks // 用户书籍列表
                 app.globalData.shareInfo = res.data.shareInfo // 用户分享信息
+                app.globalData.awardRecords = res.data.award_records.reverse() // 分享奖励
                 for (let i in res.data.globalSetting) {
                   if (utils.isJsonString(res.data.globalSetting[i])) {
                     res.data.globalSetting[i] = JSON.parse(res.data.globalSetting[i])
@@ -164,6 +179,7 @@ Page({
                   app.globalData.userInfo = res.data.userinfo // 用户详情
                   app.globalData.allbooks = res.data.allbooks // 用户书籍列表
                   app.globalData.shareInfo = res.data.shareInfo // 用户分享信息
+                  app.globalData.awardRecords = res.data.award_records.reverse() // 分享奖励
                   for (let i in res.data.globalSetting) {
                     if (utils.isJsonString(res.data.globalSetting[i])) {
                       res.data.globalSetting[i] = JSON.parse(res.data.globalSetting[i])
@@ -197,42 +213,6 @@ Page({
   // 重新授权之后执行
   afterGetUserInfo() {
     this.doLogin()
-  },
-  getGlobalSetting: function() {
-    wx.showLoading()
-    wx.request({
-      method: 'GET',
-      url: config.base_url + '/api/get_setting_items?items=share|wxcode|index_dialog|charge_tips|secret_tips|shut_check',
-      success: res => {
-        if (res.data.ok) {
-          wx.setStorageSync('share_params', JSON.parse(res.data.items.share))
-          wx.setStorageSync('global_setting', {
-            wxcode: res.data.items.wxcode,
-            index_dialog: res.data.items.index_dialog,
-            charge_tips: res.data.items.charge_tips,
-            secret_tips: res.data.items.secret_tips,
-            shut_check: res.data.items.shut_check === 'true'
-          })
-          if (res.data.items.shut_check === 'true') {
-            // wx.reLaunch({ url: '../shutcheck/shutcheck' })
-          } else {
-            setTimeout(function() {
-              // wx.reLaunch({ url: '/pages/index/index' })
-              wx.reLaunch({ url: '/pages/index/index' })
-            }, 300)
-          }
-        } else {
-          wx.showToast({ title: res.data.msg || '获取应用设置失败', image: './static/img/close.png' })
-        }
-        wx.hideLoading()
-      },
-      fail: err => {
-        utils.debug('获取全局设置失败：' + JSON.stringify(err))
-        wx.hideLoading()
-        // 自动重新尝试
-        this.getGlobalSetting()
-      }
-    })
   },
   showToast: function(content, position) {
     let self = this

@@ -4,6 +4,7 @@
   "navigationBarTitleText": "分享有礼",
   "navigationBarTextStyle": "white",
   "usingComponents": {
+    "modal": "../../../component/modal/modal",
     "toast": "../../../component/toast/toast"
   }
 }
