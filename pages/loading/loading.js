@@ -83,27 +83,32 @@ Page({
     self.setData({ loading: true, text: '', success: false, buttonType: '' })
     self
       .requestLogin()
-      .then(res => {
+      .then(function(res) {
         self.setData({ loading: false, success: true, buttonType: '' })
         // 根据是否shut_check字段来决定跳转到哪个页面
-        if (app.globalData.globalSetting && app.globalData.globalSetting.shut_check) {
-          // 跳转到屏蔽审核页面
-          wx.redirectTo({ url: '../search2/search2' })
-        } else {
-          // 正常跳转到首页
-          if (!self.data.loginAgain) {
-            const reg = /^[A-Za-z0-9-]+_\d+$/
-            if (self.data.shareScene && reg.test(self.data.shareScene)) {
-              wx.redirectTo({ url: '../activities/share/share?code=' + self.data.shareScene })
-            } else {
-              wx.switchTab({ url: '../index/index' })
-            }
+        if (app.globalData.globalSetting) {
+          if (app.globalData.globalSetting.shut_check) {
+            // 跳转到屏蔽审核页面
+            wx.redirectTo({ url: '../search2/search2' })
           } else {
-            // 重新登录后返回上一页
-            wx.navigateBack({
-              delta: 1
-            })
+            // 正常跳转到首页
+            if (!self.data.loginAgain) {
+              const reg = /^[A-Za-z0-9-]+_\d+$/
+              if (self.data.shareScene && reg.test(self.data.shareScene)) {
+                wx.redirectTo({ url: '../activities/share/share?code=' + self.data.shareScene })
+              } else {
+                wx.switchTab({ url: '../index/index' })
+              }
+            } else {
+              // 重新登录后返回上一页
+              wx.navigateBack({
+                delta: 1
+              })
+            }
           }
+        } else {
+          utils.debug('获取全局变量格式错误，' + JSON.stringify(app.globalData))
+          self.setData({ buttonType: 'reLogin', text: '', success: false })
         }
       })
       .catch(function() {
@@ -161,7 +166,7 @@ Page({
             },
             fail: function(err) {
               utils.debug('调用接口失败--/api/user/login，' + JSON.stringify(err))
-              self.showToast(res.data.msg ? res.data.msg : '登录失败', 'bottom')
+              self.showToast(err.data.msg ? err.data.msg : '登录失败', 'bottom')
               self.setData({ buttonType: 'reLogin' })
               reject(false)
             }

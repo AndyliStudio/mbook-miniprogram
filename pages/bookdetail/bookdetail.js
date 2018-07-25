@@ -41,7 +41,7 @@ Page({
     this.setData({ bookid: this.data.bookid })
   },
   onLoad: function(options) {
-    let secretTips = app.globalData.globalSetting.secret_tips || '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
+    let secretTips = app.globalData.globalSetting && app.globalData.globalSetting.secret_tips ? app.globalData.globalSetting.secret_tips : '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
     this.setData({ bookid: options.id, wxcode: app.globalData.globalSetting.wxcode || 'haitianyise_hl', secretTips: secretTips })
   },
   getBookDetail: function(id) {

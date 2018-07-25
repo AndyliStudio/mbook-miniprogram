@@ -125,7 +125,7 @@ Page({
     var self = this
     //动态设置标题
     var bookid = options.bookid || '5a0d7a6ec38abf73e8e65cb3'
-    var secretTips = app.globalData.globalSetting.secret_tips || '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
+    var secretTips = app.globalData.globalSetting ? app.globalData.globalSetting.secret_tips : '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
     self.setData({ bookid: bookid, startReadTime: new Date(), secretTips: secretTips })
     // 初始化页面
     self.initPage()
@@ -777,7 +777,7 @@ Page({
         bookid: self.data.bookid,
         chapter_num: self.data.currentSectionNum,
         chapter_page_index: self.data.pageIndex,
-        read_time: new Date().getTime() - self.data.startReadTime.getTime(),
+        read_time: self.data.startReadTime ? (new Date().getTime() - self.data.startReadTime.getTime()) : 0,
         setting: setting
       },
       success: res => {
@@ -1164,7 +1164,7 @@ Page({
   // 复制微信号
   copyWxcode: function() {
     let self = this
-    let globalSetting = app.globalData.globalSetting.wxcode
+    let globalSetting = app.globalData.globalSetting ? app.globalData.globalSetting.wxcode : 'bcydushu'
     wx.setClipboardData({
       data: globalSetting.wxcode || 'haitianyise_hl',
       success: function(res) {

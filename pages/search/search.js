@@ -39,7 +39,7 @@ Page({
     wx.request({
       url: config.base_url + '/api/book/search_hot',
       method: 'GET',
-      success: res => {
+      success: function(res) {
         self.setData({
           historyKeyword: wx.getStorageSync('history_keyword'),
           defaultKeyword: res.data.default || '请输入搜索关键字',
@@ -66,7 +66,7 @@ Page({
       data: {
         keyword: self.data.keyword.trim()
       },
-      success: res => {
+      success: function(res) {
         if (res.data.ok) {
           self.setData({
             helpKeyword: res.data.list
@@ -102,7 +102,7 @@ Page({
       data: {
         keyword: self.data.keyword.trim()
       },
-      success: res => {
+      success: function(res) {
         if (res.data.ok) {
           self.setData({
             searchStatus: true,

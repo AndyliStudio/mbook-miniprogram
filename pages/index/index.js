@@ -44,7 +44,7 @@ Page({
       })
 
     // 展示全局弹窗
-    const dialog = app.globalData.globalSetting.index_dialog
+    const dialog = app.globalData.globalSetting ? app.globalData.globalSetting.index_dialog : ''
     if (dialog && dialog.show === 'true') {
       self.setData({
         modal: {
