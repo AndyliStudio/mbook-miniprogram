@@ -44,6 +44,24 @@ Page({
     let secretTips = app.globalData.globalSetting && app.globalData.globalSetting.secret_tips ? app.globalData.globalSetting.secret_tips : '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
     this.setData({ bookid: options.id, wxcode: app.globalData.globalSetting.wxcode || 'haitianyise_hl', secretTips: secretTips })
   },
+  // 分享逻辑
+  onShareAppMessage: function(res) {
+    let self = this
+    // 获取分享出去的图片地址
+    const shareParams = app.globalData.globalData.share
+    const now = new Date()
+    const code = app.globalData.shareCode + '_' + now.getTime()
+    if (shareParams && app.globalData.shareCode) {
+      return {
+        title: shareParams.title,
+        path: shareParams.page + '?code' + code,
+        imageUrl: shareParams.imageUrl
+      }
+    } else {
+      self.showToast('获取分享参数失败', 'bottom')
+      return false
+    }
+  },
   getBookDetail: function(id) {
     let self = this
     if (id) {
