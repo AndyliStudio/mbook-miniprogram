@@ -27,6 +27,14 @@
       </view>
     </picker>
   </view>
+  <view class="setting-item">
+    <text class="text">翻页方式</text>
+    <picker mode="selector" data-pickerid="overPage" bindchange="bindPickerChange" value="{{userSetting.reader.overPage}}" range="{{allOverPage}}" range-key="name">
+      <view class="picker-view">
+        {{allOverPage[userSetting.reader.overPage].name}}
+      </view>
+    </picker>
+  </view>
   <view class="title">更新</view>
   <view class="setting-item">
     <text class="text">更新提醒</text>

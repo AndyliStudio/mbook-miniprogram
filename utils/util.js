@@ -102,11 +102,34 @@ const isJsonString = str => {
   }
 }
 
+const copyObject = (target, source) => {
+  if (target == null) {
+    throw new TypeError('target can not be undefined or null')
+    return false
+  }
+  let to = new Object(target)
+  for (let index = 1; index < arguments.length; index++) {
+    let nextSource = arguments[index]
+
+    // Skip over if undefined or null
+    if (nextSource != null) {
+      for (let nextKey in nextSource) {
+        // Avoid bugs when hasOwnProperty is shadowed
+        if (Object.prototype.hasOwnProperty.call(nextSource, nextKey) && Object.prototype.hasOwnProperty.call(target, nextKey)) {
+          to[nextKey] = nextSource[nextKey]
+        }
+      }
+    }
+  }
+  return to
+}
+
 module.exports = {
   formatTime: formatTime,
   transDate: transDate,
   getCurrentPages: getCurrentPageUrl,
   getCurrentPageUrlWithArgs: getCurrentPageUrlWithArgs,
   debug: debug,
-  isJsonString: isJsonString
+  isJsonString: isJsonString,
+  copyObject: copyObject
 }

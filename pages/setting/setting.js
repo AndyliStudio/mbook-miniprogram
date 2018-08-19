@@ -1,6 +1,7 @@
 // pages/setting/setting.js
 
 const config = require('../../config')
+const utils = require('../../utils/util')
 const app = getApp()
 
 Page({
@@ -8,17 +9,19 @@ Page({
     toast: { show: false, content: '', position: 'bottom' }, // 提示信息
     userSetting: {
       updateNotice: true,
-      autoBuy: false,
+      autoBuy: true,
       reader: {
-        fontSize: 14,
+        fontSize: 28,
         fontFamily: '使用系统字体',
-        mode: '默认'
+        mode: '默认',
+        overPage: 0
       }
     },
     initMode: '默认',
     allFontFamily: ['使用系统字体', '微软雅黑', '黑体', 'Arial', '楷体', '等线'],
     allFontSize: [24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48],
     allStyleMode: ['默认', '淡黄', '护眼', '夜间'],
+    allOverPage: [{ id: 0, name: '左右翻页' }, { id: 1, name: '上下翻页' }],
     previewBg: '#ffffff'
   },
   onShow: function() {
@@ -36,6 +39,8 @@ Page({
       self.setData({ 'userSetting.reader.fontFamily': self.data.allFontFamily[event.detail.value] })
     } else if (pickerid === 'mode') {
       self.setData({ 'userSetting.reader.mode': self.data.allStyleMode[parseInt(event.detail.value)], previewBg: self.getBackGround(self.data.allStyleMode[event.detail.value]) })
+    } else if (pickerid === 'overPage') {
+      self.setData({ 'userSetting.reader.overPage': self.data.allOverPage[parseInt(event.detail.value)].id })
     }
   },
   switchChange: function(event) {
@@ -63,8 +68,8 @@ Page({
     let self = this
     // 判断本地缓存中是否存在设置缓存
     let localSetting = app.globalData.userInfo || {}
-    if (0 && localSetting && localSetting.setting) {
-      let userSetting = localSetting.setting
+    if (localSetting && localSetting.setting) {
+      let userSetting = utils.copyObject(self.data.userSetting, localSetting.setting)
       // 存在
       self.setData({ userSetting: userSetting, previewBg: self.getBackGround(userSetting.reader.mode) })
     } else {
