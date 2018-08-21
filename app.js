@@ -5,18 +5,18 @@ const Promise = require('./utils/bluebird.min')
 
 App({
   onLaunch: function() {
-    if (typeof  wx.getUpdateManager === 'function') {
+    if (typeof wx.getUpdateManager === 'function') {
       // 处理版本更新的动作
       const updateManager = wx.getUpdateManager()
-      updateManager.onCheckForUpdate(function (res) {
+      updateManager.onCheckForUpdate(function(res) {
         // 请求完新版本信息的回调
         console.log(res.hasUpdate ? '有新版本' : '暂无新版本')
         if (res.hasUpdate) {
-          updateManager.onUpdateReady(function () {
+          updateManager.onUpdateReady(function() {
             wx.showModal({
               title: '更新提示',
               content: '新版本已经准备好，是否重启应用？',
-              success: function (res) {
+              success: function(res) {
                 if (res.confirm) {
                   // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
                   updateManager.applyUpdate()
@@ -26,7 +26,7 @@ App({
           })
         }
       })
-      updateManager.onUpdateFailed(function () {
+      updateManager.onUpdateFailed(function() {
         // 新的版本下载失败
         wx.showModal({
           title: '更新提示',
@@ -85,7 +85,6 @@ App({
     globalSetting: {},
     loadedShare: false, // 是否已经加载过分享信息了
     allbooks: [],
-    amount: 0,
     showReaderTips: false
   }
 })

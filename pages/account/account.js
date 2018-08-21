@@ -44,7 +44,7 @@ Page({
   },
   getInfo: function() {
     let self = this
-    const amount = app.globalData.amount
+    const amount = app.globalData.userInfo.amount
     if (amount || amount === 0) {
       self.setData({ amount: amount })
       wx.setStorageSync('amount', amount)

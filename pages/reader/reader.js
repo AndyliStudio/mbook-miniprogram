@@ -61,7 +61,9 @@ Page({
       slider_active_bg: '#757e87',
       slider_noactive_bg: '#dfdfdf',
       control_bg: '#ffffff',
-      control_fontColor: '#616469'
+      control_fontColor: '#616469',
+      button_bg: '#bec2c5',
+      button_font_color: '#0770cb'
     }, //1、2、3、4分别对应四种颜色模式
     isShowMulu: 0, // 是否显示左侧栏
     allSectionData: [], // 所有章节数据
@@ -86,7 +88,8 @@ Page({
     afterData: '',
     loading: false, // 加载状态
     loadFail: false, // 显示加载失败页面
-    useTransition: true // 是否使用滑动的transition动画，在切换下一章的时候应该关闭
+    useTransition: true, // 是否使用滑动的transition动画，在切换下一章的时候应该关闭
+    overPage: 0 // 阅读器翻页模式
   },
   onReady: function() {
     let self = this
@@ -101,11 +104,13 @@ Page({
     let localSetting = app.globalData.userInfo || {}
     if (localSetting && localSetting.setting) {
       let userSetting = localSetting.setting
+      console.log(userSetting.reader.overPage)
       self.setData({
         'allSliderValue.bright': userSetting.reader.bright || self.data.allSliderValue.bright,
         'allSliderValue.font': userSetting.reader.fontSize || self.data.allSliderValue.font,
         colorStyle: self.transColorStyle(userSetting.reader.mode) || self.data.colorStyle,
-        currentFontFamily: userSetting.reader.fontFamily || self.data.currentFontFamily
+        currentFontFamily: userSetting.reader.fontFamily || self.data.currentFontFamily,
+        overPage: userSetting.reader.overPage
       })
     }
     // 设置背景色
@@ -139,7 +144,8 @@ Page({
         bright: this.data.allSliderValue.bright,
         fontSize: this.data.allSliderValue.font,
         fontFamily: this.data.currentFontFamily,
-        mode: this.transMode(this.data.colorStyle.styleNum)
+        mode: this.transMode(this.data.colorStyle.styleNum),
+        overPage: this.data.overPage
       }
     }
     wx.setStorageSync('userinfo', localSetting)
@@ -153,7 +159,8 @@ Page({
         bright: this.data.allSliderValue.bright,
         fontSize: this.data.allSliderValue.font,
         fontFamily: this.data.currentFontFamily,
-        mode: this.transMode(this.data.colorStyle.styleNum)
+        mode: this.transMode(this.data.colorStyle.styleNum),
+        overPage: this.data.overPage
       }
     }
     wx.setStorageSync('userinfo', localSetting)
@@ -241,6 +248,10 @@ Page({
         self.setData({ moveDirection: 1 })
       } else if (x && x > w + 100) {
         self.setData({ moveDirection: 0 })
+      }
+      // 如果是下翻页式，下面的代码将不用执行
+      if (self.data.overPage === 1) {
+        return false
       }
     }
     currentGesture = 0
@@ -462,7 +473,9 @@ Page({
         slider_active_bg: '#757e87',
         slider_noactive_bg: '#dfdfdf',
         control_bg: '#ffffff',
-        control_fontColor: '#616469'
+        control_fontColor: '#616469',
+        button_bg: '#bec2c5',
+        button_font_color: '#0770cb'
       }
     } else if (cname === '淡黄') {
       return {
@@ -471,7 +484,9 @@ Page({
         slider_active_bg: '#766f69',
         slider_noactive_bg: '#dad4c4',
         control_bg: '#faf4e4',
-        control_fontColor: '#60594f'
+        control_fontColor: '#60594f',
+        button_bg: '#c1bbab',
+        button_font_color: '#866842'
       }
     } else if (cname === '护眼') {
       return {
@@ -480,7 +495,9 @@ Page({
         slider_active_bg: '#657568',
         slider_noactive_bg: '#aeccd6',
         control_bg: '#ccf1d0',
-        control_fontColor: '#44644c'
+        control_fontColor: '#44644c',
+        button_bg: '#a0baa1',
+        button_font_color: '#3a732c'
       }
     } else if (cname === '夜间') {
       return {
@@ -489,7 +506,9 @@ Page({
         slider_active_bg: '#53565d',
         slider_noactive_bg: '#23282c',
         control_bg: '#10131a',
-        control_fontColor: '#5b5e65'
+        control_fontColor: '#5b5e65',
+        button_bg: '#212528',
+        button_font_color: '#2c5a7e'
       }
     } else {
       return {
@@ -498,7 +517,9 @@ Page({
         slider_active_bg: '#757e87',
         slider_noactive_bg: '#dfdfdf',
         control_bg: '#ffffff',
-        control_fontColor: '#616469'
+        control_fontColor: '#616469',
+        button_bg: '#bec2c5',
+        button_font_color: '#0770cb'
       }
     }
   },
@@ -515,7 +536,9 @@ Page({
             slider_active_bg: '#757e87',
             slider_noactive_bg: '#dfdfdf',
             control_bg: '#ffffff',
-            control_fontColor: '#616469'
+            control_fontColor: '#616469',
+            button_bg: '#bec2c5',
+            button_font_color: '#0770cb'
           }
         })
         break
@@ -527,7 +550,9 @@ Page({
             slider_active_bg: '#766f69',
             slider_noactive_bg: '#dad4c4',
             control_bg: '#faf4e4',
-            control_fontColor: '#60594f'
+            control_fontColor: '#60594f',
+            button_bg: '#c1bbab',
+            button_font_color: '#866842'
           }
         })
         break
@@ -539,7 +564,9 @@ Page({
             slider_active_bg: '#657568',
             slider_noactive_bg: '#aeccd6',
             control_bg: '#ccf1d0',
-            control_fontColor: '#44644c'
+            control_fontColor: '#44644c',
+            button_bg: '#a0baa1',
+            button_font_color: '#3a732c'
           }
         })
         break
@@ -551,7 +578,9 @@ Page({
             slider_active_bg: '#53565d',
             slider_noactive_bg: '#23282c',
             control_bg: '#10131a',
-            control_fontColor: '#5b5e65'
+            control_fontColor: '#5b5e65',
+            button_bg: '#212528',
+            button_font_color: '#2c5a7e'
           }
         })
         break
@@ -777,7 +806,7 @@ Page({
         bookid: self.data.bookid,
         chapter_num: self.data.currentSectionNum,
         chapter_page_index: self.data.pageIndex,
-        read_time: self.data.startReadTime ? (new Date().getTime() - self.data.startReadTime.getTime()) : 0,
+        read_time: self.data.startReadTime ? new Date().getTime() - self.data.startReadTime.getTime() : 0,
         setting: setting
       },
       success: res => {
@@ -1231,6 +1260,9 @@ Page({
     let self = this
     self.setData({ loadFail: false })
     self.initPage(self.data.currentSectionNum)
+  },
+  testFunc: function(event) {
+    console.log(event)
   },
   showToast: function(content, position) {
     let self = this

@@ -108,16 +108,13 @@ const copyObject = (target, source) => {
     return false
   }
   let to = new Object(target)
-  for (let index = 1; index < arguments.length; index++) {
-    let nextSource = arguments[index]
-
-    // Skip over if undefined or null
-    if (nextSource != null) {
-      for (let nextKey in nextSource) {
-        // Avoid bugs when hasOwnProperty is shadowed
-        if (Object.prototype.hasOwnProperty.call(nextSource, nextKey) && Object.prototype.hasOwnProperty.call(target, nextKey)) {
-          to[nextKey] = nextSource[nextKey]
-        }
+  if (source != null) {
+    for (let nextKey in source) {
+      // Avoid bugs when hasOwnProperty is shadowed
+      console.log(nextKey)
+      if (Object.prototype.hasOwnProperty.call(source, nextKey) && Object.prototype.hasOwnProperty.call(target, nextKey)) {
+        console.log('nextKey', nextKey, to[nextKey], source[nextKey])
+        to[nextKey] = source[nextKey]
       }
     }
   }

@@ -70,7 +70,6 @@ Page({
     let localSetting = app.globalData.userInfo || {}
     if (localSetting && localSetting.setting) {
       let userSetting = utils.copyObject(self.data.userSetting, localSetting.setting)
-      // 存在
       self.setData({ userSetting: userSetting, previewBg: self.getBackGround(userSetting.reader.mode) })
     } else {
       wx.request({
@@ -97,6 +96,8 @@ Page({
   },
   updateSetting: function() {
     let self = this
+    // 更新全局用户设置
+    app.globalData.userInfo.setting = self.data.userSetting
     wx.request({
       url: config.base_url + '/api/user/put_user_setting',
       method: 'PUT',
