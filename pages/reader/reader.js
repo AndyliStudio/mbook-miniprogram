@@ -43,7 +43,7 @@ Page({
     allSliderValue: {
       section: 1,
       bright: 1,
-      font: 32 //单位rpx
+      font: 36 //单位rpx
     },
     isShowFontSelector: 0, //是否显示选择字体详情板块
     allFontFamily: ['使用系统字体', '微软雅黑', '黑体', 'Arial', '楷体', '等线'],
@@ -89,7 +89,7 @@ Page({
     loading: false, // 加载状态
     loadFail: false, // 显示加载失败页面
     useTransition: true, // 是否使用滑动的transition动画，在切换下一章的时候应该关闭
-    overPage: 0 // 阅读器翻页模式
+    overPage: 1 // 阅读器翻页模式
   },
   onReady: function() {
     let self = this
@@ -104,7 +104,6 @@ Page({
     let localSetting = app.globalData.userInfo || {}
     if (localSetting && localSetting.setting) {
       let userSetting = localSetting.setting
-      console.log(userSetting.reader.overPage)
       self.setData({
         'allSliderValue.bright': userSetting.reader.bright || self.data.allSliderValue.bright,
         'allSliderValue.font': userSetting.reader.fontSize || self.data.allSliderValue.font,
@@ -223,6 +222,17 @@ Page({
     if (isMoving == 0) {
       this.setData({ touches: { lastX: event.touches[0].pageX, lastY: event.touches[0].pageY } })
     }
+  },
+  handleDownClick: function(event) {
+    this.setData({
+      control: {
+        all: this.data.control.all === 0 ? 1 : 0,
+        control_tab: 1,
+        control_detail: 1,
+        target: this.data.control.target || 'jingdu'
+      },
+      isShowFontSelector: 0
+    })
   },
   handletouchend: function() {
     // console.log('正在执行touchend, isMoving为：'+isMoving);
@@ -384,6 +394,10 @@ Page({
           wx.setNavigationBarTitle({
             title: '第' + res.data.data.num + '章 ' + res.data.data.name
           })
+          // 如果为上下翻页，则不需要重新计算最大分页数
+          if (self.data.overPage === 1) {
+            return false
+          }
           // 重新计算最大分页数
           wx.createSelectorQuery()
             .select('#content-out')
@@ -614,13 +628,20 @@ Page({
   //打开目录侧边栏
   openMulu: function() {
     var self = this
-    var bookid = self.data.bookid
-    var sectionNum = self.data.allSliderValue.section
     wx.request({
       url: config.base_url + '/api/chapter/list?bookid=' + self.data.bookid,
       success: res => {
         if (res.data.ok) {
-          self.setData({ allSectionData: res.data.data.chapters, isShowMulu: 1 })
+          self.setData({
+            allSectionData: res.data.data.chapters,
+            isShowMulu: 1,
+            control: {
+              all: 0,
+              control_tab: 0,
+              control_detail: 0,
+              target: self.data.control.target || 'jingdu'
+            }
+          })
         } else {
           self.showToast('获取目录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
@@ -679,6 +700,10 @@ Page({
           wx.setNavigationBarTitle({
             title: '第' + res.data.data.num + '章 ' + res.data.data.name
           })
+          // 如果为上下翻页，则不需要重新计算最大分页数
+          if (self.data.overPage === 1) {
+            return false
+          }
           // 重新计算最大分页数
           wx.createSelectorQuery()
             .select('#content-out')
@@ -755,28 +780,44 @@ Page({
           wx.setNavigationBarTitle({
             title: '第' + res.data.data.num + '章 ' + res.data.data.name
           })
-          // 动态计算最大页数
-          wx.createSelectorQuery()
-            .select('#content-out')
-            .boundingClientRect(function(rect) {
-              // 获取屏幕高度和宽度信息
-              wx.getSystemInfo({
-                success: function(res) {
-                  self.setData({
-                    maxPageNum: Math.ceil(rect.height / parseInt(res.windowHeight - 20)),
-                    useTransition: false,
-                    leftValue: -1 * (res.windowWidth - 10) * (parseInt(self.data.pageIndex || 1) - 1),
-                    windows: {
-                      windows_height: res.windowHeight,
-                      windows_width: res.windowWidth
-                    },
-                    hasGotMaxNum: true,
-                    loading: false
-                  })
-                }
-              })
+          // 如果为上下翻页，则不需要重新计算最大分页数
+          if (app.globalData.userInfo.setting && app.globalData.userInfo.setting.reader.overPage === 1) {
+            wx.getSystemInfo({
+              success: function(response) {
+                self.setData({
+                  leftValue: res.data.scroll > 0 ? res.data.scroll : 0,
+                  windows: {
+                    windows_height: response.windowHeight,
+                    windows_width: response.windowWidth
+                  },
+                  loading: false
+                })
+              }
             })
-            .exec()
+          } else {
+            // 动态计算最大页数
+            wx.createSelectorQuery()
+              .select('#content-out')
+              .boundingClientRect(function(rect) {
+                // 获取屏幕高度和宽度信息
+                wx.getSystemInfo({
+                  success: function(res) {
+                    self.setData({
+                      maxPageNum: Math.ceil(rect.height / parseInt(res.windowHeight - 20)),
+                      useTransition: false,
+                      leftValue: -1 * (res.windowWidth - 10) * (parseInt(self.data.pageIndex || 1) - 1),
+                      windows: {
+                        windows_height: res.windowHeight,
+                        windows_width: res.windowWidth
+                      },
+                      hasGotMaxNum: true,
+                      loading: false
+                    })
+                  }
+                })
+              })
+              .exec()
+          }
         } else if (res.data.authfail) {
           wx.navigateTo({
             url: '../loading/loading?need_login_again=1'
@@ -806,6 +847,7 @@ Page({
         bookid: self.data.bookid,
         chapter_num: self.data.currentSectionNum,
         chapter_page_index: self.data.pageIndex,
+        chapter_page_top: self.data.leftValue,
         read_time: self.data.startReadTime ? new Date().getTime() - self.data.startReadTime.getTime() : 0,
         setting: setting
       },
@@ -931,6 +973,10 @@ Page({
         wx.setNavigationBarTitle({
           title: '第' + res.data.data.num + '章 ' + res.data.data.name
         })
+        // 如果为上下翻页，则不需要重新计算最大分页数
+        if (self.data.overPage === 1) {
+          return false
+        }
         // 重新计算最大分页数
         wx.createSelectorQuery()
           .select('#content-out')
@@ -1047,6 +1093,10 @@ Page({
         wx.setNavigationBarTitle({
           title: '第' + res.data.data.num + '章 ' + res.data.data.name
         })
+        // 如果为上下翻页，则不需要重新计算最大分页数
+        if (self.data.overPage === 1) {
+          return false
+        }
         // 重新计算最大分页数
         wx.createSelectorQuery()
           .select('#content-out')
@@ -1079,7 +1129,6 @@ Page({
     }
     let nextChapterNum = self.data.currentSectionNum + 1
     if (nextChapterNum <= self.data.newestSectionNum) {
-      console.log('未拦截')
       self.setData({ loading: true })
       wx.request({
         method: 'GET',
@@ -1261,8 +1310,8 @@ Page({
     self.setData({ loadFail: false })
     self.initPage(self.data.currentSectionNum)
   },
-  testFunc: function(event) {
-    console.log(event)
+  handleScroll: function(event) {
+    this.setData({ leftValue: event.detail.scrollTop })
   },
   showToast: function(content, position) {
     let self = this

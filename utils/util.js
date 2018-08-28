@@ -111,9 +111,7 @@ const copyObject = (target, source) => {
   if (source != null) {
     for (let nextKey in source) {
       // Avoid bugs when hasOwnProperty is shadowed
-      console.log(nextKey)
       if (Object.prototype.hasOwnProperty.call(source, nextKey) && Object.prototype.hasOwnProperty.call(target, nextKey)) {
-        console.log('nextKey', nextKey, to[nextKey], source[nextKey])
         to[nextKey] = source[nextKey]
       }
     }

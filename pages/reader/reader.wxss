@@ -40,7 +40,7 @@ page {
 }
 
 .reader .content text {
-  line-height: 60rpx;
+  line-height: 70rpx;
   position: relative;
   display: block;
   text-align: justify;
