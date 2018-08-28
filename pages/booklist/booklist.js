@@ -1,5 +1,6 @@
 //booklist.js
 const config = require('../../config')
+const app = getApp()
 
 Page({
   data: {
@@ -16,13 +17,13 @@ Page({
     let self = this
     wx.request({
       url: config.base_url + '/api/booklist/mylist',
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           self.setData({ myBooks: res.data.list })
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           self.showToast('获取我的书单失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
@@ -33,7 +34,6 @@ Page({
       }
     })
   },
-  openReader: function(event) {},
   bookClick: function(event) {
     //检查锁
     if (this.data.lock) {
@@ -43,7 +43,9 @@ Page({
       this.setData({ removing: false })
       return
     }
-    wx.navigateTo({ url: '../reader/reader?bookid=' + event.currentTarget.dataset.bookid })
+    const formId = event.detail.formId
+    app.reportFormId(formId)
+    wx.navigateTo({ url: '../reader/reader?bookid=' + event.target.dataset.bookid })
   },
   bookLongClick: function() {
     let self = this
@@ -59,7 +61,7 @@ Page({
     wx.request({
       url: config.base_url + '/api/booklist/remove_book?id=' + bookid,
       header: {
-        Authorization: 'Bearer ' + wx.getStorageSync('token')
+        Authorization: 'Bearer ' + app.globalData.token
       },
       success: function(res) {
         if (res.data.ok) {
@@ -70,7 +72,7 @@ Page({
           })
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           self.showToast(res.data.msg || '从书架中移除失败，请重新尝试~', 'bottom')
@@ -86,7 +88,7 @@ Page({
     this.setData({ removing: false })
   },
   gotoShop: function() {
-    wx.navigateTo({ url: '/pages/shop/shop' })
+    wx.navigateTo({ url: '/pages/search/search' })
   },
   showToast: function(content, position) {
     let self = this

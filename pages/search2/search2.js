@@ -23,7 +23,7 @@ Page({
   },
   //事件处理函数
   closeSearch: function() {
-    wx.navigateBack()
+    wx.reLaunch({ url: '../search2/search2' })
   },
   clearKeyword: function() {
     this.setData({
@@ -39,11 +39,11 @@ Page({
     wx.request({
       url: config.base_url + '/api/book/search_hot',
       method: 'GET',
-      success: function(res) {
+      success: res => {
         self.setData({
           historyKeyword: wx.getStorageSync('history_keyword'),
           defaultKeyword: res.data.default || '请输入搜索关键字',
-          hotKeyword: res.data.list
+          hotKeyword: ['家', '春', '秋']
         })
       }
     })
@@ -66,10 +66,12 @@ Page({
       data: {
         keyword: self.data.keyword.trim()
       },
-      success: function(res) {
+      success: res => {
         if (res.data.ok) {
           self.setData({
-            helpKeyword: res.data.list
+            helpKeyword: res.data.list.filter(item => {
+              return item === '家' || item === '春' || item === '秋'
+            })
           })
         }
       }
@@ -102,12 +104,14 @@ Page({
       data: {
         keyword: self.data.keyword.trim()
       },
-      success: function(res) {
+      success: res => {
         if (res.data.ok) {
           self.setData({
             searchStatus: true,
             categoryFilter: false,
-            goodsList: res.data.list,
+            goodsList: res.data.list.filter(item => {
+              return item.name === '家' || item.name === '春' || item.name === '秋'
+            }),
             filterCategory: res.data.classification.map((item, index) => {
               return {
                 name: item,

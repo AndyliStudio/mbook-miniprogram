@@ -1,11 +1,12 @@
 // pages/user/user.js
 const config = require('../../config')
 const util = require('../../utils/util')
+const app = getApp()
 
 Page({
   data: {
     toast: { show: false, content: '', position: 'bottom' }, // 提示信息
-    modal: { 
+    modal: {
       show: false,
       title: '温馨提示',
       opacity: 0.6,
@@ -16,9 +17,10 @@ Page({
         showclose: true,
         showfooter: true,
         closeonclickmodal: true,
-        confirmText: '',
+        confirmText: ''
       }
     },
+    wxcode: '',
     currentPageNum: 1,
     amount: 0,
     awards: [],
@@ -26,10 +28,15 @@ Page({
     showBuyLoadmore: false,
     showAwardLoadmore: false,
     awardPage: 1,
-    buyPage: 1
+    buyPage: 1,
+    chargeTips: ''
   },
   onShow: function() {
     this.getInfo()
+  },
+  onLoad: function() {
+    let chargeTips = app.globalData.globalSetting.charge_tips || '暂不支持微信支付，请加客服(haitianyise_hl)为好友，按照1元兑换10书币的价格转账之后，客服人员会为您充值书币。'
+    this.setData({ wxcode: app.globalData.globalSetting.wxcode || 'haitianyise_hl', chargeTips: chargeTips })
   },
   changePage: function(event) {
     let page = parseInt(event.currentTarget.dataset.page)
@@ -37,7 +44,7 @@ Page({
   },
   getInfo: function() {
     let self = this
-    const amount = wx.getStorageSync('amount')
+    const amount = app.globalData.userInfo.amount
     if (amount || amount === 0) {
       self.setData({ amount: amount })
       wx.setStorageSync('amount', amount)
@@ -51,7 +58,7 @@ Page({
     let self = this
     wx.request({
       url: config.base_url + '/api/buy/list?page=' + self.data.awardPage,
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           self.setData({
@@ -67,13 +74,15 @@ Page({
           })
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
+          util.debug('获取奖励和充值记录失败：' + JSON.stringify(res))
           self.showToast('获取奖励和充值记录失败', 'bottom')
         }
       },
       fail: err => {
+        util.debug('获取奖励和充值记录失败：' + JSON.stringify(err))
         self.showToast('获取奖励和充值记录失败', 'bottom')
       }
     })
@@ -82,7 +91,7 @@ Page({
     let self = this
     wx.request({
       url: config.base_url + '/api/award/list?page=' + self.data.buyPage,
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           self.setData({
@@ -98,13 +107,15 @@ Page({
           })
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
+          util.debug('获取奖励和充值记录失败：' + JSON.stringify(res))
           self.showToast('获取奖励和充值记录失败', 'bottom')
         }
       },
       fail: err => {
+        util.debug('获取奖励和充值记录失败：' + JSON.stringify(err))
         self.showToast('获取奖励和充值记录失败', 'bottom')
       }
     })
@@ -113,31 +124,36 @@ Page({
     let self = this
     wx.request({
       url: config.base_url + '/api/user/amount',
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           self.setData({ amount: res.data.data.amount })
-          wx.setStorageSync('amount', res.data.data.amount)
+          app.globalData.amount = res.data.data.amount
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
+          util.debug('获取书币数量失败：' + JSON.stringify(res))
           self.showToast('获取书币数量失败', 'bottom')
         }
       },
       fail: err => {
+        util.debug('获取书币数量失败：' + JSON.stringify(err))
         self.showToast('获取书币数量失败', 'bottom')
       }
     })
   },
-  pasteWxCode: function() {
+  // 复制微信号
+  copyWxcode: function() {
     let self = this
     wx.setClipboardData({
-      data: 'dreamldk',
+      data: self.data.wxcode,
       success: function(res) {
-        self.setData({ 'modal.show': false })
         wx.showToast({ title: '复制成功', icon: 'success' })
+        self.setData({
+          'modal.show': false
+        })
         setTimeout(function() {
           wx.hideToast()
         }, 2000)
@@ -156,20 +172,22 @@ Page({
   },
   // modal相关的方法
   gotoCharge: function() {
-    this.setData({ 'modal': {
-      show: true,
-      title: '温馨提示',
-      opacity: 0.6,
-      position: 'center',
-      width: '80%',
-      options: {
-        fullscreen: false,
-        showclose: true,
-        showfooter: false,
-        closeonclickmodal: true,
-        confirmText: '',
+    this.setData({
+      modal: {
+        show: true,
+        title: '温馨提示',
+        opacity: 0.6,
+        position: 'center',
+        width: '80%',
+        options: {
+          fullscreen: false,
+          showclose: true,
+          showfooter: false,
+          closeonclickmodal: true,
+          confirmText: ''
+        }
       }
-    }})
+    })
   },
   showToast: function(content, position) {
     let self = this

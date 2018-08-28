@@ -1,11 +1,11 @@
 {
   "backgroundTextStyle": "light",
   "navigationBarBackgroundColor": "#1472e0",
-  "navigationBarTitleText": "",
+  "navigationBarTitleText": "首页",
   "navigationBarTextStyle": "white",
   "usingComponents": {
     "toast": "../../component/toast/toast",
     "no-data": "../../component/nodata/nodata",
-    "modal": "../../component/modal/modal"
+    "lazyload-img": "../../component/lazyload-img/lazyload-img"
   }
 }

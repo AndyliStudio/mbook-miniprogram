@@ -1,3 +1,10 @@
+const fundebug = require('./fundebug.0.6.1.min.js')
+fundebug.init({
+  apikey: '7607e80084ba331e7f1a7afbe7416f9c05fcc8599bc845a46a400f4588d1f487',
+  silent: false, // 开发阶段选择安静模式不发送错误警告
+  setUserInfo: true,
+  setSystemInfo: true
+})
 /**
  * 格式化日期，转变成'2017/11/19 00:00:00'
  */
@@ -44,7 +51,7 @@ const transDate = date => {
  * 获取当前页面路径
  * @returns {String} 不带参数的路径
  */
-const getCurrentPageUrl = () => {
+const getCurrentPageUrl = function() {
   let pages = getCurrentPages() //获取加载的页面
   let currentPage = pages[pages.length - 1] //获取当前页面的对象
   let url = currentPage.is //当前页面url
@@ -55,7 +62,7 @@ const getCurrentPageUrl = () => {
  * 获取当前页面路径
  * @returns {String} 不带参数的路径
  */
-const getCurrentPageUrlWithArgs = () => {
+const getCurrentPageUrlWithArgs = function() {
   let pages = getCurrentPages() //获取加载的页面
   let currentPage = pages[pages.length - 1] //获取当前页面的对象
   let url = currentPage.is //当前页面url
@@ -76,9 +83,48 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+/*
+ * 微信小程序调试函数
+ */
+const debug = message => {
+  fundebug.notifyError(message)
+}
+
+/**
+ * 判断当前字符串是否json字符串
+ */
+const isJsonString = str => {
+  try {
+    JSON.parse(str)
+    return true
+  } catch (err) {
+    return false
+  }
+}
+
+const copyObject = (target, source) => {
+  if (target == null) {
+    throw new TypeError('target can not be undefined or null')
+    return false
+  }
+  let to = new Object(target)
+  if (source != null) {
+    for (let nextKey in source) {
+      // Avoid bugs when hasOwnProperty is shadowed
+      if (Object.prototype.hasOwnProperty.call(source, nextKey) && Object.prototype.hasOwnProperty.call(target, nextKey)) {
+        to[nextKey] = source[nextKey]
+      }
+    }
+  }
+  return to
+}
+
 module.exports = {
   formatTime: formatTime,
   transDate: transDate,
   getCurrentPages: getCurrentPageUrl,
-  getCurrentPageUrlWithArgs: getCurrentPageUrlWithArgs
+  getCurrentPageUrlWithArgs: getCurrentPageUrlWithArgs,
+  debug: debug,
+  isJsonString: isJsonString,
+  copyObject: copyObject
 }

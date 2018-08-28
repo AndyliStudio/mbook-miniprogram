@@ -2,6 +2,28 @@ page {
   height: 100%;
 }
 
+.load-fail {
+  height: 100%;
+  position: relative;
+  padding-top: 100rpx;
+  box-sizing: border-box;
+}
+
+.loading {
+  height: 100%;
+  position: relative;
+}
+
+.loading > image {
+  height: 200rpx;
+  width: 200rpx;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -100rpx;
+  margin-left: -100rpx;
+}
+
 .reader {
   height: 100%;
   overflow: hidden;
@@ -18,12 +40,13 @@ page {
 }
 
 .reader .content text {
-  height: 100%;
-  line-height: 1.6em;
-  column-gap: 10px;
+  line-height: 70rpx;
   position: relative;
   display: block;
   text-align: justify;
+  /* transition: left 0.5s;
+  -webkit-transition: left 0.5s; */
+  transition-timing-function: ease;
 }
 
 /* 提示样式 */
@@ -37,7 +60,7 @@ page {
   z-index: 2000;
   display: -webkit-flex;
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row nowrap;
   justify-content: space-around;
   align-items: center;
 }
@@ -91,8 +114,7 @@ page {
   height: 100rpx;
   line-height: 100rpx;
   border-radius: 10rpx;
-  background-color: #eaebef;
-  color: #4990e2;
+  box-sizing: border-box;
   text-align: center;
   font-size: 36rpx;
 }
@@ -159,8 +181,26 @@ page {
   top: 2rpx;
 }
 
+.reader .control-btns {
+  height: 120rpx;
+  line-height: 120rpx;
+  display: flex;
+  display: -webkit-flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.reader .control-btns button {
+  width: 180rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  font-size: 24rpx;
+}
+
 .reader .control-detail {
-  height: 200rpx;
+  height: 320rpx;
   width: 100%;
   position: absolute;
   bottom: 110rpx;
@@ -536,6 +576,30 @@ page {
   margin-bottom: 40rpx;
   border-radius: 10rpx;
   box-sizing: border-box;
+}
+
+/* 上下滑动翻页模式样式 */
+.reader .chapter-btns {
+  text-align: center;
+  margin-top: 30rpx;
+  margin-bottom: 30rpx;
+}
+.reader .chapter-btns button {
+  height: 80rpx;
+  line-height: 80rpx;
+  box-sizing: border-box;
+  border-radius: 8rpx;
+  text-align: center;
+  font-size: 36rpx;
+}
+
+.reader .chapter-btns .btn1 {
+  width: 90%;
+  margin: 0 auto 20rpx auto;
+}
+.reader .chapter-btns .btn2 {
+  width: 43.5%;
+  display: inline-block;
 }
 
 @keyframes slideShow {

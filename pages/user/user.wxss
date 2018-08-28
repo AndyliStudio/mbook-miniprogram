@@ -33,7 +33,15 @@ page {
 
 .user-info .info .username {
   color: #333333;
-  font-size: 38rpx;
+  font-size: 36rpx;
+}
+
+.user-info .des {
+  position: absolute;
+  left: 8%;
+  top: 160rpx;
+  color: #7689ab;
+  font-size: 28rpx;
 }
 
 .user-info .info .amount {
@@ -174,4 +182,23 @@ page {
   margin-right: 30rpx;
   position: relative;
   top: 4rpx;
+}
+
+.icon-yijianfankui {
+  font-size: 42rpx;
+  margin-right: 30rpx;
+  position: relative;
+  top: 4rpx;
+}
+
+/* 意见反馈 */
+.feedback {
+  display: block;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.feedback::after {
+  border: none;
 }

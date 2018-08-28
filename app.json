@@ -1,5 +1,9 @@
 {
   "pages": [
+    "pages/loading/loading",
+    "pages/activities/share/share",
+    "pages/search2/search2",
+    "pages/shutcheck/shutcheck",
     "pages/index/index",
     "pages/user/user",
     "pages/booklist/booklist",
@@ -11,12 +15,11 @@
     "pages/attendance/attendance",
     "pages/charge/charge",
     "pages/webpage/webpage",
-    "pages/activities/share/share",
     "pages/search/search",
     "pages/notice/notice",
     "pages/readtime/readtime",
     "pages/account/account",
-    "pages/authfail/authfail"
+    "pages/aboutus/aboutus"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -40,7 +43,7 @@
         "pagePath": "pages/booklist/booklist",
         "iconPath": "static/img/book.png",
         "selectedIconPath": "static/img/book_active.png",
-        "text": "书架"
+        "text": "阅读记录"
       },
       {
         "pagePath": "pages/user/user",

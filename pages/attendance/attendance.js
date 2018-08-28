@@ -1,5 +1,6 @@
 //attendance.js
 const config = require('../../config')
+const app = getApp()
 let choose_year = null
 let choose_month = null
 
@@ -167,7 +168,7 @@ Page({
     let self = this
     wx.request({
       method: 'GET',
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       url: config.base_url + '/api/attendance',
       success: res => {
         if (res.data.ok) {
@@ -180,7 +181,7 @@ Page({
           }, 1000)
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           self.showToast('获取签到记录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
@@ -195,7 +196,7 @@ Page({
     let self = this
     wx.request({
       method: 'GET',
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       url: config.base_url + '/api/attendance/me',
       success: res => {
         if (res.data.ok) {
@@ -213,7 +214,7 @@ Page({
           self.calculateDays(self.data.cur_year, self.data.cur_month)
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           self.showToast('获取签到记录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')

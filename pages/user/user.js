@@ -1,5 +1,6 @@
 // pages/user/user.js
 const config = require('../../config')
+const app = getApp()
 
 Page({
   data: {
@@ -13,20 +14,20 @@ Page({
   },
   onLoad: function() {
     // 获取屏幕高度
-    this.setData({ userInfo: wx.getStorageSync('userinfo') })
+    this.setData({ userInfo: app.globalData.userInfo })
   },
   getInfo: function() {
     let self = this
     wx.request({
       url: config.base_url + '/api/user/amount',
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           self.setData({ text: res.data.data.text, amount: res.data.data.amount })
           wx.setStorageSync('amount', res.data.data.amount)
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           self.showToast('获取个人信息失败', 'bottom')
@@ -34,6 +35,19 @@ Page({
       },
       fail: err => {
         self.showToast('获取个人信息失败', 'bottom')
+      }
+    })
+  },
+  // 复制用户ID
+  copyUserId() {
+    let self = this
+    wx.setClipboardData({
+      data: self.data.userInfo._id,
+      success: function(res) {
+        wx.showToast({ title: '复制ID成功', icon: 'success' })
+        setTimeout(function() {
+          wx.hideToast()
+        }, 2000)
       }
     })
   },

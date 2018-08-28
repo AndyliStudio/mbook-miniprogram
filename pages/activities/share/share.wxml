@@ -1,38 +1,79 @@
 <toast toast="{{toast}}"></toast>
-<view class="share-container">
-  <view class=".header-bg"></view>
-  <view class="header">
-    <view class="info">
+<modal class="share-modal" data-model="modal.show" hidden="{{!modal || !modal.show}}" visible="{{modal.show}}" title="{{modal.title}}" position="{{modal.position}}" fullscreen="{{modal.options.fullscreen}}" opacity="{{modal.opacity}}" show-close="{{modal.options.showclose}}" show-footer="{{modal.options.showfooter}}" close-on-click-modal="{{modal.options.closeonclickmodal}}" confirm-text="{{modal.options.confirmText}}" bindclose="handleShareModalClose" bindconfirm="handleShareModalConfirm">
+  <view class="des">请点击下载此二维码，并使用此二维码作为图片发送到朋友圈</view>
+  <image class="share-img" src="{{wxcode}}" alt="二维码加载中..."></image>
+</modal>
+<view class="share-page">
+  <view class="card">
+    <view class="card-title">我的奖励</view>
+    <view class="right-shut"></view>
+    <!-- <view class="info">
       <text class="label">今日获得书币: </text><text class="padding">{{shareInfo.todayAwardNum}}</text>
       <text class="label second">累计获得的书币: </text><text class="padding">{{shareInfo.totalAwardNum}}</text>
-    </view>
+    </view> -->
     <view class="info">
-      <text class="label">今日邀请人数: </text><text class="padding">{{shareInfo.todayInviteNum}}</text>
-      <text class="label second">累计邀请人数: </text><text class="padding">{{shareInfo.totalInviteNum}}</text>
+      <view class="left">累计获得的书币:<text class="padding">{{shareInfo.totalAwardNum}}个</text></view>
+      <view class="right">累计邀请人数:<text class="padding">{{shareInfo.totalInviteNum}}人</text></view>
     </view>
     <view class="operation">
-      <button class="flush-btn" bindtap="flushAward">刷新奖励</button>
-      <button class="share-btn" open-type="share">去分享</button>
+      <button class="share-btn" bindtap="openSharePanel">去分享</button>
       <button class="back-btn" bindtap="gotoIndex">回到首页</button>
     </view>
+    <view class="rule">
+      <view class="circle left-circle"></view>
+      <view class="circle right-circle"></view>
+      <view class="text">1. 每天登陆后可以签到得到5书币，连续签到会有额外奖励；</view>
+      <view class="text">2. 邀请好友一次登录获得15书币；</view>
+      <view class="text">3. 每天获得书币的最大上限为200；</view>
+      <view class="text">4. 本活动的最终解释权归言情微阅读所有；</view>
+    </view>
   </view>
-  <view class="wxfriend">
-    <view class="title">--<text>分享到朋友圈</text>--</view>
-    <view class="des">请点击下载此二维码，并使用此二维码作为图片发送到朋友圈</view>
-    <view class="wx-text">{{shareText}}</view>
-    <view class="save link" bindtap="pasteWxCode">复制文字</view>
-    <image src="{{wxcode}}" alt="二维码加载中..."></image>
-    <view class="save link" bindtap="saveImage">保存二维码图片到本地</view>
+  <view class="card secord">
+    <view class="card-title">奖励记录</view>
+    <view class="right-shut"></view>
+    <view class="table">
+      <view class="row yellow">
+        <view class="row-item one">序号</view>
+        <view class="row-item two">用户</view>
+        <view class="row-item three">类型</view>
+        <view class="row-item four">时间</view>
+      </view>
+      <view class="bodys">
+        <block wx:if="{{awardRecords.length > 0}}">
+          <view class="row" wx:for="{{awardRecords}}" wx:key="index">
+            <view class="row-item one">{{index + 1}}</view>
+            <view class="row-item two">{{item.name}}</view>
+            <view class="row-item three">{{item.type}}</view>
+            <view class="row-item four">{{item.time}}</view>
+          </view>
+          <view class="look-more" wx:if="{{hasMore}}" bindtap="lookMore">查看更多</view>
+          <view class="no-more" wx:else>暂无更多数据</view>
+        </block>
+        <block wx:else>
+          <view class="no-data">暂无奖励记录</view>
+        </block>
+      </view>
+    </view>
   </view>
-  <view class="rule">
-    <view class="title">--<text>分享规则</text>--</view>
-    <view>1. 每天登陆后可以签到得到5书币，连续签到会有额外奖励；</view>
-    <view>2. 邀请好友一次登录获得15书币；</view>
-    <view>3. 分享到微信群获得20书币；</view>
-    <view>4. 每天获得书币的最大上限为200；</view>
-    <view>5. 本活动的最终解释权归兰亭读书所有；</view>
+  <!-- 分享面板 -->
+  <view class="share-panel" wx:if="{{showSharePanel}}">
+    <view class="modal" bindtap="closeSharePanel"></view>
+    <view class="panel {{showSharePanel ? 'show' : ''}}">
+      <view class="title">分享即可获得书币</view>
+      <view class="container">
+        <button class="panel-item" open-type="share">
+          <view class="icon-friend"></view>
+          <view class="text">微信好友</view>
+        </button>
+        <button class="panel-item" data-type="friendQ" bindtap="openShare">
+          <view class="icon-friendQ"></view>
+          <view class="text">朋友圈</view>
+        </button>
+        <!-- <button class="panel-item" data-type="qq">
+          <view class="icon-qq"></view>
+          <view class="text">其他</view>
+        </button> -->
+      </view>
+    </view>
   </view>
-</view>
-<view class="loading" wx:if="{{!loaded}}">
-  <image src="https://fs.andylistudio.com/mbook/book-loading.svg"></image>
 </view>

@@ -1,5 +1,6 @@
 // pages/user/user.js
 const config = require('../../config')
+const app = getApp()
 
 Page({
   data: {
@@ -14,7 +15,7 @@ Page({
     let self = this
     wx.request({
       url: config.base_url + '/api/read_time/my',
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           self.setData({ minute: res.data.minute, num: res.data.num })
@@ -32,7 +33,7 @@ Page({
     if (self.data.num > 0) {
       wx.request({
         url: config.base_url + '/api/read_time/exchange',
-        header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+        header: { Authorization: 'Bearer ' + app.globalData.token },
         success: res => {
           if (res.data.ok) {
             wx.showToast({ title: '兑换成功', icon: 'success' })
@@ -42,7 +43,7 @@ Page({
             self.setData({ minute: 0, num: 0 })
           } else if (res.data.authfail) {
             wx.navigateTo({
-              url: '../authfail/authfail'
+              url: '../loading/loading?need_login_again=1'
             })
           } else {
             self.showToast('获取阅读时长失败', 'bottom')

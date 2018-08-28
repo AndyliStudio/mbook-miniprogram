@@ -1,23 +1,27 @@
 // pages/setting/setting.js
 
 const config = require('../../config')
+const utils = require('../../utils/util')
+const app = getApp()
 
 Page({
   data: {
     toast: { show: false, content: '', position: 'bottom' }, // 提示信息
     userSetting: {
       updateNotice: true,
-      autoBuy: false,
+      autoBuy: true,
       reader: {
-        fontSize: 14,
+        fontSize: 28,
         fontFamily: '使用系统字体',
-        mode: '默认'
+        mode: '默认',
+        overPage: 0
       }
     },
     initMode: '默认',
     allFontFamily: ['使用系统字体', '微软雅黑', '黑体', 'Arial', '楷体', '等线'],
     allFontSize: [24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48],
     allStyleMode: ['默认', '淡黄', '护眼', '夜间'],
+    allOverPage: [{ id: 0, name: '左右翻页' }, { id: 1, name: '上下翻页' }],
     previewBg: '#ffffff'
   },
   onShow: function() {
@@ -35,6 +39,8 @@ Page({
       self.setData({ 'userSetting.reader.fontFamily': self.data.allFontFamily[event.detail.value] })
     } else if (pickerid === 'mode') {
       self.setData({ 'userSetting.reader.mode': self.data.allStyleMode[parseInt(event.detail.value)], previewBg: self.getBackGround(self.data.allStyleMode[event.detail.value]) })
+    } else if (pickerid === 'overPage') {
+      self.setData({ 'userSetting.reader.overPage': self.data.allOverPage[parseInt(event.detail.value)].id })
     }
   },
   switchChange: function(event) {
@@ -61,15 +67,14 @@ Page({
   getUserSetting: function() {
     let self = this
     // 判断本地缓存中是否存在设置缓存
-    let localSetting = wx.getStorageSync('userinfo') || {}
-    if (0 && localSetting && localSetting.setting) {
-      let userSetting = localSetting.setting
-      // 存在
+    let localSetting = app.globalData.userInfo || {}
+    if (localSetting && localSetting.setting) {
+      let userSetting = utils.copyObject(self.data.userSetting, localSetting.setting)
       self.setData({ userSetting: userSetting, previewBg: self.getBackGround(userSetting.reader.mode) })
     } else {
       wx.request({
         url: config.base_url + '/api/user/get_user_setting',
-        header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+        header: { Authorization: 'Bearer ' + app.globalData.token },
         success: res => {
           if (res.data.ok) {
             self.setData({ userSetting: res.data.data, previewBg: self.getBackGround(res.data.data.reader.mode) })
@@ -77,7 +82,7 @@ Page({
             wx.setStorageSync('userinfo', localSetting)
           } else if (res.data.authfail) {
             wx.navigateTo({
-              url: '../authfail/authfail'
+              url: '../loading/loading?need_login_again=1'
             })
           } else {
             self.showToast('获取设置失败', 'bottom')
@@ -91,13 +96,15 @@ Page({
   },
   updateSetting: function() {
     let self = this
+    // 更新全局用户设置
+    app.globalData.userInfo.setting = self.data.userSetting
     wx.request({
       url: config.base_url + '/api/user/put_user_setting',
       method: 'PUT',
       data: {
         setting: self.data.userSetting
       },
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           // self.setData({ userSetting: res.data.data, previewBg: self.getBackGround(res.data.data.reader.mode) })
@@ -105,7 +112,7 @@ Page({
           // wx.setStorageSync('userinfo', localSetting)
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           self.showToast('更新设置失败', 'bottom')
@@ -118,7 +125,7 @@ Page({
   },
   //跳出页面执行函数
   onUnload: function() {
-    let localSetting = wx.getStorageSync('userinfo') || {}
+    let localSetting = app.globalData.userInfo || {}
     localSetting.setting = this.data.userSetting
     //onUnload方法在页面被关闭时触发，我们需要将用户的当前设置存下来
     wx.setStorageSync('userinfo', localSetting)
@@ -126,7 +133,7 @@ Page({
   },
   //跳出页面执行函数
   onHide: function() {
-    let localSetting = wx.getStorageSync('userinfo') || {}
+    let localSetting = app.globalData.userInfo || {}
     localSetting.setting = this.data.userSetting
     //onUnload方法在页面被关闭时触发，我们需要将用户的当前设置存下来
     wx.setStorageSync('userinfo', localSetting)

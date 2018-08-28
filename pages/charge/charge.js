@@ -1,5 +1,6 @@
 // pages/setting/charge.js
 const config = require('../../config')
+const app = getApp()
 
 Page({
   data: {
@@ -81,7 +82,7 @@ Page({
     wx.request({
       method: 'POST',
       url: config.base_url + '/api/pay',
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       data: {
         chargeids: selectPrise.map(item => {
           return item.id
@@ -109,12 +110,12 @@ Page({
                   desText: '获得' + self.data.willGetYuebiNum + '阅币，快去阅读吧~',
                   mainBtnText: '去阅读',
                   subBtnText: '再来一单',
-                  mainCallback: () => {
+                  mainCallback: function() {
                     wx.switchTab({
                       url: '../booklist/booklist'
                     })
                   },
-                  subCallback: () => {
+                  subCallback: function() {
                     self.setData({
                       chargeResult: {
                         type: '',
@@ -140,7 +141,7 @@ Page({
                   wx.request({
                     method: 'GET',
                     url: config.base_url + '/api/pay/cancel?pay_id=' + pay_id,
-                    header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+                    header: { Authorization: 'Bearer ' + app.globalData.token },
                     success: res => {}
                   })
                 }
@@ -156,7 +157,7 @@ Page({
                   desText: errorMsg,
                   mainBtnText: '重新下单',
                   subBtnText: '去阅读',
-                  mainCallback: () => {
+                  mainCallback: function() {
                     self.setData({
                       chargeResult: {
                         type: '',
@@ -169,7 +170,7 @@ Page({
                       }
                     })
                   },
-                  subCallback: () => {
+                  subCallback: function() {
                     wx.switchTab({
                       url: '../booklist/booklist'
                     })
@@ -180,7 +181,7 @@ Page({
           })
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           wx.hideLoading()

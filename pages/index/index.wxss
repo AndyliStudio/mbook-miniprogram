@@ -20,6 +20,7 @@ page {
 
 .index {
   background: #f4f4f4;
+  height: 100%;
 }
 
 .index .swiper-box {
@@ -165,6 +166,7 @@ page {
   display: block;
   font-size: 30rpx;
   color: #999;
+  margin-top: -4rpx;
 }
 
 .index .layout1 .book-item.item0 .book-author icon {
@@ -189,6 +191,10 @@ page {
   background-color: #dddddd;
 }
 
+.index .layout1 .book-item.item3 .book-img {
+  margin: 0 auto;
+}
+
 .index .layout1 .book-item.item1 .book-des,
 .index .layout1 .book-item.item2 .book-des,
 .index .layout1 .book-item.item3 .book-des {
@@ -206,7 +212,11 @@ page {
 .index .layout1 .book-item.item3 .book-name {
   display: block;
   font-size: 28rpx;
-  margin-top: 4rpx;
+  margin-top: 8rpx;
+}
+
+.index .layout3 .book-item.item3 .book-name {
+  text-align: center;
 }
 
 /* layout2: 栏目布局2 */
@@ -252,6 +262,7 @@ page {
   display: block;
   font-size: 30rpx;
   color: #999;
+  margin-top: -4rpx;
 }
 
 .index .layout2 .book-item .book-author icon {
@@ -289,7 +300,7 @@ page {
 .index .layout3 .book-item .book-name {
   display: block;
   font-size: 28rpx;
-  margin-top: 4rpx;
+  margin-top: 8rpx;
 }
 
 .index .icon-zanwushuju {
@@ -320,4 +331,10 @@ page {
 
 .index .swiper-box .wx-swiper-dot-active::before {
   background: #4990e2;
+}
+
+.index-modal .des {
+  font-size: 32rpx;
+  text-align: left;
+  padding: 30rpx 15rpx;
 }

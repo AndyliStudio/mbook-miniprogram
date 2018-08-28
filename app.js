@@ -5,178 +5,86 @@ const Promise = require('./utils/bluebird.min')
 
 App({
   onLaunch: function() {
-    // wx.checkSession({
-    //   success: function(){
-    //     //session 未过期，并且在本生命周期一直有效
-    //     self.globalData.token = wx.getStorageSync('token')
-    //   },
-    //   fail: function(){
-    //     //登录态过期
-    //     self.doLogin() //重新登录
-    //   }
-    // })
+    if (typeof wx.getUpdateManager === 'function') {
+      // 处理版本更新的动作
+      const updateManager = wx.getUpdateManager()
+      updateManager.onCheckForUpdate(function(res) {
+        // 请求完新版本信息的回调
+        console.log(res.hasUpdate ? '有新版本' : '暂无新版本')
+        if (res.hasUpdate) {
+          updateManager.onUpdateReady(function() {
+            wx.showModal({
+              title: '更新提示',
+              content: '新版本已经准备好，是否重启应用？',
+              success: function(res) {
+                if (res.confirm) {
+                  // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+                  updateManager.applyUpdate()
+                }
+              }
+            })
+          })
+        }
+      })
+      updateManager.onUpdateFailed(function() {
+        // 新的版本下载失败
+        wx.showModal({
+          title: '更新提示',
+          content: '新版本下载失败，请检查您的网络',
+          showCancel: false
+        })
+      })
+    } else {
+      console.log('getUpdateManager不支持')
+      wx.showModal({
+        title: '更新提示',
+        content: '你的微信当前版本太低，无法完成书城更新，请重启微信来获取最新版本',
+        showCancel: false
+      })
+    }
+  },
+  // 前端向后端提交formId
+  reportFormId: function(formId) {
     let self = this
-    this.doLogin().then(res => {
-      if (res === true) {
-        self.getShareInfo()
+    wx.request({
+      method: 'GET',
+      url: config.base_url + '/api/upload_formid?formId=' + formId,
+      header: { Authorization: 'Bearer ' + self.globalData.token },
+      success: function(res) {
+        if (!res.data.ok) {
+          utils.debug('调用接口失败--/api/upload_formid：' + JSON.stringify(res))
+        }
+      },
+      fail: function(err) {
+        utils.debug('调用接口失败--/api/upload_formid：' + JSON.stringify(err))
+        // 自动重新尝试
+        self.reportFormId(formId)
       }
     })
   },
-  doLogin: () => {
-    return new Promise((resolve, reject) => {
-      // 微信登录
-      wx.login({
-        success: res => {
-          // 发送 res.code 到后台换取 openId, sessionKey, unionId
-          let code = res.code
-          if (code) {
-            wx.request({
-              method: 'POST',
-              url: config.base_url + '/api/user/login',
-              data: {
-                identity: 1,
-                code: code
-              },
-              success: res => {
-                if (res.data.ok) {
-                  // 将token存入缓存，在每次发送需要认证的请求时在header里带上token
-                  wx.setStorageSync('token', res.data.token)
-                  wx.setStorageSync('userinfo', res.data.userinfo)
-                  wx.setStorageSync('allbooks', res.data.allbooks)
-                  resolve(true)
-                } else if (!res.data.ok && res.data.registe === false) {
-                  // 未注册
-                  wx.login({
-                    success: res => {
-                      let code = res.code
-                      if (res.code) {
-                        // 获取用户信息后，发送registe请求
-                        wx.getUserInfo({
-                          success: res => {
-                            // 可以将 res 发送给后台解码出 unionId
-                            wx.request({
-                              method: 'POST',
-                              url: config.base_url + '/api/user/registe',
-                              data: Object.assign({ identity: 'appuser', code: code }, res.userInfo),
-                              success: res => {
-                                if (res.data.ok) {
-                                  wx.setStorageSync('token', res.data.token)
-                                  wx.setStorageSync('userinfo', res.data.userinfo)
-                                  resolve(true)
-                                } else {
-                                  reject(false)
-                                  wx.showToast({ title: res.data.msg ? res.data.msg : '注册失败', image: '/static/img/close.png' })
-                                  setTimeout(function() {
-                                    wx.hideToast()
-                                  }, 2000)
-                                }
-                              },
-                              fail: err => {
-                                reject(err)
-                                wx.showToast({ title: '注册失败', image: '/static/img/close.png' })
-                                setTimeout(function() {
-                                  wx.hideToast()
-                                }, 2000)
-                              }
-                            })
-                          }
-                        })
-                      }
-                    },
-                    fail: err => {
-                      reject(err)
-                      wx.showToast({ title: '注册失败', image: '/static/img/close.png' })
-                      setTimeout(function() {
-                        wx.hideToast()
-                      }, 2000)
-                    }
-                  })
-                } else {
-                  reject(false)
-                  wx.showToast({ title: '登录失败', image: '/static/img/close.png' })
-                  setTimeout(function() {
-                    wx.hideToast()
-                  }, 2000)
-                }
-              },
-              fail: err => {
-                reject(err)
-                wx.showToast({ title: '登录失败', image: '/static/img/close.png' })
-                setTimeout(function() {
-                  wx.hideToast()
-                }, 2000)
-              }
-            })
-          } else {
-            reject(false)
-            wx.showToast({ title: '登录失败', image: '/static/img/close.png' })
-            setTimeout(function() {
-              wx.hideToast()
-            }, 2000)
-          }
-        },
+  navigateTo: function(page) {
+    let self = this
+    setTimeout(function() {
+      wx.navigateTo({
+        url: page,
         fail: err => {
-          reject(err)
-          wx.showToast({ title: '登录失败', image: '/static/img/close.png' })
-          setTimeout(function() {
-            wx.hideToast()
-          }, 2000)
+          self.navigateTo(page)
         }
       })
-    })
+    }, 300)
   },
-  // 获取分享配置、奖励信息、以及分享码
-  getShareInfo: function() {
-    return new Promise((resolve, reject) => {
-      wx.request({
-        method: 'GET',
-        url: config.base_url + '/api/share/info',
-        header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
-        success: res => {
-          if (res.data.ok) {
-            wx.setStorageSync('share_params', JSON.parse(res.data.shareSetting))
-            wx.setStorageSync('share_info', res.data.shareInfo)
-            wx.setStorageSync('share_code', res.data.code)
-            resolve(true)
-          } else {
-            resolve(false)
-          }
-        },
-        fail: err => {
-          reject(err)
-        }
-      })
-    })
-  },
-  updateShareLog: function(share_id, callback) {
-    return new Promise((resolve, reject) => {
-      wx.request({
-        method: 'GET',
-        url: config.base_url + '/api/share/update?share_id=' + share_id,
-        header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
-        success: res => {
-          if (res.data.ok) {
-            resolve(true)
-            wx.showToast({ title: '获得15书币的奖励', icon: 'success' })
-            setTimeout(function() {
-              wx.hideToast()
-            }, 2000)
-          } else if (res.data.authfail) {
-            wx.navigateTo({
-              url: '../authfail/authfail'
-            })
-          } else {
-            resolve(res.data.msg)
-          }
-        },
-        fail: err => {
-          reject(err)
-        }
-      })
-    })
+  onError: function(error) {
+    utils.debug(error)
   },
   globalData: {
-    userInfo: null,
-    allbooks: []
+    token: '',
+    userInfo: {}, // 用户基本信息
+    allbooks: [], // 阅读记录
+    shareInfo: {}, // 分享信息
+    shareCode: '', // 邀请码
+    globalSetting: {},
+    loadedShare: false, // 是否已经加载过分享信息了
+    allbooks: [],
+    showReaderTips: false
   }
 })

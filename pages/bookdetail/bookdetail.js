@@ -5,47 +5,102 @@ const app = getApp()
 Page({
   data: {
     toast: { show: false, content: '', position: 'bottom' }, // 提示信息
+    modal: {
+      show: false,
+      name: '',
+      inputValue: '',
+      title: '温馨提示',
+      opacity: 0.6,
+      position: 'center',
+      width: '80%',
+      options: {
+        fullscreen: false,
+        showclose: true,
+        showfooter: true,
+        closeonclickmodal: true,
+        confirmText: ''
+      }
+    },
+    wxcode: '',
     detail: {},
     isInList: false,
     bookid: '',
     showAllDes: false,
+    goodInfo: '',
     comments: [],
     commentInputHide: true,
     commentType: null, // 评论类型，是回复别人还是评论书籍
-    currentCommentValue: ''
+    currentCommentValue: '',
+    secretTips: '',
+    hasUnLock: false // 用户是否已经解锁过改章节
   },
-  onShow: function(options) {
+  onShow: function() {
     wx.showNavigationBarLoading()
     this.getBookDetail(this.data.bookid)
     this.getCommentList(this.data.bookid)
     this.setData({ bookid: this.data.bookid })
   },
   onLoad: function(options) {
-    this.setData({ bookid: options.id })
+    let secretTips = app.globalData.globalSetting && app.globalData.globalSetting.secret_tips ? app.globalData.globalSetting.secret_tips : '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
+    this.setData({ bookid: options.id, wxcode: app.globalData.globalSetting.wxcode || 'haitianyise_hl', secretTips: secretTips })
+  },
+  // 分享逻辑
+  onShareAppMessage: function(res) {
+    let self = this
+    // 获取分享出去的图片地址
+    const shareParams = app.globalData.globalData.share
+    const now = new Date()
+    const code = app.globalData.shareCode + '_' + now.getTime()
+    if (shareParams && app.globalData.shareCode) {
+      return {
+        title: shareParams.title,
+        path: shareParams.page + '?code' + code,
+        imageUrl: shareParams.imageUrl
+      }
+    } else {
+      self.showToast('获取分享参数失败', 'bottom')
+      return false
+    }
   },
   getBookDetail: function(id) {
     let self = this
     if (id) {
       wx.request({
         url: config.base_url + '/api/book/get_detail?id=' + id,
-        header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+        header: { Authorization: 'Bearer ' + app.globalData.token },
         success: function(res) {
           if (res.data.ok) {
             // devide des into shortDes and des;
             let shortDes = ''
             // format des
-            let des = res.data.data.des
+            let des = res.data.data.des.replace(/[\n\r\s]+/, '')
             res.data.data.des = des.replace(/( ){2,}/, ' ')
             if (des.length > 95) {
               shortDes = des.substring(0, 70) + '...'
             }
             res.data.data.shortDes = shortDes
-            self.setData({ detail: res.data.data, isInList: res.data.isInList })
+            let goodInfo = ''
+            if (res.data.data.good.type === 'free') {
+              goodInfo = '全书免费'
+            } else if (res.data.data.good.type === 'normal') {
+              goodInfo = '每章需要 ' + res.data.data.good.prise + ' 书币'
+            } else if (res.data.data.good.type === 'limit_chapter') {
+              goodInfo = '前' + res.data.data.good['limit_chapter'] + '免费，后续章节每章 ' + res.data.data.good.prise + ' 书币'
+            } else if (res.data.data.good.type === 'limit_date') {
+              goodInfo = res.data.data.good['limit_start_date'] + ' 至 ' + res.data.data.good['limit_end_date'] + '免费，后续章节每章 ' + res.data.data.good.prise + ' 书币'
+            } else {
+              goodInfo = '全书免费'
+            }
+            // 如果当前书籍没在书架中，自动加入书架
+            self.setData({ detail: res.data.data, isInList: res.data.isInList, goodInfo: goodInfo, hasUnLock: res.data.data.hasUnLock })
+            if (!res.data.isInList) {
+              self.addOrRemove()
+            }
             wx.setNavigationBarTitle({ title: res.data.data.name })
             wx.hideNavigationBarLoading()
           } else if (res.data.authfail) {
             wx.navigateTo({
-              url: '../authfail/authfail'
+              url: '../loading/loading?need_login_again=1'
             })
           } else {
             self.showToast('获取书籍信息失败~', 'bottom')
@@ -64,7 +119,7 @@ Page({
     if (id) {
       wx.request({
         url: config.base_url + '/api/comment/list?bookid=' + id,
-        header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+        header: { Authorization: 'Bearer ' + app.globalData.token },
         success: res => {
           if (res.data.ok) {
             res.data.list = res.data.list.map(item => {
@@ -74,7 +129,7 @@ Page({
             self.setData({ comments: res.data.list })
           } else if (res.data.authfail) {
             wx.navigateTo({
-              url: '../authfail/authfail'
+              url: '../loading/loading?need_login_again=1'
             })
           } else {
             self.showToast(res.data.msg || '获取评论失败~', 'bottom')
@@ -95,21 +150,107 @@ Page({
       }
     }
   },
+  // 输入秘钥解锁
+  openSecret: function() {
+    this.setData({
+      modal: {
+        show: true,
+        name: 'secret',
+        title: '温馨提示',
+        inputValue: '',
+        opacity: 0.6,
+        position: 'center',
+        width: '80%',
+        options: {
+          fullscreen: false,
+          showclose: true,
+          showfooter: false,
+          closeonclickmodal: true,
+          confirmText: ''
+        }
+      }
+    })
+  },
+  // 打开复制客服微信的弹窗
+  openContact: function() {
+    this.setData({
+      'modal.name': 'contact'
+    })
+  },
+  // 我已有秘钥
+  hasSecret: function() {
+    this.setData({
+      'modal.title': '请输入秘钥',
+      'modal.name': 'input'
+    })
+  },
+  bindKeyInput: function(e) {
+    this.setData({
+      'modal.inputValue': e.detail.value
+    })
+  },
+  // 完成秘钥输入
+  finishSecretInput: function() {
+    let self = this
+    if (!self.data.modal.inputValue) {
+      self.showToast('请输入秘钥', 'bottom')
+      return false
+    }
+    wx.request({
+      url: config.base_url + '/api/secret/open?bookid=' + self.data.bookid + '&secret=' + self.data.modal.inputValue,
+      header: { Authorization: 'Bearer ' + app.globalData.token },
+      success: res => {
+        if (res.data.ok) {
+          // 隐藏购买提示
+          self.setData({
+            'modal.show': false,
+            hasUnLock: true
+          })
+          wx.showToast({ title: '解锁成功', icon: 'success' })
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../loading/loading?need_login_again=1'
+          })
+        } else {
+          self.showToast('解锁失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
+        }
+      },
+      fail: err => {
+        self.showToast('解锁失败，请重试', 'bottom')
+      }
+    })
+  },
+  // 复制微信号
+  copyWxcode: function() {
+    let self = this
+    wx.setClipboardData({
+      data: self.data.wxcode,
+      success: function(res) {
+        wx.showToast({ title: '复制成功', icon: 'success' })
+        self.setData({
+          'modal.show': false
+        })
+        setTimeout(function() {
+          wx.hideToast()
+        }, 2000)
+      }
+    })
+  },
   addOrRemove: function() {
     let self = this
     if (self.data.isInList) {
       wx.request({
         url: config.base_url + '/api/booklist/remove_book?id=' + self.data.bookid,
         header: {
-          Authorization: 'Bearer ' + wx.getStorageSync('token')
+          Authorization: 'Bearer ' + app.globalData.token
         },
         success: function(res) {
           if (res.data.ok) {
-            self.showToast('从书架中移除成功', 'bottom')
+            // self.showToast('从书架中移除成功', 'bottom')
             self.setData({ isInList: false })
           } else if (res.data.authfail) {
             wx.navigateTo({
-              url: '../authfail/authfail'
+              url: '../loading/loading?need_login_again=1'
             })
           } else {
             self.showToast(res.data.msg || '从书架中移除失败，请重新尝试~', 'bottom')
@@ -123,15 +264,15 @@ Page({
       wx.request({
         url: config.base_url + '/api/booklist/add_book?id=' + self.data.bookid,
         header: {
-          Authorization: 'Bearer ' + wx.getStorageSync('token')
+          Authorization: 'Bearer ' + app.globalData.token
         },
         success: function(res) {
           if (res.data.ok) {
-            wx.showToast({ title: '加入书架成功', icon: 'success' })
+            // wx.showToast({ title: '加入书架成功', icon: 'success' })
             self.setData({ isInList: true })
           } else if (res.data.authfail) {
             wx.navigateTo({
-              url: '../authfail/authfail'
+              url: '../loading/loading?need_login_again=1'
             })
           } else {
             self.showToast(res.data.msg || '加入书架失败，请重新尝试~', 'bottom')
@@ -149,7 +290,7 @@ Page({
     let index = event.currentTarget.dataset.index
     wx.request({
       url: config.base_url + '/api/comment/like?commentid=' + commentid + '&op=' + (self.data.comments[index].is_like ? 'remove' : 'add'),
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           let key1 = 'comments[' + index + '].like_num'
@@ -157,7 +298,7 @@ Page({
           self.setData({ [key1]: res.data.current, [key2]: self.data.comments[index].is_like ? false : true })
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           self.showToast(res.data.msg || '点赞失败~', 'bottom')
@@ -182,7 +323,7 @@ Page({
     } else {
       const commentid = event.currentTarget.dataset.commentid
       const username = event.currentTarget.dataset.username
-      const storeUsername = (wx.getStorageSync('userinfo') || {}).username
+      const storeUsername = app.globalData.userInfo.username
       if (storeUsername === username) {
         self.showToast('自己不能回复自己', 'bottom')
       } else {
@@ -202,7 +343,7 @@ Page({
     wx.request({
       method: 'POST',
       url: config.base_url + '/api/comment/add',
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       data: {
         bookid: self.data.bookid,
         content: content,
@@ -218,7 +359,7 @@ Page({
           self.getCommentList(self.data.bookid)
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           self.showToast(res.data.msg || '发布书评失败~', 'bottom')
@@ -229,7 +370,9 @@ Page({
       }
     })
   },
-  goToReader: function() {
+  goToReader: function(event) {
+    const formId = event.detail.formId
+    app.reportFormId(formId)
     wx.navigateTo({ url: '../reader/reader?bookid=' + this.data.bookid })
   },
   showToast: function(content, position) {

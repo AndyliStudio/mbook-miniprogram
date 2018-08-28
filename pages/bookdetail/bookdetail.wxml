@@ -1,12 +1,26 @@
 <!--bookdetail.wxml-->
 <toast toast="{{toast}}"></toast>
-
-<view class="container detail">
-  <view class="headBackgroundContainer">
-    <view class="headBackground" style="background:url('{{detail.img_url}}') no-repeat center;background-size:200%;">
-    </view>
+<modal class="detail-modal" data-model="modal.show" visible="{{modal.show}}" title="{{modal.title}}" position="{{modal.position}}" fullscreen="{{modal.options.fullscreen}}" opacity="{{modal.opacity}}" show-close="{{modal.options.showclose}}" show-footer="{{modal.options.showfooter}}" close-on-click-modal="{{modal.options.closeonclickmodal}}" confirm-text="{{modal.options.confirmText}}" bindconfirm="handleModalConfirm">
+	<view wx:if="{{modal.name === 'secret'}}">
+  	<view class="des">{{secretTips}}</view>
+    <button class="btn" bindtap="openContact">联系客服</button>
+    <button class="btn" bindtap="hasSecret">我已有秘钥</button>
   </view>
+	<view wx:if="{{modal.name === 'input'}}">
+	  <input class="secret-input" type="text" bindinput="bindKeyInput" />
+    <button class="btn" bindtap="finishSecretInput">现在解锁</button>
+  </view>
+  <view wx:if="{{modal.name === 'contact'}}">
+  	<view class="des">请添加微信号<text class="bold">{{wxcode}}</text>为好友。</view>
+    <button class="btn" bindtap="copyWxcode">复制客服微信</button>
+  </view>
+</modal>
+<view class="container detail">
   <view class="head">
+    <view class="headBackgroundContainer">
+      <view class="headBackground" style="background:url('{{detail.img_url}}') no-repeat center;background-size:200%;">
+      </view>
+    </view>
     <view class="bookInfo">
       <image class="headImg" src="{{detail.img_url}}" mode="aspectFill"></image>
       <view class="left-text">
@@ -15,23 +29,38 @@
         <view class="wordsNum">字数：{{detail.total_words}}</view>
         <view class="status">状态：{{detail.update_status}}</view>
         <view class="updatetime">更新时间：{{detail.update_time}}</view>
+        <view class="prise">价格：{{goodInfo}}</view>
       </view>
     </view>
     <view class="clearfix"></view>
     <view class="btn-group">
-      <view class="addToList" bindtap="addOrRemove">
-        <view class="true" hidden="{{isInList}}">
-          <icon class="iconfont icon-add" />
+      <form class="read" bindsubmit="goToReader" report-submit='true' >
+        <button class="inner-btn" form-type="submit">
+          <text class="iconfont icon-yuedu"></text>
+          <text>立即阅读</text>
+        </button>
+      </form>
+      <!-- <view class="read" bindtap="goToReader">
+        <view class="iconfont icon-yuedu"></view>
+        <text>立即阅读</text>
+      </view> -->
+      <view class="addToList" wx:if="{{goodInfo !== '全书免费' && !hasUnLock}}" bindtap="openSecret">
+        <view class="inner-btn">
+          <text class="iconfont icon-miyao"></text>
+          <text>秘钥解锁</text>
+        </view>
+        <!-- <view class="true" hidden="{{isInList}}">
+          <view class="iconfont icon-add"></view>
           <text>加入书架</text>
         </view>
         <view class="false" hidden="{{!isInList}}">
-          <icon type="success_no_circle" color="#ffffff" size="20" />
+          <view type="success_no_circle" color="#ffffff" size="20"></view>
           <text>从书架中移除</text>
-        </view>
+        </view> -->
       </view>
-      <view class="read" bindtap="goToReader">
-        <icon class="iconfont icon-yuedu"></icon>
-        <text>立即阅读</text>
+      <view class="addToList" wx:if="{{goodInfo !== '全书免费' && hasUnLock}}">
+        <view class="iconfont icon-rightline"></view>
+        <text>已解锁</text>
       </view>
     </view>
   </view>

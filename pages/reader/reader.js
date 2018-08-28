@@ -1,4 +1,4 @@
-//login.js
+//reader.js
 const config = require('../../config')
 const app = getApp()
 
@@ -14,7 +14,7 @@ var currentPageIndex = 0 // 当前是分栏的第几页
 Page({
   data: {
     toast: { show: false, content: '', position: 'bottom' }, // 提示信息
-    modal: { 
+    modal: {
       show: false,
       name: '',
       inputValue: '',
@@ -27,7 +27,7 @@ Page({
         showclose: true,
         showfooter: true,
         closeonclickmodal: true,
-        confirmText: '',
+        confirmText: ''
       }
     },
     bookid: '',
@@ -43,7 +43,7 @@ Page({
     allSliderValue: {
       section: 1,
       bright: 1,
-      font: 32 //单位rpx
+      font: 36 //单位rpx
     },
     isShowFontSelector: 0, //是否显示选择字体详情板块
     allFontFamily: ['使用系统字体', '微软雅黑', '黑体', 'Arial', '楷体', '等线'],
@@ -61,11 +61,14 @@ Page({
       slider_active_bg: '#757e87',
       slider_noactive_bg: '#dfdfdf',
       control_bg: '#ffffff',
-      control_fontColor: '#616469'
+      control_fontColor: '#616469',
+      button_bg: '#bec2c5',
+      button_font_color: '#0770cb'
     }, //1、2、3、4分别对应四种颜色模式
     isShowMulu: 0, // 是否显示左侧栏
     allSectionData: [], // 所有章节数据
     showReaderTips: true, // 是否展示阅读提示
+    tipsText: '点击屏幕正中间\n展示控制栏',
     windows: {
       windows_height: 0,
       windows_width: 0
@@ -77,39 +80,37 @@ Page({
     maxPageNum: 11, // 本章的最大页数
     moveDirection: '', // 翻页方向，0表示向后翻页，1表示向前翻页
     isShowBuy: true, // 是否显示购买章节界面
-    startReadTime: null // 进入阅读器开始阅读时间
+    startReadTime: null, // 进入阅读器开始阅读时间
+    secretTips: '',
+    beforeLoaded: false, // 预加载相关变量
+    beforeData: '',
+    afterLoaded: '',
+    afterData: '',
+    loading: false, // 加载状态
+    loadFail: false, // 显示加载失败页面
+    useTransition: true, // 是否使用滑动的transition动画，在切换下一章的时候应该关闭
+    overPage: 1 // 阅读器翻页模式
   },
   onReady: function() {
-    var self = this
+    let self = this
     // 判断是否需要显示提示
-    var showReaderTips = wx.getStorageSync('show_reader_tips')
+    let showReaderTips = app.globalData.showReaderTips
     if (showReaderTips || showReaderTips === '') {
       self.setData({ showReaderTips: true })
     } else {
       self.setData({ showReaderTips: false })
     }
     //读取用户设置
-    let localSetting = wx.getStorageSync('userinfo') || {}
+    let localSetting = app.globalData.userInfo || {}
     if (localSetting && localSetting.setting) {
       let userSetting = localSetting.setting
       self.setData({
         'allSliderValue.bright': userSetting.reader.bright || self.data.allSliderValue.bright,
         'allSliderValue.font': userSetting.reader.fontSize || self.data.allSliderValue.font,
         colorStyle: self.transColorStyle(userSetting.reader.mode) || self.data.colorStyle,
-        currentFontFamily: userSetting.reader.fontFamily || self.data.currentFontFamily
+        currentFontFamily: userSetting.reader.fontFamily || self.data.currentFontFamily,
+        overPage: userSetting.reader.overPage
       })
-      // 设置系统亮度
-      // wx.setScreenBrightness({
-      //   value: userSetting.allSliderValue.bright || self.data.allSliderValue.bright
-      // })
-      // 获取系统亮度，将亮度值默认设置为系统亮度
-      // wx.getScreenBrightness({
-      //   success: res => {
-      //     self.setData({
-      //       'allSliderValue.bright': res.value
-      //     })
-      //   }
-      // })
     }
     // 设置背景色
     wx.setNavigationBarColor({
@@ -118,6 +119,9 @@ Page({
       animation: {
         duration: 0,
         timingFunc: 'easeIn'
+      },
+      fail: function() {
+        self.showToast('设置背景色失败', 'bottom')
       }
     })
   },
@@ -125,20 +129,22 @@ Page({
     var self = this
     //动态设置标题
     var bookid = options.bookid || '5a0d7a6ec38abf73e8e65cb3'
-    self.setData({ bookid: bookid, startReadTime: new Date() })
+    var secretTips = app.globalData.globalSetting ? app.globalData.globalSetting.secret_tips : '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
+    self.setData({ bookid: bookid, startReadTime: new Date(), secretTips: secretTips })
     // 初始化页面
     self.initPage()
   },
   //跳出页面执行函数
   onUnload: function() {
     //onUnload方法在页面被关闭时触发，我们需要将用户的当前设置存下来
-    let localSetting = wx.getStorageSync('userinfo') || {}
+    let localSetting = app.globalData.userInfo || {}
     if (localSetting && localSetting.setting) {
       localSetting.setting.reader = {
         bright: this.data.allSliderValue.bright,
         fontSize: this.data.allSliderValue.font,
         fontFamily: this.data.currentFontFamily,
-        mode: this.transMode(this.data.colorStyle.styleNum)
+        mode: this.transMode(this.data.colorStyle.styleNum),
+        overPage: this.data.overPage
       }
     }
     wx.setStorageSync('userinfo', localSetting)
@@ -146,13 +152,14 @@ Page({
   },
   //跳出页面执行函数
   onHide: function() {
-    let localSetting = wx.getStorageSync('userinfo') || {}
+    let localSetting = app.globalData.userInfo || {}
     if (localSetting && localSetting.setting) {
       localSetting.setting.reader = {
         bright: this.data.allSliderValue.bright,
         fontSize: this.data.allSliderValue.font,
         fontFamily: this.data.currentFontFamily,
-        mode: this.transMode(this.data.colorStyle.styleNum)
+        mode: this.transMode(this.data.colorStyle.styleNum),
+        overPage: this.data.overPage
       }
     }
     wx.setStorageSync('userinfo', localSetting)
@@ -162,21 +169,14 @@ Page({
   onShareAppMessage: function(res) {
     let self = this
     // 获取分享出去的图片地址
-    const shareParams = wx.getStorageSync('share_params')
+    const shareParams = app.globalData.globalData.share
     const now = new Date()
-    const code = wx.getStorageSync('share_code') + now.getTime()
-    if (shareParams) {
+    const code = app.globalData.shareCode + '_' + now.getTime()
+    if (shareParams && app.globalData.shareCode) {
       return {
         title: shareParams.title,
         path: shareParams.page + '?code' + code,
-        imageUrl: shareParams.imageUrl,
-        success: function(res) {
-          // 转发成功
-          wx.showToast({ title: '分享成功', icon: 'success' })
-        },
-        fail: function(res) {
-          // 取消分享
-        }
+        imageUrl: shareParams.imageUrl
       }
     } else {
       self.showToast('获取分享参数失败', 'bottom')
@@ -207,11 +207,11 @@ Page({
     var currentIndex = self.data.pageIndex
     if (direction == 0) {
       if (currentIndex < self.data.maxPageNum) {
-        self.setData({ leftValue: self.data.leftValue - moreOrLessValue })
+        self.setData({ useTransition: true, leftValue: self.data.leftValue - moreOrLessValue })
       }
     } else {
       if (currentIndex > 1) {
-        self.setData({ leftValue: self.data.leftValue + moreOrLessValue })
+        self.setData({ useTransition: true, leftValue: self.data.leftValue + moreOrLessValue })
       }
     }
   },
@@ -222,6 +222,17 @@ Page({
     if (isMoving == 0) {
       this.setData({ touches: { lastX: event.touches[0].pageX, lastY: event.touches[0].pageY } })
     }
+  },
+  handleDownClick: function(event) {
+    this.setData({
+      control: {
+        all: this.data.control.all === 0 ? 1 : 0,
+        control_tab: 1,
+        control_detail: 1,
+        target: this.data.control.target || 'jingdu'
+      },
+      isShowFontSelector: 0
+    })
   },
   handletouchend: function() {
     // console.log('正在执行touchend, isMoving为：'+isMoving);
@@ -248,6 +259,10 @@ Page({
       } else if (x && x > w + 100) {
         self.setData({ moveDirection: 0 })
       }
+      // 如果是下翻页式，下面的代码将不用执行
+      if (self.data.overPage === 1) {
+        return false
+      }
     }
     currentGesture = 0
     //左滑动和右滑动的操作
@@ -258,30 +273,35 @@ Page({
       if (self.data.moveDirection === 0) {
         if (currentIndex < self.data.maxPageNum) {
           targetLeftValue = -1 * (self.data.windows.windows_width - 10) * currentIndex
-          pingjunValue = Math.abs(targetLeftValue - self.data.leftValue) / 4 //500ms其实函数只执行了4次，第一次会等待100ms才会开始函数
-          isMoving = 1 //开始计时的时候将标志置1
+          self.setData({ useTransition: true, leftValue: targetLeftValue })
+          // pingjunValue = Math.abs(targetLeftValue - self.data.leftValue) / 4 //500ms其实函数只执行了4次，第一次会等待100ms才会开始函数
+          // isMoving = 1 //开始计时的时候将标志置1
           //使用计时器实现动画效果
-          leftMoveTimer = setInterval(function() {
-            ++leftTimmerCount
-            var currentLeftValue = self.data.leftValue
-            //如果达到了目标值，立即停止计时器
-            //调试发现有些时候这个if的跳转会莫名的不成立，所以做个限制，函数被执行了4次之后，无论条件是否成立，将leftValue设置为目标值，并结束计时器
-            if (leftTimmerCount == 4) {
-              clearInterval(leftMoveTimer)
-              isMoving = 0
-              leftTimmerCount = 0
-              self.setData({ leftValue: targetLeftValue })
-              return
-            }
-            if (currentLeftValue == targetLeftValue) {
-              clearInterval(leftMoveTimer)
-              isMoving = 0
-              leftTimmerCount = 0
-              self.setData({ leftValue: targetLeftValue })
-              return
-            }
-            self.setData({ leftValue: currentLeftValue - pingjunValue })
-          }, 75)
+          // leftMoveTimer = setInterval(function() {
+          //   ++leftTimmerCount
+          //   var currentLeftValue = self.data.leftValue
+          //   //如果达到了目标值，立即停止计时器
+          //   //调试发现有些时候这个if的跳转会莫名的不成立，所以做个限制，函数被执行了4次之后，无论条件是否成立，将leftValue设置为目标值，并结束计时器
+          //   if (leftTimmerCount == 4) {
+          //     clearInterval(leftMoveTimer)
+          //     isMoving = 0
+          //     leftTimmerCount = 0
+          //     self.setData({ leftValue: targetLeftValue })
+          //     return
+          //   }
+          //   if (currentLeftValue == targetLeftValue) {
+          //     clearInterval(leftMoveTimer)
+          //     isMoving = 0
+          //     leftTimmerCount = 0
+          //     self.setData({ leftValue: targetLeftValue })
+          //     return
+          //   }
+          //   self.setData({ leftValue: currentLeftValue - pingjunValue })
+          // }, 75)
+          // 还剩下3页的时候去预加载
+          if (self.data.maxPageNum - currentIndex <= 3 && !self.data.afterLoaded) {
+            self.loadAfter()
+          }
           self.setData({ pageIndex: ++currentIndex })
         } else {
           self.loadNextChapter()
@@ -290,27 +310,32 @@ Page({
         //前一页和后一页相差其实是2个-320px
         if (currentIndex > 1) {
           targetLeftValue = -1 * (self.data.windows.windows_width - 10) * (currentIndex - 2)
-          pingjunValue = Math.abs(targetLeftValue - self.data.leftValue) / 4
-          isMoving = 1
-          rightMoveTimer = setInterval(function() {
-            ++rightTimmerCount
-            var currentLeftValue = self.data.leftValue
-            if (rightTimmerCount == 4) {
-              clearInterval(rightMoveTimer)
-              isMoving = 0
-              rightTimmerCount = 0
-              self.setData({ leftValue: targetLeftValue })
-              return
-            }
-            if (currentLeftValue == targetLeftValue) {
-              clearInterval(rightMoveTimer)
-              isMoving = 0
-              rightTimmerCount = 0
-              self.setData({ leftValue: targetLeftValue })
-              return
-            }
-            self.setData({ leftValue: currentLeftValue + pingjunValue })
-          }, 75)
+          self.setData({ useTransition: true, leftValue: targetLeftValue })
+          // pingjunValue = Math.abs(targetLeftValue - self.data.leftValue) / 4
+          // isMoving = 1
+          // rightMoveTimer = setInterval(function() {
+          //   ++rightTimmerCount
+          //   var currentLeftValue = self.data.leftValue
+          //   if (rightTimmerCount == 4) {
+          //     clearInterval(rightMoveTimer)
+          //     isMoving = 0
+          //     rightTimmerCount = 0
+          //     self.setData({ leftValue: targetLeftValue })
+          //     return
+          //   }
+          //   if (currentLeftValue == targetLeftValue) {
+          //     clearInterval(rightMoveTimer)
+          //     isMoving = 0
+          //     rightTimmerCount = 0
+          //     self.setData({ leftValue: targetLeftValue })
+          //     return
+          //   }
+          //   self.setData({ leftValue: currentLeftValue + pingjunValue })
+          // }, 75)
+          // 还剩下3页的时候去预加载
+          if (currentIndex <= 3 && !!self.data.beforeLoaded) {
+            self.loadBefore()
+          }
           self.setData({ pageIndex: --currentIndex })
         } else {
           self.loadPreChapter()
@@ -323,22 +348,24 @@ Page({
     var self = this
     self.setData({
       'allSliderValue.section': event.detail.value,
-      backupSectionNum: self.data.currentSectionNum
+      backupSectionNum: self.data.currentSectionNum,
+      loading: true
     })
     //根据章节id去得到章节内容
     wx.request({
       method: 'GET',
       url: config.base_url + '/api/chapter/detail?bookid=' + self.data.bookid + '&chapter_num=' + event.detail.value,
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success(res) {
         if (res.data.ok) {
           self.setData({
             currentSectionNum: res.data.data.num,
-            content: res.data.data.content,
+            content: res.data.data.content.replace(/[\r\n]+\s*/g, '\n '),
             factionTitle: res.data.data.name,
             'allSliderValue.section': res.data.data.num,
             hasGotMaxNum: false,
             pageIndex: 1,
+            useTransition: false,
             leftValue: 0,
             isShowBuy: !res.data.canRead
           })
@@ -365,28 +392,35 @@ Page({
             // })
           }
           wx.setNavigationBarTitle({
-            title: res.data.data.name
+            title: '第' + res.data.data.num + '章 ' + res.data.data.name
           })
+          // 如果为上下翻页，则不需要重新计算最大分页数
+          if (self.data.overPage === 1) {
+            return false
+          }
           // 重新计算最大分页数
-          wx
-            .createSelectorQuery()
+          wx.createSelectorQuery()
             .select('#content-out')
             .boundingClientRect(function(rect) {
               self.setData({
                 maxPageNum: Math.ceil(rect.height / parseInt(self.data.windows.windows_height - 20)),
-                hasGotMaxNum: true
+                hasGotMaxNum: true,
+                loading: false
               })
             })
             .exec()
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
+          self.setData({ loading: false, loadFail: true })
         } else {
+          self.setData({ loading: false, loadFail: true })
           self.showToast('获取章节内容失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
       },
       fail(e) {
+        self.setData({ loading: false, loadFail: true })
         self.showToast('获取章节内容失败', 'bottom')
       }
     })
@@ -453,7 +487,9 @@ Page({
         slider_active_bg: '#757e87',
         slider_noactive_bg: '#dfdfdf',
         control_bg: '#ffffff',
-        control_fontColor: '#616469'
+        control_fontColor: '#616469',
+        button_bg: '#bec2c5',
+        button_font_color: '#0770cb'
       }
     } else if (cname === '淡黄') {
       return {
@@ -462,7 +498,9 @@ Page({
         slider_active_bg: '#766f69',
         slider_noactive_bg: '#dad4c4',
         control_bg: '#faf4e4',
-        control_fontColor: '#60594f'
+        control_fontColor: '#60594f',
+        button_bg: '#c1bbab',
+        button_font_color: '#866842'
       }
     } else if (cname === '护眼') {
       return {
@@ -471,7 +509,9 @@ Page({
         slider_active_bg: '#657568',
         slider_noactive_bg: '#aeccd6',
         control_bg: '#ccf1d0',
-        control_fontColor: '#44644c'
+        control_fontColor: '#44644c',
+        button_bg: '#a0baa1',
+        button_font_color: '#3a732c'
       }
     } else if (cname === '夜间') {
       return {
@@ -480,7 +520,9 @@ Page({
         slider_active_bg: '#53565d',
         slider_noactive_bg: '#23282c',
         control_bg: '#10131a',
-        control_fontColor: '#5b5e65'
+        control_fontColor: '#5b5e65',
+        button_bg: '#212528',
+        button_font_color: '#2c5a7e'
       }
     } else {
       return {
@@ -489,7 +531,9 @@ Page({
         slider_active_bg: '#757e87',
         slider_noactive_bg: '#dfdfdf',
         control_bg: '#ffffff',
-        control_fontColor: '#616469'
+        control_fontColor: '#616469',
+        button_bg: '#bec2c5',
+        button_font_color: '#0770cb'
       }
     }
   },
@@ -506,7 +550,9 @@ Page({
             slider_active_bg: '#757e87',
             slider_noactive_bg: '#dfdfdf',
             control_bg: '#ffffff',
-            control_fontColor: '#616469'
+            control_fontColor: '#616469',
+            button_bg: '#bec2c5',
+            button_font_color: '#0770cb'
           }
         })
         break
@@ -518,7 +564,9 @@ Page({
             slider_active_bg: '#766f69',
             slider_noactive_bg: '#dad4c4',
             control_bg: '#faf4e4',
-            control_fontColor: '#60594f'
+            control_fontColor: '#60594f',
+            button_bg: '#c1bbab',
+            button_font_color: '#866842'
           }
         })
         break
@@ -530,7 +578,9 @@ Page({
             slider_active_bg: '#657568',
             slider_noactive_bg: '#aeccd6',
             control_bg: '#ccf1d0',
-            control_fontColor: '#44644c'
+            control_fontColor: '#44644c',
+            button_bg: '#a0baa1',
+            button_font_color: '#3a732c'
           }
         })
         break
@@ -542,7 +592,9 @@ Page({
             slider_active_bg: '#53565d',
             slider_noactive_bg: '#23282c',
             control_bg: '#10131a',
-            control_fontColor: '#5b5e65'
+            control_fontColor: '#5b5e65',
+            button_bg: '#212528',
+            button_font_color: '#2c5a7e'
           }
         })
         break
@@ -576,13 +628,20 @@ Page({
   //打开目录侧边栏
   openMulu: function() {
     var self = this
-    var bookid = self.data.bookid
-    var sectionNum = self.data.allSliderValue.section
     wx.request({
       url: config.base_url + '/api/chapter/list?bookid=' + self.data.bookid,
       success: res => {
         if (res.data.ok) {
-          self.setData({ allSectionData: res.data.data.chapters, isShowMulu: 1 })
+          self.setData({
+            allSectionData: res.data.data.chapters,
+            isShowMulu: 1,
+            control: {
+              all: 0,
+              control_tab: 0,
+              control_detail: 0,
+              target: self.data.control.target || 'jingdu'
+            }
+          })
         } else {
           self.showToast('获取目录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
@@ -596,22 +655,24 @@ Page({
   showThisSection: function(event) {
     var self = this
     var chapterid = event.currentTarget.dataset.chapterid
-    self.setData({ isShowMulu: 0 })
+    self.setData({ isShowMulu: 0, loading: true })
     //根据章节id去得到章节内容
     wx.request({
       method: 'GET',
       url: config.base_url + '/api/chapter/detail?bookid=' + self.data.bookid + '&chapter_id=' + chapterid,
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success(res) {
         if (res.data.ok) {
           self.setData({
             currentSectionNum: res.data.data.num,
-            content: res.data.data.content,
+            content: res.data.data.content.replace(/[\r\n]+\s*/g, '\n '),
             factionTitle: res.data.data.name,
             'allSliderValue.section': res.data.data.num,
             pageIndex: 1,
+            useTransition: false,
             leftValue: 0,
-            isShowBuy: !res.data.canRead
+            isShowBuy: !res.data.canRead,
+            hasGotMaxNum: false
           })
           if (res.data.canRead && res.data.doAutoBuy) {
             self.showToast('已为您自动给购买该章节', 'bottom')
@@ -637,39 +698,46 @@ Page({
             // })
           }
           wx.setNavigationBarTitle({
-            title: '「' + res.data.bookname + '」• ' + res.data.data.name
+            title: '第' + res.data.data.num + '章 ' + res.data.data.name
           })
+          // 如果为上下翻页，则不需要重新计算最大分页数
+          if (self.data.overPage === 1) {
+            return false
+          }
           // 重新计算最大分页数
-          wx
-            .createSelectorQuery()
+          wx.createSelectorQuery()
             .select('#content-out')
             .boundingClientRect(function(rect) {
               self.setData({
                 maxPageNum: Math.ceil(rect.height / parseInt(self.data.windows.windows_height - 20)),
+                loading: false,
                 hasGotMaxNum: true
               })
             })
             .exec()
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
+          self.setData({ loading: false, loadFail: true })
         } else {
+          self.setData({ loading: false, loadFail: true })
           self.showToast('获取章节内容失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
       },
       fail(e) {
+        self.setData({ loading: false, loadFail: true })
         self.showToast('获取章节内容失败', 'bottom')
       }
     })
   },
   initPage: function(chapterNum) {
     let self = this
-    self.setData({ backupSectionNum: self.data.currentSectionNum - 1 > 0 ? self.data.currentSectionNum - 1 : 1 })
+    self.setData({ backupSectionNum: self.data.currentSectionNum - 1 > 0 ? self.data.currentSectionNum - 1 : 1, loading: true })
     let chapterStr = chapterNum ? '&chapter_num=' + chapterNum : ''
     wx.request({
       url: config.base_url + '/api/chapter/detail?bookid=' + self.data.bookid + chapterStr,
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           self.setData({
@@ -679,10 +747,11 @@ Page({
             'allSliderValue.section': res.data.data.num,
             factionName: res.data.bookname,
             factionTitle: res.data.data.name,
-            content: res.data.data.content,
+            content: res.data.data.content.replace(/[\r\n]+\s*/g, '\n '),
             author: res.data.author,
             headImg: res.data.headimg,
-            isShowBuy: !res.data.canRead
+            isShowBuy: !res.data.canRead,
+            hasGotMaxNum: false
           })
           if (res.data.canRead && res.data.doAutoBuy) {
             self.showToast('已为您自动给购买该章节', 'bottom')
@@ -709,35 +778,59 @@ Page({
           }
           // 设置标题
           wx.setNavigationBarTitle({
-            title: res.data.data.name
+            title: '第' + res.data.data.num + '章 ' + res.data.data.name
           })
-          // 动态计算最大页数
-          wx
-            .createSelectorQuery()
-            .select('#content-out')
-            .boundingClientRect(function(rect) {
-              // 获取屏幕高度和宽度信息
-              wx.getSystemInfo({
-                success: function(res) {
-                  self.setData({
-                    maxPageNum: Math.ceil(rect.height / parseInt(res.windowHeight - 20)),
-                    leftValue: -1 * (res.windowWidth - 10) * (parseInt(self.data.pageIndex || 1) - 1),
-                    windows: {
-                      windows_height: res.windowHeight,
-                      windows_width: res.windowWidth
-                    },
-                    hasGotMaxNum: true
-                  })
-                }
-              })
+          // 如果为上下翻页，则不需要重新计算最大分页数
+          if (app.globalData.userInfo.setting && app.globalData.userInfo.setting.reader.overPage === 1) {
+            wx.getSystemInfo({
+              success: function(response) {
+                self.setData({
+                  leftValue: res.data.scroll > 0 ? res.data.scroll : 0,
+                  windows: {
+                    windows_height: response.windowHeight,
+                    windows_width: response.windowWidth
+                  },
+                  loading: false
+                })
+              }
             })
-            .exec()
+          } else {
+            // 动态计算最大页数
+            wx.createSelectorQuery()
+              .select('#content-out')
+              .boundingClientRect(function(rect) {
+                // 获取屏幕高度和宽度信息
+                wx.getSystemInfo({
+                  success: function(res) {
+                    self.setData({
+                      maxPageNum: Math.ceil(rect.height / parseInt(res.windowHeight - 20)),
+                      useTransition: false,
+                      leftValue: -1 * (res.windowWidth - 10) * (parseInt(self.data.pageIndex || 1) - 1),
+                      windows: {
+                        windows_height: res.windowHeight,
+                        windows_width: res.windowWidth
+                      },
+                      hasGotMaxNum: true,
+                      loading: false
+                    })
+                  }
+                })
+              })
+              .exec()
+          }
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../loading/loading?need_login_again=1'
+          })
+          self.setData({ loading: false, loadFail: true })
         } else {
+          self.setData({ loading: false, loadFail: true })
           self.showToast('获取章节内容失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
           // 展示无数据按钮
         }
       },
       fail: err => {
+        self.setData({ loading: false, loadFail: true })
         self.showToast('获取章节内容失败', 'bottom')
       }
     })
@@ -749,51 +842,52 @@ Page({
     wx.request({
       method: 'POST',
       url: config.base_url + '/api/booklist/update_read',
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       data: {
         bookid: self.data.bookid,
         chapter_num: self.data.currentSectionNum,
         chapter_page_index: self.data.pageIndex,
-        read_time: new Date().getTime() - self.data.startReadTime.getTime(),
+        chapter_page_top: self.data.leftValue,
+        read_time: self.data.startReadTime ? new Date().getTime() - self.data.startReadTime.getTime() : 0,
         setting: setting
       },
       success: res => {
         if (res.data.ok) {
           // 判断改书籍是否在书籍列表中，没有在的话提示用户加入加入
-          const allbooks = wx.getStorageSync('allbooks')
-          if (allbooks.indexOf(bookid) < 0) {
-            wx.showModal({
-              title: '温馨提示',
-              content: '是否将《' + factionName + '》加入书架？',
-              success: res => {
-                if (res.confirm) {
-                  wx.request({
-                    url: config.base_url + '/api/booklist/add_book?id=' + bookid,
-                    header: {
-                      Authorization: 'Bearer ' + wx.getStorageSync('token')
-                    },
-                    success: res => {
-                      if (res.data.ok) {
-                        wx.showToast({ title: '加入书架成功', icon: 'success' })
-                      } else if (res.data.authfail) {
-                        wx.navigateTo({
-                          url: '../authfail/authfail'
-                        })
-                      } else {
-                        wx.showToast({ title: '加入书架失败，请重新尝试~', icon: 'error' })
-                      }
-                    },
-                    fail: err => {
-                      wx.showToast({ title: '加入书架失败，请重新尝试~', icon: 'error' })
-                    }
-                  })
-                }
-              }
-            })
-          }
+          // const allbooks = wx.getStorageSync('allbooks')
+          // if (allbooks.indexOf(bookid) < 0) {
+          //   wx.showModal({
+          //     title: '温馨提示',
+          //     content: '是否将《' + factionName + '》加入书架？',
+          //     success: res => {
+          //       if (res.confirm) {
+          //         wx.request({
+          //           url: config.base_url + '/api/booklist/add_book?id=' + bookid,
+          //           header: {
+          //             Authorization: 'Bearer ' + app.globalData.token
+          //           },
+          //           success: res => {
+          //             if (res.data.ok) {
+          //               wx.showToast({ title: '加入书架成功', icon: 'success' })
+          //             } else if (res.data.authfail) {
+          //               wx.navigateTo({
+          //                 url: '../loading/loading?need_login_again=1'
+          //               })
+          //             } else {
+          //               wx.showToast({ title: '加入书架失败，请重新尝试~', icon: 'error' })
+          //             }
+          //           },
+          //           fail: err => {
+          //             wx.showToast({ title: '加入书架失败，请重新尝试~', icon: 'error' })
+          //           }
+          //         })
+          //       }
+          //     }
+          //   })
+          // }
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           self.showToast('更新阅读进度失败', 'bottom')
@@ -842,74 +936,95 @@ Page({
   loadPreChapter: function() {
     let self = this
     self.setData({ backupSectionNum: self.data.currentSectionNum })
+    let callback = function(res, isLoadCallback) {
+      if (res.data.ok) {
+        self.setData({
+          bindTopValue: 0,
+          currentSectionNum: res.data.data.num,
+          content: res.data.data.content.replace(/[\r\n]+\s*/g, '\n '),
+          factionTitle: res.data.data.name,
+          'allSliderValue.section': res.data.data.num,
+          hasGotMaxNum: false,
+          isShowBuy: !res.data.canRead
+        })
+        if (res.data.canRead && res.data.doAutoBuy) {
+          self.showToast('已为您自动给购买该章节', 'bottom')
+        } else if (!res.data.canRead && res.data.autoBuy) {
+          // self.setData({
+          //   'modal': {
+          //     show: true,
+          //     name: 'buyfail',
+          //     inputValue: '',
+          //     title: '温馨提示',
+          //     opacity: 0.6,
+          //     position: 'center',
+          //     width: '80%',
+          //     options: {
+          //       fullscreen: false,
+          //       showclose: true,
+          //       showfooter: false,
+          //       closeonclickmodal: true,
+          //       confirmText: '',
+          //     }
+          //   }
+          // })
+        }
+        // 设置标题
+        wx.setNavigationBarTitle({
+          title: '第' + res.data.data.num + '章 ' + res.data.data.name
+        })
+        // 如果为上下翻页，则不需要重新计算最大分页数
+        if (self.data.overPage === 1) {
+          return false
+        }
+        // 重新计算最大分页数
+        wx.createSelectorQuery()
+          .select('#content-out')
+          .boundingClientRect(function(rect) {
+            var maxPageNum = Math.ceil(rect.height / parseInt(self.data.windows.windows_height - 20))
+            self.setData({
+              maxPageNum: maxPageNum,
+              pageIndex: maxPageNum, // 往前翻页，讲pageIndex重置为最后一页
+              useTransition: false,
+              leftValue: -1 * (self.data.windows.windows_width - 10) * (maxPageNum - 1),
+              hasGotMaxNum: true
+            })
+          })
+          .exec()
+      } else if (res.data.authfail) {
+        wx.navigateTo({
+          url: '../loading/loading?need_login_again=1'
+        })
+        if (!isLoadCallback) {
+          self.setData({ loadFail: true })
+        }
+      } else {
+        if (!isLoadCallback) {
+          self.setData({ loadFail: true })
+        }
+        self.showToast('加载上一章失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
+      }
+    }
+    if (self.data.beforeLoaded && self.data.beforeData) {
+      callback(self.data.beforeData, true)
+      self.setData({ beforeLoaded: false, beforeData: '' })
+      return
+    }
     let preChapterNum = self.data.currentSectionNum - 1
     if (preChapterNum > 0) {
+      self.setData({ loading: true })
       wx.request({
         method: 'GET',
         url: config.base_url + '/api/chapter/detail?bookid=' + self.data.bookid + '&chapter_num=' + preChapterNum,
         header: {
-          Authorization: 'Bearer ' + wx.getStorageSync('token')
+          Authorization: 'Bearer ' + app.globalData.token
         },
         success(res) {
-          if (res.data.ok) {
-            self.setData({
-              bindTopValue: 0,
-              currentSectionNum: res.data.data.num,
-              content: res.data.data.content,
-              factionTitle: res.data.data.name,
-              'allSliderValue.section': res.data.data.num,
-              hasGotMaxNum: false,
-              isShowBuy: !res.data.canRead
-            })
-            if (res.data.canRead && res.data.doAutoBuy) {
-              self.showToast('已为您自动给购买该章节', 'bottom')
-            } else if (!res.data.canRead && res.data.autoBuy) {
-              // self.setData({
-              //   'modal': {
-              //     show: true,
-              //     name: 'buyfail',
-              //     inputValue: '',
-              //     title: '温馨提示',
-              //     opacity: 0.6,
-              //     position: 'center',
-              //     width: '80%',
-              //     options: {
-              //       fullscreen: false,
-              //       showclose: true,
-              //       showfooter: false,
-              //       closeonclickmodal: true,
-              //       confirmText: '',
-              //     }
-              //   }
-              // })
-            }
-            // 设置标题
-            wx.setNavigationBarTitle({
-              title: self.data.factionTitle
-            })
-            // 重新计算最大分页数
-            wx
-              .createSelectorQuery()
-              .select('#content-out')
-              .boundingClientRect(function(rect) {
-                var maxPageNum = Math.ceil(rect.height / parseInt(self.data.windows.windows_height - 20))
-                self.setData({
-                  maxPageNum: maxPageNum,
-                  pageIndex: maxPageNum, // 往前翻页，讲pageIndex重置为最后一页
-                  leftValue: -1 * (self.data.windows.windows_width - 10) * (maxPageNum - 1),
-                  hasGotMaxNum: true
-                })
-              })
-              .exec()
-          } else if (res.data.authfail) {
-            wx.navigateTo({
-              url: '../authfail/authfail'
-            })
-          } else {
-            self.showToast('加载上一章失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
-          }
+          callback(res)
+          self.setData({ loading: false })
         },
         fail(e) {
+          self.setData({ loading: false, loadFail: true })
           self.showToast('加载上一章失败，', 'bottom')
         }
       })
@@ -917,74 +1032,114 @@ Page({
       self.showToast('已经翻到最前面了', 'bottom')
     }
   },
+  loadBefore: function() {
+    let self = this
+    let preChapterNum = self.data.currentSectionNum - 1
+    if (preChapterNum > 0 && !self.data.beforeLoaded) {
+      wx.request({
+        method: 'GET',
+        url: config.base_url + '/api/chapter/detail?bookid=' + self.data.bookid + '&chapter_num=' + preChapterNum,
+        header: { Authorization: 'Bearer ' + app.globalData.token },
+        success(res) {
+          if (res.data.ok) {
+            // 存储获得接口数据
+            self.setData({ beforeLoaded: true, beforeData: res })
+          }
+        }
+      })
+    }
+  },
+  // loadBefore代表提前加载，页面的内容不会立即被修改
   loadNextChapter: function() {
     let self = this
     self.setData({ backupSectionNum: self.data.currentSectionNum })
+    let callback = function(res, isLoadCallback) {
+      if (res.data.ok) {
+        self.setData({
+          bindTopValue: 0,
+          currentSectionNum: res.data.data.num,
+          content: res.data.data.content.replace(/[\r\n]+\s*/g, '\n '),
+          factionTitle: res.data.data.name,
+          'allSliderValue.section': res.data.data.num,
+          hasGotMaxNum: false,
+          pageIndex: 1, // 将pageIndex重置为第一页
+          useTransition: false,
+          leftValue: 0, // 左滑值重置为0
+          isShowBuy: !res.data.canRead
+        })
+        if (res.data.canRead && res.data.doAutoBuy) {
+          self.showToast('已为您自动给购买该章节', 'bottom')
+        } else if (!res.data.canRead && res.data.autoBuy) {
+          // self.setData({
+          //   'modal': {
+          //     show: true,
+          //     name: 'buyfail',
+          //     inputValue: '',
+          //     title: '温馨提示',
+          //     opacity: 0.6,
+          //     position: 'center',
+          //     width: '80%',
+          //     options: {
+          //       fullscreen: false,
+          //       showclose: true,
+          //       showfooter: false,
+          //       closeonclickmodal: true,
+          //       confirmText: '',
+          //     }
+          //   }
+          // })
+        }
+        // 设置标题
+        wx.setNavigationBarTitle({
+          title: '第' + res.data.data.num + '章 ' + res.data.data.name
+        })
+        // 如果为上下翻页，则不需要重新计算最大分页数
+        if (self.data.overPage === 1) {
+          return false
+        }
+        // 重新计算最大分页数
+        wx.createSelectorQuery()
+          .select('#content-out')
+          .boundingClientRect(function(rect) {
+            self.setData({
+              maxPageNum: Math.ceil(rect.height / parseInt(self.data.windows.windows_height - 20)),
+              hasGotMaxNum: true
+            })
+          })
+          .exec()
+      } else if (res.data.authfail) {
+        wx.navigateTo({
+          url: '../loading/loading?need_login_again=1'
+        })
+        if (!isLoadCallback) {
+          self.setData({ loadFail: true })
+        }
+      } else {
+        if (!isLoadCallback) {
+          self.setData({ loadFail: true })
+        }
+        self.showToast('加载下一章失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
+      }
+    }
+    // 如果已经存在预加载数据，则不重新发送请求
+    if (self.data.afterLoaded && self.data.afterData) {
+      callback(self.data.afterData)
+      self.setData({ afterLoaded: false, afterData: '' })
+      return
+    }
     let nextChapterNum = self.data.currentSectionNum + 1
     if (nextChapterNum <= self.data.newestSectionNum) {
+      self.setData({ loading: true })
       wx.request({
         method: 'GET',
         url: config.base_url + '/api/chapter/detail?bookid=' + self.data.bookid + '&chapter_num=' + nextChapterNum,
-        header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+        header: { Authorization: 'Bearer ' + app.globalData.token },
         success(res) {
-          if (res.data.ok) {
-            self.setData({
-              bindTopValue: 0,
-              currentSectionNum: res.data.data.num,
-              content: res.data.data.content,
-              factionTitle: res.data.data.name,
-              'allSliderValue.section': res.data.data.num,
-              hasGotMaxNum: false,
-              pageIndex: 1, // 将pageIndex重置为第一页，
-              leftValue: 0, // 左滑值重置为0
-              isShowBuy: !res.data.canRead
-            })
-            if (res.data.canRead && res.data.doAutoBuy) {
-              self.showToast('已为您自动给购买该章节', 'bottom')
-            } else if (!res.data.canRead && res.data.autoBuy) {
-              // self.setData({
-              //   'modal': {
-              //     show: true,
-              //     name: 'buyfail',
-              //     inputValue: '',
-              //     title: '温馨提示',
-              //     opacity: 0.6,
-              //     position: 'center',
-              //     width: '80%',
-              //     options: {
-              //       fullscreen: false,
-              //       showclose: true,
-              //       showfooter: false,
-              //       closeonclickmodal: true,
-              //       confirmText: '',
-              //     }
-              //   }
-              // })
-            }
-            // 设置标题
-            wx.setNavigationBarTitle({
-              title: self.data.factionTitle
-            })
-            // 重新计算最大分页数
-            wx
-              .createSelectorQuery()
-              .select('#content-out')
-              .boundingClientRect(function(rect) {
-                self.setData({
-                  maxPageNum: Math.ceil(rect.height / parseInt(self.data.windows.windows_height - 20)),
-                  hasGotMaxNum: true
-                })
-              })
-              .exec()
-          } else if (res.data.authfail) {
-            wx.navigateTo({
-              url: '../authfail/authfail'
-            })
-          } else {
-            self.showToast('加载下一章失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
-          }
+          callback(res)
+          self.setData({ loading: false })
         },
         fail(e) {
+          self.setData({ loading: false, loadFail: true })
           self.showToast('加载下一章失败', 'bottom')
         }
       })
@@ -992,12 +1147,30 @@ Page({
       self.showToast('已经翻到最后面了', 'bottom')
     }
   },
+  // 预加载下一章
+  loadAfter: function() {
+    let self = this
+    let nextChapterNum = self.data.currentSectionNum + 1
+    if (nextChapterNum <= self.data.newestSectionNum && !self.data.afterLoaded) {
+      wx.request({
+        method: 'GET',
+        url: config.base_url + '/api/chapter/detail?bookid=' + self.data.bookid + '&chapter_num=' + nextChapterNum,
+        header: { Authorization: 'Bearer ' + app.globalData.token },
+        success(res) {
+          if (res.data.ok) {
+            // 存储获得接口数据
+            self.setData({ afterLoaded: true, afterData: res })
+          }
+        }
+      })
+    }
+  },
   // 购买该章节
   buyChapter: function() {
     let self = this
     wx.request({
       url: config.base_url + '/api/chapter/buy?bookid=' + self.data.bookid + '&chapter_num=' + self.data.currentSectionNum,
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           // 隐藏购买提示
@@ -1006,13 +1179,13 @@ Page({
           })
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           // 费用不足
           if (res.data.nomoney) {
             self.setData({
-              'modal': {
+              modal: {
                 show: true,
                 name: 'buyfail',
                 inputValue: '',
@@ -1025,7 +1198,7 @@ Page({
                   showclose: true,
                   showfooter: false,
                   closeonclickmodal: true,
-                  confirmText: '',
+                  confirmText: ''
                 }
               }
             })
@@ -1042,7 +1215,7 @@ Page({
   // 取消购买，返回上一次阅读章节
   buyTotal: function() {
     this.setData({
-      'modal': {
+      modal: {
         show: true,
         name: 'secret',
         inputValue: '',
@@ -1055,7 +1228,7 @@ Page({
           showclose: true,
           showfooter: false,
           closeonclickmodal: true,
-          confirmText: '',
+          confirmText: ''
         }
       }
     })
@@ -1064,6 +1237,23 @@ Page({
     this.setData({
       'modal.title': '请输入秘钥',
       'modal.name': 'input'
+    })
+  },
+  // 复制微信号
+  copyWxcode: function() {
+    let self = this
+    let globalSetting = app.globalData.globalSetting ? app.globalData.globalSetting.wxcode : 'bcydushu'
+    wx.setClipboardData({
+      data: globalSetting.wxcode || 'haitianyise_hl',
+      success: function(res) {
+        wx.showToast({ title: '复制成功', icon: 'success' })
+        self.setData({
+          'modal.show': false
+        })
+        setTimeout(function() {
+          wx.hideToast()
+        }, 2000)
+      }
     })
   },
   bindKeyInput: function(e) {
@@ -1079,7 +1269,7 @@ Page({
     }
     wx.request({
       url: config.base_url + '/api/secret/open?bookid=' + self.data.bookid + '&secret=' + self.data.modal.inputValue,
-      header: { Authorization: 'Bearer ' + wx.getStorageSync('token') },
+      header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
           // 隐藏购买提示
@@ -1090,7 +1280,7 @@ Page({
           wx.showToast({ title: '解锁成功', icon: 'success' })
         } else if (res.data.authfail) {
           wx.navigateTo({
-            url: '../authfail/authfail'
+            url: '../loading/loading?need_login_again=1'
           })
         } else {
           self.showToast('解锁失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
@@ -1114,6 +1304,14 @@ Page({
     wx.navigateTo({
       url: '../attendance/attendance'
     })
+  },
+  loadAgain: function() {
+    let self = this
+    self.setData({ loadFail: false })
+    self.initPage(self.data.currentSectionNum)
+  },
+  handleScroll: function(event) {
+    this.setData({ leftValue: event.detail.scrollTop })
   },
   showToast: function(content, position) {
     let self = this

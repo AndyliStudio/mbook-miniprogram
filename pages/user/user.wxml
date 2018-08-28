@@ -1,10 +1,11 @@
 <view class="container user">
   <view class="user-info">
-    <image class="avatar" src="{{userInfo.avatar}}"></image>
+    <image class="avatar" src="{{userInfo.avatar}}" bindtap="copyUserId"></image>
     <view class="info">
       <view class="username">{{userInfo.username}}</view>
       <view class="amount"><icon class="iconfont icon-qianbi"></icon><text class="num">{{amount}}</text>书币</view>
     </view>
+    <view class="des">点击头像可复制用户ID</view>
     <view class="word">{{text}}</view>
   </view>
   <view class="other">
@@ -15,13 +16,20 @@
         <icon class="iconfont icon-arrow-right"></icon>
       </view>
     </navigator>
-    <navigator url="/pages/webpage/webpage?url=https://mbook.andylistudio.com/about_us" open-type="navigate">
+    <navigator url="/pages/aboutus/aboutus" open-type="navigate">
       <view class="about-us">
         <icon class="iconfont icon-guanyuwomen"></icon>
         <text class="about-us-text">关于我们</text>
         <icon class="iconfont icon-arrow-right"></icon>
       </view>
     </navigator>
+    <button class="feedback" open-type="feedback">
+      <view class="about-us">
+        <icon class="iconfont icon-yijianfankui"></icon>
+        <text class="about-us-text">意见反馈</text>
+        <icon class="iconfont icon-arrow-right"></icon>
+      </view>
+    </button>
     <view class="main">
       <navigator url="/pages/notice/notice" open-type="navigate">
         <view class="main-item">
