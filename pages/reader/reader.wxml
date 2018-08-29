@@ -4,7 +4,7 @@
   <view wx:if="{{modal.name === 'buyfail'}}">
   	<view class="des">书币不足，您可以通过分享、签到、充值的方式获得书币。</view>
     <button class="btn" open-type="share">分享给朋友</button>
-    <button class="btn" bindtap="gotoAccount">立即充值</button>
+    <button wx:if="{{!shutChargeTips}}" class="btn" bindtap="gotoAccount">立即充值</button>
     <button class="btn" bindtap="gotoAttendance">前往签到</button>
   </view>
 	<view wx:if="{{modal.name === 'secret'}}">

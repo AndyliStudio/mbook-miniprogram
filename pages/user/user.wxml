@@ -38,13 +38,24 @@
           <view class="border left"></view>
         </view>
       </navigator>
-      <navigator url="/pages/account/account" open-type="navigate">
-        <view class="main-item">
-          <icon class="iconfont icon-chongzhi"></icon>
-          <text class="main-text">账户</text>
-          <view class="border bottom"></view>
-        </view>
-      </navigator>
+      <block wx:if="{{shutChargeTips}}">
+        <navigator url="/pages/classify/classify" open-type="navigate">
+          <view class="main-item">
+            <icon class="iconfont icon-fenlei"></icon>
+            <text class="main-text">分类</text>
+            <view class="border bottom"></view>
+          </view>
+        </navigator>
+      </block>
+      <block wx:else>
+        <navigator url="/pages/account/account" open-type="navigate">
+          <view class="main-item">
+            <icon class="iconfont icon-chongzhi"></icon>
+            <text class="main-text">账户</text>
+            <view class="border bottom"></view>
+          </view>
+        </navigator>
+      </block>
       <navigator url="/pages/attendance/attendance" open-type="navigate">
         <view class="main-item">
           <icon class="iconfont icon-qiandao"></icon>

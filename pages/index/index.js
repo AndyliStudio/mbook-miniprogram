@@ -26,10 +26,12 @@ Page({
     is_show_banner: true,
     themes: [],
     click_times: {}, // 换一批点击次数
-    loaded: false
+    loaded: false,
+    shutChargeTips: false
   },
   onLoad: function() {
     let self = this
+    self.setData({ shutChargeTips: app.globalData.globalSetting.shut_charge_tips })
     // 获取banner和栏目信息，使用promise来控制两个请求的同步
     let bannerP = self.getBanner()
     let themeP = self.getTheme()

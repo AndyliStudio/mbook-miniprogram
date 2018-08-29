@@ -32,7 +32,8 @@ Page({
     commentType: null, // 评论类型，是回复别人还是评论书籍
     currentCommentValue: '',
     secretTips: '',
-    hasUnLock: false // 用户是否已经解锁过改章节
+    hasUnLock: false, // 用户是否已经解锁过改章节
+    shutChargeTips: false // 是否屏蔽充值提示
   },
   onShow: function() {
     wx.showNavigationBarLoading()
@@ -42,7 +43,13 @@ Page({
   },
   onLoad: function(options) {
     let secretTips = app.globalData.globalSetting && app.globalData.globalSetting.secret_tips ? app.globalData.globalSetting.secret_tips : '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
-    this.setData({ bookid: options.id, wxcode: app.globalData.globalSetting.wxcode || 'haitianyise_hl', secretTips: secretTips })
+    console.log(app.globalData.globalSetting.shut_charge_tips);
+    this.setData({
+      bookid: options.id,
+      wxcode: app.globalData.globalSetting.wxcode || 'haitianyise_hl',
+      secretTips: secretTips,
+      shutChargeTips: app.globalData.globalSetting.shut_charge_tips
+    })
   },
   // 分享逻辑
   onShareAppMessage: function(res) {

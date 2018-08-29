@@ -89,16 +89,17 @@ Page({
     loading: false, // 加载状态
     loadFail: false, // 显示加载失败页面
     useTransition: true, // 是否使用滑动的transition动画，在切换下一章的时候应该关闭
-    overPage: 1 // 阅读器翻页模式
+    overPage: 1, // 阅读器翻页模式
+    shutChargeTips: false
   },
   onReady: function() {
     let self = this
     // 判断是否需要显示提示
     let showReaderTips = app.globalData.showReaderTips
     if (showReaderTips || showReaderTips === '') {
-      self.setData({ showReaderTips: true })
+      self.setData({ showReaderTips: true, shutChargeTips: app.globalData.globalSetting.shut_charge_tips })
     } else {
-      self.setData({ showReaderTips: false })
+      self.setData({ showReaderTips: false, shutChargeTips: app.globalData.globalSetting.shut_charge_tips })
     }
     //读取用户设置
     let localSetting = app.globalData.userInfo || {}

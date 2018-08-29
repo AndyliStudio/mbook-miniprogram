@@ -26,7 +26,7 @@
         <text>搜索</text>
       </view>
     </navigator>
-    <navigator url="/pages/account/account">
+    <navigator wx-if="{{!shutChargeTips}}" url="/pages/account/account">
       <view class="nav-item">
         <icon class="iconfont icon-chongzhi" style="background: #ff6687"></icon>
         <text>账户</text>
