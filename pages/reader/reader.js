@@ -97,7 +97,7 @@ Page({
     // 判断是否需要显示提示
     let showReaderTips = app.globalData.showReaderTips
     if (showReaderTips || showReaderTips === '') {
-      self.setData({ showReaderTips: true, shutChargeTips: app.globalData.globalSetting.shut_charge_tips })
+      self.setData({ showReaderTips: false, shutChargeTips: app.globalData.globalSetting.shut_charge_tips })
     } else {
       self.setData({ showReaderTips: false, shutChargeTips: app.globalData.globalSetting.shut_charge_tips })
     }
@@ -185,7 +185,6 @@ Page({
     }
   },
   handletouchmove: function(event) {
-    // console.log('正在执行touchmove, isMoving为：'+isMoving);
     var self = this
     if (currentGesture != 0 || isMoving == 1) {
       return
@@ -194,7 +193,6 @@ Page({
     var currentY = event.touches[0].pageY
     // 判断用没有滑动而是点击屏幕的动作
     hasRunTouchMove = true
-    // console.log('正在执行touchmove, isMoving为：'+isMoving+'------event: {x: '+event.touches[0].pageX+' ,y: '+event.touches[0].pageY+'}');
     var direction = 0
     if (currentX - self.data.touches.lastX < 0) {
       direction = 0
@@ -219,24 +217,25 @@ Page({
   handletouchtart: function(event) {
     // 判断用户的点击事件，如果不是滑动，将不会执行touchmove
     hasRunTouchMove = false
-    // console.log('正在执行touchtart, isMoving为：'+isMoving+'------event: {x: '+event.touches[0].pageX+' ,y: '+event.touches[0].pageY+'}');
     if (isMoving == 0) {
       this.setData({ touches: { lastX: event.touches[0].pageX, lastY: event.touches[0].pageY } })
     }
   },
   handleDownClick: function(event) {
+    if (event.target.dataset.control === 'no') {
+      return false
+    }
     this.setData({
       control: {
         all: this.data.control.all === 0 ? 1 : 0,
         control_tab: 1,
         control_detail: 1,
-        target: this.data.control.target || 'jingdu'
+        target: this.data.control.target || 'color'
       },
       isShowFontSelector: 0
     })
   },
   handletouchend: function() {
-    // console.log('正在执行touchend, isMoving为：'+isMoving);
     var self = this
     // 判断用户的点击事件，决定是否显示控制栏
     if (hasRunTouchMove == false) {
@@ -250,7 +249,7 @@ Page({
             all: self.data.control.all === 0 ? 1 : 0,
             control_tab: 1,
             control_detail: 1,
-            target: self.data.control.target || 'jingdu'
+            target: self.data.control.target || 'color'
           },
           isShowFontSelector: 0
         })
@@ -640,7 +639,7 @@ Page({
               all: 0,
               control_tab: 0,
               control_detail: 0,
-              target: self.data.control.target || 'jingdu'
+              target: self.data.control.target || 'color'
             }
           })
         } else {
@@ -928,7 +927,7 @@ Page({
           all: 0,
           control_tab: 0,
           control_detail: 0,
-          target: self.data.control.target || 'jingdu'
+          target: self.data.control.target || 'color'
         },
         isShowMulu: 0
       })
@@ -1124,7 +1123,7 @@ Page({
     }
     // 如果已经存在预加载数据，则不重新发送请求
     if (self.data.afterLoaded && self.data.afterData) {
-      callback(self.data.afterData)
+      callback(self.data.afterData, true)
       self.setData({ afterLoaded: false, afterData: '' })
       return
     }

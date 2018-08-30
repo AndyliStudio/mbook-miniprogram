@@ -35,12 +35,12 @@
 	</block>
   <block wx:else>
 	  <!-- 上下翻页模式 -->
-	  <scroll-view class="content" bindtap="handleDownClick" enable-back-to-top="true" scroll-y="true" scroll-top="{{leftValue}}" bindscroll="handleScroll" style="height:{{windows.windows_height+'px'}}; box-sizing: border-box;">
+	  <scroll-view class="content" bindtap="handleDownClick" enable-back-to-top="true" scroll-y="true" scroll-top="{{leftValue}}" bindscroll="handleScroll" upper-threshold="{{windows.windows_height}}" bindscrolltoupper="loadBefore" lower-threshold="{{windows.windows_height}}" bindscrolltolower="loadAfter" style="height:{{windows.windows_height+'px'}}; box-sizing: border-box;">
 			<view id="content-out" style="height: 100%">
 				<text selectable="{{true}}" space="emsp" style="column-width: {{windows.windows_width+'px'}};font-family: {{currentFontFamily == '使用系统字体' ? 'inherit' : currentFontFamily}};font-size: {{allSliderValue.font + 'rpx'}}; color: {{colorStyle.styleNum == '4'? '#85898c': '#000800'}}; transition: {{useTransition ? 'left 0.3s' : 'none'}}; -webkit-transition: {{useTransition ? 'left 0.3s' : 'none'}};">{{content}}</text>
 				<view class="chapter-btns">
-					<button class="btn1" style="color: {{colorStyle.button_font_color}}; background-color: {{colorStyle.button_bg}}" bindtap="loadNextChapter">下一章</button>
-					<button class="btn2" style="margin-right: 20rpx; color: {{colorStyle.button_font_color}}; background-color: {{colorStyle.button_bg}}" bindtap="loadPreChapter">上一章</button>
+					<button class="btn1" style="color: {{colorStyle.button_font_color}}; background-color: {{colorStyle.button_bg}}" bindtap="loadNextChapter" data-control="no">下一章</button>
+					<button class="btn2" style="margin-right: 20rpx; color: {{colorStyle.button_font_color}}; background-color: {{colorStyle.button_bg}}" bindtap="loadPreChapter" data-control="no">上一章</button>
 					<button class="btn2" style="color: {{colorStyle.button_font_color}}; background-color: {{colorStyle.button_bg}}" bindtap="openMulu">打开目录</button>
 				</view>
 			</view>

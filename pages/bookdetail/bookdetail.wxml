@@ -29,7 +29,7 @@
         <view class="wordsNum">字数：{{detail.total_words}}</view>
         <view class="status">状态：{{detail.update_status}}</view>
         <view class="updatetime">更新时间：{{detail.update_time}}</view>
-        <view class="prise">价格：{{goodInfo}}</view>
+        <view wx:if="{{!shutChargeTips}}" class="prise">价格：{{goodInfo}}</view>
       </view>
     </view>
     <view class="clearfix"></view>
