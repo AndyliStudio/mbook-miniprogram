@@ -396,6 +396,7 @@ Page({
           })
           // 如果为上下翻页，则不需要重新计算最大分页数
           if (self.data.overPage === 1) {
+            self.setData({ loading: false })
             return false
           }
           // 重新计算最大分页数
@@ -702,6 +703,7 @@ Page({
           })
           // 如果为上下翻页，则不需要重新计算最大分页数
           if (self.data.overPage === 1) {
+            self.setData({ loading: false })
             return false
           }
           // 重新计算最大分页数
