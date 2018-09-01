@@ -360,7 +360,7 @@ Page({
         if (res.data.ok) {
           self.setData({
             currentSectionNum: res.data.data.num,
-            content: res.data.data.content.replace(/[\r\n]+\s*/g, '\n '),
+            content: ' ' + res.data.data.content.replace(/[\r\n]+\s*/g, '\n '),
             factionTitle: res.data.data.name,
             'allSliderValue.section': res.data.data.num,
             hasGotMaxNum: false,
@@ -665,7 +665,7 @@ Page({
         if (res.data.ok) {
           self.setData({
             currentSectionNum: res.data.data.num,
-            content: res.data.data.content.replace(/[\r\n]+\s*/g, '\n '),
+            content: ' ' + res.data.data.content.replace(/[\r\n]+\s*/g, '\n '),
             factionTitle: res.data.data.name,
             'allSliderValue.section': res.data.data.num,
             pageIndex: 1,
@@ -747,7 +747,7 @@ Page({
             'allSliderValue.section': res.data.data.num,
             factionName: res.data.bookname,
             factionTitle: res.data.data.name,
-            content: res.data.data.content.replace(/[\r\n]+\s*/g, '\n '),
+            content: ' ' + res.data.data.content.replace(/[\r\n]+\s*/g, '\n '),
             author: res.data.author,
             headImg: res.data.headimg,
             isShowBuy: !res.data.canRead,
@@ -941,10 +941,12 @@ Page({
         self.setData({
           bindTopValue: 0,
           currentSectionNum: res.data.data.num,
-          content: res.data.data.content.replace(/[\r\n]+\s*/g, '\n '),
+          content: ' ' + res.data.data.content.replace(/[\r\n]+\s*/g, '\n '),
           factionTitle: res.data.data.name,
           'allSliderValue.section': res.data.data.num,
           hasGotMaxNum: false,
+          pageIndex: 1, // 将pageIndex重置为第一页
+          leftValue: 0, // 左滑值重置为0
           isShowBuy: !res.data.canRead
         })
         if (res.data.canRead && res.data.doAutoBuy) {
@@ -1058,7 +1060,7 @@ Page({
         self.setData({
           bindTopValue: 0,
           currentSectionNum: res.data.data.num,
-          content: res.data.data.content.replace(/[\r\n]+\s*/g, '\n '),
+          content: ' ' + res.data.data.content.replace(/[\r\n]+\s*/g, '\n '),
           factionTitle: res.data.data.name,
           'allSliderValue.section': res.data.data.num,
           hasGotMaxNum: false,
