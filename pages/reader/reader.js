@@ -1,5 +1,6 @@
 //reader.js
 const config = require('../../config')
+const utils = require('../../utils/util')
 const app = getApp()
 
 var currentGesture = 0 //控制当一个手势进行的时候屏蔽其他的手势
@@ -411,9 +412,12 @@ Page({
             })
             .exec()
         } else if (res.data.authfail) {
-          wx.navigateTo({
-            url: '../loading/loading?need_login_again=1'
-          })
+          // 防止多个接口失败重复打开重新登录页面
+          if (utils.getCurrentPageUrlWithArgs().indexOf('/loading/loading?need_login_again=1') < 0) {
+            wx.navigateTo({
+              url: '../loading/loading?need_login_again=1'
+            })
+          }
           self.setData({ loading: false, loadFail: true })
         } else {
           self.setData({ loading: false, loadFail: true })
@@ -718,9 +722,12 @@ Page({
             })
             .exec()
         } else if (res.data.authfail) {
-          wx.navigateTo({
-            url: '../loading/loading?need_login_again=1'
-          })
+          // 防止多个接口失败重复打开重新登录页面
+          if (utils.getCurrentPageUrlWithArgs().indexOf('/loading/loading?need_login_again=1') < 0) {
+            wx.navigateTo({
+              url: '../loading/loading?need_login_again=1'
+            })
+          }
           self.setData({ loading: false, loadFail: true })
         } else {
           self.setData({ loading: false, loadFail: true })
@@ -821,9 +828,12 @@ Page({
               .exec()
           }
         } else if (res.data.authfail) {
-          wx.navigateTo({
-            url: '../loading/loading?need_login_again=1'
-          })
+          // 防止多个接口失败重复打开重新登录页面
+          if (utils.getCurrentPageUrlWithArgs().indexOf('/loading/loading?need_login_again=1') < 0) {
+            wx.navigateTo({
+              url: '../loading/loading?need_login_again=1'
+            })
+          }
           self.setData({ loading: false, loadFail: true })
         } else {
           self.setData({ loading: false, loadFail: true })
@@ -888,9 +898,12 @@ Page({
           //   })
           // }
         } else if (res.data.authfail) {
-          wx.navigateTo({
-            url: '../loading/loading?need_login_again=1'
-          })
+          // 防止多个接口失败重复打开重新登录页面
+          if (utils.getCurrentPageUrlWithArgs().indexOf('/loading/loading?need_login_again=1') < 0) {
+            wx.navigateTo({
+              url: '../loading/loading?need_login_again=1'
+            })
+          }
         } else {
           self.showToast('更新阅读进度失败', 'bottom')
         }
@@ -996,9 +1009,12 @@ Page({
           })
           .exec()
       } else if (res.data.authfail) {
-        wx.navigateTo({
-          url: '../loading/loading?need_login_again=1'
-        })
+        // 防止多个接口失败重复打开重新登录页面
+        if (utils.getCurrentPageUrlWithArgs().indexOf('/loading/loading?need_login_again=1') < 0) {
+          wx.navigateTo({
+            url: '../loading/loading?need_login_again=1'
+          })
+        }
         if (!isLoadCallback) {
           self.setData({ loadFail: true })
         }
@@ -1112,9 +1128,12 @@ Page({
           })
           .exec()
       } else if (res.data.authfail) {
-        wx.navigateTo({
-          url: '../loading/loading?need_login_again=1'
-        })
+        // 防止多个接口失败重复打开重新登录页面
+        if (utils.getCurrentPageUrlWithArgs().indexOf('/loading/loading?need_login_again=1') < 0) {
+          wx.navigateTo({
+            url: '../loading/loading?need_login_again=1'
+          })
+        }
         if (!isLoadCallback) {
           self.setData({ loadFail: true })
         }
@@ -1182,9 +1201,12 @@ Page({
             isShowBuy: false
           })
         } else if (res.data.authfail) {
-          wx.navigateTo({
-            url: '../loading/loading?need_login_again=1'
-          })
+          // 防止多个接口失败重复打开重新登录页面
+          if (utils.getCurrentPageUrlWithArgs().indexOf('/loading/loading?need_login_again=1') < 0) {
+            wx.navigateTo({
+              url: '../loading/loading?need_login_again=1'
+            })
+          }
         } else {
           // 费用不足
           if (res.data.nomoney) {
@@ -1283,9 +1305,12 @@ Page({
           self.initPage(self.data.currentSectionNum)
           wx.showToast({ title: '解锁成功', icon: 'success' })
         } else if (res.data.authfail) {
-          wx.navigateTo({
-            url: '../loading/loading?need_login_again=1'
-          })
+          // 防止多个接口失败重复打开重新登录页面
+          if (utils.getCurrentPageUrlWithArgs().indexOf('/loading/loading?need_login_again=1') < 0) {
+            wx.navigateTo({
+              url: '../loading/loading?need_login_again=1'
+            })
+          }
         } else {
           self.showToast('解锁失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }

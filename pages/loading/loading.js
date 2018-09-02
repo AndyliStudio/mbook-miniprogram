@@ -16,6 +16,7 @@ Page({
   },
   onLoad: function(options) {
     let self = this
+    console.log('首页options', options)
     // 尝试自动登录
     if (options.need_login_again) {
       self.setData({ buttonType: 'reLogin', loginAgain: true, loading: false })
@@ -23,7 +24,6 @@ Page({
     } else {
       self.doLogin()
     }
-    console.log('首页options', options)
     if (options.code) {
       self.setData({ shareScene: options.code })
       return
