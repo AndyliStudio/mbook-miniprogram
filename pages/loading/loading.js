@@ -159,7 +159,7 @@ Page({
                   })
               } else {
                 utils.debug('调用接口失败--/api/user/login，' + JSON.stringify(res))
-                self.showToast(res.data.msg ? res.data.msg : '登录失败', 'bottom')
+                self.showToast('登录失败，请检查您的网络', 'bottom')
                 self.setData({ buttonType: 'reLogin' })
                 reject(false)
               }
