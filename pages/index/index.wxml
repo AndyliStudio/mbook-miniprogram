@@ -32,18 +32,18 @@
         <text>账户</text>
       </view>
     </navigator>
-    <navigator url="/pages/notice/notice">
+    <!-- <navigator url="/pages/notice/notice">
       <view class="nav-item">
         <icon class="iconfont icon-xiaoxi" style="background: #6db3f7"></icon>
         <text>消息</text>
       </view>
-    </navigator>
-    <!-- <navigator url="/pages/charge/charge">
+    </navigator> -->
+    <navigator url="/pages/charge/charge">
       <view class="nav-item">
         <icon class="iconfont icon-cz" style="background: #1bdb9f"></icon>
         <text>充值</text>
       </view>
-    </navigator> -->
+    </navigator>
     <navigator url="/pages/attendance/attendance">
       <view class="nav-item">
         <icon class="iconfont icon-qiandao" style="background: #1bdb9f"></icon>

@@ -87,7 +87,7 @@ page {
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
-  align-content: space-between;
+  align-items: center;
 }
 
 .selector-item {
@@ -96,7 +96,8 @@ page {
   color: #888888;
   border: 1rpx solid #888888;
   border-radius: 6rpx;
-  margin-right: 40rpx;
+  margin-right: 30rpx;
+  margin-bottom: 30rpx;
   position: relative;
 }
 
@@ -129,7 +130,7 @@ page {
 .selector-item .icon-xuanzhong1 {
   display: none;
   position: absolute;
-  bottom: 3px;
+  bottom: -4rpx;
   right: -11rpx;
   font-size: 40rpx;
   width: 50rpx;

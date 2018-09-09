@@ -1326,7 +1326,7 @@ Page({
   },
   gotoAccount: function() {
     wx.navigateTo({
-      url: '../account/account'
+      url: '../charge/charge'
     })
   },
   gotoAttendance: function() {

@@ -1,11 +1,11 @@
 <toast toast="{{toast}}"></toast>
 <view class="container charge">
   <view class="charge-main" wx:if="{{!chargeResult.type}}">
-    <view class="tab">
+    <!-- <view class="tab">
       <view class="tab-item {{currentPageNum === 1 ? 'active' : ''}}" data-page="1" bindtap="changePage">充值</view>
       <view class="tab-item {{currentPageNum === 2 ? 'active' : ''}}" data-page="2" bindtap="changePage">充值记录</view>
       <view class="tab-item {{currentPageNum === 3 ? 'active' : ''}}" data-page="3" bindtap="changePage">消费记录</view>
-    </view>
+    </view> -->
     <!-- <navigator url="/pages/webpage/webpage?url=https://mbook.andylistudio.com/activity01" open-type="navigate">
       <view class="notice">
         <icon class="iconfont icon-tips"></icon>
@@ -28,7 +28,7 @@
         <view class="zhifu" wx:if="{{payNum > 0}}">
           <view class="pay-info">
             <view class="pay-money">应付<text class="red-text">￥<text class="num">{{payNum}}</text></text></view>
-            <view class="pay-yuebi">将获得<text class="num">1000</text>阅币</view>
+            <view class="pay-yuebi">将获得<text class="num">{{willGetYuebiNum}}</text>阅币</view>
           </view>
           <button type="primary" loading="{{isPaying}}" bindtap="doPay">去支付</button>
         </view>
