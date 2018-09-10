@@ -58,7 +58,9 @@ App({
       fail: function(err) {
         utils.debug('调用接口失败--/api/upload_formid：' + JSON.stringify(err))
         // 自动重新尝试
-        self.reportFormId(formId)
+        setTimeout(function() {
+          self.reportFormId(formId)
+        }, 2000)
       }
     })
   },

@@ -1,6 +1,7 @@
 //reader.js
 const config = require('../../config')
 const utils = require('../../utils/util')
+const Interval = require('../../utils/interval')
 const app = getApp()
 
 var currentGesture = 0 //控制当一个手势进行的时候屏蔽其他的手势
@@ -11,6 +12,8 @@ var leftTimmerCount = 0
 var rightTimmerCount = 0
 var hasRunTouchMove = false
 var currentPageIndex = 0 // 当前是分栏的第几页
+var readTimer = null
+var oldTimeNum = 0
 
 Page({
   data: {
@@ -67,7 +70,10 @@ Page({
       button_font_color: '#0770cb'
     }, //1、2、3、4分别对应四种颜色模式
     isShowMulu: 0, // 是否显示左侧栏
+    currentMuluPage: 1,
     allSectionData: [], // 所有章节数据
+    allSectionDataTotal: 0, // 总章节数
+    hasLoadMulu: false, // 是否加载过章节了
     showReaderTips: true, // 是否展示阅读提示
     tipsText: '点击屏幕正中间\n展示控制栏',
     windows: {
@@ -81,17 +87,17 @@ Page({
     maxPageNum: 11, // 本章的最大页数
     moveDirection: '', // 翻页方向，0表示向后翻页，1表示向前翻页
     isShowBuy: true, // 是否显示购买章节界面
-    startReadTime: null, // 进入阅读器开始阅读时间
     secretTips: '',
     beforeLoaded: false, // 预加载相关变量
     beforeData: '',
-    afterLoaded: '',
+    afterLoaded: false,
     afterData: '',
     loading: false, // 加载状态
     loadFail: false, // 显示加载失败页面
     useTransition: true, // 是否使用滑动的transition动画，在切换下一章的时候应该关闭
     overPage: 1, // 阅读器翻页模式
-    shutChargeTips: false
+    shutChargeTips: false,
+    hasReadTime: 0 // 已阅读时长
   },
   onReady: function() {
     let self = this
@@ -132,7 +138,7 @@ Page({
     //动态设置标题
     var bookid = options.bookid || '5a0d7a6ec38abf73e8e65cb3'
     var secretTips = app.globalData.globalSetting ? app.globalData.globalSetting.secret_tips : '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
-    self.setData({ bookid: bookid, startReadTime: new Date(), secretTips: secretTips })
+    self.setData({ bookid: bookid, secretTips: secretTips })
     // 初始化页面
     self.initPage()
   },
@@ -350,6 +356,10 @@ Page({
     self.setData({
       'allSliderValue.section': event.detail.value,
       backupSectionNum: self.data.currentSectionNum,
+      beforeLoaded: false,
+      beforeData: '',
+      afterLoaded: false,
+      afterData: '',
       loading: true
     })
     //根据章节id去得到章节内容
@@ -633,34 +643,80 @@ Page({
   //打开目录侧边栏
   openMulu: function() {
     var self = this
-    wx.request({
-      url: config.base_url + '/api/chapter/list?bookid=' + self.data.bookid,
-      success: res => {
-        if (res.data.ok) {
-          self.setData({
-            allSectionData: res.data.data.chapters,
-            isShowMulu: 1,
-            control: {
-              all: 0,
-              control_tab: 0,
-              control_detail: 0,
-              target: self.data.control.target || 'color'
-            }
-          })
-        } else {
-          self.showToast('获取目录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
+    if (!self.data.hasLoadMulu) {
+      wx.request({
+        url: config.base_url + '/api/chapter/list?bookid=' + self.data.bookid + '&pageid=' + self.data.currentMuluPage,
+        success: res => {
+          if (res.data.ok) {
+            self.setData({
+              allSectionData: res.data.data.chapters,
+              allSectionDataTotal: res.data.total,
+              hasLoadMulu: true,
+              isShowMulu: 1,
+              control: {
+                all: 0,
+                control_tab: 0,
+                control_detail: 0,
+                target: self.data.control.target || 'color'
+              }
+            })
+          } else {
+            self.showToast('获取目录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
+          }
+        },
+        fail: err => {
+          self.showToast('获取目录失败', 'bottom')
         }
-      },
-      fail: err => {
-        self.showToast('获取目录失败', 'bottom')
-      }
-    })
+      })
+    } else {
+      self.setData({
+        isShowMulu: 1,
+        control: {
+          all: 0,
+          control_tab: 0,
+          control_detail: 0,
+          target: self.data.control.target || 'color'
+        }
+      })
+    }
+  },
+  loadNextMulu: function() {
+    var self = this
+    // wx.showToast({ title: '加载中', icon: 'loading' })
+    if (self.data.currentMuluPage * 50 < self.data.allSectionDataTotal) {
+      wx.request({
+        url: config.base_url + '/api/chapter/list?bookid=' + self.data.bookid + '&pageid=' + (self.data.currentMuluPage + 1),
+        success: res => {
+          if (res.data.ok) {
+            self.setData({
+              allSectionData: self.data.allSectionData.concat(res.data.data.chapters),
+              currentMuluPage: self.data.currentMuluPage + 1
+            })
+          } else {
+            self.showToast('获取目录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
+          }
+          // wx.hideToast()
+        },
+        fail: err => {
+          self.showToast('获取目录失败', 'bottom')
+          // wx.hideToast()
+        }
+      })
+    }
   },
   //点击目录某一章
   showThisSection: function(event) {
     var self = this
     var chapterid = event.currentTarget.dataset.chapterid
-    self.setData({ isShowMulu: 0, loading: true })
+    // 之前存储的章节预加载信息失效了
+    self.setData({
+      isShowMulu: 0,
+      loading: true,
+      beforeLoaded: false,
+      beforeData: '',
+      afterLoaded: false,
+      afterData: ''
+    })
     //根据章节id去得到章节内容
     wx.request({
       method: 'GET',
@@ -827,6 +883,14 @@ Page({
               })
               .exec()
           }
+          // 初始化好了之后开始计时
+          readTimer = new Interval(
+            function() {
+              self.setData({ hasReadTime: self.data.hasReadTime + 10 * 1000 })
+            },
+            { lifetime: 864000000, delay: 10 * 1000 }
+          )
+          readTimer.start()
         } else if (res.data.authfail) {
           // 防止多个接口失败重复打开重新登录页面
           if (utils.getCurrentPageUrlWithArgs().indexOf('/loading/loading?need_login_again=1') < 0) {
@@ -849,8 +913,8 @@ Page({
   },
   updateRead: function(setting) {
     var self = this
-    const bookid = self.data.bookid
-    const factionName = self.data.factionName
+    // const bookid = self.data.bookid
+    // const factionName = self.data.factionName
     wx.request({
       method: 'POST',
       url: config.base_url + '/api/booklist/update_read',
@@ -860,7 +924,7 @@ Page({
         chapter_num: self.data.currentSectionNum,
         chapter_page_index: self.data.pageIndex,
         chapter_page_top: self.data.leftValue,
-        read_time: self.data.startReadTime ? new Date().getTime() - self.data.startReadTime.getTime() : 0,
+        read_time: self.data.hasReadTime,
         setting: setting
       },
       success: res => {
@@ -962,7 +1026,11 @@ Page({
           hasGotMaxNum: false,
           pageIndex: 1, // 将pageIndex重置为第一页
           leftValue: 0, // 左滑值重置为0
-          isShowBuy: !res.data.canRead
+          isShowBuy: !res.data.canRead,
+          beforeLoaded: false,
+          beforeData: '',
+          afterLoaded: false,
+          afterData: ''
         })
         if (res.data.canRead && res.data.doAutoBuy) {
           self.showToast('已为您自动给购买该章节', 'bottom')
@@ -1030,7 +1098,7 @@ Page({
       self.setData({ beforeLoaded: false, beforeData: '' })
       return
     }
-    let preChapterNum = self.data.currentSectionNum - 1
+    let preChapterNum = parseInt(self.data.currentSectionNum) - 1
     if (preChapterNum > 0) {
       self.setData({ loading: true })
       wx.request({
@@ -1054,7 +1122,7 @@ Page({
   },
   loadBefore: function() {
     let self = this
-    let preChapterNum = self.data.currentSectionNum - 1
+    let preChapterNum = parseInt(self.data.currentSectionNum) - 1
     if (preChapterNum > 0 && !self.data.beforeLoaded) {
       wx.request({
         method: 'GET',
@@ -1085,7 +1153,11 @@ Page({
           pageIndex: 1, // 将pageIndex重置为第一页
           useTransition: false,
           leftValue: 0, // 左滑值重置为0
-          isShowBuy: !res.data.canRead
+          isShowBuy: !res.data.canRead,
+          beforeLoaded: false,
+          beforeData: '',
+          afterLoaded: false,
+          afterData: ''
         })
         if (res.data.canRead && res.data.doAutoBuy) {
           self.showToast('已为您自动给购买该章节', 'bottom')
@@ -1150,7 +1222,7 @@ Page({
       self.setData({ afterLoaded: false, afterData: '' })
       return
     }
-    let nextChapterNum = self.data.currentSectionNum + 1
+    let nextChapterNum = parseInt(self.data.currentSectionNum) + 1
     if (nextChapterNum <= self.data.newestSectionNum) {
       self.setData({ loading: true })
       wx.request({
@@ -1173,7 +1245,7 @@ Page({
   // 预加载下一章
   loadAfter: function() {
     let self = this
-    let nextChapterNum = self.data.currentSectionNum + 1
+    let nextChapterNum = parseInt(self.data.currentSectionNum) + 1
     if (nextChapterNum <= self.data.newestSectionNum && !self.data.afterLoaded) {
       wx.request({
         method: 'GET',
@@ -1341,6 +1413,7 @@ Page({
   },
   handleScroll: function(event) {
     this.setData({ leftValue: event.detail.scrollTop })
+    oldTimeNum = Date.now()
   },
   showToast: function(content, position) {
     let self = this

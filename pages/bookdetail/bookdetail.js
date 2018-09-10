@@ -35,14 +35,14 @@ Page({
     hasUnLock: false, // 用户是否已经解锁过改章节
     shutChargeTips: false // 是否屏蔽充值提示
   },
-  onShow: function() {
-    wx.showNavigationBarLoading()
-    this.getBookDetail(this.data.bookid)
-    this.getCommentList(this.data.bookid)
-    this.setData({ bookid: this.data.bookid })
-  },
   onLoad: function(options) {
-    let secretTips = app.globalData.globalSetting && app.globalData.globalSetting.secret_tips ? app.globalData.globalSetting.secret_tips : '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
+    let secretTips =
+      app.globalData.globalSetting && app.globalData.globalSetting.secret_tips
+        ? app.globalData.globalSetting.secret_tips
+        : '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
+    wx.showNavigationBarLoading()
+    this.getBookDetail(options.id)
+    this.getCommentList(options.id)
     this.setData({
       bookid: options.id,
       wxcode: app.globalData.globalSetting.wxcode || 'haitianyise_hl',

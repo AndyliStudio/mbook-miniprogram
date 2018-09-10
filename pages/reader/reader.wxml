@@ -17,7 +17,7 @@
     <button class="btn" bindtap="finishSecretInput">现在解锁</button>
   </view>
 </modal>
-<view class="loading" wx:if="{{loading}}">
+<view class="loading" wx:if="{{loading}}" style="background-color: {{colorStyle.content_bg}}">
   <image src="https://fs.andylistudio.com/mbook/book-loading.svg"></image>
 </view>
 <!-- 加载失败 -->
@@ -35,7 +35,8 @@
 	</block>
   <block wx:else>
 	  <!-- 上下翻页模式 -->
-	  <scroll-view class="content" bindtap="handleDownClick" enable-back-to-top="true" scroll-y="true" scroll-top="{{leftValue}}" bindscroll="handleScroll" upper-threshold="{{windows.windows_height}}" bindscrolltoupper="loadBefore" lower-threshold="{{windows.windows_height}}" bindscrolltolower="loadAfter" style="height:{{windows.windows_height+'px'}}; box-sizing: border-box;">
+		<!--  upper-threshold="{{windows.windows_height}}" bindscrolltoupper="loadBefore" lower-threshold="{{windows.windows_height}}" bindscrolltolower="loadAfter" -->
+ 	  <scroll-view class="content" bindtap="handleDownClick" enable-back-to-top="true" scroll-y="true" scroll-top="{{leftValue}}" bindscroll="handleScroll" style="height:{{windows.windows_height+'px'}}; box-sizing: border-box;">
 			<view id="content-out" style="height: 100%">
 				<text selectable="{{true}}" space="emsp" style="column-width: {{windows.windows_width+'px'}};font-family: {{currentFontFamily == '使用系统字体' ? 'inherit' : currentFontFamily}};font-size: {{allSliderValue.font + 'rpx'}}; color: {{colorStyle.styleNum == '4'? '#85898c': '#000800'}}; transition: {{useTransition ? 'left 0.3s' : 'none'}}; -webkit-transition: {{useTransition ? 'left 0.3s' : 'none'}};">{{content}}</text>
 				<view class="chapter-btns">
@@ -143,7 +144,7 @@
 							<text class="book"><text class="factionName">{{factionName}}</text><text class="author">{{author}}</text></text>
 							<text class="readerTime"><text class="num">25</text>时<text class="num">38</text>分<text class="timeDes">读书时长</text></text>
 						</view>
-						<scroll-view class="sections" scroll-x="false" scroll-y="true">
+						<scroll-view class="sections" scroll-x="false" scroll-y="true" enable-back-to-top="true" lower-threshold="300" upper-threshold="300" bindscrolltolower="loadNextMulu">
 							<view class="section" style="color:{{item.num == allSliderValue.section? colorStyle.control_fontColor : (colorStyle.styleNum == '4'? '#63676a': '#655f4f')}}" wx:for="{{allSectionData}}" wx:key="_id" data-chapterid="{{item._id}}" bindtap="showThisSection"><text class="factionNum">第{{item.num}}章</text><text class="factionName">{{item.name}}</text></view>
 						</scroll-view>
 			    </swiper-item>

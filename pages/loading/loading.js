@@ -166,7 +166,7 @@ Page({
             },
             fail: function(err) {
               utils.debug('调用接口失败--/api/user/login，' + JSON.stringify(err))
-              self.showToast(err.data.msg ? err.data.msg : '登录失败', 'bottom')
+              self.showToast('登录失败，请检查你的网络', 'bottom')
               self.setData({ buttonType: 'reLogin' })
               reject(false)
             }
