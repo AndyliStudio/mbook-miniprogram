@@ -13,7 +13,7 @@ var rightTimmerCount = 0
 var hasRunTouchMove = false
 var currentPageIndex = 0 // 当前是分栏的第几页
 var readTimer = null
-var oldTimeNum = 0
+var scrollTopValue = 0
 
 Page({
   data: {
@@ -67,7 +67,8 @@ Page({
       control_bg: '#ffffff',
       control_fontColor: '#616469',
       button_bg: '#bec2c5',
-      button_font_color: '#0770cb'
+      button_font_color: '#0770cb',
+      border_color: '#bababa'
     }, //1、2、3、4分别对应四种颜色模式
     isShowMulu: 0, // 是否显示左侧栏
     currentMuluPage: 1,
@@ -99,8 +100,12 @@ Page({
     shutChargeTips: false,
     hasReadTime: 0 // 已阅读时长
   },
-  onReady: function() {
-    let self = this
+  onLoad: function(options) {
+    var self = this
+    //动态设置标题
+    var bookid = options.bookid || '5a0d7a6ec38abf73e8e65cb3'
+    var secretTips = app.globalData.globalSetting ? app.globalData.globalSetting.secret_tips : '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
+    self.setData({ bookid: bookid, secretTips: secretTips })
     // 判断是否需要显示提示
     let showReaderTips = app.globalData.showReaderTips
     if (showReaderTips || showReaderTips === '') {
@@ -132,13 +137,6 @@ Page({
         self.showToast('设置背景色失败', 'bottom')
       }
     })
-  },
-  onLoad: function(options) {
-    var self = this
-    //动态设置标题
-    var bookid = options.bookid || '5a0d7a6ec38abf73e8e65cb3'
-    var secretTips = app.globalData.globalSetting ? app.globalData.globalSetting.secret_tips : '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
-    self.setData({ bookid: bookid, secretTips: secretTips })
     // 初始化页面
     self.initPage()
   },
@@ -281,30 +279,6 @@ Page({
         if (currentIndex < self.data.maxPageNum) {
           targetLeftValue = -1 * (self.data.windows.windows_width - 10) * currentIndex
           self.setData({ useTransition: true, leftValue: targetLeftValue })
-          // pingjunValue = Math.abs(targetLeftValue - self.data.leftValue) / 4 //500ms其实函数只执行了4次，第一次会等待100ms才会开始函数
-          // isMoving = 1 //开始计时的时候将标志置1
-          //使用计时器实现动画效果
-          // leftMoveTimer = setInterval(function() {
-          //   ++leftTimmerCount
-          //   var currentLeftValue = self.data.leftValue
-          //   //如果达到了目标值，立即停止计时器
-          //   //调试发现有些时候这个if的跳转会莫名的不成立，所以做个限制，函数被执行了4次之后，无论条件是否成立，将leftValue设置为目标值，并结束计时器
-          //   if (leftTimmerCount == 4) {
-          //     clearInterval(leftMoveTimer)
-          //     isMoving = 0
-          //     leftTimmerCount = 0
-          //     self.setData({ leftValue: targetLeftValue })
-          //     return
-          //   }
-          //   if (currentLeftValue == targetLeftValue) {
-          //     clearInterval(leftMoveTimer)
-          //     isMoving = 0
-          //     leftTimmerCount = 0
-          //     self.setData({ leftValue: targetLeftValue })
-          //     return
-          //   }
-          //   self.setData({ leftValue: currentLeftValue - pingjunValue })
-          // }, 75)
           // 还剩下3页的时候去预加载
           if (self.data.maxPageNum - currentIndex <= 3 && !self.data.afterLoaded) {
             self.loadAfter()
@@ -318,27 +292,6 @@ Page({
         if (currentIndex > 1) {
           targetLeftValue = -1 * (self.data.windows.windows_width - 10) * (currentIndex - 2)
           self.setData({ useTransition: true, leftValue: targetLeftValue })
-          // pingjunValue = Math.abs(targetLeftValue - self.data.leftValue) / 4
-          // isMoving = 1
-          // rightMoveTimer = setInterval(function() {
-          //   ++rightTimmerCount
-          //   var currentLeftValue = self.data.leftValue
-          //   if (rightTimmerCount == 4) {
-          //     clearInterval(rightMoveTimer)
-          //     isMoving = 0
-          //     rightTimmerCount = 0
-          //     self.setData({ leftValue: targetLeftValue })
-          //     return
-          //   }
-          //   if (currentLeftValue == targetLeftValue) {
-          //     clearInterval(rightMoveTimer)
-          //     isMoving = 0
-          //     rightTimmerCount = 0
-          //     self.setData({ leftValue: targetLeftValue })
-          //     return
-          //   }
-          //   self.setData({ leftValue: currentLeftValue + pingjunValue })
-          // }, 75)
           // 还剩下3页的时候去预加载
           if (currentIndex <= 3 && !!self.data.beforeLoaded) {
             self.loadBefore()
@@ -382,25 +335,6 @@ Page({
           })
           if (res.data.canRead && res.data.doAutoBuy) {
             self.showToast('已为您自动给购买该章节', 'bottom')
-          } else if (!res.data.canRead && res.data.autoBuy) {
-            // self.setData({
-            //   'modal': {
-            //     show: true,
-            //     name: 'buyfail',
-            //     inputValue: '',
-            //     title: '温馨提示',
-            //     opacity: 0.6,
-            //     position: 'center',
-            //     width: '80%',
-            //     options: {
-            //       fullscreen: false,
-            //       showclose: true,
-            //       showfooter: false,
-            //       closeonclickmodal: true,
-            //       confirmText: '',
-            //     }
-            //   }
-            // })
           }
           wx.setNavigationBarTitle({
             title: '第' + res.data.data.num + '章 ' + res.data.data.name
@@ -504,7 +438,8 @@ Page({
         control_bg: '#ffffff',
         control_fontColor: '#616469',
         button_bg: '#bec2c5',
-        button_font_color: '#0770cb'
+        button_font_color: '#0770cb',
+        border_color: '#bababa'
       }
     } else if (cname === '淡黄') {
       return {
@@ -515,7 +450,8 @@ Page({
         control_bg: '#faf4e4',
         control_fontColor: '#60594f',
         button_bg: '#c1bbab',
-        button_font_color: '#866842'
+        button_font_color: '#866842',
+        border_color: '#90ad91'
       }
     } else if (cname === '护眼') {
       return {
@@ -526,7 +462,8 @@ Page({
         control_bg: '#ccf1d0',
         control_fontColor: '#44644c',
         button_bg: '#a0baa1',
-        button_font_color: '#3a732c'
+        button_font_color: '#3a732c',
+        border_color: '#90ad91'
       }
     } else if (cname === '夜间') {
       return {
@@ -537,7 +474,8 @@ Page({
         control_bg: '#10131a',
         control_fontColor: '#5b5e65',
         button_bg: '#212528',
-        button_font_color: '#2c5a7e'
+        button_font_color: '#2c5a7e',
+        border_color: '#2d3134'
       }
     } else {
       return {
@@ -548,7 +486,8 @@ Page({
         control_bg: '#ffffff',
         control_fontColor: '#616469',
         button_bg: '#bec2c5',
-        button_font_color: '#0770cb'
+        button_font_color: '#0770cb',
+        border_color: '#bababa'
       }
     }
   },
@@ -567,7 +506,8 @@ Page({
             control_bg: '#ffffff',
             control_fontColor: '#616469',
             button_bg: '#bec2c5',
-            button_font_color: '#0770cb'
+            button_font_color: '#0770cb',
+            border_color: '#bababa'
           }
         })
         break
@@ -581,7 +521,8 @@ Page({
             control_bg: '#faf4e4',
             control_fontColor: '#60594f',
             button_bg: '#c1bbab',
-            button_font_color: '#866842'
+            button_font_color: '#866842',
+            border_color: '#90ad91'
           }
         })
         break
@@ -595,7 +536,8 @@ Page({
             control_bg: '#ccf1d0',
             control_fontColor: '#44644c',
             button_bg: '#a0baa1',
-            button_font_color: '#3a732c'
+            button_font_color: '#3a732c',
+            border_color: '#90ad91'
           }
         })
         break
@@ -609,7 +551,8 @@ Page({
             control_bg: '#10131a',
             control_fontColor: '#5b5e65',
             button_bg: '#212528',
-            button_font_color: '#2c5a7e'
+            button_font_color: '#2c5a7e',
+            border_color: '#2d3134'
           }
         })
         break
@@ -737,26 +680,6 @@ Page({
           })
           if (res.data.canRead && res.data.doAutoBuy) {
             self.showToast('已为您自动给购买该章节', 'bottom')
-          } else if (!res.data.canRead && res.data.autoBuy) {
-            // self.setData({
-            //   'modal': {
-            //     show: true,
-            //     name: 'buyfail',
-            //     inputValue: '',
-            //     title: '温馨提示',
-            //     inputValue: '',
-            //     opacity: 0.6,
-            //     position: 'center',
-            //     width: '80%',
-            //     options: {
-            //       fullscreen: false,
-            //       showclose: true,
-            //       showfooter: false,
-            //       closeonclickmodal: true,
-            //       confirmText: '',
-            //     }
-            //   }
-            // })
           }
           wx.setNavigationBarTitle({
             title: '第' + res.data.data.num + '章 ' + res.data.data.name
@@ -820,26 +743,6 @@ Page({
           })
           if (res.data.canRead && res.data.doAutoBuy) {
             self.showToast('已为您自动给购买该章节', 'bottom')
-          } else if (!res.data.canRead && res.data.autoBuy) {
-            // self.setData({
-            //   'modal': {
-            //     show: true,
-            //     name: 'buyfail',
-            //     inputValue: '',
-            //     title: '温馨提示',
-            //     inputValue: '',
-            //     opacity: 0.6,
-            //     position: 'center',
-            //     width: '80%',
-            //     options: {
-            //       fullscreen: false,
-            //       showclose: true,
-            //       showfooter: false,
-            //       closeonclickmodal: true,
-            //       confirmText: '',
-            //     }
-            //   }
-            // })
           }
           // 设置标题
           wx.setNavigationBarTitle({
@@ -915,64 +818,41 @@ Page({
     var self = this
     // const bookid = self.data.bookid
     // const factionName = self.data.factionName
-    wx.request({
-      method: 'POST',
-      url: config.base_url + '/api/booklist/update_read',
-      header: { Authorization: 'Bearer ' + app.globalData.token },
-      data: {
-        bookid: self.data.bookid,
-        chapter_num: self.data.currentSectionNum,
-        chapter_page_index: self.data.pageIndex,
-        chapter_page_top: self.data.leftValue,
-        read_time: self.data.hasReadTime,
-        setting: setting
-      },
-      success: res => {
-        if (res.data.ok) {
-          // 判断改书籍是否在书籍列表中，没有在的话提示用户加入加入
-          // const allbooks = wx.getStorageSync('allbooks')
-          // if (allbooks.indexOf(bookid) < 0) {
-          //   wx.showModal({
-          //     title: '温馨提示',
-          //     content: '是否将《' + factionName + '》加入书架？',
-          //     success: res => {
-          //       if (res.confirm) {
-          //         wx.request({
-          //           url: config.base_url + '/api/booklist/add_book?id=' + bookid,
-          //           header: {
-          //             Authorization: 'Bearer ' + app.globalData.token
-          //           },
-          //           success: res => {
-          //             if (res.data.ok) {
-          //               wx.showToast({ title: '加入书架成功', icon: 'success' })
-          //             } else if (res.data.authfail) {
-          //               wx.navigateTo({
-          //                 url: '../loading/loading?need_login_again=1'
-          //               })
-          //             } else {
-          //               wx.showToast({ title: '加入书架失败，请重新尝试~', icon: 'error' })
-          //             }
-          //           },
-          //           fail: err => {
-          //             wx.showToast({ title: '加入书架失败，请重新尝试~', icon: 'error' })
-          //           }
-          //         })
-          //       }
-          //     }
-          //   })
-          // }
-        } else if (res.data.authfail) {
-          // 防止多个接口失败重复打开重新登录页面
-          if (utils.getCurrentPageUrlWithArgs().indexOf('/loading/loading?need_login_again=1') < 0) {
-            wx.navigateTo({
-              url: '../loading/loading?need_login_again=1'
-            })
+    var sendRequest = function(leftValue) {
+      wx.request({
+        method: 'POST',
+        url: config.base_url + '/api/booklist/update_read',
+        header: { Authorization: 'Bearer ' + app.globalData.token },
+        data: {
+          bookid: self.data.bookid,
+          chapter_num: self.data.currentSectionNum,
+          chapter_page_index: self.data.pageIndex,
+          chapter_page_top: leftValue,
+          read_time: self.data.hasReadTime,
+          setting: setting
+        },
+        success: res => {
+          if (res.data.ok) {
+            return true
+          } else if (res.data.authfail) {
+            // 防止多个接口失败重复打开重新登录页面
+            if (utils.getCurrentPageUrlWithArgs().indexOf('/loading/loading?need_login_again=1') < 0) {
+              wx.navigateTo({
+                url: '../loading/loading?need_login_again=1'
+              })
+            }
+          } else {
+            self.showToast('更新阅读进度失败', 'bottom')
           }
-        } else {
-          self.showToast('更新阅读进度失败', 'bottom')
         }
-      }
-    })
+      })
+    }
+    // 如果是上下翻页的模式滑动距离要动态计算
+    if (self.data.overPage === 1) {
+      sendRequest(scrollTopValue)
+    } else {
+      sendRequest(self.data.leftValue)
+    }
   },
   closeReaderTips: function() {
     var self = this
@@ -1034,25 +914,6 @@ Page({
         })
         if (res.data.canRead && res.data.doAutoBuy) {
           self.showToast('已为您自动给购买该章节', 'bottom')
-        } else if (!res.data.canRead && res.data.autoBuy) {
-          // self.setData({
-          //   'modal': {
-          //     show: true,
-          //     name: 'buyfail',
-          //     inputValue: '',
-          //     title: '温馨提示',
-          //     opacity: 0.6,
-          //     position: 'center',
-          //     width: '80%',
-          //     options: {
-          //       fullscreen: false,
-          //       showclose: true,
-          //       showfooter: false,
-          //       closeonclickmodal: true,
-          //       confirmText: '',
-          //     }
-          //   }
-          // })
         }
         // 设置标题
         wx.setNavigationBarTitle({
@@ -1161,25 +1022,6 @@ Page({
         })
         if (res.data.canRead && res.data.doAutoBuy) {
           self.showToast('已为您自动给购买该章节', 'bottom')
-        } else if (!res.data.canRead && res.data.autoBuy) {
-          // self.setData({
-          //   'modal': {
-          //     show: true,
-          //     name: 'buyfail',
-          //     inputValue: '',
-          //     title: '温馨提示',
-          //     opacity: 0.6,
-          //     position: 'center',
-          //     width: '80%',
-          //     options: {
-          //       fullscreen: false,
-          //       showclose: true,
-          //       showfooter: false,
-          //       closeonclickmodal: true,
-          //       confirmText: '',
-          //     }
-          //   }
-          // })
         }
         // 设置标题
         wx.setNavigationBarTitle({
@@ -1412,8 +1254,7 @@ Page({
     self.initPage(self.data.currentSectionNum)
   },
   handleScroll: function(event) {
-    this.setData({ leftValue: event.detail.scrollTop })
-    oldTimeNum = Date.now()
+    scrollTopValue = event.detail.scrollTop
   },
   showToast: function(content, position) {
     let self = this

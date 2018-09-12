@@ -1,6 +1,6 @@
 .detail {
   line-height: 1.8;
-  font-size: 12px;
+  font-size: 24rpx;
   overflow-x: hidden;
 }
 
@@ -31,9 +31,10 @@
 }
 
 .detail .head .headImg {
-  width: 210rpx;
+  max-width: 210rpx;
   height: 290rpx;
   vertical-align: text-top;
+  margin-top: 13rpx;
 }
 
 .detail .head .bookInfo {
@@ -43,7 +44,7 @@
   display: -webkit-flex;
   flex-flow: row nowrap;
   justify-content: center;
-  align-items: center;
+  align-items: top;
 }
 
 .detail .head .bookInfo .left-text {

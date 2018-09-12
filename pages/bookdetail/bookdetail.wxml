@@ -22,7 +22,7 @@
       </view>
     </view>
     <view class="bookInfo">
-      <image class="headImg" src="{{detail.img_url}}" mode="aspectFill"></image>
+      <image class="headImg" src="{{detail.img_url}}" mode="scaleToFill"></image>
       <view class="left-text">
         <view class="bookName">{{detail.name}}</view>
         <view class="author">作者：{{detail.author}}</view>

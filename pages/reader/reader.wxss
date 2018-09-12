@@ -35,7 +35,6 @@ page {
   overflow-x: hidden;
   height: 100%;
   box-sizing: border-box;
-  padding: 10px;
   position: relative;
 }
 
@@ -47,6 +46,12 @@ page {
   /* transition: left 0.5s;
   -webkit-transition: left 0.5s; */
   transition-timing-function: ease;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
 }
 
 /* 提示样式 */
@@ -342,7 +347,7 @@ page {
   justify-content: space-between;
   padding: 15rpx 20rpx 6rpx 20rpx;
   align-items: center;
-  height: 50%;
+  height: 60rpx;
 }
 
 .reader .fontSize .iconfont {
@@ -364,7 +369,8 @@ page {
 }
 
 .reader .fontSelector {
-  height: 40%;
+  height: 120rpx;
+  line-height: 120rpx;
   text-align: center;
   width: 100%;
   font-size: 32rpx;
@@ -471,7 +477,6 @@ page {
 }
 
 .mulu-detail .mulu-swiper .search {
-  border: 1px solid #ccc;
   margin: 30rpx 30rpx;
   box-sizing: border-box;
   border-radius: 8rpx;
@@ -539,17 +544,17 @@ page {
   height: 80rpx;
   line-height: 80rpx;
   margin-bottom: 0;
-  border-bottom: 1rpx solid #dedede;
   font-size: 28rpx;
   padding-left: 30rpx;
+  border-bottom: 1rpx solid;
 }
 
 .mulu-detail .mulu-swiper .section:first-child {
-  border-top: 1rpx solid #dedede;
+  border-top: 1rpx solid;
 }
 
 .mulu-detail .mulu-swiper .section:last-child {
-  border-bottom: 1rpx solid #dedede;
+  border-bottom: 1rpx solid;
 }
 
 .mulu-detail .mulu-swiper .factionNum {
@@ -582,7 +587,7 @@ page {
 .reader .chapter-btns {
   text-align: center;
   margin-top: 30rpx;
-  margin-bottom: 30rpx;
+  margin-bottom: 50rpx;
 }
 .reader .chapter-btns button {
   height: 80rpx;
