@@ -1,0 +1,10 @@
+{
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#1472e0",
+  "navigationBarTitleText": "好友助力",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "toast": "../../component/toast/toast",
+    "modal": "../../component/modal/modal"
+  }
+}

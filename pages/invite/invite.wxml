@@ -1,0 +1,44 @@
+<view class="invite">
+  <view class="container">
+    <view class="pic-wrap"></view>
+    <!-- 文字描述 start -->
+    <view class="desc-wrap">
+      <view class="desc">
+        <text class="content">月光倾城发起了助力活动，集齐3个好友的助力能量，就能免费阅读书籍《大主宰》。小伙伴们快快给力啊</text>
+      </view>
+    </view>
+    <!-- 文字描述 end -->
+    <!-- 计时器和进度条 start -->
+    <view class="time-progress" id="timeProgress">
+      <view class="countdown-wrap">
+        <!-- 计时器 -->
+        <view class="countdown" id="countDown">
+          <text class="left"></text>
+          <text class="time">还剩：01 天 00 小时 37 分 20 秒 </text>
+          <text class="right"></text>
+        </view>
+        <!-- 进度条 -->
+        <view class="progress-wrap">
+          <view class="fix">
+            <view class="progress">
+              <view class="inner" id="progressInner" style="width: 0%;"></view>
+            </view>
+            <view class="bubble" id="progressBubble" style="left: 0%;">
+              <view class="wrap">已完成<text class="number" id="totalNumber">0</text></view>
+              <view class="bottom"></view>
+            </view>
+            <text class="middle" id="goalHalf">150</text>
+            <text class="complete" id="goalNumber">300</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- 计时器和进度条 end -->
+    <!-- 按钮组 start -->
+    <view class="btn-wrap">
+      <view class="main-btn" id="mainBtn" style="background-color: #ea474e;">助力</view>
+      <view class="rank-list" id="rankListBtn" style="background-color: rgb(254, 183, 82);">助力动态</view>
+    </view>
+    <!-- 按钮组 end -->
+  </view>
+</view>

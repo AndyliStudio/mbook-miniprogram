@@ -19,7 +19,8 @@
     "pages/notice/notice",
     "pages/readtime/readtime",
     "pages/account/account",
-    "pages/aboutus/aboutus"
+    "pages/aboutus/aboutus",
+    "pages/invite/invite"
   ],
   "window": {
     "backgroundTextStyle": "light",
