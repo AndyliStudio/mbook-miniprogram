@@ -36,8 +36,8 @@
     <!-- 计时器和进度条 end -->
     <!-- 按钮组 start -->
     <view class="btn-wrap">
-      <view class="main-btn" id="mainBtn" style="background-color: #ea474e;">助力</view>
-      <view class="rank-list" id="rankListBtn" style="background-color: rgb(254, 183, 82);">助力动态</view>
+      <view class="main-btn" id="mainBtn">助力</view>
+      <view class="rank-list" id="rankListBtn">助力动态</view>
     </view>
     <!-- 按钮组 end -->
   </view>

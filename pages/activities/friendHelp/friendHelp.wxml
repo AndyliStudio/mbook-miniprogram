@@ -1,0 +1,33 @@
+<scroll-view class="friend-help" enable-back-to-top="true" scroll-y="true" bindscrolltolower="loadMoreData">
+  <image class="bg" src="https://fs.andylistudio.com/1537973910409.jpeg"></image>
+  <view class="content">
+     <view class="title">
+       <view class="name">分享免费书籍</view>
+       <view class="des">完成邀请任务即可解锁指定书籍</view>
+     </view>
+     <view class="books">
+       <block wx:if="{{loading}}">
+          <image class="loading-img" src="https://fs.andylistudio.com/mbook/book-loading.svg"></image>
+          <view class="loading-text">正在加载数据</view>
+       </block>
+       <block wx:else>
+        <block wx:if="{{loadFail}}">
+          <no-data text="获取好友助力书籍数据失败" sub-text="服务器开小差了，点击重新获取" btn-text="重新获取" show-btn="true" bindbtnclick="getFriendHelpBook">
+            <icon class="iconfont icon-zanwushuju"></icon>
+          </no-data>
+        </block>
+        <!-- 暂无数据 -->
+        <block wx:else>
+          <view class="book-item" wx:for="{{lists}}" wx:key="{{item._id}}">
+            <lazyload-img class="img" src="{{item.bookid.img_url}}"></lazyload-img>
+            <view class="left">
+              <view class="name">{{item.bookid.name}}</view>
+              <view class="author">{{item.bookid.author}}</view>
+            </view>
+            <button class="right" bindtap="openShare" data-fhbid="{{item._id}}" open-type="share">去分享</button>
+          </view>
+        </block>
+       </block>
+     </view>
+  </view>
+</scroll-view>

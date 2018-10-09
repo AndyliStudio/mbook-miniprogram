@@ -36,6 +36,8 @@ Page({
     shutChargeTips: false // 是否屏蔽充值提示
   },
   onLoad: function(options) {
+    // 隐藏分享按钮
+    wx.hideShareMenu()
     let secretTips =
       app.globalData.globalSetting && app.globalData.globalSetting.secret_tips
         ? app.globalData.globalSetting.secret_tips

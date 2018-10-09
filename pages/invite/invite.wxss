@@ -72,7 +72,7 @@ page {
 
 .container .time-progress {
   width: 100%;
-  height: 180rpx;
+  height: 200rpx;
   background-size: 100% 100%;
 }
 
@@ -221,18 +221,12 @@ page {
 .container .btn-wrap .rank-list {
   font-size: 30rpx;
   font-weight: bold;
-  line-height: 0.47rem;
-  width: 100rpx;
-  height: 47rpx;
-  margin: 0;
-  background-size: 100% 100%;
-  font-size: 0.14rem;
-  line-height: 0.3rem;
-  border-radius: 2px;
+  border-radius: 8rpx;
   transition: all linear 0.1s;
   -webkit-transition: all linear 0.1s;
-  width: 100rpx;
+  width: 200rpx;
   height: 72rpx;
+  line-height: 72rpx;
   margin: 0.07rem auto 0;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -253,7 +247,7 @@ page {
   transition: all linear 0.1s;
   -webkit-transition: all linear 0.1s;
   border-radius: 8rpx;
-  width: 100rpx;
+  width: 200rpx;
   height: 72rpx;
   margin: 0.06rem auto 0;
   -webkit-user-select: none;

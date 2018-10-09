@@ -20,7 +20,7 @@
         <text>分类</text>
       </view>
     </navigator>
-    <navigator url="/pages/search/search">
+    <navigator url="/pages/activities/friendHelp/friendHelp">
       <view class="nav-item">
         <icon class="iconfont icon-sousuo" style="background: #ff9654"></icon>
         <text>搜索</text>
