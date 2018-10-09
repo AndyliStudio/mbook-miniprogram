@@ -20,18 +20,36 @@ Page({
   onShareAppMessage: function(res) {
     let self = this
     // 查询获取当前书籍的助力ID
-    // 获取分享出去的图片地址
-    console.log(this.data.currentFhcode)
-    if (this.data.currentFhcode) {
-      return {
-        title: '好友助力',
-        path: 'pages/activities/friendHelp/friendHelp' + '?fhcode=' + this.data.currentFhcode,
-        imageUrl: 'https://fs.andylistudio.com/1537973910409.jpeg'
-      }
-    } else {
-      self.showToast('获取分享参数失败', 'bottom')
-      return false
-    }
+    return new Promise((resolve, reject) => {
+      let self = this
+      // 获取当前书籍的助力ID
+      wx.request({
+        method: 'POST',
+        url: config.base_url + '/api/friend_help',
+        header: { Authorization: 'Bearer ' + app.globalData.token },
+        data: {
+          fhbid: res.target.dataset.fhbid,
+          source: 'activity'
+        },
+        success: function(response) {
+          if (response.data.ok) {
+            resolve({
+              title: '好友助力',
+              path: 'pages/invite/invite' + '?fhcode=' + response.data.fhcode,
+              imageUrl: 'https://fs.andylistudio.com/1537973910409.jpeg'
+            })
+          } else {
+            self.showToast('获取分享参数失败', 'bottom')
+            reject(false)
+          }
+        },
+        fail: function(error) {
+          console.warn(error)
+          self.showToast('获取分享参数失败', 'bottom')
+          reject(false)
+        }
+      })
+    })
   },
   getFriendHelpBook() {
     let self = this

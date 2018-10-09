@@ -77,10 +77,12 @@ page {
 
 .friend-help .book-item .left {
   display: inline-block;
-  width: 45%;
+  width: 50%;
   white-space: nowrap;
   text-overflow: ellipsis;
   padding-left: 4%;
+  padding-right: 4%;
+  box-sizing: border-box;
 }
 
 .friend-help .book-item .left .name {
@@ -105,4 +107,15 @@ page {
   color: #ffffff;
   letter-spacing: 2rpx;
   line-height: 64rpx;
+}
+
+.friend-help .book-item .progress {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.friend-help .book-item .progress progress {
+  width: 66%;
 }
