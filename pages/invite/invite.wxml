@@ -48,9 +48,28 @@
     <!-- 任务状态 end -->
     <!-- 按钮组 start -->
     <view class="btn-wrap">
-      <view class="main-btn" id="mainBtn" wx:if="{{info.status === 3}}">助力</view>
-      <view class="rank-list" id="rankListBtn">助力动态</view>
+      <view class="main-btn" bindtap="helpIt" wx:if="{{info.status === 3}}">助力</view>
+      <view class="rank-list" bindtap="lookRecords" loading="{{recordLoading}}">助力动态</view>
     </view>
     <!-- 按钮组 end -->
+    <!-- 助力记录弹窗 start-->
+    <view class="dialog">
+      <view class="mask"></view>
+      <view class="content">
+        <image src="https://fs.andylistudio.com/1539619838436.png"></image>
+        <view class="lists">
+          <view class="list-item">
+            <block wx:if="{{item.avatar && item.name}">
+              <image src=""></image>
+              <view class="list-info">
+                <view class="name"></view>
+                <view class="time"></view>
+              </view>
+            </block>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- 助力记录弹窗 end-->
   </view>
 </view>

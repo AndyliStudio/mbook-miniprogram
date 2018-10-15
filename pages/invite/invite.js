@@ -22,7 +22,10 @@ Page({
         username: '某某',
         avatar: ''
       }
-    }
+    },
+    recordLoading: false,
+    showRecords: false,
+    records: [] // 好友助力记录
   },
   onLoad: function(options) {
     this.setData({
@@ -65,6 +68,45 @@ Page({
       fail: function(err) {
         console.warn(err)
         self.showToast('获取好友助力信息失败', 'bottom')
+      }
+    })
+  },
+  // 查看助力详情
+  lookRecords() {
+    let self = this
+    self.setData({ recordLoading: true })
+    // 获取好友助力记录
+    wx.request({
+      method: 'GET',
+      url: config.base_url + '/api/friend_help/records',
+      header: { Authorization: 'Bearer ' + app.globalData.token },
+      data: {
+        fhcode: self.data.fhcode
+      },
+      success: function(res) {
+        if (res.data.ok) {
+          self.setData({ recordLoading: false, showRecords: true })
+          let colors = ['#3fb8af', '#7fc7af', '#ffd188', '#ff9e9d', '#bf6374', '#67617a']
+          for (let i = 0; i < res.data.lists.length; i++) {
+            res.data.lists.color = colors[i % 6]
+          }
+          if (res.data.lists.length <= 5) {
+            for (let j = 0; j < 6 - res.data.lists.length; j++) {
+              res.data.lists.push({
+                color: colors[(res.data.lists.length + j) % 6]
+              })
+            }
+          }
+          self.setData({ records: res.data.lists })
+        } else {
+          self.setData({ recordLoading: false, showRecords: false })
+          self.showToast('获取好友助力记录失败', 'bottom')
+        }
+      },
+      fail: function(err) {
+        console.warn(err)
+        self.setData({ recordLoading: false, showRecords: false })
+        self.showToast('获取好友助力记录失败', 'bottom')
       }
     })
   },
