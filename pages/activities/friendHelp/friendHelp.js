@@ -33,11 +33,13 @@ Page({
         },
         success: function(response) {
           if (response.data.ok) {
-            resolve({
+            let shareParmas = {
               title: '好友助力',
               path: 'pages/invite/invite' + '?fhcode=' + response.data.fhcode,
               imageUrl: 'https://fs.andylistudio.com/1537973910409.jpeg'
-            })
+            }
+            console.log('分享参数', shareParmas)
+            resolve(shareParmas)
           } else {
             self.showToast('获取分享参数失败', 'bottom')
             reject(false)
