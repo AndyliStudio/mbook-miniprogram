@@ -104,9 +104,9 @@ page {
   background: linear-gradient(to right, #0f81fb, #019dff);
   border-radius: 32rpx;
   font-size: 28rpx;
-  color: #ffffff;
   letter-spacing: 2rpx;
   line-height: 64rpx;
+  color: #ffffff;
 }
 
 .friend-help .book-item .progress {

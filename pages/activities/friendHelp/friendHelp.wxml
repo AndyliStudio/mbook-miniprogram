@@ -28,7 +28,12 @@
                 <text class="pg-info">{{item.left_num === 0 ? '已完成' : (item.need_num - item.left_num) + '/' + item.need_num}}</text>
               </view>
             </view>
-            <button class="right" data-fhbid="{{item._id}}" open-type="share">去分享</button>
+            <block wx:if="{{item.success}}">
+              <button class="right" data-bookid="{{item.bookid._id}}" bindtap="gotoRead">去阅读</button>
+            </block>
+            <block wx:else>
+              <button class="right" data-fhbid="{{item._id}}" open-type="share">去分享</button>
+            </block>
           </view>
         </block>
        </block>

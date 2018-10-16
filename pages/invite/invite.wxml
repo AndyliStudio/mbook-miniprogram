@@ -58,8 +58,8 @@
       <view class="content">
         <image src="https://fs.andylistudio.com/1539619838436.png"></image>
         <view class="lists">
-          <view class="list-item">
-            <block wx:if="{{item.avatar && item.name}">
+          <view class="list-item" wx:for="{{records}}" wx:key="{{index}}">
+            <block wx:if="{{item.avatar && item.name}}">
               <image src=""></image>
               <view class="list-info">
                 <view class="name"></view>

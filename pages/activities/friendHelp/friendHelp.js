@@ -1,5 +1,6 @@
 // pages/user/user.js
 const config = require('../../../config')
+const utils = require('../../../utils/util')
 const app = getApp()
 
 Page({
@@ -112,39 +113,16 @@ Page({
       }
     })
   },
+  gotoRead: function(event) {
+    wx.navigateTo({
+      url: '../../bookdetail/bookdetail?id=' + event.currentTarget.dataset.bookid
+    })
+  },
   showToast: function(content, position) {
     let self = this
     self.setData({ toast: { show: true, content: content, position: position } })
     setTimeout(function() {
       self.setData({ toast: { show: false, content: '', position: 'bottom' } })
     }, 3000)
-  },
-  openShare: function(event) {
-    let self = this
-    // 获取当前书籍的助力ID
-    wx.request({
-      method: 'POST',
-      url: config.base_url + '/api/friend_help',
-      header: { Authorization: 'Bearer ' + app.globalData.token },
-      data: {
-        fhbid: event.currentTarget.dataset.fhbid,
-        source: 'activity'
-      },
-      success: function(res) {
-        if (res.data.ok) {
-          self.setData({ currentFhcode: res.data.fhcode })
-          wx.showShareMenu({
-            withShareTicket: false
-          })
-          console.log('分享成功')
-        } else {
-          self.showToast('获取分享参数失败', 'bottom')
-        }
-      },
-      fail: function(err) {
-        console.warn(err)
-        self.showToast('获取分享参数失败', 'bottom')
-      }
-    })
   }
 })
