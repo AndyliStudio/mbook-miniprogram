@@ -52,24 +52,25 @@
       <view class="rank-list" bindtap="lookRecords" loading="{{recordLoading}}">助力动态</view>
     </view>
     <!-- 按钮组 end -->
-    <!-- 助力记录弹窗 start-->
-    <view class="dialog">
-      <view class="mask"></view>
-      <view class="content">
-        <image src="https://fs.andylistudio.com/1539619838436.png"></image>
-        <view class="lists">
-          <view class="list-item" wx:for="{{records}}" wx:key="{{index}}">
-            <block wx:if="{{item.avatar && item.name}}">
-              <image src=""></image>
-              <view class="list-info">
-                <view class="name"></view>
-                <view class="time"></view>
-              </view>
-            </block>
-          </view>
-        </view>
-      </view>
-    </view>
-    <!-- 助力记录弹窗 end-->
   </view>
 </view>
+<!-- 助力记录弹窗 start-->
+<view class="dialog">
+  <view class="mask"></view>
+  <view class="content">
+    <view class="close"></view>
+    <image src="https://fs.andylistudio.com/1539619838436.png"></image>
+    <view class="lists">
+      <view class="list-item" wx:for="{{records}}" wx:key="{{index}}">
+        <block wx:if="{{item.avatar && item.name}}">
+          <image src=""></image>
+          <view class="list-info">
+            <view class="name"></view>
+            <view class="time"></view>
+          </view>
+        </block>
+      </view>
+    </view>
+  </view>
+</view>
+<!-- 助力记录弹窗 end-->
