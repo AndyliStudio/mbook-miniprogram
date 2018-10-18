@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/loading/loading",
+    "pages/invite/invite",
     "pages/activities/share/share",
     "pages/activities/friendHelp/friendHelp",
     "pages/search2/search2",
