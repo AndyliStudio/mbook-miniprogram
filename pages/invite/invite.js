@@ -84,20 +84,22 @@ Page({
         fhcode: self.data.fhcode
       },
       success: function(res) {
+        console.log(res)
         if (res.data.ok) {
-          self.setData({ recordLoading: false, showRecords: true })
-          let colors = ['#3fb8af', '#7fc7af', '#ffd188', '#ff9e9d', '#bf6374', '#67617a']
+          let colors = ['#3fb8af', '#7fc7af', '#ffd188', '#ff9e9d', '#bf6374']
           for (let i = 0; i < res.data.lists.length; i++) {
-            res.data.lists.color = colors[i % 6]
+            res.data.lists[i].color = colors[i % 5]
           }
-          if (res.data.lists.length <= 5) {
-            for (let j = 0; j < 6 - res.data.lists.length; j++) {
+          if (res.data.lists.length <= 4) {
+            let length = 5 - res.data.lists.length
+            for (let j = 0; j < length; j++) {
+              console.log('aaa', res.data.lists.length)
               res.data.lists.push({
-                color: colors[(res.data.lists.length + j) % 6]
+                color: colors[(res.data.lists.length + j) % 5]
               })
             }
           }
-          self.setData({ records: res.data.lists })
+          self.setData({ records: res.data.lists, recordLoading: false, showRecords: true })
         } else {
           self.setData({ recordLoading: false, showRecords: false })
           self.showToast('获取好友助力记录失败', 'bottom')
@@ -109,6 +111,10 @@ Page({
         self.showToast('获取好友助力记录失败', 'bottom')
       }
     })
+  },
+  // 关闭弹窗
+  closeDialog() {
+    this.setData({ showRecords: false })
   },
   showToast: function(content, position) {
     let self = this

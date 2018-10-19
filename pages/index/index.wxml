@@ -14,7 +14,7 @@
     </block>
   </swiper>
   <view class="nav">
-    <navigator url="/pages/invite/invite?fhcode=H1Po3Ymim">
+    <navigator url="/pages/invite/invite?fhcode=BJA2r7Iim">
       <view class="nav-item">
         <icon class="iconfont icon-fenlei" style="background: #ffc539"></icon>
         <text>分类</text>

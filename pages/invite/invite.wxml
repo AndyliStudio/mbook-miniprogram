@@ -55,18 +55,18 @@
   </view>
 </view>
 <!-- 助力记录弹窗 start-->
-<view class="dialog">
+<view class="dialog" wx:if="{{showRecords}}">
   <view class="mask"></view>
   <view class="content">
-    <view class="close"></view>
+    <view class="close" bindtap="closeDialog"></view>
     <image src="https://fs.andylistudio.com/1539619838436.png"></image>
     <view class="lists">
-      <view class="list-item" wx:for="{{records}}" wx:key="{{index}}">
+      <view class="list-item" wx:for="{{records}}" wx:key="{{index}}" style="background: {{item.color}}">
         <block wx:if="{{item.avatar && item.name}}">
-          <image src=""></image>
+          <image src="{{item.avatar}}"></image>
           <view class="list-info">
-            <view class="name"></view>
-            <view class="time"></view>
+            <view class="name">{{item.name}}</view>
+            <view class="time">{{item.time}}</view>
           </view>
         </block>
       </view>
