@@ -31,6 +31,8 @@ Page({
       cur_month,
       weeks_ch
     })
+    // 当前页面不予许分享
+    wx.hideShareMenu()
   },
   getThisMonthDays(year, month) {
     return new Date(year, month, 0).getDate()

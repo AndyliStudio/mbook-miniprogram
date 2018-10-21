@@ -23,6 +23,8 @@ Page({
   },
   onShow: function(options) {
     this.getChargeGood()
+    // 当前页面不予许分享
+    wx.hideShareMenu()
   },
   showToast: function(content, position) {
     let self = this

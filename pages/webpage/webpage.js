@@ -27,6 +27,8 @@ Page({
     } else {
       self.showToast('地址为空', 'bottom')
     }
+    // 当前页面不予许分享
+    wx.hideShareMenu()
   },
   // 接收来自h5页面的消息
   reciveMessage: function(event) {},

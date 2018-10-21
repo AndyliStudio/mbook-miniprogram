@@ -54,20 +54,10 @@ Page({
   },
   // 分享逻辑
   onShareAppMessage: function(res) {
-    let self = this
     // 获取分享出去的图片地址
-    const shareParams = app.globalData.globalData.share
-    const now = new Date()
-    const code = app.globalData.shareCode + '_' + now.getTime()
-    if (shareParams && app.globalData.shareCode) {
-      return {
-        title: shareParams.title,
-        path: shareParams.page + '?code=' + code,
-        imageUrl: shareParams.imageUrl
-      }
-    } else {
-      self.showToast('获取分享参数失败', 'bottom')
-      return false
+    return {
+      title: '我正在阅读《' + this.data.detail.name + '》，进来看看吧~',
+      path: '/pages/loading/loading?bookid=' + this.data.detail._id
     }
   },
   getBookDetail: function(id) {
@@ -188,7 +178,7 @@ Page({
   // 我已有秘钥
   hasSecret: function() {
     this.setData({
-      'modal.title': '请输入秘钥',
+      'modal.title': '请输入客服发送给您的凭证',
       'modal.name': 'input'
     })
   },

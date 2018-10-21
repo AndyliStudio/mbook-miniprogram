@@ -5,7 +5,7 @@
 	<view wx:if="{{modal.name === 'secret'}}">
   	<view class="des">{{secretTips}}</view>
     <button class="btn" bindtap="openContact" wx:if="{{!shutChargeTips}}">联系客服</button>
-    <button class="btn" bindtap="hasSecret">我已有秘钥</button>
+    <button class="btn" bindtap="hasSecret">我已有资格</button>
   </view>
 	<view wx:if="{{modal.name === 'input'}}">
 	  <input class="secret-input" type="text" bindinput="bindKeyInput" />
@@ -45,11 +45,11 @@
         <view class="iconfont icon-yuedu"></view>
         <text>立即阅读</text>
       </view> -->
-      <block>
+      <block wx:if="{{!shutChargeTips}}">
         <view class="addToList" wx:if="{{goodInfo !== '全书免费' && !hasUnLock}}" bindtap="openSecret">
           <view class="inner-btn">
-            <text class="iconfont icon-miyao"></text>
-            <text>秘钥解锁</text>
+            <text class="iconfont icon-xihuan"></text>
+            <text>我是粉丝</text>
           </view>
           <!-- <view class="true" hidden="{{isInList}}">
             <view class="iconfont icon-add"></view>
@@ -66,6 +66,7 @@
         </view>
       </block>
     </view>
+    <button class="share-btn" open-type="share"><text class="iconfont icon-fenxiang"></text>分享书籍</button>
   </view>
   <view class="book-des">
     <view class="des-content" bindtap="showAllDes">{{showAllDes || !detail.shortDes ? detail.des : detail.shortDes}}

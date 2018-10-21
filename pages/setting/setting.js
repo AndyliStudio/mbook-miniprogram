@@ -30,6 +30,10 @@ Page({
     // self.setData({ 'userInfo': wx.getStorageSync('userinfo') })
     self.getUserSetting()
   },
+  onLoad: function() {
+    // 当前页面不予许分享
+    wx.hideShareMenu()
+  },
   bindPickerChange: function(event) {
     let self = this
     let pickerid = event.currentTarget.dataset.pickerid

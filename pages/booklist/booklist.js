@@ -12,6 +12,8 @@ Page({
   },
   onShow: function() {
     this.getMyBookList()
+    // 当前页面不予许分享
+    wx.hideShareMenu()
   },
   getMyBookList: function() {
     let self = this

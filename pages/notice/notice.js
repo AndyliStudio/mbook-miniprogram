@@ -75,6 +75,8 @@ Page({
   },
   onShow: function(options) {
     this.getCommentList()
+    // 当前页面不予许分享
+    wx.hideShareMenu()
   },
   switchTab: function() {
     this.setData({

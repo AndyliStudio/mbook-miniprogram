@@ -19,6 +19,8 @@ Page({
       userInfo: app.globalData.userInfo,
       shutChargeTips: app.globalData.globalSetting.shut_charge_tips
     })
+    // 当前页面不予许分享
+    wx.hideShareMenu()
   },
   getInfo: function() {
     let self = this

@@ -42,6 +42,8 @@ Page({
       chargeTips: chargeTips,
       shutChargeTips: app.globalData.globalSetting.shut_charge_tips
     })
+    // 当前页面不予许分享
+    wx.hideShareMenu()
   },
   changePage: function(event) {
     let page = parseInt(event.currentTarget.dataset.page)

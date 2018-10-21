@@ -21,6 +21,8 @@ Page({
     } else {
       self.getClassifyData(self.data.currentIndex, self.data.page)
     }
+    // 当前页面不予许分享
+    wx.hideShareMenu()
   },
   getClassifyData: function(index, page, isLoadMore) {
     //显示加载中

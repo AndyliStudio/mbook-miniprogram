@@ -33,6 +33,8 @@ Page({
   },
   onLoad: function() {
     this.getSearchKeyword()
+    // 当前页面不予许分享
+    wx.hideShareMenu()
   },
   getSearchKeyword() {
     let self = this

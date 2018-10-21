@@ -10,7 +10,7 @@
 	<view wx:if="{{modal.name === 'secret'}}">
   	<view class="des">{{secretTips}}</view>
     <button class="btn" bindtap="copyWxCode" wx:if="{{!shutChargeTips}}">复制客服微信</button>
-    <button class="btn" bindtap="hasSecret">我已有秘钥</button>
+    <button class="btn" bindtap="hasSecret">我已有凭证</button>
   </view>
 	<view wx:if="{{modal.name === 'input'}}">
 	  <input class="secret-input" type="text" bindinput="bindKeyInput" />
@@ -56,7 +56,7 @@
 	<view class="buy" style="display: {{isShowBuy ? 'block' : 'none'}}">
 		<view class="buy-inner">
 			<button wx:if="{{!shutChargeTips}}" class="buy-btn" bindtap="buyChapter" style="color: {{colorStyle.button_font_color}}; background-color: {{colorStyle.button_bg}}">购买该章节</button>
-			<button class="buy-total" bindtap="buyTotal" style="color: {{colorStyle.button_font_color}}; background-color: {{colorStyle.button_bg}}">输入秘钥解锁整本书</button>
+			<button class="buy-total" bindtap="buyTotal" style="color: {{colorStyle.button_font_color}}; background-color: {{colorStyle.button_bg}}">成为粉丝，免费阅读全书</button>
 			<button class="share-btn" open-type="share" style="color: {{colorStyle.button_font_color}}; background-color: {{colorStyle.button_bg}}">邀请好友‧免费</button>
 			<button class="cancel-btn" bindtap="buyCancel" style="color: {{colorStyle.button_font_color}}; background-color: {{colorStyle.button_bg}}">取消</button>
 		</view>

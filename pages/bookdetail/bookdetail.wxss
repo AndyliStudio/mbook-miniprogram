@@ -138,6 +138,37 @@
   width: 38rpx;
 }
 
+.detail .head .share-btn {
+  position: absolute;
+  top: 50rpx;
+  right: -1rpx;
+  height: 50rpx;
+  width: 170rpx;
+  line-height: 50rpx;
+  text-align: center;
+  color: #ffffff;
+  background: linear-gradient(to right, #0f81fb, #019dff);
+  font-size: 24rpx;
+  border-radius: none;
+  border-top-left-radius: 25rpx;
+  border-bottom-left-radius: 25rpx;
+  padding: 0 4px;
+  border: none;
+  outline: none;
+}
+
+.detail .head .share-btn:active {
+  background: linear-gradient(to right, #077fff, #0490e8);
+}
+
+.detail .head .share-btn .iconfont {
+  vertical-align: middle;
+  position: relative;
+  top: -2rpx;
+  margin-right: 6rpx;
+  color: #ffffff;
+}
+
 .detail .book-des {
   font-size: 28rpx;
   padding: 40rpx;

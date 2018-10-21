@@ -24,6 +24,8 @@ Page({
       self.setData({ params: options })
       self.doLogin()
     }
+    // 当前页面不予许分享
+    wx.hideShareMenu()
   },
   // 微信登录函数
   wxLogin: function() {
@@ -91,6 +93,8 @@ Page({
                 wx.redirectTo({ url: '../activities/share/share?code=' + self.data.params.code })
               } else if (self.data.params && self.data.params.fhcode && reg2.test(self.data.params.fhcode)) {
                 wx.redirectTo({ url: '../invite/invite?fhcode=' + self.data.params.fhcode })
+              } else if (self.data.params && self.data.params.bookid) {
+                wx.redirectTo({ url: '../bookdetail/bookdetail?id=' + self.data.params.bookid })
               } else {
                 wx.switchTab({ url: '../index/index' })
               }
