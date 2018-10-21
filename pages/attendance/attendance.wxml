@@ -1,5 +1,6 @@
 <!--attendance.wxml-->
 <toast toast="{{toast}}"></toast>
+<fixed-btn></fixed-btn>
 <view class="flex box box-tb box-align-center">
   <view class="white-box"></view>
   <view class="calendar box box-tb">

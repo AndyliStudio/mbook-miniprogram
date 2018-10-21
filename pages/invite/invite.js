@@ -34,6 +34,29 @@ Page({
     })
     this.getFriendHelpInfo()
   },
+  // 分享逻辑
+  onShareAppMessage: function() {
+    let self = this
+    // 获取分享出去的图片地址
+    const shareParams = app.globalData.globalSetting.friend_help_share
+    let title = shareParams.title
+    if (title.indexOf('{need_num}') > -1) {
+      title = title.replace('{need_num}', self.data.info.book.need_num)
+    }
+    if (title.indexOf('{name}') > -1) {
+      title = title.replace('{name}', self.data.info.book.name)
+    }
+    if (shareParams) {
+      return {
+        title: title,
+        path: shareParams.page + '?fhcode=' + self.data.fhcode,
+        imageUrl: shareParams.imageUrl
+      }
+    } else {
+      self.showToast('获取分享参数失败', 'bottom')
+      return false
+    }
+  },
   getFriendHelpInfo: function() {
     let self = this
     // 获取当前书籍的助力ID
@@ -50,6 +73,8 @@ Page({
           res.data.data.present = parseInt((res.data.data.has_finished * 100) / res.data.data.book.need_num) + '%'
           if (res.data.data.success) {
             res.data.data.status = 1
+          } else if (app.globalData.userInfo._id === res.data.data.userid) {
+            res.data.data.status = 4
           } else {
             let now = new Date()
             let limitTime = res.data.data.book.limit_time > 0 ? parseInt(res.data.data.book.limit_time) : 0
@@ -62,7 +87,7 @@ Page({
           }
           self.setData({ info: res.data.data })
         } else {
-          self.showToast('获取好友助力信息失败', 'bottom')
+          self.showToast('获取好友助力信息失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
       },
       fail: function(err) {
@@ -84,7 +109,6 @@ Page({
         fhcode: self.data.fhcode
       },
       success: function(res) {
-        console.log(res)
         if (res.data.ok) {
           let colors = ['#3fb8af', '#7fc7af', '#ffd188', '#ff9e9d', '#bf6374']
           for (let i = 0; i < res.data.lists.length; i++) {
@@ -93,7 +117,6 @@ Page({
           if (res.data.lists.length <= 4) {
             let length = 5 - res.data.lists.length
             for (let j = 0; j < length; j++) {
-              console.log('aaa', res.data.lists.length)
               res.data.lists.push({
                 color: colors[(res.data.lists.length + j) % 5]
               })
@@ -102,7 +125,7 @@ Page({
           self.setData({ records: res.data.lists, recordLoading: false, showRecords: true })
         } else {
           self.setData({ recordLoading: false, showRecords: false })
-          self.showToast('获取好友助力记录失败', 'bottom')
+          self.showToast('获取好友助力记录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
       },
       fail: function(err) {
@@ -115,6 +138,35 @@ Page({
   // 关闭弹窗
   closeDialog() {
     this.setData({ showRecords: false })
+  },
+  // 帮他助力
+  helpIt() {
+    let self = this
+    wx.request({
+      method: 'GET',
+      url: config.base_url + '/api/friend_help/accept',
+      header: { Authorization: 'Bearer ' + app.globalData.token },
+      data: {
+        fhcode: self.data.fhcode
+      },
+      success: function(res) {
+        if (res.data.ok) {
+          self.getFriendHelpInfo()
+          wx.showToast({ title: '助力成功', icon: 'success' })
+        } else {
+          self.showToast('助力失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
+        }
+      },
+      fail: function(err) {
+        console.warn(err)
+        self.showToast('助力失败', 'bottom')
+      }
+    })
+  },
+  gotoIndex: function() {
+    wx.switchTab({
+      url: '/pages/index/index'
+    })
   },
   showToast: function(content, position) {
     let self = this

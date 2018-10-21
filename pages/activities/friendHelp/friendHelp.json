@@ -7,6 +7,7 @@
     "toast": "../../../component/toast/toast",
     "modal": "../../../component/modal/modal",
     "no-data": "../../../component/nodata/nodata",
-    "lazyload-img": "../../../component/lazyload-img/lazyload-img"
+    "lazyload-img": "../../../component/lazyload-img/lazyload-img",
+    "fixed-btn": "../../../component/fixed-btn/fixed-btn"
   }
 }

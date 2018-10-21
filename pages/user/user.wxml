@@ -1,3 +1,4 @@
+<fixed-btn></fixed-btn>
 <view class="container user">
   <view class="user-info">
     <image class="avatar" src="{{userInfo.avatar}}" bindtap="copyUserId"></image>

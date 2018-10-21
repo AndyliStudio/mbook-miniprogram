@@ -1,3 +1,9 @@
+<fixed-btn></fixed-btn>
+<modal class="fh-modal" data-model="modal.show" visible="{{modal.show}}" title="{{modal.title}}" position="{{modal.position}}" fullscreen="{{modal.options.fullscreen}}" opacity="{{modal.opacity}}" show-close="{{modal.options.showclose}}" show-footer="{{modal.options.showfooter}}" close-on-click-modal="{{modal.options.closeonclickmodal}}" confirm-text="{{modal.options.confirmText}}" bindconfirm="handleModalConfirm">
+  <view class="des">已经为你生成分享口令</view>
+  <view class="code">{{shareFhCode}}</view>
+  <button class="btn" open-type="share">立即分享</button>
+</modal>
 <scroll-view class="friend-help" enable-back-to-top="true" scroll-y="true" bindscrolltolower="loadMoreData">
   <image class="bg" src="https://fs.andylistudio.com/1537973910409.jpeg"></image>
   <view class="content">
@@ -18,23 +24,30 @@
         </block>
         <!-- 暂无数据 -->
         <block wx:else>
-          <view class="book-item" wx:for="{{lists}}" wx:key="{{item._id}}">
-            <lazyload-img class="img" src="{{item.bookid.img_url}}"></lazyload-img>
-            <view class="left">
-              <view class="name">{{item.bookid.name}}</view>
-              <view class="author">{{item.bookid.author}}</view>
-              <view class="progress" wx:if="{{item.left_num >= 0}}">
-                <progress percent="{{100 - (item.left_num * 100 / item.need_num)}}"/>
-                <text class="pg-info">{{item.left_num === 0 ? '已完成' : (item.need_num - item.left_num) + '/' + item.need_num}}</text>
+          <block wx:if="{{lists.length > 0}}">
+            <view class="book-item" wx:for="{{lists}}" wx:key="{{item._id}}">
+              <lazyload-img class="img" src="{{item.bookid.img_url}}"></lazyload-img>
+              <view class="left">
+                <view class="name">{{item.bookid.name}}</view>
+                <view class="author">{{item.bookid.author}}</view>
+                <view class="progress" wx:if="{{item.left_num >= 0}}">
+                  <progress percent="{{100 - (item.left_num * 100 / item.need_num)}}"/>
+                  <text class="pg-info">{{item.left_num === 0 ? '已完成' : (item.need_num - item.left_num) + '/' + item.need_num}}</text>
+                </view>
               </view>
+              <block wx:if="{{item.success}}">
+                <button class="right" data-bookid="{{item.bookid._id}}" bindtap="gotoRead">去阅读</button>
+              </block>
+              <block wx:else>
+                <button class="right" data-fhbid="{{item._id}}" bindtap="openShare">去分享</button>
+              </block>
             </view>
-            <block wx:if="{{item.success}}">
-              <button class="right" data-bookid="{{item.bookid._id}}" bindtap="gotoRead">去阅读</button>
-            </block>
-            <block wx:else>
-              <button class="right" data-fhbid="{{item._id}}" open-type="share">去分享</button>
-            </block>
-          </view>
+          </block>
+          <block wx:else>
+            <no-data text="暂无助力书籍" sub-text="服务器开小差了，点击重新获取" btn-text="重新获取" show-btn="true" bindbtnclick="getFriendHelpBook">
+              <icon class="iconfont icon-zanwushuju"></icon>
+            </no-data>
+          </block>
         </block>
        </block>
      </view>

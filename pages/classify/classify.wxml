@@ -1,5 +1,6 @@
 <!--pages/fenlei/fenlei.wxml-->
 <toast toast="{{toast}}"></toast>
+<fixed-btn></fixed-btn>
 <view class="classify-container">
   <view class="tab">
     <view class="tab-item {{currentIndex == tabIndex? 'active': ''}}" wx:for="{{classifyTypes}}" wx:for-index="tabIndex" wx:for-item="tabItem" wx:key="engName" data-index="{{tabIndex}}" bindtap="showClassify">

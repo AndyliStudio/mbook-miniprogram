@@ -4,5 +4,7 @@
   "navigationBarTitleText": "我的消息",
   "navigationBarTextStyle": "white",
   "usingComponents": {
-    "toast": "../../component/toast/toast"  }
+    "toast": "../../component/toast/toast",
+    "fixed-btn": "../../component/fixed-btn/fixed-btn"
+  }
 }

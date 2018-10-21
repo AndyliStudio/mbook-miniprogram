@@ -61,7 +61,7 @@ Page({
             showclose: true,
             showfooter: true,
             closeonclickmodal: true,
-            confirmText: '确认'
+            confirmText: dialog.confirmText || '确认'
           }
         }
       })
@@ -199,5 +199,15 @@ Page({
     let name = event.currentTarget.dataset.name
     wx.navigateTo({ url: '../bookdetail/bookdetail?id=' + bookid + '&name=' + name })
   },
-  handleModalConfirm: function() {}
+  handleModalConfirm: function() {
+    const dialog = app.globalData.globalSetting ? app.globalData.globalSetting.index_dialog : ''
+    if (dialog && dialog.show === 'true' && dialog.copyText) {
+      wx.setClipboardData({
+        data: dialog.copyText,
+        success: function(res) {
+          wx.showToast({ title: '复制成功', icon: 'success' })
+        }
+      })
+    }
+  }
 })

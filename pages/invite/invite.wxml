@@ -1,4 +1,5 @@
-<view class="invite">
+<fixed-btn></fixed-btn>
+<view class="invite {{showRecords ? 'overflow' : ''}}">
   <view class="container">
     <view class="pic-wrap"></view>
     <!-- 文字描述 start -->
@@ -38,7 +39,7 @@
     <view class="task-status">
       <block wx:if="{{info.status === 1}}">
         <image src="https://fs.andylistudio.com/1539488338035.png"></image>
-        <view>来晚了，该好友助力任务已完成!</view>
+        <view>该好友助力任务已完成!</view>
       </block>
       <block wx:if="{{info.status === 2}}">
         <image src="https://fs.andylistudio.com/1539489267437.png"></image>
@@ -50,6 +51,7 @@
     <view class="btn-wrap">
       <view class="main-btn" bindtap="helpIt" wx:if="{{info.status === 3}}">助力</view>
       <view class="rank-list" bindtap="lookRecords" loading="{{recordLoading}}">助力动态</view>
+      <view class="index-btn" bindtap="gotoIndex">返回首页</view>
     </view>
     <!-- 按钮组 end -->
   </view>
@@ -62,7 +64,7 @@
     <image src="https://fs.andylistudio.com/1539619838436.png"></image>
     <view class="lists">
       <view class="list-item" wx:for="{{records}}" wx:key="{{index}}" style="background: {{item.color}}">
-        <block wx:if="{{item.avatar && item.name}}">
+        <block wx:if="{{item.name}}">
           <image src="{{item.avatar}}"></image>
           <view class="list-info">
             <view class="name">{{item.name}}</view>

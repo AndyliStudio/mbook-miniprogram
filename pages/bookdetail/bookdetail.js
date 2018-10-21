@@ -62,7 +62,7 @@ Page({
     if (shareParams && app.globalData.shareCode) {
       return {
         title: shareParams.title,
-        path: shareParams.page + '?code' + code,
+        path: shareParams.page + '?code=' + code,
         imageUrl: shareParams.imageUrl
       }
     } else {

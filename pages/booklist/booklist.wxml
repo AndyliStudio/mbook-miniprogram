@@ -1,6 +1,6 @@
 <!--bookdetail.wxml-->
 <toast toast="{{toast}}"></toast>
-
+<fixed-btn></fixed-btn>
 <view class="container booklist">
   <!-- <view class="search-container">
     <input type="text" placeholder="搜索书籍" confirm-type="search"/>

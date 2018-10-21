@@ -175,14 +175,13 @@ Page({
   onShareAppMessage: function(res) {
     let self = this
     // 获取分享出去的图片地址
-    const shareParams = app.globalData.globalData.share
+    const shareParams = app.globalData.globalSetting.share
     const now = new Date()
     const code = app.globalData.shareCode + '_' + now.getTime()
     if (shareParams && app.globalData.shareCode) {
       return {
         title: shareParams.title,
-        path: shareParams.page + '?code' + code,
-        imageUrl: shareParams.imageUrl
+        path: shareParams.page + '?code=' + code
       }
     } else {
       self.showToast('获取分享参数失败', 'bottom')

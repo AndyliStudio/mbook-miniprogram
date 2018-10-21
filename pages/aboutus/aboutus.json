@@ -2,5 +2,8 @@
   "backgroundTextStyle": "light",
   "navigationBarBackgroundColor": "#1472e0",
   "navigationBarTitleText": "关于我们",
-  "navigationBarTextStyle": "white"
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "fixed-btn": "../../component/fixed-btn/fixed-btn"
+  }
 }

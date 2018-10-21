@@ -5,6 +5,7 @@
   "navigationBarTextStyle": "white",
   "usingComponents": {
     "toast": "../../component/toast/toast",
-    "modal": "../../component/modal/modal"
+    "modal": "../../component/modal/modal",
+    "fixed-btn": "../../component/fixed-btn/fixed-btn"
   }
 }

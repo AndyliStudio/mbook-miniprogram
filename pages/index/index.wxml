@@ -3,6 +3,7 @@
 <modal class="index-modal" data-model="modal.show" hidden="{{!modal || !modal.show}}" visible="{{modal.show}}" title="{{modal.title}}" position="{{modal.position}}" fullscreen="{{modal.options.fullscreen}}" opacity="{{modal.opacity}}" show-close="{{modal.options.showclose}}" show-footer="{{modal.options.showfooter}}" close-on-click-modal="{{modal.options.closeonclickmodal}}" confirm-text="{{modal.options.confirmText}}" bindconfirm="handleModalConfirm">
   <view class="des">{{modal.content}}</view>
 </modal>
+<fixed-btn></fixed-btn>
 <view class="container index" scroll-y="true" wx:if="{{loaded}}">  
   <swiper class="swiper-box" wx:if="{{is_show_banner}}" indicator-dots="1" indicator-color="#ffffff" indicator-active-color="#a3a8f8" autoplay="1" interval="4000" duration="500" circular="true">
     <block wx:for="{{banner_urls}}" wx:key="item._id">
@@ -14,19 +15,19 @@
     </block>
   </swiper>
   <view class="nav">
-    <navigator url="/pages/invite/invite?fhcode=BJA2r7Iim">
+    <navigator url="/pages/classify/classify">
       <view class="nav-item">
         <icon class="iconfont icon-fenlei" style="background: #ffc539"></icon>
         <text>分类</text>
       </view>
     </navigator>
-    <navigator url="/pages/activities/friendHelp/friendHelp">
+    <navigator url="/pages/search/search">
       <view class="nav-item">
         <icon class="iconfont icon-sousuo" style="background: #ff9654"></icon>
         <text>搜索</text>
       </view>
     </navigator>
-    <navigator wx-if="{{!shutChargeTips}}" url="/pages/account/account">
+    <navigator url="/pages/account/account">
       <view class="nav-item">
         <icon class="iconfont icon-chongzhi" style="background: #ff6687"></icon>
         <text>账户</text>

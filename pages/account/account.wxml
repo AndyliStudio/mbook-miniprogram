@@ -1,4 +1,5 @@
 <toast toast="{{toast}}"></toast>
+<fixed-btn></fixed-btn>
 <modal class="charge-modal" data-model="modal.show" visible="{{modal.show}}" title="{{modal.title}}" position="{{modal.position}}" fullscreen="{{modal.options.fullscreen}}" opacity="{{modal.opacity}}" show-close="{{modal.options.showclose}}" show-footer="{{modal.options.showfooter}}" close-on-click-modal="{{modal.options.closeonclickmodal}}" confirm-text="{{modal.options.confirmText}}" bindconfirm="handleModalConfirm">
   <view>
   	<view class="des">{{chargeTips}}</view>
@@ -8,7 +9,7 @@
 <view class="account">
 	<view class="panel">
 		<view class="main-text"><text class="num">{{amount}}</text>书币</view>
-		<button class="charge-btn" bindtap="gotoCharge">充值</button>
+		<button class="charge-btn" bindtap="gotoCharge" wx:if="{{!shutChargeTips}}">充值</button>
 	</view>
 	<view class="tab">
       <view class="tab-item {{currentPageNum === 1 ? 'active' : ''}}" data-page="1" bindtap="changePage">奖励和充值</view>

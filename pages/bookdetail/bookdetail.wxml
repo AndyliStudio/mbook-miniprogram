@@ -1,9 +1,10 @@
 <!--bookdetail.wxml-->
 <toast toast="{{toast}}"></toast>
+<fixed-btn></fixed-btn>
 <modal class="detail-modal" data-model="modal.show" visible="{{modal.show}}" title="{{modal.title}}" position="{{modal.position}}" fullscreen="{{modal.options.fullscreen}}" opacity="{{modal.opacity}}" show-close="{{modal.options.showclose}}" show-footer="{{modal.options.showfooter}}" close-on-click-modal="{{modal.options.closeonclickmodal}}" confirm-text="{{modal.options.confirmText}}" bindconfirm="handleModalConfirm">
 	<view wx:if="{{modal.name === 'secret'}}">
   	<view class="des">{{secretTips}}</view>
-    <button class="btn" bindtap="openContact">联系客服</button>
+    <button class="btn" bindtap="openContact" wx:if="{{!shutChargeTips}}">联系客服</button>
     <button class="btn" bindtap="hasSecret">我已有秘钥</button>
   </view>
 	<view wx:if="{{modal.name === 'input'}}">
@@ -44,7 +45,7 @@
         <view class="iconfont icon-yuedu"></view>
         <text>立即阅读</text>
       </view> -->
-      <block wx:if="{{!shutChargeTips}}">
+      <block>
         <view class="addToList" wx:if="{{goodInfo !== '全书免费' && !hasUnLock}}" bindtap="openSecret">
           <view class="inner-btn">
             <text class="iconfont icon-miyao"></text>

@@ -1,3 +1,4 @@
+<fixed-btn></fixed-btn>
 <view class="comments">
     <view class="h">
         <view class="item {{ showType == 0 ? 'active' : ''}}" bindtap="switchTab">

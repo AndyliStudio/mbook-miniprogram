@@ -1,0 +1,3 @@
+<view class="fixed-btn" wx:if="{{showFixedBtn}}" bindtap="handleClick">
+  <image src="{{imgUrl}}"></image>
+</view>

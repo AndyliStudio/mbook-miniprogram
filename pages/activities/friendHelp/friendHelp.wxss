@@ -107,6 +107,8 @@ page {
   letter-spacing: 2rpx;
   line-height: 64rpx;
   color: #ffffff;
+  border: none;
+  outline: none;
 }
 
 .friend-help .book-item .progress {
@@ -118,4 +120,12 @@ page {
 
 .friend-help .book-item .progress progress {
   width: 66%;
+}
+
+.fh-modal .code {
+  font-weight: bold;
+  color: #000000;
+  font-size: 40rpx;
+  text-align: center;
+  padding: 20px 0;
 }

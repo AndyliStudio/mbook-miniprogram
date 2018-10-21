@@ -29,14 +29,19 @@ Page({
     showAwardLoadmore: false,
     awardPage: 1,
     buyPage: 1,
-    chargeTips: ''
+    chargeTips: '',
+    shutChargeTips: false
   },
   onShow: function() {
     this.getInfo()
   },
   onLoad: function() {
     let chargeTips = app.globalData.globalSetting.charge_tips || '暂不支持微信支付，请加客服(haitianyise_hl)为好友，按照1元兑换10书币的价格转账之后，客服人员会为您充值书币。'
-    this.setData({ wxcode: app.globalData.globalSetting.wxcode || 'haitianyise_hl', chargeTips: chargeTips })
+    this.setData({
+      wxcode: app.globalData.globalSetting.wxcode || 'haitianyise_hl',
+      chargeTips: chargeTips,
+      shutChargeTips: app.globalData.globalSetting.shut_charge_tips
+    })
   },
   changePage: function(event) {
     let page = parseInt(event.currentTarget.dataset.page)

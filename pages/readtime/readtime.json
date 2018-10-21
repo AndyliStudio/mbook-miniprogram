@@ -4,6 +4,7 @@
   "navigationBarTitleText": "阅读时长",
   "navigationBarTextStyle": "white",
   "usingComponents": {
-    "toast": "../../component/toast/toast"
+    "toast": "../../component/toast/toast",
+    "fixed-btn": "../../component/fixed-btn/fixed-btn"
   }
 }

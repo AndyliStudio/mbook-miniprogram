@@ -1,3 +1,4 @@
+<fixed-btn></fixed-btn>
 <view class="container setting">
   <view class="title">阅读器</view>
   <view class="preview" style="background: {{previewBg}}; font-size: {{userSetting.reader.fontSize + 'rpx'}}; font-family: {{userSetting.reader.fontFamily}}; color: {{userSetting.reader.mode == '夜间' ? '#85898c' : '#000800'}}">

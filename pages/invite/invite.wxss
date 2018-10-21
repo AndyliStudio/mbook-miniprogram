@@ -10,6 +10,11 @@
   background-repeat: no-repeat;
 }
 
+.invite.overflow {
+  height: 100vh;
+  overflow: hidden;
+}
+
 .container {
   font-size: 0.14rem;
   line-height: 2;
@@ -266,6 +271,32 @@
   justify-content: center;
 }
 
+.container .index-btn {
+  font-size: 30rpx;
+  font-weight: bold;
+  line-height: 72rpx;
+  display: -ms-flexbox;
+  display: flex;
+  transition: all linear 0.1s;
+  -webkit-transition: all linear 0.1s;
+  border-radius: 8rpx;
+  width: 200rpx;
+  height: 72rpx;
+  margin: 0.06rem auto 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  background-size: 100% 100%;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
 .container .main-btn:active {
   -webkit-filter: brightness(0.8);
 }
@@ -344,9 +375,28 @@
   border-radius: 10rpx;
   margin: 20rpx auto 0 auto;
   overflow: hidden;
+  overflow-y: auto;
 }
 
 .dialog .content .list-item {
   width: 100%;
   height: 20%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+}
+
+.dialog .content .list-item > image {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 36rpx;
+  margin-right: 20rpx;
+}
+
+.dialog .content .list-info > view {
+  color: #ffffff;
+  font-size: 24rpx;
 }

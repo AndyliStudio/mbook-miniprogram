@@ -11,26 +11,18 @@ Page({
     success: false,
     buttonType: '',
     loginAgain: false,
-    shareScene: '',
+    params: {},
     text: '欢迎回来'
   },
   onLoad: function(options) {
     let self = this
-    console.log('首页options', options)
-    // 尝试自动登录
+    // 检测是否需要尝试自动登录
     if (options.need_login_again) {
       self.setData({ buttonType: 'reLogin', loginAgain: true, loading: false })
       return
     } else {
+      self.setData({ params: options })
       self.doLogin()
-    }
-    if (options.code) {
-      self.setData({ shareScene: options.code })
-      return
-    }
-    if (options.scene) {
-      self.setData({ shareScene: decodeURIComponent(options.scene) })
-      return
     }
   },
   // 微信登录函数
@@ -93,9 +85,12 @@ Page({
           } else {
             // 正常跳转到首页
             if (!self.data.loginAgain) {
-              const reg = /^[A-Za-z0-9-]+_\d+$/
-              if (self.data.shareScene && reg.test(self.data.shareScene)) {
-                wx.redirectTo({ url: '../activities/share/share?code=' + self.data.shareScene })
+              const reg = /^[A-Za-z0-9-_]+_\d+$/
+              const reg2 = /^[A-Za-z0-9-_]+$/
+              if (self.data.params && self.data.params.code && reg.test(self.data.params.code)) {
+                wx.redirectTo({ url: '../activities/share/share?code=' + self.data.params.code })
+              } else if (self.data.params && self.data.params.fhcode && reg2.test(self.data.params.fhcode)) {
+                wx.redirectTo({ url: '../invite/invite?fhcode=' + self.data.params.fhcode })
               } else {
                 wx.switchTab({ url: '../index/index' })
               }
