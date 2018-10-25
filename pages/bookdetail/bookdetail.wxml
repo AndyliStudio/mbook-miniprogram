@@ -9,7 +9,7 @@
   </view>
 	<view wx:if="{{modal.name === 'input'}}">
 	  <input class="secret-input" type="text" bindinput="bindKeyInput" />
-    <button class="btn" bindtap="finishSecretInput">现在解锁</button>
+    <button class="btn" bindtap="finishSecretInput">确认</button>
   </view>
   <view wx:if="{{modal.name === 'contact'}}">
   	<view class="des">请添加微信号<text class="bold">{{wxcode}}</text>为好友。</view>

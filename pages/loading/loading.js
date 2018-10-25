@@ -87,10 +87,14 @@ Page({
           } else {
             // 正常跳转到首页
             if (!self.data.loginAgain) {
-              const reg = /^[A-Za-z0-9-_]+_\d+$/
+              const reg = /^[A-Za-z0-9-_]+\|\d+$/
               const reg2 = /^[A-Za-z0-9-_]+$/
               if (self.data.params && self.data.params.code && reg.test(self.data.params.code)) {
-                wx.redirectTo({ url: '../activities/share/share?code=' + self.data.params.code })
+                console.log('开始更新邀请奖励', self.data.params.code)
+                // wx.redirectTo({ url: '../activities/share/share?code=' + self.data.params.code })
+                // 不在跳转分享活动页面，直接在首页领奖
+                self.updateShareLog(self.data.params.code)
+                app.globalData.loadedShare = true
               } else if (self.data.params && self.data.params.fhcode && reg2.test(self.data.params.fhcode)) {
                 wx.redirectTo({ url: '../invite/invite?fhcode=' + self.data.params.fhcode })
               } else if (self.data.params && self.data.params.bookid) {
@@ -224,6 +228,46 @@ Page({
         .catch(function() {
           reject(false)
         })
+    })
+  },
+  // 首页也能发送接受邀请的请求
+  updateShareLog: function(share_id) {
+    let self = this
+    wx.request({
+      method: 'GET',
+      url: config.base_url + '/api/share/update?share_id=' + share_id,
+      header: { Authorization: 'Bearer ' + app.globalData.token },
+      success: res => {
+        console.log(res)
+        if (res.data.ok) {
+          wx.showToast({ title: '获得15书币的奖励', icon: 'success' })
+          setTimeout(function() {
+            wx.hideToast()
+          }, 2000)
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../../loading/loading?need_login_again=1'
+          })
+        } else {
+          utils.debug('调用接口失败--/api/share/update' + JSON.stringify(res))
+          if (res.data.inviteself) {
+            return false
+          }
+          self.showToast(res.data.msg || '接收邀请失败', 'bottom')
+        }
+        setTimeout(function() {
+          wx.switchTab({ url: '../index/index' })
+        }, 1000)
+      },
+      fail: err => {
+        utils.debug('调用接口失败--/api/share/update' + JSON.stringify(err))
+        self.showToast('接收邀请失败', 'bottom')
+        wx.switchTab({ url: '../index/index' })
+        // 自动重新尝试
+        setTimeout(function() {
+          wx.switchTab({ url: '../index/index' })
+        }, 1000)
+      }
     })
   },
   // 重新授权之后执行

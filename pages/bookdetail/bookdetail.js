@@ -39,9 +39,7 @@ Page({
     // 隐藏分享按钮
     wx.hideShareMenu()
     let secretTips =
-      app.globalData.globalSetting && app.globalData.globalSetting.secret_tips
-        ? app.globalData.globalSetting.secret_tips
-        : '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
+      app.globalData.globalSetting && app.globalData.globalSetting.secret_tips ? app.globalData.globalSetting.secret_tips : '请联系客服，在支付2-3元后，客服人员会发送给你一串阅读秘钥用来解锁整本书。'
     wx.showNavigationBarLoading()
     this.getBookDetail(options.id)
     this.getCommentList(options.id)
@@ -191,7 +189,7 @@ Page({
   finishSecretInput: function() {
     let self = this
     if (!self.data.modal.inputValue) {
-      self.showToast('请输入秘钥', 'bottom')
+      self.showToast('请输入粉丝凭证', 'bottom')
       return false
     }
     wx.request({

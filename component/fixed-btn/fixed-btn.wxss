@@ -2,9 +2,9 @@
   position: fixed;
   right: 0;
   bottom: 100rpx;
-  width: 100rpx;
-  height: 100rpx;
-  z-index: 1;
+  width: 120rpx;
+  height: 120rpx;
+  z-index: 3;
 }
 
 .fixed-btn > image {

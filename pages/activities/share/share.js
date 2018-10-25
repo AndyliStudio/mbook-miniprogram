@@ -67,7 +67,7 @@ Page({
     }
     self.setData({ shareInfo: app.globalData.shareInfo, awardRecords: records })
     // 如果url中存在code并且code符合规范，调用更新分享记录的接口
-    const reg = /^[A-Za-z0-9-]+_\d+$/
+    const reg = /^[A-Za-z0-9-_]+\|\d+$/
     if (self.data.code && reg.test(self.data.code)) {
       self.updateShareLog(self.data.code)
     }
@@ -108,7 +108,10 @@ Page({
           })
         } else {
           utils.debug('调用接口失败--/api/share/update' + JSON.stringify(res))
-          self.showToast('接收邀请失败', 'bottom')
+          if (res.data.inviteself) {
+            return false
+          }
+          self.showToast(res.data.msg || '接收邀请失败', 'bottom')
         }
       },
       fail: err => {
@@ -177,7 +180,8 @@ Page({
     // 获取分享出去的图片地址
     const shareParams = app.globalData.globalSetting.share
     const now = new Date()
-    const code = app.globalData.shareCode + '_' + now.getTime()
+    const code = app.globalData.shareCode + '|' + now.getTime()
+    console.log(app.globalData.shareCode, code)
     if (shareParams && app.globalData.shareCode) {
       return {
         title: shareParams.title,
@@ -267,7 +271,7 @@ Page({
       } else {
         wx.showLoading({ title: '正在生成二维码' })
         wx.request({
-          url: config.base_url + '/api/get_share_img?share_type=friendQ&share_id=' + app.globalData.shareCode + '_' + now.getTime(),
+          url: config.base_url + '/api/get_share_img?share_type=friendQ&share_id=' + app.globalData.shareCode + '|' + now.getTime(),
           header: { Authorization: 'Bearer ' + app.globalData.token },
           success: res => {
             if (res.data.ok) {

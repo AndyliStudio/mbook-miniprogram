@@ -73,7 +73,7 @@ Page({
     // 获取分享出去的图片地址
     const shareParams = app.globalData.globalSetting.share
     const now = new Date()
-    const code = app.globalData.shareCode + '_' + now.getTime()
+    const code = app.globalData.shareCode + '|' + now.getTime()
     if (shareParams && app.globalData.shareCode) {
       return {
         title: shareParams.title,

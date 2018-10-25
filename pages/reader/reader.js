@@ -177,7 +177,7 @@ Page({
     // 获取分享出去的图片地址
     const shareParams = app.globalData.globalSetting.share
     const now = new Date()
-    const code = app.globalData.shareCode + '_' + now.getTime()
+    const code = app.globalData.shareCode + '|' + now.getTime()
     if (shareParams && app.globalData.shareCode) {
       return {
         title: shareParams.title,
@@ -1174,7 +1174,7 @@ Page({
   },
   hasSecret: function() {
     this.setData({
-      'modal.title': '请输入秘钥',
+      'modal.title': '请输入您的粉丝凭证',
       'modal.name': 'input'
     })
   },
@@ -1203,7 +1203,7 @@ Page({
   finishSecretInput: function() {
     let self = this
     if (!self.data.modal.inputValue) {
-      self.showToast('请输入秘钥', 'bottom')
+      self.showToast('请输入粉丝凭证', 'bottom')
       return false
     }
     wx.request({
