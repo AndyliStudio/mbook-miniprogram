@@ -95,7 +95,9 @@ Page({
             if (!self.data.loginAgain) {
               const reg = /^[A-Za-z0-9-]+_\d+$/
               if (self.data.shareScene && reg.test(self.data.shareScene)) {
-                wx.redirectTo({ url: '../activities/share/share?code=' + self.data.shareScene })
+                self.updateShareLog(self.data.shareScene)
+                // wx.redirectTo({ url: '../activities/share/share?code=' + self.data.shareScene })
+                wx.switchTab({ url: '../index/index' })
               } else {
                 wx.switchTab({ url: '../index/index' })
               }
@@ -225,6 +227,42 @@ Page({
         .catch(function() {
           reject(false)
         })
+    })
+  },
+    // 首页也能发送接受邀请的请求
+  updateShareLog: function(share_id) {
+    let self = this
+    wx.request({
+      method: 'GET',
+      url: config.base_url + '/api/share/update?share_id=' + share_id,
+      header: { Authorization: 'Bearer ' + app.globalData.token },
+      success: res => {
+        if (res.data.ok) {
+          wx.showToast({ title: '获得15书币的奖励', icon: 'success' })
+          setTimeout(function() {
+            wx.hideToast()
+          }, 2000)
+          self.flushAward()
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../../loading/loading?need_login_again=1'
+          })
+        } else {
+          utils.debug('调用接口失败--/api/share/update' + JSON.stringify(res))
+          if (res.data.inviteself) {
+            return false
+          }
+          self.showToast( res.data.msg || '接收邀请失败', 'bottom')
+        }
+      },
+      fail: err => {
+        utils.debug('调用接口失败--/api/share/update' + JSON.stringify(err))
+        self.showToast('接收邀请失败', 'bottom')
+        // 自动重新尝试
+        setTimeout(function() {
+          self.updateShareLog(share_id)
+        }, 2000)
+      }
     })
   },
   // 重新授权之后执行

@@ -108,7 +108,10 @@ Page({
           })
         } else {
           utils.debug('调用接口失败--/api/share/update' + JSON.stringify(res))
-          self.showToast('接收邀请失败', 'bottom')
+          if (res.data.inviteself) {
+            return false
+          }
+          self.showToast( res.data.msg || '接收邀请失败', 'bottom')
         }
       },
       fail: err => {
