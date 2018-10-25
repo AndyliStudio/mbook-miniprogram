@@ -55,6 +55,10 @@
       </view>
     </view>
   </view>
+  <!-- 广告模块 -->
+  <view class="bottom">
+    <ad  unit-id="adunit-016adb84b1e83807"></ad>
+  </view>
   <!-- 分享面板 -->
   <view class="share-panel" wx:if="{{showSharePanel}}">
     <view class="modal" bindtap="closeSharePanel"></view>

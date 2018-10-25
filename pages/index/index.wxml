@@ -12,6 +12,12 @@
         </navigator>
       </swiper-item>
     </block>
+    <!-- banner广告位 -->
+    <block>
+      <swiper-item>
+        <ad unit-id="adunit-1125e761df261844"></ad>      
+      </swiper-item>    
+    </block>
   </swiper>
   <view class="nav">
     <navigator url="/pages/invite/invite?fhcode=BJA2r7Iim">
