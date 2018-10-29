@@ -26,6 +26,7 @@ Page({
     }
     // 当前页面不予许分享
     wx.hideShareMenu()
+    utils.debug('asdasdas')
   },
   // 微信登录函数
   wxLogin: function() {

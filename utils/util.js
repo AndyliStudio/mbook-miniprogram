@@ -1,10 +1,10 @@
-const fundebug = require('./fundebug.0.6.1.min.js')
-fundebug.init({
-  apikey: '7607e80084ba331e7f1a7afbe7416f9c05fcc8599bc845a46a400f4588d1f487',
-  silent: false, // 开发阶段选择安静模式不发送错误警告
-  setUserInfo: true,
-  setSystemInfo: true
-})
+const Raven = require('./raven.min.js')
+Raven.config('https://542d0e319d474f619ec53c9b24b9f978@sentry.io/1311196', {
+  release: 'v1.11.0',
+  environment: 'production', // 指定为production才会上报
+  allowDuplicates: true, // 允许相同错误重复上报
+  sampleRate: 0.5 // 采样率
+}).install()
 /**
  * 格式化日期，转变成'2017/11/19 00:00:00'
  */
@@ -84,10 +84,10 @@ const formatNumber = n => {
 }
 
 /*
- * 微信小程序调试函数
+ * 微信小程序错误上报函数
  */
 const debug = message => {
-  fundebug.notifyError(message)
+  Raven.captureException(message, { level: 'error' })
 }
 
 /**
