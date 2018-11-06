@@ -7,6 +7,7 @@ Component({
   },
   attached: function() {
     let showFixedBtn = false
+    let imgUrl = ''
     let setting = app.globalData.globalSetting.fixed_button
     if (setting && setting.show === 'true') {
       if (setting.only_index === 'true') {
@@ -16,10 +17,11 @@ Component({
       } else {
         showFixedBtn = true
       }
+      imgUrl = setting.img || ''
     }
     this.setData({
       showFixedBtn: showFixedBtn,
-      imgUrl: app.globalData.globalSetting.fixed_button.img
+      imgUrl: imgUrl
     })
   },
   methods: {
@@ -29,6 +31,8 @@ Component({
       if (!setting || setting.show !== 'true') {
         return false
       }
+      // 自定义微信统计事件--click_fixed_button
+      wx.reportAnalytics('click_fixed_button', { time: +new Date() })
       if (setting.function === 'gotoH5Page') {
         wx.navigateTo({ url: '/pages/webpage/webpage?url=' + setting.url })
       } else if (setting.function === 'gotoXcxPage') {

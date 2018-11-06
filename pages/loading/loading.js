@@ -139,7 +139,6 @@ Page({
                 // 将token存入缓存，在每次发送需要认证的请求时在header里带上token
                 app.globalData.token = res.data.token // 登录token
                 app.globalData.userInfo = res.data.userinfo // 用户详情
-                app.globalData.allbooks = res.data.allbooks // 用户书籍列表
                 app.globalData.shareInfo = res.data.shareInfo // 用户分享信息
                 app.globalData.awardRecords = res.data.award_records.reverse() // 分享奖励
                 for (let i in res.data.globalSetting) {
@@ -198,7 +197,6 @@ Page({
                 if (res.data.ok) {
                   app.globalData.token = res.data.token // 登录token
                   app.globalData.userInfo = res.data.userinfo // 用户详情
-                  app.globalData.allbooks = res.data.allbooks // 用户书籍列表
                   app.globalData.shareInfo = res.data.shareInfo // 用户分享信息
                   app.globalData.awardRecords = res.data.award_records.reverse() // 分享奖励
                   for (let i in res.data.globalSetting) {
@@ -251,10 +249,9 @@ Page({
           })
         } else {
           utils.debug('调用接口失败--/api/share/update' + JSON.stringify(res))
-          if (res.data.inviteself) {
-            return false
+          if (!res.data.inviteself) {
+            self.showToast(res.data.msg || '接收邀请失败', 'bottom')
           }
-          self.showToast(res.data.msg || '接收邀请失败', 'bottom')
         }
         setTimeout(function() {
           wx.switchTab({ url: '../index/index' })
