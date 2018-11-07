@@ -34,7 +34,8 @@ Page({
     currentCommentValue: '',
     secretTips: '',
     hasUnLock: false, // 用户是否已经解锁过改章节
-    shutChargeTips: false // 是否屏蔽充值提示
+    shutChargeTips: false, // 是否屏蔽充值提示
+    showIndexBtn: '' // 是否展示返回首页按钮
   },
   onLoad: function(options) {
     // 隐藏分享按钮
@@ -46,6 +47,7 @@ Page({
     this.getCommentList(options.id)
     this.setData({
       bookid: options.id,
+      showIndexBtn: options.indexbtn === '1',
       wxcode: app.globalData.globalSetting.wxcode || 'haitianyise_hl',
       secretTips: secretTips,
       shutChargeTips: app.globalData.globalSetting.shut_charge_tips || false
@@ -385,6 +387,11 @@ Page({
     const formId = event.detail.formId
     app.reportFormId(formId)
     wx.navigateTo({ url: '../reader/reader?bookid=' + this.data.bookid })
+  },
+  gotoIndex: function() {
+    wx.switchTab({
+      url: '/pages/index/index'
+    })
   },
   showToast: function(content, position) {
     let self = this

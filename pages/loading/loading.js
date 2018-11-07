@@ -98,7 +98,7 @@ Page({
                 wx.redirectTo({ url: '../invite/invite?fhcode=' + self.data.params.fhcode })
               } else if (self.data.params && self.data.params.bookid) {
                 // 跳转书籍详情页
-                wx.redirectTo({ url: '../bookdetail/bookdetail?id=' + self.data.params.bookid })
+                wx.redirectTo({ url: '../bookdetail/bookdetail?id=' + self.data.params.bookid + '&indexbtn=1' })
               } else if (self.data.params && self.data.params.goto) {
                 // 跳转其他页面
                 if (self.data.params.goto === 'share') {

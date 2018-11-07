@@ -41,28 +41,24 @@
           <text>立即阅读</text>
         </button>
       </form>
-      <!-- <view class="read" bindtap="goToReader">
-        <view class="iconfont icon-yuedu"></view>
-        <text>立即阅读</text>
-      </view> -->
-      <block wx:if="{{!shutChargeTips}}">
+      <!-- 解锁按钮 -->
+      <block wx:if="{{!shutChargeTips && !showIndexBtn}}">
         <view class="addToList" wx:if="{{goodInfo !== '全书免费' && !hasUnLock}}" bindtap="openSecret">
           <view class="inner-btn">
             <text class="iconfont icon-xihuan"></text>
             <text>我是粉丝</text>
           </view>
-          <!-- <view class="true" hidden="{{isInList}}">
-            <view class="iconfont icon-add"></view>
-            <text>加入书架</text>
-          </view>
-          <view class="false" hidden="{{!isInList}}">
-            <view type="success_no_circle" color="#ffffff" size="20"></view>
-            <text>从书架中移除</text>
-          </view> -->
         </view>
         <view class="addToList" wx:if="{{goodInfo !== '全书免费' && hasUnLock}}">
           <view class="iconfont icon-rightline"></view>
           <text>已解锁</text>
+        </view>
+      </block>
+      <!-- 返回首页按钮 -->
+      <block wx:if="{{showIndexBtn}}">
+        <view class="addToList" bindtap="gotoIndex">
+          <view class="iconfont icon-shouye"></view>
+          <text>返回首页</text>
         </view>
       </block>
     </view>
