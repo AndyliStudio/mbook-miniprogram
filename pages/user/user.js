@@ -1,5 +1,6 @@
 // pages/user/user.js
 const config = require('../../config')
+const utils = require('../../utils/util')
 const app = getApp()
 
 Page({
@@ -36,10 +37,12 @@ Page({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
+          utils.debug('获取个人信息失败', res)
           self.showToast('获取个人信息失败', 'bottom')
         }
       },
       fail: err => {
+        utils.debug('获取个人信息失败', err)
         self.showToast('获取个人信息失败', 'bottom')
       }
     })

@@ -28,10 +28,12 @@ Page({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
+          utils.debug('获取我的书单失败', res)
           self.showToast('获取我的书单失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
       },
       fail: err => {
+        utils.debug('获取我的书单失败', err)
         self.showToast('获取我的书单失败', 'bottom')
       }
     })
@@ -77,10 +79,12 @@ Page({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
+          utils.debug('从书架中移除失败', res)
           self.showToast(res.data.msg || '从书架中移除失败，请重新尝试~', 'bottom')
         }
       },
       fail: function(err) {
+        utils.debug('从书架中移除失败', err)
         self.showToast('从书架中移除失败，请重新尝试~', 'bottom')
       }
     })

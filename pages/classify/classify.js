@@ -1,5 +1,6 @@
 // classify.js
 const config = require('../../config')
+const utils = require('../../utils/util')
 
 Page({
   data: {
@@ -47,14 +48,14 @@ Page({
             self.setData({ classifyData: res.data.list, total: res.data.total })
           }
         } else {
-          if (res.data.msg) {
-            self.showToast(res.data.msg, 'bottom')
-          }
+          utils.debug('获取书籍分类失败', res)
+          self.showToast('获取书籍分类失败' + res.data.msg ? '，' + res.data.msg : '', 'bottom')
         }
       },
       error: function(err) {
         setTimeout(function() {
           wx.hideToast()
+          utils.debug('获取书籍分类失败', err)
           self.showToast('获取分类数据失败~', 'bottom')
         }, 500)
       }

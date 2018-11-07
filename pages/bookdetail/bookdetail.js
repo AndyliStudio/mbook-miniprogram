@@ -99,10 +99,12 @@ Page({
               url: '../loading/loading?need_login_again=1'
             })
           } else {
+            utils.debug('获取书籍信息失败', res)
             self.showToast('获取书籍信息失败~', 'bottom')
           }
         },
         fail: function(err) {
+          utils.debug('获取书籍信息失败', err)
           self.showToast('获取书籍信息失败~', 'bottom')
         }
       })
@@ -128,10 +130,12 @@ Page({
               url: '../loading/loading?need_login_again=1'
             })
           } else {
+            utils.debug('获取评论失败', res)
             self.showToast(res.data.msg || '获取评论失败~', 'bottom')
           }
         },
         fail: err => {
+          utils.debug('获取评论失败', err)
           self.showToast('获取评论失败~', 'bottom')
         }
       })
@@ -208,10 +212,12 @@ Page({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
+          utils.debug('解锁失败', res)
           self.showToast('解锁失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
       },
       fail: err => {
+        utils.debug('解锁失败', err)
         self.showToast('解锁失败，请重试', 'bottom')
       }
     })
@@ -249,10 +255,12 @@ Page({
               url: '../loading/loading?need_login_again=1'
             })
           } else {
+            utils.debug('从书架中移除失败', res)
             self.showToast(res.data.msg || '从书架中移除失败，请重新尝试~', 'bottom')
           }
         },
         fail: function(err) {
+          utils.debug('从书架中移除失败', err)
           self.showToast('从书架中移除失败，请重新尝试~', 'bottom')
         }
       })
@@ -271,10 +279,12 @@ Page({
               url: '../loading/loading?need_login_again=1'
             })
           } else {
+            utils.debug('加入书架失败', res)
             self.showToast(res.data.msg || '加入书架失败，请重新尝试~', 'bottom')
           }
         },
         fail: function(err) {
+          utils.debug('加入书架失败', err)
           self.showToast('加入书架失败，请重新尝试~', 'bottom')
         }
       })
@@ -297,10 +307,12 @@ Page({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
+          utils.debug('点赞失败', res)
           self.showToast(res.data.msg || '点赞失败~', 'bottom')
         }
       },
       fail: err => {
+        utils.debug('点赞失败', err)
         self.showToast(res.data.msg || '点赞失败~', 'bottom')
       }
     })
@@ -358,10 +370,12 @@ Page({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
+          utils.debug('发布书评失败', res)
           self.showToast(res.data.msg || '发布书评失败~', 'bottom')
         }
       },
       fail: err => {
+        utils.debug('发布书评失败', err)
         self.showToast('发布书评失败~', 'bottom')
       }
     })

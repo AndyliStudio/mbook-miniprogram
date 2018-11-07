@@ -26,7 +26,6 @@ Page({
     }
     // 当前页面不予许分享
     wx.hideShareMenu()
-    utils.debug('asdasdas')
   },
   // 微信登录函数
   wxLogin: function() {
@@ -38,13 +37,13 @@ Page({
           if (res.code) {
             resolve(res.code)
           } else {
-            utils.debug('调用wx.login失败，' + JSON.stringify(res))
+            utils.debug('调用wx.login失败', res)
             self.setData({ buttonType: 'reLogin' })
             reject(false)
           }
         },
         fail: function(err) {
-          utils.debug('调用wx.login失败，' + JSON.stringify(err))
+          utils.debug('调用wx.login失败', err)
           self.setData({ buttonType: 'reLogin' })
           reject(false)
         }
@@ -60,13 +59,13 @@ Page({
           if (res.userInfo) {
             resolve(res.userInfo)
           } else {
-            utils.debug('调用wx.getUserInfo失败，' + JSON.stringify(res))
+            utils.debug('调用wx.getUserInfo失败', res)
             self.setData({ buttonType: 'getUserInfo' })
             reject(false)
           }
         },
         fail: function(err) {
-          utils.debug('调用wx.getUserInfo失败，' + JSON.stringify(err))
+          utils.debug('调用wx.getUserInfo失败', err)
           self.setData({ buttonType: 'getUserInfo' })
           reject(false)
         }
@@ -110,11 +109,12 @@ Page({
             }
           }
         } else {
-          utils.debug('获取全局变量格式错误，' + JSON.stringify(app.globalData))
+          utils.debug('获取全局变量格式错误', app.globalData)
           self.setData({ buttonType: 'reLogin', text: '', success: false })
         }
       })
-      .catch(function() {
+      .catch(function(err) {
+        utils.debug('登录失败', err)
         self.setData({ loading: false, text: '', success: false })
       })
   },
@@ -158,14 +158,14 @@ Page({
                     reject(false)
                   })
               } else {
-                utils.debug('调用接口失败--/api/user/login，' + JSON.stringify(res))
+                utils.debug('登录失败', res)
                 self.showToast('登录失败，请检查您的网络', 'bottom')
                 self.setData({ buttonType: 'reLogin' })
                 reject(false)
               }
             },
             fail: function(err) {
-              utils.debug('调用接口失败--/api/user/login，' + JSON.stringify(err))
+              utils.debug('登录失败', err)
               self.showToast('登录失败，请检查你的网络', 'bottom')
               self.setData({ buttonType: 'reLogin' })
               reject(false)
@@ -204,14 +204,14 @@ Page({
                   self.setData({ text: '遇见你，真高兴~' })
                   resolve(true)
                 } else {
-                  utils.debug('调用接口失败--/api/user/registe，' + JSON.stringify(res))
+                  utils.debug('注册失败', res)
                   self.showToast('注册失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
                   self.setData({ buttonType: 'reLogin' })
                   reject(false)
                 }
               },
               fail: function(err) {
-                utils.debug('调用接口失败--/api/user/registe，' + JSON.stringify(err))
+                utils.debug('注册失败', err)
                 self.showToast('注册失败', 'bottom')
                 self.setData({ buttonType: 'reLogin' })
                 reject(false)
@@ -243,7 +243,7 @@ Page({
             url: '../../loading/loading?need_login_again=1'
           })
         } else {
-          utils.debug('调用接口失败--/api/share/update' + JSON.stringify(res))
+          utils.debug('接受邀请失败', res)
           if (!res.data.inviteself) {
             self.showToast(res.data.msg || '接收邀请失败', 'bottom')
           }
@@ -253,10 +253,8 @@ Page({
         }, 1000)
       },
       fail: err => {
-        utils.debug('调用接口失败--/api/share/update' + JSON.stringify(err))
+        utils.debug('接受邀请失败', err)
         self.showToast('接收邀请失败', 'bottom')
-        wx.switchTab({ url: '../index/index' })
-        // 自动重新尝试
         setTimeout(function() {
           wx.switchTab({ url: '../index/index' })
         }, 1000)

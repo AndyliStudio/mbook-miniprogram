@@ -1,5 +1,6 @@
 //attendance.js
 const config = require('../../config')
+const utils = require('../../utils/util')
 const app = getApp()
 let choose_year = null
 let choose_month = null
@@ -186,10 +187,12 @@ Page({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
-          self.showToast('获取签到记录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
+          utils.debug('签到失败', res)
+          self.showToast('签到失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
       },
       fail: err => {
+        utils.debug('签到失败', err)
         self.showToast('获取签到记录失败', 'bottom')
       }
     })
@@ -219,10 +222,12 @@ Page({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
+          utils.debug('获取签到记录失败', res)
           self.showToast('获取签到记录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
       },
       fail: err => {
+        utils.debug('获取签到记录失败', err)
         self.showToast('获取签到记录失败', 'bottom')
       }
     })

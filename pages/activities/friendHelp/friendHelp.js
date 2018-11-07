@@ -115,11 +115,13 @@ Page({
             self.showToast('获取分享参数失败', 'bottom')
           }
         } else {
+          utils.debug('获取助力参数失败', res)
           self.showToast('获取分享参数失败', 'bottom')
         }
       },
-      fail: function(error) {
-        console.warn(error)
+      fail: function(err) {
+        console.warn(err)
+        utils.debug('获取助力参数失败', err)
         self.showToast('获取分享参数失败', 'bottom')
         reject(false)
       }
@@ -141,12 +143,12 @@ Page({
           })
         } else {
           self.setData({ loading: false, loadFail: true })
-          utils.debug('调用接口失败--/api/friend_help_book/list' + JSON.stringify(res))
+          utils.debug('获取助力书籍失败', res)
         }
       },
       fail: err => {
         self.setData({ loading: false, loadFail: true })
-        utils.debug('调用接口失败--/api/friend_help_book/list' + JSON.stringify(err))
+        utils.debug('获取助力书籍失败', err)
       }
     })
   },
@@ -165,6 +167,7 @@ Page({
       url: config.base_url + '/api/friend_help_book/list?page=' + self.data.page + '&limit=' + self.data.limit,
       header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
+        wx.hideLoading()
         if (res.data.ok) {
           self.setData({ lists: self.data.lists.concat(res.data.list) })
         } else if (res.data.authfail) {
@@ -173,14 +176,13 @@ Page({
           })
         } else {
           self.showToast('获取助力书籍失败', 'bottom')
-          utils.debug('调用接口失败--/api/friend_help_book/list' + JSON.stringify(res))
+          utils.debug('获取助力书籍失败', res)
         }
-        wx.hideLoading()
       },
       fail: err => {
-        self.showToast('获取助力书籍失败', 'bottom')
         wx.hideLoading()
-        utils.debug('调用接口失败--/api/friend_help_book/list' + JSON.stringify(err))
+        self.showToast('获取助力书籍失败', 'bottom')
+        utils.debug('获取助力书籍失败', err)
       }
     })
   },

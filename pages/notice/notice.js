@@ -64,10 +64,12 @@ Page({
               url: '../loading/loading?need_login_again=1'
             })
           } else {
+            utils.debug('获取评论失败', res)
             self.showToast('获取评论失败', 'bottom')
           }
         },
         fail: err => {
+          utils.debug('获取评论失败', err)
           self.showToast('获取评论失败', 'bottom')
         }
       })

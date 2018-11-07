@@ -86,8 +86,9 @@ const formatNumber = n => {
 /*
  * 微信小程序错误上报函数
  */
-const debug = message => {
-  Raven.captureException(message, { level: 'error' })
+const debug = (name = '小程序错误', message = {}) => {
+  Raven.setExtraContext({ message })
+  Raven.captureException(name, { level: 'error' })
 }
 
 /**

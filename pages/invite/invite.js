@@ -1,5 +1,6 @@
 // pages/user/user.js
 const config = require('../../config')
+const utils = require('../../utils/util')
 const app = getApp()
 
 Page({
@@ -87,11 +88,13 @@ Page({
           }
           self.setData({ info: res.data.data })
         } else {
+          utils.debug('获取好友助力信息失败', res)
           self.showToast('获取好友助力信息失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
       },
       fail: function(err) {
         console.warn(err)
+        utils.debug('获取好友助力信息失败', err)
         self.showToast('获取好友助力信息失败', 'bottom')
       }
     })
@@ -125,12 +128,14 @@ Page({
           self.setData({ records: res.data.lists, recordLoading: false, showRecords: true })
         } else {
           self.setData({ recordLoading: false, showRecords: false })
+          utils.debug('获取好友助力信息失败', res)
           self.showToast('获取好友助力记录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
       },
       fail: function(err) {
         console.warn(err)
         self.setData({ recordLoading: false, showRecords: false })
+        utils.debug('获取好友助力信息失败', err)
         self.showToast('获取好友助力记录失败', 'bottom')
       }
     })
@@ -154,11 +159,13 @@ Page({
           self.getFriendHelpInfo()
           wx.showToast({ title: '助力成功', icon: 'success' })
         } else {
+          utils.debug('助力失败', res)
           self.showToast('助力失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
       },
       fail: function(err) {
         console.warn(err)
+        utils.debug('助力失败', err)
         self.showToast('助力失败', 'bottom')
       }
     })

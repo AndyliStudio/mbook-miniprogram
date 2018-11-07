@@ -1,5 +1,5 @@
-var util = require('../../utils/util.js')
 const config = require('../../config')
+const utils = require('../../utils/util')
 
 var app = getApp()
 Page({
@@ -119,6 +119,7 @@ Page({
             })
           })
         } else {
+          utils.debug('搜索书籍失败', res)
           self.showToast('搜索书籍失败', 'bottom')
         }
         // 写入搜索历史
@@ -127,6 +128,10 @@ Page({
           oldHistory.push(self.data.keyword.trim())
           wx.setStorageSync('history_keyword', oldHistory)
         }
+      },
+      fail: function(err) {
+        utils.debug('搜索书籍失败', err)
+        self.showToast('搜索书籍失败', 'bottom')
       }
     })
   },

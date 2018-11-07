@@ -114,7 +114,7 @@ Page({
       })
       .catch(err => {
         self.setData({ is_show_banner: false })
-        utils.debug('调用接口失败--/api/banner/list', JSON.stringify(err))
+        utils.debug('获取banner失败', err)
         // 自动重新尝试
         setTimeout(function() {
           self.getBanner()
@@ -151,7 +151,7 @@ Page({
         })
       })
       .catch(err => {
-        utils.debug('获取栏目信息失败', JSON.stringify(err))
+        utils.debug('获取栏目信息失败', err)
         setTimeout(function() {
           self.getTheme()
         }, 1000)
@@ -184,10 +184,12 @@ Page({
             }
           } else {
             // 隐藏banner
+            utils.debug('更新栏目失败', res)
             self.showToast('更新栏目失败', 'bottom')
           }
         },
         fail: function(err) {
+          utils.debug('更新栏目失败', err)
           self.showToast('更新栏目失败', 'bottom')
         }
       })

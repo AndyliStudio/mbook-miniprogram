@@ -134,6 +134,7 @@ Page({
         timingFunc: 'easeIn'
       },
       fail: function() {
+        utils.debug('设置背景色失败', {})
         self.showToast('设置背景色失败', 'bottom')
       }
     })
@@ -363,11 +364,13 @@ Page({
           self.setData({ loading: false, loadFail: true })
         } else {
           self.setData({ loading: false, loadFail: true })
+          utils.debug('获取章节内容失败', res)
           self.showToast('获取章节内容失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
       },
-      fail(e) {
+      fail(err) {
         self.setData({ loading: false, loadFail: true })
+        utils.debug('获取章节内容失败', err)
         self.showToast('获取章节内容失败', 'bottom')
       }
     })
@@ -602,10 +605,12 @@ Page({
               }
             })
           } else {
+            utils.debug('获取目录失败', res)
             self.showToast('获取目录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
           }
         },
         fail: err => {
+          utils.debug('获取目录失败', err)
           self.showToast('获取目录失败', 'bottom')
         }
       })
@@ -634,13 +639,13 @@ Page({
               currentMuluPage: self.data.currentMuluPage + 1
             })
           } else {
+            utils.debug('获取目录失败', res)
             self.showToast('获取目录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
           }
-          // wx.hideToast()
         },
         fail: err => {
+          utils.debug('获取目录失败', err)
           self.showToast('获取目录失败', 'bottom')
-          // wx.hideToast()
         }
       })
     }
@@ -708,11 +713,13 @@ Page({
           self.setData({ loading: false, loadFail: true })
         } else {
           self.setData({ loading: false, loadFail: true })
+          utils.debug('获取章节内容失败', res)
           self.showToast('获取章节内容失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
       },
       fail(e) {
         self.setData({ loading: false, loadFail: true })
+        utils.debug('获取章节内容失败', err)
         self.showToast('获取章节内容失败', 'bottom')
       }
     })
@@ -801,13 +808,15 @@ Page({
           }
           self.setData({ loading: false, loadFail: true })
         } else {
-          self.setData({ loading: false, loadFail: true })
-          self.showToast('获取章节内容失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
           // 展示无数据按钮
+          self.setData({ loading: false, loadFail: true })
+          utils.debug('获取章节内容失败', res)
+          self.showToast('获取章节内容失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
       },
       fail: err => {
         self.setData({ loading: false, loadFail: true })
+        utils.debug('获取章节内容失败', err)
         self.showToast('获取章节内容失败', 'bottom')
       }
     })
@@ -840,8 +849,13 @@ Page({
               })
             }
           } else {
+            utils.debug('更新阅读进度失败', res)
             self.showToast('更新阅读进度失败', 'bottom')
           }
+        },
+        fail: err => {
+          utils.debug('更新阅读进度失败', err)
+          self.showToast('更新阅读进度失败', 'bottom')
         }
       })
     }
@@ -865,10 +879,12 @@ Page({
         if (res.data.ok) {
           self.setData({ allSectionData: res.data.data.chapters })
         } else {
+          utils.debug('未找到相应章节', res)
           self.showToast('未找到相应章节' + (res.data.msg ? '，' + res.data.msg : ''), 'center')
         }
       },
       fail: err => {
+        utils.debug('未找到相应章节', err)
         self.showToast('未找到相应章节', 'center')
       }
     })
@@ -949,6 +965,7 @@ Page({
         if (!isLoadCallback) {
           self.setData({ loadFail: true })
         }
+        utils.debug('加载上一章失败', res)
         self.showToast('加载上一章失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
       }
     }
@@ -970,8 +987,9 @@ Page({
           callback(res)
           self.setData({ loading: false })
         },
-        fail(e) {
+        fail(err) {
           self.setData({ loading: false, loadFail: true })
+          utils.debug('加载上一章失败', err)
           self.showToast('加载上一章失败，', 'bottom')
         }
       })
@@ -1053,6 +1071,7 @@ Page({
         if (!isLoadCallback) {
           self.setData({ loadFail: true })
         }
+        utils.debug('加载下一章失败', res)
         self.showToast('加载下一章失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
       }
     }
@@ -1073,8 +1092,9 @@ Page({
           callback(res)
           self.setData({ loading: false })
         },
-        fail(e) {
+        fail(err) {
           self.setData({ loading: false, loadFail: true })
+          utils.debug('加载下一章失败', err)
           self.showToast('加载下一章失败', 'bottom')
         }
       })
@@ -1141,11 +1161,13 @@ Page({
               }
             })
           } else {
+            utils.debug('购买失败', res)
             self.showToast('购买失败' + (res.data.msg ? '，' + res.data.msg : ''), 'center')
           }
         }
       },
       fail: err => {
+        utils.debug('购买失败', err)
         self.showToast('购买失败', 'center')
       }
     })
@@ -1224,10 +1246,12 @@ Page({
             })
           }
         } else {
+          utils.debug('解锁失败', res)
           self.showToast('解锁失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
       },
       fail: err => {
+        utils.debug('解锁失败', err)
         self.showToast('解锁失败，请重试', 'bottom')
       }
     })
