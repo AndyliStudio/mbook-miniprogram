@@ -17,7 +17,7 @@ Page({
     // 获取屏幕高度
     this.setData({
       userInfo: app.globalData.userInfo,
-      shutChargeTips: app.globalData.globalSetting.shut_charge_tips
+      shutChargeTips: app.globalData.globalSetting.shut_charge_tips || false
     })
     // 当前页面不予许分享
     wx.hideShareMenu()

@@ -31,7 +31,7 @@ Page({
   },
   onLoad: function() {
     let self = this
-    self.setData({ shutChargeTips: app.globalData.globalSetting.shut_charge_tips })
+    self.setData({ shutChargeTips: app.globalData.globalSetting.shut_charge_tips || false })
     // 获取banner和栏目信息，使用promise来控制两个请求的同步
     let bannerP = self.getBanner()
     let themeP = self.getTheme()
@@ -72,8 +72,7 @@ Page({
     let self = this
     // 获取分享出去的图片地址
     const shareParams = app.globalData.globalSetting.share
-    const now = new Date()
-    const code = app.globalData.shareCode + '|' + now.getTime()
+    const code = app.globalData.shareCode + '|' + Date.now()
     if (shareParams && app.globalData.shareCode) {
       return {
         title: shareParams.title,

@@ -30,53 +30,16 @@ Page({
       totalInviteNum: 0
     },
     awardRecords: [],
+    allAwardRecords: [],
     code: '', // 邀请码
     wxcode: '', // 邀请二维码
-    records: [
-      {
-        name: '月光倾城',
-        type: '接收邀请',
-        time: '2018/07/17'
-      },
-      {
-        name: '月光倾城',
-        type: '接收邀请',
-        time: '2018/07/17'
-      },
-      {
-        name: '月光倾城',
-        type: '接收邀请',
-        time: '2018/07/17'
-      },
-      {
-        name: '月光倾城',
-        type: '接收邀请',
-        time: '2018/07/17'
-      }
-    ], // 邀请记录
     hasMore: true,
     page: 1,
     showSharePanel: '' // 是否展示分享面板
   },
   onShow: function() {
-    let self = this
-    // 拿到的用户分享信息
-    let records = []
-    if (app.globalData.awardRecords && app.globalData.awardRecords instanceof Array) {
-      records = app.globalData.awardRecords.slice((self.data.page - 1) * 5, self.data.page * 5)
-    }
-    self.setData({ shareInfo: app.globalData.shareInfo, awardRecords: records })
-    // 如果url中存在code并且code符合规范，调用更新分享记录的接口
-    const reg = /^[A-Za-z0-9-_]+\|\d+$/
-    if (self.data.code && reg.test(self.data.code)) {
-      self.updateShareLog(self.data.code)
-    }
-    // 判断是否需要刷新奖励信息
-    if (app.globalData.loadedShare) {
-      self.flushAward()
-    } else {
-      app.globalData.loadedShare = true
-    }
+    // 请求用户分享数据
+    this.getUserShareInfo(true)
   },
   onLoad: function(options) {
     this.setData({
@@ -101,7 +64,22 @@ Page({
           setTimeout(function() {
             wx.hideToast()
           }, 2000)
-          self.flushAward()
+          // 修改奖励数量
+          let today = new Date()
+          let year = today.getFullYear()
+          let month = today.getMonth + 1
+          month = month > 9 ? month : '0' + month
+          let day = today.getDate()
+          day = day > 9 ? day : '0' + day
+          self.setData({
+            'shareInfo.todayAwardNum': self.data.shareInfo.todayAwardNum + 15,
+            'shareInfo.totalAwardNum': self.data.shareInfo.totalAwardNum + 15,
+            awardRecords: self.data.awardRecords.unshift({
+              name: app.globalData.userinfo.username,
+              type: '接收邀请',
+              time: year + '/' + month + '/' + day
+            })
+          })
         } else if (res.data.authfail) {
           wx.navigateTo({
             url: '../../loading/loading?need_login_again=1'
@@ -124,22 +102,32 @@ Page({
       }
     })
   },
-  flushAward: function() {
+  // 获取分享配置、奖励信息、以及分享码
+  getUserShareInfo: function() {
     let self = this
-    // 获取分享配置、奖励信息、以及分享码
+    wx.showLoading({ title: '数据加载中' })
     wx.request({
       method: 'GET',
       url: config.base_url + '/api/share/info',
       header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
+        wx.hideLoading()
         if (res.data.ok) {
-          app.globalData.shareInfo = res.data.shareInfo || {}
-          app.globalData.awardRecords = res.data.award_records || []
           let records = []
-          if (app.globalData.awardRecords && app.globalData.awardRecords instanceof Array) {
-            records = app.globalData.awardRecords.slice((self.data.page - 1) * 5, self.data.page * 5)
+          if (res.data.award_records && res.data.award_records instanceof Array) {
+            records = res.data.award_records.slice((self.data.page - 1) * 5, self.data.page * 5)
           }
-          self.setData({ shareInfo: app.globalData.shareInfo, awardRecords: records })
+          // 根据时间排序
+          records.sort((item1, item2) => {
+            let time1 = new Date(item1.time)
+            let time2 = new Date(item2.time)
+            return time2.getTime() - time1.getTime()
+          })
+          self.setData({
+            shareInfo: res.data.shareInfo,
+            allAwardRecords: res.data.award_records || [],
+            awardRecords: records
+          })
         } else if (res.data.authfail) {
           wx.navigateTo({
             url: '../../loading/loading?need_login_again=1'
@@ -150,12 +138,9 @@ Page({
         }
       },
       fail: err => {
+        wx.hideLoading()
         utils.debug('调用接口失败--/api/share/info：' + JSON.stringify(err))
         self.showToast('获取奖励信息失败', 'bottom')
-        // 自动重新尝试
-        setTimeout(function() {
-          self.flushAward()
-        }, 2000)
       }
     })
   },
@@ -163,12 +148,12 @@ Page({
   lookMore: function() {
     let self = this
     let page = self.data.page
-    if (page * 5 <= app.globalData.awardRecords.length) {
+    if (page * 5 <= self.data.allAwardRecords.length) {
       page++
       self.setData({
-        awardRecords: self.data.awardRecords.concat(app.globalData.awardRecords.slice((page - 1) * 5, page * 5)),
+        awardRecords: self.data.awardRecords.concat(self.data.allAwardRecords.slice((page - 1) * 5, page * 5)),
         page: page,
-        hasMore: page * 5 < app.globalData.awardRecords.length
+        hasMore: page * 5 < self.data.allAwardRecords.length
       })
     } else {
       self.setData({ hasMore: false })
@@ -179,8 +164,7 @@ Page({
     let self = this
     // 获取分享出去的图片地址
     const shareParams = app.globalData.globalSetting.share
-    const now = new Date()
-    const code = app.globalData.shareCode + '|' + now.getTime()
+    const code = app.globalData.shareCode + '|' + Date.now()
     console.log(app.globalData.shareCode, code)
     if (shareParams && app.globalData.shareCode) {
       return {
@@ -248,7 +232,6 @@ Page({
   },
   getWxCode: function() {
     let self = this
-    let now = new Date()
     if (app.globalData.shareCode) {
       if (self.data.wxcode) {
         self.setData({
@@ -271,7 +254,7 @@ Page({
       } else {
         wx.showLoading({ title: '正在生成二维码' })
         wx.request({
-          url: config.base_url + '/api/get_share_img?share_type=friendQ&share_id=' + app.globalData.shareCode + '|' + now.getTime(),
+          url: config.base_url + '/api/get_share_img?share_type=friendQ&share_id=' + app.globalData.shareCode + '|' + Date.now(),
           header: { Authorization: 'Bearer ' + app.globalData.token },
           success: res => {
             if (res.data.ok) {

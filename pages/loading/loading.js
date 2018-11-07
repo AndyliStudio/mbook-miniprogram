@@ -95,7 +95,6 @@ Page({
                 // wx.redirectTo({ url: '../activities/share/share?code=' + self.data.params.code })
                 // 不在跳转分享活动页面，直接在首页领奖
                 self.updateShareLog(self.data.params.code)
-                app.globalData.loadedShare = true
               } else if (self.data.params && self.data.params.fhcode && reg2.test(self.data.params.fhcode)) {
                 wx.redirectTo({ url: '../invite/invite?fhcode=' + self.data.params.fhcode })
               } else if (self.data.params && self.data.params.bookid) {
@@ -139,8 +138,6 @@ Page({
                 // 将token存入缓存，在每次发送需要认证的请求时在header里带上token
                 app.globalData.token = res.data.token // 登录token
                 app.globalData.userInfo = res.data.userinfo // 用户详情
-                app.globalData.shareInfo = res.data.shareInfo // 用户分享信息
-                app.globalData.awardRecords = res.data.award_records.reverse() // 分享奖励
                 for (let i in res.data.globalSetting) {
                   if (utils.isJsonString(res.data.globalSetting[i])) {
                     res.data.globalSetting[i] = JSON.parse(res.data.globalSetting[i])
@@ -197,8 +194,6 @@ Page({
                 if (res.data.ok) {
                   app.globalData.token = res.data.token // 登录token
                   app.globalData.userInfo = res.data.userinfo // 用户详情
-                  app.globalData.shareInfo = res.data.shareInfo // 用户分享信息
-                  app.globalData.awardRecords = res.data.award_records.reverse() // 分享奖励
                   for (let i in res.data.globalSetting) {
                     if (utils.isJsonString(res.data.globalSetting[i])) {
                       res.data.globalSetting[i] = JSON.parse(res.data.globalSetting[i])

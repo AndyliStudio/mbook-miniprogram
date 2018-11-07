@@ -109,9 +109,9 @@ Page({
     // 判断是否需要显示提示
     let showReaderTips = app.globalData.showReaderTips
     if (showReaderTips || showReaderTips === '') {
-      self.setData({ showReaderTips: false, shutChargeTips: app.globalData.globalSetting.shut_charge_tips })
+      self.setData({ showReaderTips: false, shutChargeTips: app.globalData.globalSetting.shut_charge_tips || false })
     } else {
-      self.setData({ showReaderTips: false, shutChargeTips: app.globalData.globalSetting.shut_charge_tips })
+      self.setData({ showReaderTips: false, shutChargeTips: app.globalData.globalSetting.shut_charge_tips || false })
     }
     //读取用户设置
     let localSetting = app.globalData.userInfo || {}
@@ -176,8 +176,7 @@ Page({
     let self = this
     // 获取分享出去的图片地址
     const shareParams = app.globalData.globalSetting.share
-    const now = new Date()
-    const code = app.globalData.shareCode + '|' + now.getTime()
+    const code = app.globalData.shareCode + '|' + Date.now()
     if (shareParams && app.globalData.shareCode) {
       return {
         title: shareParams.title,

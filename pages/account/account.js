@@ -40,7 +40,7 @@ Page({
     this.setData({
       wxcode: app.globalData.globalSetting.wxcode || 'haitianyise_hl',
       chargeTips: chargeTips,
-      shutChargeTips: app.globalData.globalSetting.shut_charge_tips
+      shutChargeTips: app.globalData.globalSetting.shut_charge_tips || false
     })
     // 当前页面不予许分享
     wx.hideShareMenu()

@@ -47,7 +47,7 @@ Page({
       bookid: options.id,
       wxcode: app.globalData.globalSetting.wxcode || 'haitianyise_hl',
       secretTips: secretTips,
-      shutChargeTips: app.globalData.globalSetting.shut_charge_tips
+      shutChargeTips: app.globalData.globalSetting.shut_charge_tips || false
     })
   },
   // 分享逻辑
