@@ -97,7 +97,15 @@ Page({
               } else if (self.data.params && self.data.params.fhcode && reg2.test(self.data.params.fhcode)) {
                 wx.redirectTo({ url: '../invite/invite?fhcode=' + self.data.params.fhcode })
               } else if (self.data.params && self.data.params.bookid) {
+                // 跳转书籍详情页
                 wx.redirectTo({ url: '../bookdetail/bookdetail?id=' + self.data.params.bookid })
+              } else if (self.data.params && self.data.params.goto) {
+                // 跳转其他页面
+                if (self.data.params.goto === 'share') {
+                  wx.redirectTo({ url: '../activities/share/share' })
+                } else {
+                  wx.switchTab({ url: '../index/index' })
+                }
               } else {
                 wx.switchTab({ url: '../index/index' })
               }

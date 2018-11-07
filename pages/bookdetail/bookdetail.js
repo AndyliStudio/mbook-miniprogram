@@ -1,5 +1,6 @@
 //bookdetail.js
 const config = require('../../config')
+const utils = require('../../utils/util')
 const app = getApp()
 
 Page({
