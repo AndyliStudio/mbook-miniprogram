@@ -48,7 +48,8 @@ Page({
       return
     }
     const formId = event.detail.formId
-    app.reportFormId(formId)
+    const bookId = event.target.dataset.bookid
+    app.reportFormId(formId, bookId)
     wx.navigateTo({ url: '../reader/reader?bookid=' + event.target.dataset.bookid })
   },
   bookLongClick: function() {

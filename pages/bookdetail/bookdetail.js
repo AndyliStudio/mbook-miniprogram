@@ -158,8 +158,8 @@ Page({
     this.setData({
       modal: {
         show: true,
-        name: 'secret',
-        title: '温馨提示',
+        name: 'input',
+        title: '请输入您的粉丝凭证',
         inputValue: '',
         opacity: 0.6,
         position: 'center',
@@ -183,7 +183,7 @@ Page({
   // 我已有秘钥
   hasSecret: function() {
     this.setData({
-      'modal.title': '请输入客服发送给您的凭证',
+      'modal.title': '请输入您的粉丝凭证',
       'modal.name': 'input'
     })
   },
@@ -385,7 +385,7 @@ Page({
   },
   goToReader: function(event) {
     const formId = event.detail.formId
-    app.reportFormId(formId)
+    app.reportFormId(formId, this.data.bookid)
     wx.navigateTo({ url: '../reader/reader?bookid=' + this.data.bookid })
   },
   gotoIndex: function() {

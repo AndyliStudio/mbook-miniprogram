@@ -13,7 +13,7 @@
     <button class="btn" bindtap="hasSecret">我已有凭证</button>
   </view>
 	<view wx:if="{{modal.name === 'input'}}">
-	  <input class="secret-input" type="text" bindinput="bindKeyInput" />
+	  <input class="secret-input" type="text" bindinput="bindKeyInput" placeholder="请输入粉丝凭证" />
     <button class="btn" bindtap="finishSecretInput">确认</button>
   </view>
 </modal>
@@ -56,7 +56,7 @@
 	<view class="buy" style="display: {{isShowBuy ? 'block' : 'none'}}">
 		<view class="buy-inner">
 			<button wx:if="{{!shutChargeTips}}" class="buy-btn" bindtap="buyChapter" style="color: {{colorStyle.button_font_color}}; background-color: {{colorStyle.button_bg}}">使用书币阅读本章</button>
-			<button class="buy-total" bindtap="buyTotal" style="color: {{colorStyle.button_font_color}}; background-color: {{colorStyle.button_bg}}">我是粉丝，免费阅读全书</button>
+			<button class="buy-total" bindtap="buyTotal" style="color: {{colorStyle.button_font_color}}; background-color: {{colorStyle.button_bg}}">我是粉丝，免费阅读</button>
 			<button class="share-btn" open-type="share" style="color: {{colorStyle.button_font_color}}; background-color: {{colorStyle.button_bg}}">邀请好友‧免费</button>
 			<button class="cancel-btn" bindtap="buyCancel" style="color: {{colorStyle.button_font_color}}; background-color: {{colorStyle.button_bg}}">取消</button>
 		</view>

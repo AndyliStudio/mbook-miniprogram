@@ -1177,9 +1177,9 @@ Page({
     this.setData({
       modal: {
         show: true,
-        name: 'secret',
+        name: 'input',
         inputValue: '',
-        title: '温馨提示',
+        title: '请输入您的粉丝凭证',
         opacity: 0.6,
         position: 'center',
         width: '80%',
