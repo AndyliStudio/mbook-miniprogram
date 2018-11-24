@@ -27,7 +27,9 @@
         <view class="day {{item.choosed ? 'foot-bg' : ''}} box box-align-center box-pack-around">{{item.day}}</view>
       </view>
     </view>
-    <button class="yaoyiyao" disabled="{{hasDone}}" bindtap="doAttendance">{{hasDone ? '已签到' : '立即签到'}}</button>
+    <form class="form" bindsubmit="doAttendance" report-submit='true'>
+      <button class="yaoyiyao" disabled="{{hasDone}}" form-type="submit">{{hasDone ? '已签到' : '立即签到'}}</button>
+    </form>
   </view>
 </view>
 <view class="rank">{{records.length > 0 ? '打败了' + present + '%的小伙伴，继续加油!' : '快去签到吧~'}}</view>

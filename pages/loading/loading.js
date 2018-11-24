@@ -107,7 +107,7 @@ Page({
                   wx.switchTab({ url: '../index/index' })
                 }
               } else {
-                wx.switchTab({ url: '../index/index' })
+                wx.redirectTo({ url: '../invite/invite?fhcode=LTgGPJ47M' })
               }
             } else {
               // 重新登录后返回上一页

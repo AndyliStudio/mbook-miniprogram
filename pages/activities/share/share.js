@@ -46,7 +46,8 @@ Page({
       code: options.code || ''
     })
   },
-  openSharePanel: function() {
+  openSharePanel: function(event) {
+    app.reportFormId('share', event.detail.formId)
     this.setData({ showSharePanel: true })
   },
   closeSharePanel: function() {

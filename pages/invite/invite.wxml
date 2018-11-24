@@ -1,3 +1,4 @@
+<toast toast="{{toast}}"></toast>
 <fixed-btn></fixed-btn>
 <view class="invite {{showRecords ? 'overflow' : ''}}">
   <view class="container">
@@ -49,7 +50,9 @@
     <!-- 任务状态 end -->
     <!-- 按钮组 start -->
     <view class="btn-wrap">
-      <view class="main-btn" bindtap="helpIt" wx:if="{{info.status === 3}}">助力</view>
+      <view class="main-btn" bindtap="helpIt" wx:if="{{info.status === 3 && !finishHelpIt}}">助力</view>
+      <button class="share-btn" open-type="share" wx:if="{{(info.status !== 3 && info.status !== 1) || finishHelpIt}}">{{isSelf === 4 ? '去分享' : '帮TA分享'}}</button>
+      <button class="share-btn" bindtap="gotoReader" wx:if="{{info.status === 1 && isSelf}}">去阅读</button>
       <view class="rank-list" bindtap="lookRecords" loading="{{recordLoading}}">助力动态</view>
       <view class="index-btn" bindtap="gotoIndex">返回首页</view>
     </view>

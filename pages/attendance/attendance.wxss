@@ -382,7 +382,12 @@ page {
   padding: 20rpx 0;
 }
 
+.form {
+  text-align: center;
+}
+
 .yaoyiyao {
+  display: inline-block;
   background: #4ecf6b;
   height: 64rpx;
   line-height: 64rpx;

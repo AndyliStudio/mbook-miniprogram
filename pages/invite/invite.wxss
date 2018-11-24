@@ -245,6 +245,27 @@
   background-color: #feb752;
 }
 
+.container .share-btn {
+  font-size: 30rpx;
+  font-weight: bold;
+  line-height: 72rpx;
+  display: block;
+  transition: all linear 0.1s;
+  -webkit-transition: all linear 0.1s;
+  border-radius: 8rpx;
+  width: 200rpx;
+  height: 72rpx;
+  margin: 0.06rem auto 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-align: center;
+  background-color: #ea474e;
+  color: #ffffff;
+  background-size: 100% 100%;
+}
+
 .container .main-btn {
   font-size: 30rpx;
   font-weight: bold;

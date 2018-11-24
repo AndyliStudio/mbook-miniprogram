@@ -17,7 +17,9 @@
       <view class="right">累计邀请人数:<text class="padding">{{shareInfo.totalInviteNum}}人</text></view>
     </view>
     <view class="operation">
-      <button class="share-btn" bindtap="openSharePanel">去分享</button>
+      <form class="share-btn" bindsubmit="openSharePanel" report-submit='true' >
+        <button class="inner-btn" form-type="submit">去分享</button>
+      </form>
       <button class="back-btn" bindtap="gotoIndex">回到首页</button>
     </view>
     <view class="rule">

@@ -167,7 +167,7 @@ Page({
 
     this.setData(o)
   },
-  doAttendance() {
+  doAttendance(event) {
     let self = this
     wx.request({
       method: 'GET',
@@ -196,6 +196,7 @@ Page({
         self.showToast('获取签到记录失败', 'bottom')
       }
     })
+    app.reportFormId('attendance', event.detail.formId)
   },
   getMyAttendance() {
     let self = this

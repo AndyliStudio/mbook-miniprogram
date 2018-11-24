@@ -13,6 +13,7 @@ Page({
       create_time: new Date(),
       left_time: '00 天 00 小时 00 分',
       book: {
+        id: '',
         need_num: 0,
         limit_time: 1,
         name: '',
@@ -26,6 +27,8 @@ Page({
     },
     recordLoading: false,
     showRecords: false,
+    finishHelpIt: false,
+    isSelf: false,
     records: [] // 好友助力记录
   },
   onLoad: function(options) {
@@ -74,8 +77,6 @@ Page({
           res.data.data.present = parseInt((res.data.data.has_finished * 100) / res.data.data.book.need_num) + '%'
           if (res.data.data.success) {
             res.data.data.status = 1
-          } else if (app.globalData.userInfo._id === res.data.data.userid) {
-            res.data.data.status = 4
           } else {
             let now = new Date()
             let limitTime = res.data.data.book.limit_time > 0 ? parseInt(res.data.data.book.limit_time) : 0
@@ -86,7 +87,11 @@ Page({
               res.data.data.status = 3
             }
           }
-          self.setData({ info: res.data.data })
+          let isSelf = false
+          if (app.globalData.userInfo._id === res.data.data.userid) {
+            isSelf = true
+          } 
+          self.setData({ info: res.data.data, isSelf: isSelf })
         } else {
           utils.debug('获取好友助力信息失败', res)
           self.showToast('获取好友助力信息失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
@@ -155,8 +160,10 @@ Page({
         fhcode: self.data.fhcode
       },
       success: function(res) {
+        console.log(res)
         if (res.data.ok) {
           self.getFriendHelpInfo()
+          self.setData({ finishHelpIt: true })
           wx.showToast({ title: '助力成功', icon: 'success' })
         } else {
           utils.debug('助力失败', res)
@@ -173,6 +180,11 @@ Page({
   gotoIndex: function() {
     wx.switchTab({
       url: '/pages/index/index'
+    })
+  },
+  gotoReader: function() {
+    wx.navigateTo({
+      url: '/pages/bookdetail/bookdetail?id=' + this.data.info.book.id
     })
   },
   showToast: function(content, position) {

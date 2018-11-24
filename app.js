@@ -44,11 +44,11 @@ App({
     }
   },
   // 前端向后端提交formId
-  reportFormId: function(formId, bookId) {
+  reportFormId: function(type, formId, bookId) {
     let self = this
     wx.request({
       method: 'GET',
-      url: config.base_url + '/api/upload_formid?formId=' + formId + '&bookId=' + bookId,
+      url: config.base_url + '/api/upload_formid?type=' + type + '&formId=' + formId + '&bookId=' + (bookId || ''),
       header: { Authorization: 'Bearer ' + self.globalData.token },
       success: function(res) {
         if (!res.data.ok) {
