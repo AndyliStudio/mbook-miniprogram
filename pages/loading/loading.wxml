@@ -2,7 +2,7 @@
 <toast toast="{{toast}}"></toast>
 <view class="load-page">
   <image class="app-logo" src="https://fs.andylistudio.com/mbook/v3/images/logo.png"></image>
-  <view class="app-name">掌阅书城</view>
+  <view class="app-name">美景阅读</view>
   <view class="status">
     <view class="status-item" wx:if="{{loading}}"><image class="loading" src="//fs.andylistudio.com/mbook/v3/images/loading.png"></image>登录中...</view>
     <view class="status-item" wx:if="{{success}}">{{text}}</view>
