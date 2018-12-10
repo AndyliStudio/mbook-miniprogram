@@ -71,9 +71,9 @@
   </view>
   <view class="splitor"></view>
   <view class="comments {{commentInputHide? '' : 'bottom'}}">
-    <view class="title">精彩评论
-      <text class="add-comment" id="write" bindtap="toWriteComment">写评论</text>
-    </view>
+    <form class="title" bindsubmit="toWriteComment" report-submit="{{true}}">精彩评论
+      <button class="add-comment" id="write" form-type="submit">写评论</button>
+    </form>
     <view class="comment-list">
       <view wx:if="{{comments.length > 0}}" class="comment-item" wx:for="{{comments}}" data-commentid="{{item.id}}" wx:key="{{item.id}}">
         <image class="headImg" src="{{item.avatar}}" mode="scaleToFill"></image>

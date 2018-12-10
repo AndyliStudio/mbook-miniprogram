@@ -191,6 +191,7 @@
 }
 
 .detail .comments .title {
+  display: block;
   border-bottom: 1rpx solid #dcdcdc;
   padding: 0 30rpx;
   height: 80rpx;
@@ -200,8 +201,23 @@
 }
 
 .detail .comments .title .add-comment {
-  color: #fd9941;
   float: right;
+  display: inline-block;
+  border-radius: 0;
+  border: none;
+  outline: none;
+  background: none;
+  line-height: 1em;
+  font-size: 32rpx;
+  padding: 0;
+  color: #fd9941;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.detail .comments .title .add-comment::after {
+  border: none;
 }
 
 .detail .comments .comment-list {

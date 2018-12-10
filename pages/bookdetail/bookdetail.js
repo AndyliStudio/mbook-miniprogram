@@ -328,6 +328,7 @@ Page({
     self.setData({ [key]: !self.data.comments[index].isOpenMoreComment })
   },
   toWriteComment: function(event) {
+    console.log(event)
     let self = this
     if (event.currentTarget.id == 'write') {
       self.setData({ commentInputHide: false, commentType: null })
@@ -341,6 +342,7 @@ Page({
         self.setData({ commentInputHide: false, commentType: { id: commentid, username: username } })
       }
     }
+    app.reportFormId('comment', event.detail.formId, self.data.bookid)
   },
   hideCommentBar: function() {
     this.setData({ commentInputHide: true })
@@ -348,7 +350,11 @@ Page({
   stageCommentValue: function(e) {
     this.setData({ currentCommentValue: e.detail.value })
   },
+  saveFormId: function(event) {
+    console.log(event)
+  },
   sendComment: function(event) {
+    console.log(event)
     let self = this
     let content = event.detail.value
     wx.request({
