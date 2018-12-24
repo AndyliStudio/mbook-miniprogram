@@ -69,6 +69,21 @@
       <text class="read-more" hidden="{{showAllDes || !detail.shortDes}}">阅读全部 ></text>
     </view>
   </view>
+  <view class="rss" wx:if="{{isShowRss}}">
+    <block wx:if="{{hasRssTheBook}}">
+      <view class="rss-des">你已经订阅本书籍，书籍有章节更新时，我们会及时通知你。你也可以点击下方按钮来取消订阅。</view>
+      <view class="buttons">
+        <button class="rss-btn cancel" data-rrs="0" bindtap="rssThisBook">取消订阅</button>
+      </view>
+    </block>
+    <block wx:if="{{!hasRssTheBook}}">
+      <view class="rss-des">喜欢这本书的话，可以点击下方的订阅按钮来获取书籍的实时更新消息。</view>
+      <view class="buttons">
+        <button class="rss-btn" data-rrs="1" bindtap="rssThisBook">订阅此书籍</button>
+        <button class="rss-btn cancel" bindtap="rssNoShow">不再显示</button>
+      </view>
+    </block>
+  </view>
   <view class="splitor"></view>
   <view class="comments {{commentInputHide? '' : 'bottom'}}">
     <form class="title" bindsubmit="toWriteComment" report-submit="{{true}}">精彩评论

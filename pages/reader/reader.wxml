@@ -7,12 +7,12 @@
     <button wx:if="{{!shutChargeTips}}" class="btn" bindtap="gotoAccount">立即充值</button>
     <button class="btn" bindtap="gotoAttendance">前往签到</button>
   </view>
-	<view wx:if="{{modal.name === 'secret'}}">
+  <view wx:if="{{modal.name === 'secret'}}">
   	<view class="des">{{secretTips}}</view>
     <button class="btn" bindtap="copyWxCode" wx:if="{{!shutChargeTips}}">复制客服微信</button>
     <button class="btn" bindtap="hasSecret">我已有凭证</button>
   </view>
-	<view wx:if="{{modal.name === 'input'}}">
+  <view wx:if="{{modal.name === 'input'}}">
 	  <input class="secret-input" type="text" bindinput="bindKeyInput" placeholder="请输入粉丝凭证" />
     <button class="btn" bindtap="finishSecretInput">确认</button>
   </view>
@@ -143,7 +143,7 @@
 							<text class="readerTime"><text class="num">25</text>时<text class="num">38</text>分<text class="timeDes">读书时长</text></text>
 						</view>
 						<scroll-view class="sections" scroll-x="false" scroll-y="true" enable-back-to-top="true" lower-threshold="300" upper-threshold="300" bindscrolltolower="loadNextMulu">
-							<view class="section" style="color:{{item.num == allSliderValue.section? colorStyle.control_fontColor : (colorStyle.styleNum == '4'? '#63676a': '#655f4f')}};border-color: {{colorStyle.border_color}};" wx:for="{{allSectionData}}" wx:key="_id" data-chapterid="{{item._id}}" bindtap="showThisSection"><text class="factionNum">第{{item.num}}章</text><text class="factionName">{{item.name}}</text></view>
+							<view class="section" style="color:{{item.num == allSliderValue.section? colorStyle.control_fontColor : (colorStyle.styleNum == '4'? '#63676a': '#655f4f')}};border-color: {{colorStyle.border_color}};" wx:for="{{allSectionData}}" wx:key="{{item._id}}" data-chapterid="{{item._id}}" bindtap="showThisSection"><text class="factionNum">第{{item.num}}章</text><text class="factionName">{{item.name}}</text></view>
 						</scroll-view>
 			    </swiper-item>
 			</swiper>

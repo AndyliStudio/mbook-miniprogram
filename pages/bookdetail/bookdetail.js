@@ -35,7 +35,15 @@ Page({
     secretTips: '',
     hasUnLock: false, // 用户是否已经解锁过改章节
     shutChargeTips: false, // 是否屏蔽充值提示
-    showIndexBtn: '' // 是否展示返回首页按钮
+    showIndexBtn: '', // 是否展示返回首页按钮
+    isShowRss: true,
+    hasRssTheBook: false
+  },
+  onShow: function() {
+    let hasRssBookArr = wx.getStorageSync('hasRssBookArr') || []
+    if (hasRssBookArr.indexOf(this.data.bookid) > -1) {
+      this.setData({ hasRssTheBook: true })
+    }
   },
   onLoad: function(options) {
     // 隐藏分享按钮
@@ -45,12 +53,18 @@ Page({
     wx.showNavigationBarLoading()
     this.getBookDetail(options.id)
     this.getCommentList(options.id)
+    let isShowRss = true
+    let noRssShowArr = wx.getStorageSync('noRssShowArr') || [];
+    if (noRssShowArr.indexOf(options.id) > -1) {
+      isShowRss = false
+    }
     this.setData({
       bookid: options.id,
       showIndexBtn: options.indexbtn === '1',
       wxcode: app.globalData.globalSetting.wxcode || 'haitianyise_hl',
       secretTips: secretTips,
-      shutChargeTips: app.globalData.globalSetting.shut_charge_tips || false
+      shutChargeTips: app.globalData.globalSetting.shut_charge_tips || false,
+      isShowRss: isShowRss
     })
   },
   // 分享逻辑
@@ -91,7 +105,7 @@ Page({
               goodInfo = '全书免费'
             }
             // 如果当前书籍没在书架中，自动加入书架
-            self.setData({ detail: res.data.data, isInList: res.data.isInList, goodInfo: goodInfo, hasUnLock: res.data.data.hasUnLock })
+            self.setData({ detail: res.data.data, isInList: res.data.isInList, goodInfo: goodInfo, hasUnLock: res.data.data.hasUnLock, hasRssTheBook: !!res.data.data.rss })
             if (!res.data.isInList) {
               self.addOrRemove()
             }
@@ -398,6 +412,45 @@ Page({
     wx.switchTab({
       url: '/pages/index/index'
     })
+  },
+  // 订阅或者取消本书
+  rssThisBook: function(event) {
+    let self = this
+    let rss = parseInt(event.target.dataset.rrs)
+    wx.request({
+      method: 'POST',
+      url: config.base_url + '/api/booklist/rss',
+      header: { Authorization: 'Bearer ' + app.globalData.token },
+      data: {
+        bookid: self.data.bookid,
+        rss: rss ? 1 : 0
+      },
+      success: function(res) {
+        if (res.data.ok) {
+          self.setData({ hasRssTheBook: !!rss })
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../loading/loading?need_login_again=1'
+          })
+        } else {
+          utils.debug('订阅书籍失败', res)
+          self.showToast(res.data.msg || '订阅书籍失败，请重试', 'bottom')
+        }
+      },
+      fail: function(err) {
+        utils.debug('订阅书籍失败', err)
+        self.showToast('订阅书籍失败，请重试', 'bottom')
+      }
+    })
+  },
+  // 订阅提示不再显示
+  rssNoShow: function() {
+    let noRssShowArr = wx.getStorageSync('noRssShowArr') || [];
+    this.setData({ 'isShowRss': false });
+    if (noRssShowArr.indexOf(this.data.bookid) < 0) {
+      noRssShowArr.push(this.data.bookid)
+      wx.setStorageSync('noRssShowArr', noRssShowArr)
+    }
   },
   showToast: function(content, position) {
     let self = this
