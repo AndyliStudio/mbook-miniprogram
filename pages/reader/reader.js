@@ -163,6 +163,7 @@ Page({
     }
     wx.setStorageSync('userinfo', localSetting)
     this.updateRead(localSetting.setting)
+    clearInterval(scrollTopTimer)
   },
   //跳出页面执行函数
   onHide: function() {
@@ -178,6 +179,7 @@ Page({
     }
     wx.setStorageSync('userinfo', localSetting)
     this.updateRead(localSetting.setting)
+    clearInterval(scrollTopTimer)
   },
   // 分享逻辑
   onShareAppMessage: function(res) {
