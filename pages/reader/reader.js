@@ -5,15 +5,11 @@ const Interval = require('../../utils/interval')
 const app = getApp()
 
 var currentGesture = 0 //控制当一个手势进行的时候屏蔽其他的手势
-var leftMoveTimer = null //控制左滑的动画计时器
-var rightMoveTimer = null //控制右滑的动画计时器
 var isMoving = 0
-var leftTimmerCount = 0
-var rightTimmerCount = 0
 var hasRunTouchMove = false
-var currentPageIndex = 0 // 当前是分栏的第几页
 var readTimer = null
 var scrollTopValue = 0
+var scrollTopTimer = null
 
 Page({
   data: {
@@ -75,6 +71,7 @@ Page({
     allSectionData: [], // 所有章节数据
     allSectionDataTotal: 0, // 总章节数
     hasLoadMulu: false, // 是否加载过章节了
+    hasNoMoreChapter: false, // 已经加载全部目录
     showReaderTips: true, // 是否展示阅读提示
     tipsText: '点击屏幕正中间\n展示控制栏',
     windows: {
@@ -141,6 +138,15 @@ Page({
     })
     // 初始化页面
     self.initPage()
+    if (self.data.overPage === 1) {
+      scrollTopTimer = setInterval(() => {
+        let query = wx.createSelectorQuery()
+        query.select('#content').scrollOffset()
+        query.exec(res => {
+          scrollTopValue = res[0].scrollTop
+        });
+      }, 3000)
+    }
   },
   //跳出页面执行函数
   onUnload: function() {
@@ -594,7 +600,7 @@ Page({
         success: res => {
           if (res.data.ok) {
             self.setData({
-              allSectionData: res.data.data.chapters,
+              allSectionData: res.data.list,
               allSectionDataTotal: res.data.total,
               hasLoadMulu: true,
               isShowMulu: 1,
@@ -627,17 +633,19 @@ Page({
       })
     }
   },
-  loadNextMulu: function() {
-    var self = this
-    // wx.showToast({ title: '加载中', icon: 'loading' })
-    if (self.data.currentMuluPage * 50 < self.data.allSectionDataTotal) {
+  loadMoreChapter: function() {
+    var self = this;
+    let currentPage = self.data.currentMuluPage + 1;
+    if (currentPage * 50 < self.data.allSectionDataTotal) {
+      wx.showToast({ title: '加载中', icon: 'loading' })
       wx.request({
-        url: config.base_url + '/api/chapter/list?bookid=' + self.data.bookid + '&pageid=' + (self.data.currentMuluPage + 1),
+        url: config.base_url + '/api/chapter/list?bookid=' + self.data.bookid + '&pageid=' + currentPage,
         success: res => {
+          wx.hideToast();
           if (res.data.ok) {
             self.setData({
-              allSectionData: self.data.allSectionData.concat(res.data.data.chapters),
-              currentMuluPage: self.data.currentMuluPage + 1
+              allSectionData: self.data.allSectionData.concat(res.data.list),
+              currentMuluPage: currentPage
             })
           } else {
             utils.debug('获取目录失败', res)
@@ -645,10 +653,13 @@ Page({
           }
         },
         fail: err => {
+          wx.hideToast();
           utils.debug('获取目录失败', err)
           self.showToast('获取目录失败', 'bottom')
         }
       })
+    } else {
+      self.setData({ hasNoMoreChapter: true });
     }
   },
   //点击目录某一章
@@ -1338,9 +1349,6 @@ Page({
     let self = this
     self.setData({ loadFail: false })
     self.initPage(self.data.currentSectionNum)
-  },
-  handleScroll: function(event) {
-    scrollTopValue = event.detail.scrollTop
   },
   showToast: function(content, position) {
     let self = this

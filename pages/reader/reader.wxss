@@ -456,8 +456,16 @@ page {
 }
 
 .mulu-detail .mulu-swipers {
-  height: 92%;
+  height: 100%;
   width: 100%;
+}
+
+.mulu-detail .mulu-swiper {
+  height: 100%;
+  display: -webkit-flex;
+  display: flex;
+  justify-content: flex-start;
+  flex-flow: column nowrap;
 }
 
 .mulu-detail .bottomCtr {
@@ -482,6 +490,7 @@ page {
   border-radius: 8rpx;
   font-size: 28rpx;
   position: relative;
+  height: 56rpx;
 }
 
 .mulu-detail .mulu-swiper .search > icon {
@@ -499,6 +508,7 @@ page {
   margin-left: 30rpx;
   font-size: 28rpx;
   padding-bottom: 20rpx;
+  height: 110rpx;
 }
 
 .mulu-detail .mulu-swiper .bookInfo image {
@@ -537,7 +547,8 @@ page {
 }
 
 .mulu-detail .mulu-swiper .sections {
-  height: 80%;
+  flex: 1;
+  height: calc(100% - 240rpx);
 }
 
 .mulu-detail .mulu-swiper .section {
@@ -553,8 +564,21 @@ page {
   border-top: 1rpx solid;
 }
 
-.mulu-detail .mulu-swiper .section:last-child {
-  border-bottom: 1rpx solid;
+.mulu-detail .mulu-swiper .look-more {
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  outline: none;
+  border: none;
+  background: none;
+  border-radius: none;
+  font-size: 28rpx;
+  text-align: center;
+}
+
+.mulu-detail .mulu-swiper .look-more::after {
+  content: '';
+  border: none;
 }
 
 .mulu-detail .mulu-swiper .factionNum {
