@@ -638,7 +638,7 @@ Page({
   loadMoreChapter: function() {
     var self = this;
     let currentPage = self.data.currentMuluPage + 1;
-    if (currentPage * 50 < self.data.allSectionDataTotal) {
+    if (self.data.currentMuluPage * 50 < self.data.allSectionDataTotal) {
       wx.showToast({ title: '加载中', icon: 'loading' })
       wx.request({
         url: config.base_url + '/api/chapter/list?bookid=' + self.data.bookid + '&pageid=' + currentPage,
@@ -757,7 +757,7 @@ Page({
             content: ' ' + res.data.data.content.replace(/[\r\n]+\s*/g, '\n '),
             author: res.data.author,
             updateStatus: res.data.update_status,
-            hasRssTheBook: res.data.rss,
+            hasRssTheBook: !!res.data.rss,
             headImg: res.data.headimg,
             isShowBuy: !res.data.canRead,
             hasGotMaxNum: false

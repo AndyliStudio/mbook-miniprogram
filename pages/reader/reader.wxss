@@ -36,6 +36,7 @@ page {
   height: 100%;
   box-sizing: border-box;
   position: relative;
+  -webkit-overflow-scrolling: touch;
 }
 
 .reader .content text {
@@ -432,27 +433,94 @@ page {
   margin-right: 15rpx;
 }
 
-.mulu-detail {
+.mulu-detail .mulu-bg {
   position: absolute;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
-  top: 0;
-  left: 0;
-  display: none;
-  z-index: 1000;
-}
-
-.mulu-detail.active {
-  display: block;
-}
-
-.mulu-detail .muluPanel {
-  transition: width 1s;
-  -moz-transition: width 1s; /* Firefox 4 */
-  -webkit-transition: width 1s; /* Safari 和 Chrome */
-  -o-transition: width 1s; /* Opera */
   height: 100%;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.mulu-detail .mulu-panel {
+  position: absolute;
+  width: 86%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 200;
+}
+
+.slide-left-enter {
+  -webkit-animation: slide-left-enter 0.3s both ease;
+          animation: slide-left-enter 0.3s both ease;
+}
+
+.slide-left-leave {
+  -webkit-animation: slide-left-leave 0.3s both ease;
+          animation: slide-left-leave 0.3s both ease;
+}
+
+.fade-enter {
+  display: block;
+  -webkit-animation: 0.3s fade-in;
+          animation: 0.3s fade-in;
+}
+
+.fade-leave {
+  display: none;
+  -webkit-animation: 0.3s fade-out;
+          animation: 0.3s fade-out;
+}
+
+@-webkit-keyframes slide-left-leave {
+  to {
+    -webkit-transform: translate3d(-100%, 0, 0);
+            transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@keyframes slide-left-enter {
+  from {
+    -webkit-transform: translate3d(-100%, 0, 0);
+            transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@-webkit-keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 .mulu-detail .mulu-swipers {

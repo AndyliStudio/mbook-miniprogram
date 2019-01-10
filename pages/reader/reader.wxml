@@ -36,7 +36,7 @@
   <block wx:else>
 	  <!-- 上下翻页模式 -->
 		<!--  upper-threshold="{{windows.windows_height}}" bindscrolltoupper="loadBefore" lower-threshold="{{windows.windows_height}}" bindscrolltolower="loadAfter" -->
- 	  <scroll-view id="content" class="content" bindtap="handleDownClick" enable-back-to-top="true" scroll-y="true" scroll-top="{{leftValue}}" style="height: 100vh; box-sizing: border-box; padding: 0 20rpx; position: relative; top: -12px;">
+ 	  <scroll-view id="content" class="content" bindtap="handleDownClick" enable-back-to-top="true" scroll-y="true" scroll-top="{{leftValue}}" style="height: 100vh; box-sizing: border-box; padding: 0 20rpx; position: relative; top: -12px;" lower-threshold="150" bindscrolltolower="loadAfter">
 			<text selectable="{{true}}" space="emsp" style="column-width: {{windows.windows_width+'px'}};font-family: {{currentFontFamily == '使用系统字体' ? 'inherit' : currentFontFamily}};font-size: {{allSliderValue.font + 'rpx'}}; color: {{colorStyle.styleNum == '4'? '#85898c': '#000800'}};">{{content}}</text>
 			<view class="chapter-btns">
 				<button class="btn1" style="color: {{colorStyle.button_font_color}}; background-color: {{colorStyle.button_bg}}" bindtap="loadNextChapter" data-control="no">下一章</button>
@@ -129,8 +129,9 @@
 			</view>
 		</view>
 	</view>
-	<view class="mulu-detail {{isShowMulu == 1 ? 'active': ''}}" bindtap="closeMulu">
-		<view class="muluPanel" style="background-color: {{colorStyle.content_bg}}; width: {{isShowMulu == 1 ? '86%' : '0%'}}">
+	<view class="mulu-detail">
+    <view class="mulu-bg {{isShowMulu == 1 ? 'fade-enter' : 'fade-leave'}}" bindtap="closeMulu"></view>
+		<view class="mulu-panel {{isShowMulu == 1 ? 'slide-left-enter' : 'slide-left-leave'}}" style="background-color: {{colorStyle.content_bg}}">
 			<swiper class="mulu-swipers" current="{{muluSwiperNum}}" bindchange="muluSwiper">
 			    <swiper-item class="mulu-swiper">
 						<view class="search" style="border: 1px solid {{colorStyle.border_color}};">
