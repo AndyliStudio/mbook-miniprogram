@@ -561,15 +561,24 @@ page {
   height: 56rpx;
 }
 
-.mulu-detail .mulu-swiper .search > icon {
+.mulu-detail .mulu-swiper .search .search-icon {
   position: absolute;
   left: 10rpx;
   top: 50%;
   transform: translateY(-50%);
 }
 
+.mulu-detail .mulu-swiper .search .close-icon {
+  position: absolute;
+  top: 50%;
+  right: 10rpx;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
 .mulu-detail .mulu-swiper .search > input {
   margin-left: 60rpx;
+  margin-right: 50rpx;
 }
 
 .mulu-detail .mulu-swiper .bookInfo {
@@ -617,6 +626,12 @@ page {
 .mulu-detail .mulu-swiper .sections {
   flex: 1;
   height: calc(100% - 240rpx);
+}
+
+.mulu-detail .mulu-swiper .sections .no-data {
+  padding: 30rpx;
+  text-align: center;
+  font-size: 28rpx;
 }
 
 .mulu-detail .mulu-swiper .section {

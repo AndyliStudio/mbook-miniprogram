@@ -4,12 +4,15 @@ const utils = require('../../utils/util')
 const Interval = require('../../utils/interval')
 const app = getApp()
 
-var currentGesture = 0 //控制当一个手势进行的时候屏蔽其他的手势
-var isMoving = 0
-var hasRunTouchMove = false
-var readTimer = null
-var scrollTopValue = 0
-var scrollTopTimer = null
+let currentGesture = 0 //控制当一个手势进行的时候屏蔽其他的手势
+let isMoving = 0
+let hasRunTouchMove = false
+let readTimer = null
+let scrollTopValue = 0
+let scrollTopTimer = null
+let sectionDataBeforeSearch = null // 搜索之前的章节数据
+let scrollTopBeforeSearch = 0
+let hasRunSearchInputConfrim = false // 是否执行过搜索了
 
 Page({
   data: {
@@ -96,7 +99,11 @@ Page({
     overPage: 1, // 阅读器翻页模式
     shutChargeTips: false,
     hasReadTime: 0, // 已阅读时长
-    hasRssTheBook: false // 是否已经订阅了本书
+    hasRssTheBook: false, // 是否已经订阅了本书
+    showSearchInputClose: false, // 是否展示搜索框的关闭按钮
+    showLookMoreChapter: true, // 是否展示查看更多章节
+    searchInputValue: '', // 搜索输入框的值
+    searchTopValue: 0 // 搜索章节的滚动高度
   },
   onLoad: function(options) {
     var self = this
@@ -613,6 +620,9 @@ Page({
                 target: self.data.control.target || 'color'
               }
             })
+            // 记录目录搜索之前的状态
+            sectionDataBeforeSearch = self.data.allSectionData.slice()
+            scrollTopBeforeSearch = 0
           } else {
             utils.debug('获取目录失败', res)
             self.showToast('获取目录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
@@ -649,6 +659,8 @@ Page({
               allSectionData: self.data.allSectionData.concat(res.data.list),
               currentMuluPage: currentPage
             })
+            // 记录目录搜索之前的状态
+            sectionDataBeforeSearch = self.data.allSectionData.slice()
           } else {
             utils.debug('获取目录失败', res)
             self.showToast('获取目录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
@@ -887,13 +899,40 @@ Page({
     self.setData({ showReaderTips: false })
     wx.setStorageSync('show_reader_tips', false)
   },
+  searchInputKeyDown: function(event) {
+    this.setData({ searchInputValue: event.detail.value })
+  },
+  clickSearchInputClose: function() {
+    let tmp = {}
+    tmp.searchInputValue = ''
+    tmp.showLookMoreChapter = true
+    if (hasRunSearchInputConfrim) {
+      if (sectionDataBeforeSearch && sectionDataBeforeSearch.length > 0) {
+        tmp.allSectionData = sectionDataBeforeSearch
+        tmp.searchTopValue = scrollTopBeforeSearch
+      }
+    } else {
+      hasRunSearchInputConfrim = false
+    }
+    this.setData(tmp)
+  },
   searchChapter: function(event) {
     var self = this
+    // 禁止关键字为空的搜索
+    if (!event.detail.value) {
+      return false
+    }
+    let query = wx.createSelectorQuery()
+    query.select('#sections').scrollOffset()
+    query.exec(res => {
+      scrollTopBeforeSearch = res[0].scrollTop
+    });
     wx.request({
       url: config.base_url + '/api/chapter/search?bookid=' + self.data.bookid + '&str=' + event.detail.value,
       success: res => {
         if (res.data.ok) {
-          self.setData({ allSectionData: res.data.data.chapters })
+          hasRunSearchInputConfrim = true
+          self.setData({ allSectionData: res.data.data, showLookMoreChapter: false })
         } else {
           utils.debug('未找到相应章节', res)
           self.showToast('未找到相应章节' + (res.data.msg ? '，' + res.data.msg : ''), 'center')
@@ -906,17 +945,16 @@ Page({
     })
   },
   closeMulu: function(event) {
-    var self = this
     var x = event.detail.x
-    var w = self.data.windows.windows_width * 0.92
+    var w = this.data.windows.windows_width * 0.92
     if (x > w) {
       // 显示控制栏
-      self.setData({
+      this.setData({
         control: {
           all: 0,
           control_tab: 0,
           control_detail: 0,
-          target: self.data.control.target || 'color'
+          target: this.data.control.target || 'color'
         },
         isShowMulu: 0
       })
