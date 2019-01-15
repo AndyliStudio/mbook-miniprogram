@@ -37,6 +37,9 @@ page {
   box-sizing: border-box;
   position: relative;
   -webkit-overflow-scrolling: touch;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
 }
 
 .reader .content text {
@@ -147,6 +150,7 @@ page {
 .reader .control {
   height: 110rpx;
   position: absolute;
+  z-index: 2;
   bottom: 0;
   left: 0;
   display: -webkit-flex;
@@ -645,6 +649,11 @@ page {
 
 .mulu-detail .mulu-swiper .section:first-child {
   border-top: 1rpx solid;
+}
+
+.mulu-detail .mulu-swiper .section .factionName {
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .mulu-detail .mulu-swiper .look-more {

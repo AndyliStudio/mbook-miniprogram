@@ -13,6 +13,23 @@ let scrollTopTimer = null
 let sectionDataBeforeSearch = null // 搜索之前的章节数据
 let scrollTopBeforeSearch = 0
 let hasRunSearchInputConfrim = false // 是否执行过搜索了
+let allSectionRawData = [] // 章节原始数据
+
+//从原始章节中解析出正确的章节数据
+function compileRowSectionData() {
+  let sections = []
+  // 排序allSectionRawData
+  allSectionRawData.sort((item1, item2) => {
+    return item1.index - item2.index
+  })
+  for (let i = 0; i < allSectionRawData.length; i++) {
+    if (!allSectionRawData[i].finished) {
+      break
+    }
+    sections = sections.concat(allSectionRawData[i].data)
+  }
+  return sections
+}
 
 Page({
   data: {
@@ -604,12 +621,19 @@ Page({
   openMulu: function() {
     var self = this
     if (!self.data.hasLoadMulu) {
+      allSectionRawData.push({
+        index: 0,
+        finished: false,
+        data: []
+      })
       wx.request({
         url: config.base_url + '/api/chapter/list?bookid=' + self.data.bookid + '&pageid=' + self.data.currentMuluPage,
         success: res => {
           if (res.data.ok) {
+            allSectionRawData[0].finished = true
+            allSectionRawData[0].data = res.data.list
             self.setData({
-              allSectionData: res.data.list,
+              allSectionData: compileRowSectionData(),
               allSectionDataTotal: res.data.total,
               hasLoadMulu: true,
               isShowMulu: 1,
@@ -646,35 +670,36 @@ Page({
     }
   },
   loadMoreChapter: function() {
-    var self = this;
-    let currentPage = self.data.currentMuluPage + 1;
-    if (self.data.currentMuluPage * 50 < self.data.allSectionDataTotal) {
-      wx.showToast({ title: '加载中', icon: 'loading' })
-      wx.request({
-        url: config.base_url + '/api/chapter/list?bookid=' + self.data.bookid + '&pageid=' + currentPage,
-        success: res => {
-          wx.hideToast();
-          if (res.data.ok) {
-            self.setData({
-              allSectionData: self.data.allSectionData.concat(res.data.list),
-              currentMuluPage: currentPage
-            })
-            // 记录目录搜索之前的状态
-            sectionDataBeforeSearch = self.data.allSectionData.slice()
-          } else {
-            utils.debug('获取目录失败', res)
-            self.showToast('获取目录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
-          }
-        },
-        fail: err => {
-          wx.hideToast();
-          utils.debug('获取目录失败', err)
-          self.showToast('获取目录失败', 'bottom')
-        }
-      })
-    } else {
-      self.setData({ hasNoMoreChapter: true });
-    }
+    console.log('触发下拉刷新')
+    // var self = this;
+    // let currentPage = self.data.currentMuluPage + 1;
+    // if (self.data.currentMuluPage * 50 < self.data.allSectionDataTotal) {
+    //   wx.showToast({ title: '加载中', icon: 'loading' })
+    //   wx.request({
+    //     url: config.base_url + '/api/chapter/list?bookid=' + self.data.bookid + '&pageid=' + currentPage,
+    //     success: res => {
+    //       wx.hideToast();
+    //       if (res.data.ok) {
+    //         self.setData({
+    //           allSectionData: self.data.allSectionData.concat(res.data.list),
+    //           currentMuluPage: currentPage
+    //         })
+    //         // 记录目录搜索之前的状态
+    //         sectionDataBeforeSearch = self.data.allSectionData.slice()
+    //       } else {
+    //         utils.debug('获取目录失败', res)
+    //         self.showToast('获取目录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
+    //       }
+    //     },
+    //     fail: err => {
+    //       wx.hideToast();
+    //       utils.debug('获取目录失败', err)
+    //       self.showToast('获取目录失败', 'bottom')
+    //     }
+    //   })
+    // } else {
+    //   self.setData({ hasNoMoreChapter: true });
+    // }
   },
   //点击目录某一章
   showThisSection: function(event) {
