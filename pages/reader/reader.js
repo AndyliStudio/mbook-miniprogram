@@ -670,36 +670,44 @@ Page({
     }
   },
   loadMoreChapter: function() {
-    console.log('触发下拉刷新')
-    // var self = this;
-    // let currentPage = self.data.currentMuluPage + 1;
-    // if (self.data.currentMuluPage * 50 < self.data.allSectionDataTotal) {
-    //   wx.showToast({ title: '加载中', icon: 'loading' })
-    //   wx.request({
-    //     url: config.base_url + '/api/chapter/list?bookid=' + self.data.bookid + '&pageid=' + currentPage,
-    //     success: res => {
-    //       wx.hideToast();
-    //       if (res.data.ok) {
-    //         self.setData({
-    //           allSectionData: self.data.allSectionData.concat(res.data.list),
-    //           currentMuluPage: currentPage
-    //         })
-    //         // 记录目录搜索之前的状态
-    //         sectionDataBeforeSearch = self.data.allSectionData.slice()
-    //       } else {
-    //         utils.debug('获取目录失败', res)
-    //         self.showToast('获取目录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
-    //       }
-    //     },
-    //     fail: err => {
-    //       wx.hideToast();
-    //       utils.debug('获取目录失败', err)
-    //       self.showToast('获取目录失败', 'bottom')
-    //     }
-    //   })
-    // } else {
-    //   self.setData({ hasNoMoreChapter: true });
-    // }
+    let currentPage = this.data.currentMuluPage + 1;
+    if (this.data.currentMuluPage * 50 < this.data.allSectionDataTotal) {
+      allSectionRawData.push({
+        index: currentPage - 1,
+        finished: false,
+        data: []
+      })
+      wx.showToast({ title: '加载中', icon: 'loading' })
+      wx.request({
+        url: config.base_url + '/api/chapter/list?bookid=' + this.data.bookid + '&pageid=' + currentPage,
+        success: res => {
+          wx.hideToast();
+          if (res.data.ok) {
+            allSectionRawData[currentPage - 1].finished = true
+            allSectionRawData[currentPage - 1].data = res.data.list
+            this.setData({
+              allSectionData: compileRowSectionData(),
+            })
+            // 记录目录搜索之前的状态
+            sectionDataBeforeSearch = this.data.allSectionData.slice()
+          } else {
+            utils.debug('获取目录失败', res)
+            this.showToast('获取目录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
+          }
+        },
+        fail: err => {
+          wx.hideToast();
+          utils.debug('获取目录失败', err)
+          this.showToast('获取目录失败', 'bottom')
+        }
+      })
+      // 提前设置currentPage
+      this.setData({
+        currentMuluPage: currentPage,
+      })
+    } else {
+      this.setData({ hasNoMoreChapter: true });
+    }
   },
   //点击目录某一章
   showThisSection: function(event) {

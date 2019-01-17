@@ -652,8 +652,12 @@ page {
 }
 
 .mulu-detail .mulu-swiper .section .factionName {
+  display: inline-block;
+  max-width: 74%;
   white-space: nowrap;
   text-overflow: ellipsis;
+  overflow: hidden;
+  vertical-align: middle;
 }
 
 .mulu-detail .mulu-swiper .look-more {
