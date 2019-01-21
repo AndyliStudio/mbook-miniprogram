@@ -1,10 +1,8 @@
-<toast toast="{{toast}}"></toast>
-<toast toast="{{toast}}"></toast>
 <view class="load-page">
   <image class="app-logo" src="https://fs.andylistudio.com/mbook/v3/images/logo.png"></image>
   <view class="app-name">美景阅读</view>
   <view class="status">
-    <view class="status-item" wx:if="{{loading}}"><image class="loading" src="//fs.andylistudio.com/mbook/v3/images/loading.png"></image>登录中...</view>
+    <view class="status-item" wx:if="{{loading}}"><image class="loading" src="../../static/img/book-loading.svg"></image>登录中...</view>
     <view class="status-item" wx:if="{{success}}">{{text}}</view>
     <view class="status-item" wx:if="{{buttonType === 'reLogin'}}"><button bindtap="doLogin">立即登录</button></view>
     <view class="status-item" wx:if="{{buttonType === 'getUserInfo'}}"><button open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="afterGetUserInfo">授权小程序</button></view>

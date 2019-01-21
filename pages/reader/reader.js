@@ -123,46 +123,55 @@ Page({
     searchTopValue: 0 // 搜索章节的滚动高度
   },
   onLoad: function(options) {
-    var self = this
     //动态设置标题
-    var bookid = options.bookid || '5a0d7a6ec38abf73e8e65cb3'
-    var secretTips = app.globalData.globalSetting ? app.globalData.globalSetting.secret_tips : '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
-    self.setData({ bookid: bookid, secretTips: secretTips })
+    const bookid = options.bookid || '5a0d7a6ec38abf73e8e65cb3'
+    const secretTips = app.globalData.globalSetting ? app.globalData.globalSetting.secret_tips : '请联系客服，在支付2-3元后，客服人员会发送给你一个串阅读秘钥用来解锁整本书。'
+    this.setData({ bookid: bookid, secretTips: secretTips })
     // 判断是否需要显示提示
-    let showReaderTips = app.globalData.showReaderTips
+    const showReaderTips = app.globalData.showReaderTips
     if (showReaderTips || showReaderTips === '') {
-      self.setData({ showReaderTips: false, shutChargeTips: app.globalData.globalSetting.shut_charge_tips || false })
+      this.setData({ 
+        bookid: bookid,
+        secretTips: secretTips,
+        showReaderTips: true,
+        shutChargeTips: app.globalData.globalSetting.shut_charge_tips || false
+      })
     } else {
-      self.setData({ showReaderTips: false, shutChargeTips: app.globalData.globalSetting.shut_charge_tips || false })
+      this.setData({ 
+        bookid: bookid,
+        secretTips: secretTips,
+        showReaderTips: false,
+        shutChargeTips: app.globalData.globalSetting.shut_charge_tips || false
+      })
     }
     //读取用户设置
     let localSetting = app.globalData.userInfo || {}
     if (localSetting && localSetting.setting) {
       let userSetting = localSetting.setting
-      self.setData({
-        'allSliderValue.bright': userSetting.reader.bright || self.data.allSliderValue.bright,
-        'allSliderValue.font': userSetting.reader.fontSize || self.data.allSliderValue.font,
-        colorStyle: self.transColorStyle(userSetting.reader.mode) || self.data.colorStyle,
-        currentFontFamily: userSetting.reader.fontFamily || self.data.currentFontFamily,
+      this.setData({
+        'allSliderValue.bright': userSetting.reader.bright || this.data.allSliderValue.bright,
+        'allSliderValue.font': userSetting.reader.fontSize || this.data.allSliderValue.font,
+        colorStyle: this.transColorStyle(userSetting.reader.mode) || this.data.colorStyle,
+        currentFontFamily: userSetting.reader.fontFamily || this.data.currentFontFamily,
         overPage: userSetting.reader.overPage
       })
     }
     // 设置背景色
     wx.setNavigationBarColor({
-      frontColor: self.data.colorStyle.styleNum == 4 ? '#ffffff' : '#000000',
-      backgroundColor: self.data.colorStyle.control_bg,
+      frontColor: this.data.colorStyle.styleNum == 4 ? '#ffffff' : '#000000',
+      backgroundColor: this.data.colorStyle.control_bg,
       animation: {
         duration: 0,
         timingFunc: 'easeIn'
       },
-      fail: function() {
+      fail: () => {
         utils.debug('设置背景色失败', {})
-        self.showToast('设置背景色失败', 'bottom')
+        this.showToast('设置背景色失败', 'bottom')
       }
     })
     // 初始化页面
-    self.initPage()
-    if (self.data.overPage === 1) {
+    this.initPage()
+    if (this.data.overPage === 1) {
       scrollTopTimer = setInterval(() => {
         let query = wx.createSelectorQuery()
         query.select('#content').scrollOffset()
@@ -207,7 +216,6 @@ Page({
   },
   // 分享逻辑
   onShareAppMessage: function(res) {
-    let self = this
     // 获取分享出去的图片地址
     const shareParams = app.globalData.globalSetting.share
     const code = app.globalData.shareCode + '|' + Date.now()
@@ -217,7 +225,7 @@ Page({
         path: shareParams.page + '?code=' + code
       }
     } else {
-      self.showToast('获取分享参数失败', 'bottom')
+      this.showToast('获取分享参数失败', 'bottom')
       return false
     }
   },
