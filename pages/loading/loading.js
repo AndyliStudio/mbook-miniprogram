@@ -79,8 +79,6 @@ Page({
           const reg = /^[A-Za-z0-9-_]+\|\d+$/
           const reg2 = /^[A-Za-z0-9-_]+$/
           if (this.data.params && this.data.params.code && reg.test(this.data.params.code)) {
-            console.log('开始更新邀请奖励', this.data.params.code)
-            // wx.redirectTo({ url: '../activities/share/share?code=' + this.data.params.code })
             // 不在跳转分享活动页面，直接在首页领奖
             this.updateShareLog(this.data.params.code)
           } else if (this.data.params && this.data.params.fhcode && reg2.test(this.data.params.fhcode)) {
@@ -114,7 +112,16 @@ Page({
   // 用户登录
   requestLogin: function() {
     return new Promise((resolve, reject) => {
-      this
+      // 判断本地是否有缓存的登录数据
+      let cacheLoginData = wx.getStorageSync('cacheLoginData')
+      if (cacheLoginData && cacheLoginData.expised >= Date.now()) {
+        app.globalData.token = cacheLoginData.token // 登录token
+        app.globalData.userInfo = cacheLoginData.userinfo // 用户信息
+        this.getAppSetting()
+        this.setData({ text: '欢迎回来！' + cacheLoginData.userinfo.username })
+        resolve(true)
+      } else {
+        this
         .wxLogin()
         .then(code => {
           // 发送登录凭证到后台换取 openId, sessionKey, unionId
@@ -129,14 +136,17 @@ Page({
               if (res.data.ok) {
                 // 将token存入缓存，在每次发送需要认证的请求时在header里带上token
                 app.globalData.token = res.data.token // 登录token
-                app.globalData.userInfo = res.data.userinfo // 用户详情
-                for (let i in res.data.globalSetting) {
-                  if (utils.isJsonString(res.data.globalSetting[i])) {
-                    res.data.globalSetting[i] = JSON.parse(res.data.globalSetting[i])
+                app.globalData.userInfo = res.data.userinfo // 用户信息
+                wx.setStorage({
+                  key: 'cacheLoginData',
+                  data: {
+                    token: res.data.token,
+                    userinfo: res.data.userinfo,
+                    expised: Date.now() + 24 * 60 * 60 * 1000
                   }
-                }
-                app.globalData.globalSetting = res.data.globalSetting // 系统全局设置
-                app.globalData.shareCode = res.data.code // 用户分享码
+                })
+                // 获取app全局配置
+                this.getAppSetting()
                 this.setData({ text: '欢迎回来！' + res.data.userinfo.username })
                 resolve(true)
               } else if (!res.data.ok && res.data.registe === false) {
@@ -167,6 +177,7 @@ Page({
         .catch(err => {
           reject(false)
         })
+      }
     })
   },
   // 用户注册
@@ -185,13 +196,15 @@ Page({
                 if (res.data.ok) {
                   app.globalData.token = res.data.token // 登录token
                   app.globalData.userInfo = res.data.userinfo // 用户详情
-                  for (let i in res.data.globalSetting) {
-                    if (utils.isJsonString(res.data.globalSetting[i])) {
-                      res.data.globalSetting[i] = JSON.parse(res.data.globalSetting[i])
+                  wx.setStorage({
+                    key: 'cacheLoginData',
+                    data: {
+                      token: res.data.token,
+                      userinfo: res.data.userinfo,
+                      expised: Date.now() + 24 * 60 * 60 * 1000
                     }
-                  }
-                  app.globalData.globalSetting = res.data.globalSetting // 系统全局设置
-                  app.globalData.shareCode = res.data.code // 用户分享码
+                  })
+                  this.getAppSetting()
                   this.setData({ text: '遇见你，真高兴~' })
                   resolve(true)
                 } else {
@@ -238,6 +251,39 @@ Page({
         setTimeout(() => {
           wx.switchTab({ url: '../index/index' })
         }, 1000)
+      },
+      fail: err => {
+        utils.debug('接受邀请失败', err)
+        wx.showToast({ title: '接收邀请失败', icon: 'none', duration: 2000 })
+        setTimeout(function() {
+          wx.switchTab({ url: '../index/index' })
+        }, 1000)
+      }
+    })
+  },
+  // 获取应用设置
+  getAppSetting: function() {
+    wx.request({
+      method: 'GET',
+      url: config.base_url + '/api/user/setting',
+      header: { Authorization: 'Bearer ' + app.globalData.token },
+      success: res => {
+        if (res.data.ok) {
+          for (let i in res.data.data.setting) {
+            if (utils.isJsonString(res.data.data.setting[i])) {
+              res.data.data.setting[i] = JSON.parse(res.data.data.setting[i])
+            }
+          }
+          app.globalData.globalSetting = res.data.data.setting // 系统全局设置
+          app.globalData.shareCode = res.data.data.share.code // 用户分享码
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../../loading/loading?need_login_again=1'
+          })
+        } else {
+          utils.debug('获取应用设置失败', res)
+          wx.showToast({ title: '获取应用设置失败' + (res.data.msg ? '，' + res.data.msg : ''), icon: 'none', duration: 2000 })
+        }
       },
       fail: err => {
         utils.debug('接受邀请失败', err)

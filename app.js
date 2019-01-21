@@ -1,7 +1,6 @@
 //app.js
 const config = require('./config')
 const utils = require('./utils/util')
-const Promise = require('./utils/bluebird.min')
 
 App({
   onLaunch: function() {
@@ -35,7 +34,6 @@ App({
         })
       })
     } else {
-      console.log('getUpdateManager不支持')
       wx.showModal({
         title: '更新提示',
         content: '你的微信当前版本太低，无法完成书城更新，请重启微信来获取最新版本',
@@ -56,7 +54,6 @@ App({
         }
       },
       fail: function(err) {
-        console.warn(err)
         utils.debug('提交formId失败', err)
       }
     })
@@ -78,7 +75,6 @@ App({
   globalData: {
     token: '',
     userInfo: {}, // 用户基本信息
-    shareInfo: {}, // 分享信息
     shareCode: '', // 邀请码
     globalSetting: {},
     showReaderTips: false

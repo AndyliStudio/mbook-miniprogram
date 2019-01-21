@@ -166,7 +166,6 @@ Page({
     // 获取分享出去的图片地址
     const shareParams = app.globalData.globalSetting.share
     const code = app.globalData.shareCode + '|' + Date.now()
-    console.log(app.globalData.shareCode, code)
     if (shareParams && app.globalData.shareCode) {
       return {
         title: shareParams.title,

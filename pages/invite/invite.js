@@ -160,7 +160,6 @@ Page({
         fhcode: self.data.fhcode
       },
       success: function(res) {
-        console.log(res)
         if (res.data.ok) {
           self.getFriendHelpInfo()
           self.setData({ finishHelpIt: true })

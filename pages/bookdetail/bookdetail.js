@@ -342,7 +342,6 @@ Page({
     self.setData({ [key]: !self.data.comments[index].isOpenMoreComment })
   },
   toWriteComment: function(event) {
-    console.log(event)
     let self = this
     if (event.currentTarget.id == 'write') {
       self.setData({ commentInputHide: false, commentType: null })
@@ -365,10 +364,8 @@ Page({
     this.setData({ currentCommentValue: e.detail.value })
   },
   saveFormId: function(event) {
-    console.log(event)
   },
   sendComment: function(event) {
-    console.log(event)
     let self = this
     let content = event.detail.value
     wx.request({
