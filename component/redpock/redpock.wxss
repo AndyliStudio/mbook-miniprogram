@@ -1,0 +1,186 @@
+.redpock {
+  position: fixed;
+  z-index: 10000;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 600rpx;
+  width: 400rpx;
+  background: #a5423a;
+  border-radius: 15rpx;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.redpock .icon-close {
+  position: absolute;
+  z-index: 10001;
+  right: 20rpx;
+  top: 20rpx;
+  display: inline-block;
+  width: 40rpx;
+  height: 40rpx;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAADFklEQVRoQ+2YP2gTURzHv79cmmCtrRWHLk6KCOJiUXOZtCrUBqsZDFxQ8M8giEMXh266FRQEHcRJcUhCRKpIxWKJFfFOEEfBwc1NJ9tBo60/ucQ0uVzSd3fvHbVyGfPuvXw+v+/vXd4dYZ1/aJ3zIxJY6wSjBKIEJCvw/7cQ3x3uwabEdspbHyWL5Xk6l3f3Ybl3kIx3n0WThAlwQb8JogkwT1HemhQtKDvOZX0HlvEawBb0xrbSiTeLq60pFiimMwCeANDClmjC0xAYLylvjogKIhSwF+CingXoYZgSDniwCQ1HKGd9VyLQIlEGEFedRBv8PDSMeYG3uTwl0KgC19vpsUoJF/zA11Ea+1QVVb4x7kugnkQ6A+ZpEPUAuEqGec3rj7Vf19bzL7D5y3E/8L4TWEmicOAoEJupSTBPUt6a8ivhgl+sZuji+19+1/GdgAoJZ9tgBgvVbBD4wAk4JEh7CiDpNQkX/FDiJB2aX/Jb+cB7wNXHxdRBIPbci0Tbhp3GUDInAy+dQPPuZEvQM4A2dEvCBa9ZpyiH5aCVV5ZAU0JPA5jrJNG2YUuIm6dVwCtLwClBswD6Gkm44A0zTwSWrbzyBFYkSul9YFT+SlwH4Qxgn234AQzrrEp45Qk4JH7zHIj6a9+FBB+iQGovmCoADdQFcA+GeUF19UMR4FILPMMC8TBAibAkAv8Td9qETnieRXxhHEv9IyD7eSIcCWUCneAp9+FnrYMK+mirBOXN8//UXWg1+Oaxo0UCuEOGeUmFhHQCXNb31J9haQBcb5tG5V3HjtYkFElICdTgl+gVCIMieGcSZB8A41AgEVggCHzL2WkciD1SIRFIQAZetYRvASc8Koh/O9at50WblIsp6SR8Cbjgq4kMnZv/IQJdbVxWwrNAGPAq2smTQJjwshJCAS7ouwAy67dKVKCgbbq1lLOd+AYZ1hVRe4oFivptgC6HDe9KgjmGanKjaI+JBUr7d4LjWWh8y+vrPlHVRONc1A8DvI2Mt/dF1woFRAus9XgkECUgWYGohSQLKD09SkC6hJIL/AHzAsFAcnVGCQAAAABJRU5ErkJggg==);
+  background-size: 100% 100%;
+  background-clip: content-box;
+  padding: 10rpx;
+}
+
+.redpock .topcontent {
+  height: 160rpx;
+  border: 1rpx solid #bd503a;
+  background-color: #bd503a;
+  border-radius: 15rpx 15rpx 50% 50% / 10rpx 10rpx 15% 15%;
+  box-shadow: 0rpx 4rpx 0rpx -1rpx rgba(0, 0, 0, 0.2);
+}
+.redpock .redpock-open {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 20rpx;
+  display: inline-block;
+  margin-top: -60rpx;
+  overflow: hidden;
+}
+
+.redpock .redpock-open .avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.redpock .name {
+  display: block;
+  color: #FFA73A;
+  margin-top: 10rpx;
+}
+
+.redpock .redpock-text {
+  font-size: 32rpx;
+  color: #FFA73A;
+  margin-top: 20rpx;
+}
+
+.redpock .btn {
+  width: 150rpx;
+  height: 150rpx;
+  display: block;
+  margin: 30rpx auto;
+  border-radius: 50%;
+  background: #efce77;
+  text-align: center;
+  line-height: 150rpx;
+  color: #666668;
+  font-weight: bold;
+  font-size: 60rpx;
+  box-shadow: 0 0 4rpx 0rpx #e0b469;
+}
+
+.rotate{
+  -webkit-animation: anim .6s 3 alternate;
+  -ms-animation: anim .6s 3 alternate;
+  animation: anim .6s 3 alternate;
+}
+@-webkit-keyframes anim {
+  from { -webkit-transform: rotateY(180deg); }
+  to { -webkit-transform: rotateY(360deg); }
+}
+@keyframes anim {
+  from { transform: rotateY(180deg); }
+  to { transform: rotateY(360deg); }
+}
+
+@-webkit-keyframes zoomInUp {
+  from {
+    opacity: 0;
+    -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+
+@keyframes zoomInUp {
+  from {
+    opacity: 0;
+    -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 1000px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+
+  60% {
+    opacity: 1;
+    -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+
+.zoomInUp {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: zoomInUp;
+  animation-name: zoomInUp;
+}
+
+@-webkit-keyframes zoomOutDown {
+  40% {
+    opacity: 1;
+    -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+
+  to {
+    opacity: 0;
+    -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 2000px, 0);
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 2000px, 0);
+    -webkit-transform-origin: center bottom;
+    transform-origin: center bottom;
+    -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+
+@keyframes zoomOutDown {
+  40% {
+    opacity: 1;
+    -webkit-transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(0, -60px, 0);
+    -webkit-animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+
+  to {
+    opacity: 0;
+    -webkit-transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 2000px, 0);
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, 2000px, 0);
+    -webkit-transform-origin: center bottom;
+    transform-origin: center bottom;
+    -webkit-animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+
+.zoomOutDown {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: zoomOutDown;
+  animation-name: zoomOutDown;
+}

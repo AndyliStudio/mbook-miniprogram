@@ -1,0 +1,12 @@
+{
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#1472e0",
+  "navigationBarTitleText": "",
+  "navigationBarTextStyle": "white",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "toast": "../../component/toast/toast",
+    "no-data": "../../component/nodata/nodata",
+    "modal": "../../component/modal/modal"
+  }
+}

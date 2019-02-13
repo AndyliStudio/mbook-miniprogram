@@ -174,10 +174,10 @@ Page({
     if (this.data.overPage === 1) {
       scrollTopTimer = setInterval(() => {
         let query = wx.createSelectorQuery()
-        query.select('#content').scrollOffset()
+        query.selectViewport().scrollOffset()
         query.exec(res => {
           scrollTopValue = res[0].scrollTop
-        });
+        })
       }, 3000)
     }
   },
@@ -381,20 +381,21 @@ Page({
           })
           // 如果为上下翻页，则不需要重新计算最大分页数
           if (self.data.overPage === 1) {
+            wx.pageScrollTo({ scrollTop: 0, duration: 0 })
             self.setData({ loading: false })
-            return false
-          }
-          // 重新计算最大分页数
-          wx.createSelectorQuery()
-            .select('#content-out')
-            .boundingClientRect(function(rect) {
-              self.setData({
-                maxPageNum: Math.ceil(rect.height / parseInt(self.data.windows.windows_height - 20)),
-                hasGotMaxNum: true,
-                loading: false
+          } else {
+            // 重新计算最大分页数
+            wx.createSelectorQuery()
+              .select('#content-out')
+              .boundingClientRect(function(rect) {
+                self.setData({
+                  maxPageNum: Math.ceil(rect.height / parseInt(self.data.windows.windows_height - 20)),
+                  hasGotMaxNum: true,
+                  loading: false
+                })
               })
-            })
-            .exec()
+              .exec()
+          }
         } else if (res.data.authfail) {
           // 防止多个接口失败重复打开重新登录页面
           if (utils.getCurrentPageUrlWithArgs().indexOf('/loading/loading?need_login_again=1') < 0) {
@@ -756,20 +757,21 @@ Page({
           })
           // 如果为上下翻页，则不需要重新计算最大分页数
           if (self.data.overPage === 1) {
+            self.pageScrollTo({ scrollTop: 0, duration: 0 })
             self.setData({ loading: false })
-            return false
-          }
-          // 重新计算最大分页数
-          wx.createSelectorQuery()
-            .select('#content-out')
-            .boundingClientRect(function(rect) {
-              self.setData({
-                maxPageNum: Math.ceil(rect.height / parseInt(self.data.windows.windows_height - 20)),
-                loading: false,
-                hasGotMaxNum: true
+          } else {
+            // 重新计算最大分页数
+            wx.createSelectorQuery()
+              .select('#content-out')
+              .boundingClientRect(function(rect) {
+                self.setData({
+                  maxPageNum: Math.ceil(rect.height / parseInt(self.data.windows.windows_height - 20)),
+                  loading: false,
+                  hasGotMaxNum: true
+                })
               })
-            })
-            .exec()
+              .exec()
+          }
         } else if (res.data.authfail) {
           // 防止多个接口失败重复打开重新登录页面
           if (utils.getCurrentPageUrlWithArgs().indexOf('/loading/loading?need_login_again=1') < 0) {
@@ -826,14 +828,17 @@ Page({
           if (app.globalData.userInfo.setting && app.globalData.userInfo.setting.reader.overPage === 1) {
             wx.getSystemInfo({
               success: function(response) {
+                let top = res.data.scroll > 0 ? res.data.scroll : 0
                 self.setData({
-                  leftValue: res.data.scroll > 0 ? res.data.scroll : 0,
+                  leftValue: top,
                   windows: {
                     windows_height: response.windowHeight,
                     windows_width: response.windowWidth
                   },
                   loading: false
                 })
+                // 下滑到指定位置
+                wx.pageScrollTo({ scrollTop: top, duration: 0 })
               }
             })
           } else {
@@ -1030,22 +1035,23 @@ Page({
         })
         // 如果为上下翻页，则不需要重新计算最大分页数
         if (self.data.overPage === 1) {
-          return false
-        }
-        // 重新计算最大分页数
-        wx.createSelectorQuery()
-          .select('#content-out')
-          .boundingClientRect(function(rect) {
-            var maxPageNum = Math.ceil(rect.height / parseInt(self.data.windows.windows_height - 20))
-            self.setData({
-              maxPageNum: maxPageNum,
-              pageIndex: maxPageNum, // 往前翻页，讲pageIndex重置为最后一页
-              useTransition: false,
-              leftValue: -1 * (self.data.windows.windows_width - 10) * (maxPageNum - 1),
-              hasGotMaxNum: true
+          wx.pageScrollTo({ scrollTop: 0, duration: 0 })
+        } else {
+          // 重新计算最大分页数
+          wx.createSelectorQuery()
+            .select('#content-out')
+            .boundingClientRect(function(rect) {
+              var maxPageNum = Math.ceil(rect.height / parseInt(self.data.windows.windows_height - 20))
+              self.setData({
+                maxPageNum: maxPageNum,
+                pageIndex: maxPageNum, // 往前翻页，讲pageIndex重置为最后一页
+                useTransition: false,
+                leftValue: -1 * (self.data.windows.windows_width - 10) * (maxPageNum - 1),
+                hasGotMaxNum: true
+              })
             })
-          })
-          .exec()
+            .exec()
+        }
       } else if (res.data.authfail) {
         // 防止多个接口失败重复打开重新登录页面
         if (utils.getCurrentPageUrlWithArgs().indexOf('/loading/loading?need_login_again=1') < 0) {
@@ -1140,18 +1146,19 @@ Page({
         })
         // 如果为上下翻页，则不需要重新计算最大分页数
         if (self.data.overPage === 1) {
-          return false
-        }
-        // 重新计算最大分页数
-        wx.createSelectorQuery()
-          .select('#content-out')
-          .boundingClientRect(function(rect) {
-            self.setData({
-              maxPageNum: Math.ceil(rect.height / parseInt(self.data.windows.windows_height - 20)),
-              hasGotMaxNum: true
+          wx.pageScrollTo({ scrollTop: 0, duration: 0 })
+        } else {
+          // 重新计算最大分页数
+          wx.createSelectorQuery()
+            .select('#content-out')
+            .boundingClientRect(function(rect) {
+              self.setData({
+                maxPageNum: Math.ceil(rect.height / parseInt(self.data.windows.windows_height - 20)),
+                hasGotMaxNum: true
+              })
             })
-          })
-          .exec()
+            .exec()
+        }
       } else if (res.data.authfail) {
         // 防止多个接口失败重复打开重新登录页面
         if (utils.getCurrentPageUrlWithArgs().indexOf('/loading/loading?need_login_again=1') < 0) {

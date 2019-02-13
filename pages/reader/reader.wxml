@@ -24,7 +24,7 @@
 <view class="load-fail" wx:if="{{loadFail}}">
   <no-data style="height: 100%; position: relative;" text="章节加载失败" sub-text="网络可能出现点问题，点击重新获取" btn-text="重新获取" show-btn="true" bindbtnclick="loadAgain"></no-data>
 </view>
-<view class="container reader" style="background-color: {{colorStyle.content_bg}}">
+<view class="reader{{overPage === 0 ? ' overflow' : ''}}" style="background-color: {{colorStyle.content_bg}}">
   <block wx:if="{{overPage === 0}}">
 		<!-- 左右翻页模式 -->
 	  <view class="content" bind:touchstart="handletouchtart" bind:touchmove="handletouchmove" bind:touchend="handletouchend" style="height:{{windows.windows_height+'px'}}; box-sizing: border-box; padding: 10px; position: relative; top: -20px;">
@@ -36,14 +36,14 @@
   <block wx:else>
 	  <!-- 上下翻页模式 -->
 		<!--  upper-threshold="{{windows.windows_height}}" bindscrolltoupper="loadBefore" lower-threshold="{{windows.windows_height}}" bindscrolltolower="loadAfter" -->
- 	  <scroll-view id="content" class="content" bindtap="handleDownClick" enable-back-to-top="true" scroll-y="true" scroll-top="{{leftValue}}" style="height: 100vh; box-sizing: border-box; padding: 0 20rpx; position: relative; top: -12px;" lower-threshold="150" bindscrolltolower="loadAfter">
+ 	  <view id="content" class="content{{overPage === 0 ? ' overflow' : ''}}" bindtap="handleDownClick" style="height: 100vh; box-sizing: border-box; padding: 0 20rpx; position: relative; top: -12px;">
 			<text selectable="{{true}}" space="emsp" style="column-width: {{windows.windows_width+'px'}};font-family: {{currentFontFamily == '使用系统字体' ? 'inherit' : currentFontFamily}};font-size: {{allSliderValue.font + 'rpx'}}; color: {{colorStyle.styleNum == '4'? '#85898c': '#000800'}};">{{content}}</text>
 			<view class="chapter-btns">
 				<button class="btn1" style="color: {{colorStyle.button_font_color}}; background-color: {{colorStyle.button_bg}}" bindtap="loadNextChapter" data-control="no">下一章</button>
 				<button class="btn2" style="margin-right: 20rpx; color: {{colorStyle.button_font_color}}; background-color: {{colorStyle.button_bg}}" bindtap="loadPreChapter" data-control="no">上一章</button>
 				<button class="btn2" style="color: {{colorStyle.button_font_color}}; background-color: {{colorStyle.button_bg}}" bindtap="openMulu">打开目录</button>
 			</view>
-		</scroll-view>
+		</view>
 	</block>
 	<view class="tips" wx:if="{{showReaderTips}}" bindtap="closeReaderTips">
 		<text class="pre-page">上一页</text>

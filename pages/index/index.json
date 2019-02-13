@@ -5,6 +5,7 @@
   "navigationBarTextStyle": "white",
   "usingComponents": {
     "toast": "../../component/toast/toast",
+    "redpock": "../../component/redpock/redpock",
     "no-data": "../../component/nodata/nodata",
     "lazyload-img": "../../component/lazyload-img/lazyload-img",
     "modal": "../../component/modal/modal",
