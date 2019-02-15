@@ -286,8 +286,8 @@ Page({
         }
       },
       fail: err => {
-        utils.debug('接受邀请失败', err)
-        wx.showToast({ title: '接收邀请失败', icon: 'none', duration: 2000 })
+        utils.debug('获取应用设置失败', err)
+        wx.showToast({ title: '获取应用设置失败', icon: 'none', duration: 2000 })
         setTimeout(function() {
           wx.switchTab({ url: '../index/index' })
         }, 1000)

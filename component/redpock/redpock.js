@@ -1,8 +1,8 @@
 Component({
   properties: {
-    toast: {
-      type: Object,
-      value: { show: false, content: 'hello', position: 'bottom' }
+    text: {
+      type: String,
+      value: '送你一个红包'
     }
   },
   data: {

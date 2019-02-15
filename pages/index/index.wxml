@@ -7,7 +7,7 @@
 <!-- 悬浮框 -->
 <fixed-btn></fixed-btn>
 <!-- 红包 -->
-<redpock></redpock>
+<redpock wx:if="{{redpock.show}}" text="{{redpock.text}}" bindopen="openRedPock"></redpock>
 <view class="container index" scroll-y="true" wx:if="{{loaded}}">  
   <swiper class="swiper-box" wx:if="{{is_show_banner}}" indicator-dots="1" indicator-color="#ffffff" indicator-active-color="#a3a8f8" autoplay="1" interval="4000" duration="500" circular="true">
     <block wx:for="{{banner_urls}}" wx:key="item._id">

@@ -8,6 +8,6 @@
     <open-data class="avatar rotate" type="userAvatarUrl"></open-data>
   </view>
   <open-data class="name" type="userNickName"></open-data>
-  <view class="redpock-text">送你一个红包！</view>
+  <view class="redpock-text">{{text}}</view>
   <view class="btn {{opened ? 'rotate' : ''}}" bindtap="openIt">開</view>
 </view>

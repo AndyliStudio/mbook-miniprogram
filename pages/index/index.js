@@ -19,7 +19,7 @@ Page({
         showclose: true,
         showfooter: true,
         closeonclickmodal: true,
-        confirmText: ''
+        confirmText: '确认'
       }
     },
     banner_urls: [],
@@ -27,7 +27,11 @@ Page({
     themes: [],
     click_times: {}, // 换一批点击次数
     loaded: false,
-    shutChargeTips: false
+    shutChargeTips: false,
+    redpock: {
+      show: false,
+      text: ''
+    }
   },
   onLoad: function() {
     let self = this
@@ -35,6 +39,7 @@ Page({
     // 获取banner和栏目信息，使用promise来控制两个请求的同步
     let bannerP = self.getBanner()
     let themeP = self.getTheme()
+    self.getDialogSetting()
 
     // 当两个请求完成之后隐藏loading
     Promise.all([bannerP, themeP])
@@ -44,28 +49,6 @@ Page({
       .catch(err => {
         utils.debug('获取栏目或者banner信息失败', JSON.stringify(err))
       })
-
-    // 展示全局弹窗
-    const dialog = app.globalData.globalSetting ? app.globalData.globalSetting.index_dialog : ''
-    if (dialog && dialog.show === 'true') {
-      self.setData({
-        modal: {
-          show: true,
-          title: dialog.title,
-          content: dialog.content,
-          opacity: 0.6,
-          position: 'center',
-          width: '80%',
-          options: {
-            fullscreen: false,
-            showclose: true,
-            showfooter: true,
-            closeonclickmodal: true,
-            confirmText: dialog.confirmText || '确认'
-          }
-        }
-      })
-    }
   },
   // 设置分享
   onShareAppMessage: function(res) {
@@ -157,6 +140,54 @@ Page({
         }, 1000)
       })
   },
+  // 获取弹窗设置
+  getDialogSetting: function() {
+    wx.request({
+      method: 'GET',
+      url: config.base_url + '/api/wxapp/dialog',
+      success: res => {
+        if (res.data.ok) {
+          app.globalData.dialogSetting = res.data.dialog
+          // 展示首页弹窗
+          const dialog = res.data.dialog['index-dialog']
+          if (dialog && dialog.type === 'normal-text') {
+            this.setData({
+              'modal.show': true,
+              'modal.title': dialog.title || '温馨提示',
+              'modal.content': dialog.content
+            })
+          } else if (dialog && dialog.type === 'copy-text') {
+            this.setData({
+              'modal.show': true,
+              'modal.title': dialog.title || '温馨提示',
+              'modal.content': dialog.content
+            })
+          } else if (dialog && dialog.type === 'img') {
+            // TODO
+          }
+
+          // 红包
+          const redpock = res.data.dialog['redpock']
+          if (redpock && redpock.redpock_des) {
+            this.setData({
+              'redpock.show': true,
+              'redpock.text': redpock.redpock_des || '送你一个大红包！'
+            })
+          }
+        } else {
+          utils.debug('获取弹窗设置失败', res)
+          wx.showToast({ title: '获取弹窗设置失败' + (res.data.msg ? '，' + res.data.msg : ''), icon: 'none', duration: 2000 })
+        }
+      },
+      fail: err => {
+        utils.debug('获取弹窗设置失败', err)
+        wx.showToast({ title: '获取弹窗设置失败', icon: 'none', duration: 2000 })
+        setTimeout(function() {
+          wx.switchTab({ url: '../index/index' })
+        }, 1000)
+      }
+    })
+  },
   changeList: function(event) {
     let self = this
     let theme_id = event.currentTarget.dataset.themeid
@@ -201,14 +232,23 @@ Page({
     wx.navigateTo({ url: '../bookdetail/bookdetail?id=' + bookid + '&name=' + name })
   },
   handleModalConfirm: function() {
-    const dialog = app.globalData.globalSetting ? app.globalData.globalSetting.index_dialog : ''
-    if (dialog && dialog.show === 'true' && dialog.copyText) {
+    const dialog = app.globalData.dialogSetting ? app.globalData.dialogSetting['index-dialog'] : ''
+    if (dialog && dialog.type === 'copy-text' && dialog.copy) {
       wx.setClipboardData({
-        data: dialog.copyText,
+        data: dialog.copy,
         success: function(res) {
           wx.showToast({ title: '复制成功', icon: 'success' })
         }
       })
+    } else if (dialog && dialog.type === 'normal-text') {
+      wx.navigateTo({ url: dialog.jump_url  })
     }
+  },
+  openRedPock: function() {
+    this.setData({
+      'redpock.show': false
+    })
+    const redpock = app.globalData.dialogSetting ? app.globalData.dialogSetting['redpock'] : ''
+    wx.navigateTo({ url: redpock.jump_url  })
   }
 })
