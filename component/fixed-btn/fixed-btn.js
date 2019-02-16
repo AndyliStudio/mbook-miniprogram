@@ -8,16 +8,16 @@ Component({
   attached: function() {
     let showFixedBtn = false
     let imgUrl = ''
-    let setting = app.globalData.globalSetting.fixed_button
-    if (setting && setting.show === 'true') {
-      if (setting.only_index === 'true') {
+    const setting = app.globalData.dialogSetting['fixed-btn']
+    if (setting && setting.img_url) {
+      if (setting.only_index) {
         if (utils.getCurrentPageUrlWithArgs().indexOf('/index/index') > -1) {
           showFixedBtn = true
         }
       } else {
         showFixedBtn = true
       }
-      imgUrl = setting.img || ''
+      imgUrl = setting.img_url || ''
     }
     this.setData({
       showFixedBtn: showFixedBtn,
@@ -27,17 +27,13 @@ Component({
   methods: {
     handleClick: function(event) {
       // wx.navigateTo({ url: '/pages/loading/loading?code=_94IVfPQ4_1539963531582' })
-      const setting = app.globalData.globalSetting.fixed_button
-      if (!setting || setting.show !== 'true') {
+      const setting = app.globalData.dialogSetting['fixed-btn']
+      if (!setting || !setting.img_url) {
         return false
       }
       // 自定义微信统计事件--click_fixed_button
       wx.reportAnalytics('click_fixed_button', { time: +new Date() })
-      if (setting.function === 'gotoH5Page') {
-        wx.navigateTo({ url: '/pages/webpage/webpage?url=' + setting.url })
-      } else if (setting.function === 'gotoXcxPage') {
-        wx.navigateTo({ url: setting.url })
-      }
+      if (setting.jump_type !== 'none') wx.navigateTo({ url: setting.jump_url  })
     }
   }
 })

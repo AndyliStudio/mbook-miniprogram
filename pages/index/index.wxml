@@ -5,7 +5,7 @@
   <view class="des">{{modal.content}}</view>
 </modal>
 <!-- 悬浮框 -->
-<fixed-btn></fixed-btn>
+<fixed-btn wx:if="{{showFixedBtn}}"></fixed-btn>
 <!-- 红包 -->
 <redpock wx:if="{{redpock.show}}" text="{{redpock.text}}" bindopen="openRedPock"></redpock>
 <view class="container index" scroll-y="true" wx:if="{{loaded}}">  

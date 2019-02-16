@@ -31,7 +31,8 @@ Page({
     redpock: {
       show: false,
       text: ''
-    }
+    },
+    showFixedBtn: false
   },
   onLoad: function() {
     let self = this
@@ -174,6 +175,14 @@ Page({
               'redpock.text': redpock.redpock_des || '送你一个大红包！'
             })
           }
+
+          // 悬浮框
+          const fixedBtn = res.data.dialog['fixed-btn']
+          if (fixedBtn && fixedBtn.img_url) {
+            this.setData({
+              'showFixedBtn': true
+            })
+          }
         } else {
           utils.debug('获取弹窗设置失败', res)
           wx.showToast({ title: '获取弹窗设置失败' + (res.data.msg ? '，' + res.data.msg : ''), icon: 'none', duration: 2000 })
@@ -241,7 +250,7 @@ Page({
         }
       })
     } else if (dialog && dialog.type === 'normal-text') {
-      wx.navigateTo({ url: dialog.jump_url  })
+      if (dialog.jump_type !== 'none') wx.navigateTo({ url: dialog.jump_url  })
     }
   },
   openRedPock: function() {
@@ -249,6 +258,6 @@ Page({
       'redpock.show': false
     })
     const redpock = app.globalData.dialogSetting ? app.globalData.dialogSetting['redpock'] : ''
-    wx.navigateTo({ url: redpock.jump_url  })
+    if (redpock.jump_type !== 'none') wx.navigateTo({ url: redpock.jump_url  })
   }
 })
