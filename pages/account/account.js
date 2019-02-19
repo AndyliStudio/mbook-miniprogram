@@ -1,6 +1,5 @@
 // pages/user/user.js
 const config = require('../../config')
-const util = require('../../utils/util')
 const app = getApp()
 
 Page({
@@ -84,12 +83,10 @@ Page({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
-          util.debug('获取奖励和充值记录失败', res)
           self.showToast('获取奖励和充值记录失败', 'bottom')
         }
       },
       fail: err => {
-        util.debug('获取奖励和充值记录失败', err)
         self.showToast('获取奖励和充值记录失败', 'bottom')
       }
     })
@@ -117,12 +114,10 @@ Page({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
-          util.debug('获取奖励和充值记录失败', res)
           self.showToast('获取奖励和充值记录失败', 'bottom')
         }
       },
       fail: err => {
-        util.debug('获取奖励和充值记录失败', err)
         self.showToast('获取奖励和充值记录失败', 'bottom')
       }
     })
@@ -141,12 +136,10 @@ Page({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
-          util.debug('获取书币数量失败', res)
           self.showToast('获取书币数量失败', 'bottom')
         }
       },
       fail: err => {
-        util.debug('获取书币数量失败', err)
         self.showToast('获取书币数量失败', 'bottom')
       }
     })

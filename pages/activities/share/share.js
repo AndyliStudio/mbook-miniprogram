@@ -1,6 +1,5 @@
 // pages/setting/webpage.js
 const config = require('../../../config')
-const utils = require('../../../utils/util')
 const app = getApp()
 
 Page({
@@ -86,7 +85,7 @@ Page({
             url: '../../loading/loading?need_login_again=1'
           })
         } else {
-          utils.debug('接受邀请失败', res)
+          
           if (res.data.inviteself) {
             return false
           }
@@ -94,7 +93,7 @@ Page({
         }
       },
       fail: err => {
-        utils.debug('接受邀请失败', err)
+        
         self.showToast('接收邀请失败', 'bottom')
         // 自动重新尝试
         setTimeout(function() {
@@ -134,13 +133,13 @@ Page({
             url: '../../loading/loading?need_login_again=1'
           })
         } else {
-          utils.debug('获取分享信息失败', res)
+          
           self.showToast('获取奖励信息失败', 'bottom')
         }
       },
       fail: err => {
         wx.hideLoading()
-        utils.debug('获取分享信息失败', err)
+        
         self.showToast('获取奖励信息失败', 'bottom')
       }
     })
@@ -221,12 +220,12 @@ Page({
               }, 2000)
             },
             fail: function(err) {
-              utils.debug('保存图片失败', err)
+              
               self.showToast('保存图片失败', 'bottom')
             }
           })
         } else {
-          utils.debug('下载图片失败', res)
+          
           self.showToast('下载图片失败', 'bottom')
         }
       }
@@ -287,12 +286,12 @@ Page({
                 url: '../../loading/loading?need_login_again=1'
               })
             } else {
-              utils.debug('获取分享朋友圈二维码失败', res)
+              
               self.showToast('获取分享朋友圈二维码失败', 'bottom')
             }
           },
           fail: err => {
-            utils.debug('获取分享朋友圈二维码失败', err)
+            
             self.showToast('获取分享朋友圈二维码失败', 'bottom')
           }
         })

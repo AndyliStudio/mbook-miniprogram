@@ -1,6 +1,5 @@
 // pages/setting/charge.js
 const config = require('../../config')
-const utils = require('../../utils/util')
 const app = getApp()
 
 Page({
@@ -65,12 +64,12 @@ Page({
           })
           self.setData({ prises: prises })
         } else {
-          utils.debug('获取充值商品失败', res)
+          
           self.showToast('获取充值商品失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
       },
       fail: err => {
-        utils.debug('获取充值商品失败', err)
+        
         self.showToast('获取充值商品失败', 'bottom')
       }
     })
@@ -190,13 +189,13 @@ Page({
           })
         } else {
           wx.hideLoading()
-          utils.debug('请求支付参数失败', res)
+          
           self.showToast('请求支付参数失败', 'bottom')
         }
       },
       fail: err => {
         wx.hideLoading()
-        utils.debug('请求支付参数失败', err)
+        
         self.showToast('请求支付参数失败', 'bottom')
       }
     })

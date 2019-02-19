@@ -1,7 +1,6 @@
 // pages/setting/setting.js
 
 const config = require('../../config')
-const utils = require('../../utils/util')
 const app = getApp()
 
 Page({
@@ -89,12 +88,12 @@ Page({
               url: '../loading/loading?need_login_again=1'
             })
           } else {
-            utils.debug('获取设置失败', res)
+            
             self.showToast('获取设置失败', 'bottom')
           }
         },
         fail: err => {
-          utils.debug('获取设置失败', err)
+          
           self.showToast('获取设置失败', 'bottom')
         }
       })
@@ -121,12 +120,12 @@ Page({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
-          utils.debug('更新设置失败', res)
+          
           self.showToast('更新设置失败', 'bottom')
         }
       },
       fail: err => {
-        utils.debug('更新设置失败', err)
+        
         self.showToast('更新设置失败', 'bottom')
       }
     })

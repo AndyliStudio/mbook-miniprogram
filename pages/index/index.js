@@ -1,6 +1,4 @@
 const config = require('../../config')
-const Promise = require('../../utils/bluebird.min')
-const utils = require('../../utils/util')
 const app = getApp()
 
 Page({
@@ -48,7 +46,7 @@ Page({
         self.setData({ loaded: true })
       })
       .catch(err => {
-        utils.debug('获取栏目或者banner信息失败', JSON.stringify(err))
+        
       })
   },
   // 设置分享
@@ -98,7 +96,7 @@ Page({
       })
       .catch(err => {
         self.setData({ is_show_banner: false })
-        utils.debug('获取banner失败', err)
+        
         // 自动重新尝试
         setTimeout(function() {
           self.getBanner()
@@ -135,7 +133,7 @@ Page({
         })
       })
       .catch(err => {
-        utils.debug('获取栏目信息失败', err)
+        
         setTimeout(function() {
           self.getTheme()
         }, 1000)
@@ -184,12 +182,12 @@ Page({
             })
           }
         } else {
-          utils.debug('获取弹窗设置失败', res)
+          
           wx.showToast({ title: '获取弹窗设置失败' + (res.data.msg ? '，' + res.data.msg : ''), icon: 'none', duration: 2000 })
         }
       },
       fail: err => {
-        utils.debug('获取弹窗设置失败', err)
+        
         wx.showToast({ title: '获取弹窗设置失败', icon: 'none', duration: 2000 })
         setTimeout(function() {
           wx.switchTab({ url: '../index/index' })
@@ -224,12 +222,12 @@ Page({
             }
           } else {
             // 隐藏banner
-            utils.debug('更新栏目失败', res)
+            
             self.showToast('更新栏目失败', 'bottom')
           }
         },
         fail: function(err) {
-          utils.debug('更新栏目失败', err)
+          
           self.showToast('更新栏目失败', 'bottom')
         }
       })

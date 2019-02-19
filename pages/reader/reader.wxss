@@ -1,7 +1,3 @@
-page {
-  height: 100%;
-}
-
 .load-fail {
   height: 100%;
   position: relative;
@@ -31,14 +27,11 @@ page {
   font-size: 30rpx;
 }
 
-.reader .content {
+.content {
   display: block;
   box-sizing: border-box;
   position: relative;
   -webkit-overflow-scrolling: touch;
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
-  will-change: transform;
 }
 
 .overflow {
@@ -46,14 +39,11 @@ page {
   overflow: hidden;
 }
 
-.reader .content text {
+.content text {
   line-height: 70rpx;
   position: relative;
   display: block;
   text-align: justify;
-  /* transition: left 0.5s;
-  -webkit-transition: left 0.5s; */
-  transition-timing-function: ease;
 }
 
 ::-webkit-scrollbar {
@@ -63,8 +53,8 @@ page {
 }
 
 /* 提示样式 */
-.reader .tips {
-  position: absolute;
+.tips {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -78,19 +68,19 @@ page {
   align-items: center;
 }
 
-.reader .tips text {
+.tips text {
   text-align: center;
   color: #fff;
   font-size: 32rpx;
 }
 
-.reader .tips .show-bar {
+.tips .show-bar {
   text-align: center;
   color: #fff;
   font-size: 32rpx;
 }
 
-.reader .tips .show-bar .iconfont {
+.tips .show-bar .iconfont {
   font-size: 40rpx;
   vertical-align: middle;
   color: #fff;
@@ -98,8 +88,8 @@ page {
 }
 
 /* 提示样式 */
-.reader .buy {
-  position: absolute;
+.buy {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -109,7 +99,7 @@ page {
   text-align: center;
 }
 
-.reader .buy-inner {
+.buy-inner {
   width: 100%;
   margin-top: 200rpx;
   height: calc(100% - 200rpx);
@@ -120,7 +110,7 @@ page {
   position: relative;
 }
 
-.reader .buy-inner button {
+.buy-inner button {
   position: absolute;
   width: 90%;
   left: 5%;
@@ -132,28 +122,28 @@ page {
   font-size: 36rpx;
 }
 
-.reader .buy-inner .buy-btn {
+.buy-inner .buy-btn {
   bottom: 460rpx;
 }
 
-.reader .buy-inner .buy-total {
+.buy-inner .buy-total {
   bottom: 320rpx;
 }
 
-.reader .buy-inner .share-btn {
+.buy-inner .share-btn {
   bottom: 180rpx;
 }
 
-.reader .buy-inner .cancel-btn {
+.buy-inner .cancel-btn {
   bottom: 40rpx;
   color: #f72528;
 }
 
 /* 底部控制条的样式 */
 
-.reader .control {
+.control {
   height: 110rpx;
-  position: absolute;
+  position: fixed;
   z-index: 2;
   bottom: 0;
   left: 0;
@@ -165,12 +155,12 @@ page {
   box-sizing: border-box;
 }
 
-.reader .control-item {
+.control-item {
   height: 100%;
   width: 100rpx;
 }
 
-.reader .control-item .iconfont {
+.control-item .iconfont {
   display: inline-block;
   width: 100%;
   height: 100%;
@@ -181,21 +171,21 @@ page {
   text-align: center;
 }
 
-.reader .control-item .iconfont.blod {
+.control-item .iconfont.blod {
   font-weight: bold;
 }
 
-.reader .control-item .iconfont.icon-vertical-slide,
-.reader .control-item .iconfont.icon-tubiao1diaozhengjindu {
+.control-item .iconfont.icon-vertical-slide,
+.control-item .iconfont.icon-tubiao1diaozhengjindu {
   font-size: 58rpx;
 }
 
-.reader .control-item .iconfont.icon-tubiao1diaozhengjindu {
+.control-item .iconfont.icon-tubiao1diaozhengjindu {
   position: relative;
   top: 2rpx;
 }
 
-.reader .control-btns {
+.control-btns {
   height: 120rpx;
   line-height: 120rpx;
   display: flex;
@@ -205,7 +195,7 @@ page {
   align-items: center;
 }
 
-.reader .control-btns button {
+.control-btns button {
   width: 180rpx;
   height: 60rpx;
   line-height: 60rpx;
@@ -213,21 +203,21 @@ page {
   font-size: 24rpx;
 }
 
-.reader .control-detail {
+.control-detail {
   height: 320rpx;
   width: 100%;
-  position: absolute;
+  position: fixed;
   bottom: 110rpx;
   left: 0;
 }
 
-.reader .control-detail > view {
+.control-detail > view {
   width: 100%;
   position: absolute;
   display: none;
 }
 
-.reader .control-detail .jingdu {
+.control-detail .jingdu {
   position: relative;
   text-align: center;
   font-size: 24rpx;
@@ -235,7 +225,7 @@ page {
   height: 110rpx;
 }
 
-.reader .faction {
+.faction {
   color: #333;
   font-size: 30rpx;
 }
@@ -264,17 +254,17 @@ page {
   width: 60rpx;
 }
 
-.reader .nameAndNum {
+.nameAndNum {
   text-align: center;
   padding-top: 18rpx;
 }
 
-.reader .jingdu-num {
+.jingdu-num {
   position: relative;
   top: 8rpx;
 }
 
-.reader .brightness {
+.brightness {
   display: -webkit-flex;
   display: flex;
   flex-flow: row nowrap;
@@ -283,7 +273,7 @@ page {
   align-items: center;
 }
 
-.reader .brightness .iconfont {
+.brightness .iconfont {
   display: inline-block;
   width: 72rpx;
   text-align: center;
@@ -292,16 +282,16 @@ page {
   top: -2rpx;
 }
 
-.reader .brightness .iconfont.bigger {
+.brightness .iconfont.bigger {
   font-size: 48rpx;
   top: -3rpx;
 }
 
-.reader .brightness .bright-slider {
+.brightness .bright-slider {
   flex: 1;
 }
 
-.reader .color-select {
+.color-select {
   display: -webkit-flex;
   display: flex;
   flex-flow: row nowrap;
@@ -310,14 +300,14 @@ page {
   box-sizing: border-box;
 }
 
-.reader .color-select .color-item {
+.color-select .color-item {
   width: 150rpx;
   height: 50rpx;
   border-radius: 8rpx;
   text-align: center;
 }
 
-.reader .color-select .icon-yueliang {
+.color-select .icon-yueliang {
   display: inline-block;
   position: relative;
   top: -12rpx;
@@ -340,7 +330,7 @@ page {
   background-color: #202930;
 }
 
-.reader .font-detail {
+.font-detail {
   display: -webkit-flex;
   flex-flow: column nowrap;
   justify-content: space-between;
@@ -349,7 +339,7 @@ page {
   box-sizing: border-box;
 }
 
-.reader .fontSize {
+.fontSize {
   display: -webkit-flex;
   display: flex;
   flex-flow: row nowrap;
@@ -359,7 +349,7 @@ page {
   height: 60rpx;
 }
 
-.reader .fontSize .iconfont {
+.fontSize .iconfont {
   font-size: 48rpx;
   display: inline-block;
   width: 72rpx;
@@ -369,15 +359,15 @@ page {
   top: -6rpx;
 }
 
-.reader .fontSize .iconfont.small {
+.fontSize .iconfont.small {
   font-size: 36rpx;
 }
 
-.reader .fontSize .font-slider {
+.fontSize .font-slider {
   flex: 1;
 }
 
-.reader .fontSelector {
+.fontSelector {
   height: 120rpx;
   line-height: 120rpx;
   text-align: center;
@@ -385,13 +375,13 @@ page {
   font-size: 32rpx;
 }
 
-.reader .fontSelector > text {
+.fontSelector > text {
   height: 100%;
   width: 100%;
   line-height: 100%;
 }
 
-.reader .fontDetail {
+.fontDetail {
   position: absolute;
   top: -120rpx;
   z-index: 1000;
@@ -403,33 +393,33 @@ page {
   font-size: 28rpx;
 }
 
-.reader .fontDetail .allItem {
+.fontDetail .allItem {
   overflow: auto;
   height: 200rpx;
 }
 
-.reader .fontDetail .font-item {
+.fontDetail .font-item {
   height: 70rpx;
   position: relative;
   line-height: 70rpx;
 }
 
-.reader .fontDetail .font-item text {
+.fontDetail .font-item text {
   display: inline-block;
 }
 
-.reader .fontDetail .font-item icon {
+.fontDetail .font-item icon {
   position: absolute;
   top: 70%;
   transform: translateY(-50%);
   right: 10rpx;
 }
 
-.reader .fontDetail .font-item:last-child {
+.fontDetail .font-item:last-child {
   border-bottom: none;
 }
 
-.reader .fontDetail .font-title {
+.fontDetail .font-title {
   text-align: left;
   height: 75rpx;
   line-height: 60rpx;
@@ -437,7 +427,7 @@ page {
   /* border-bottom:1px solid #1a1e21; */
 }
 
-.reader .fontDetail .font-title .iconfont {
+.fontDetail .font-title .iconfont {
   margin-right: 15rpx;
 }
 
@@ -708,12 +698,13 @@ page {
 }
 
 /* 上下滑动翻页模式样式 */
-.reader .chapter-btns {
+.chapter-btns {
   text-align: center;
-  margin-top: 30rpx;
-  margin-bottom: 50rpx;
+  padding-top: 30rpx;
+  padding-bottom: 30rpx;
 }
-.reader .chapter-btns button {
+
+.chapter-btns button {
   height: 80rpx;
   line-height: 80rpx;
   box-sizing: border-box;
@@ -722,11 +713,12 @@ page {
   font-size: 36rpx;
 }
 
-.reader .chapter-btns .btn1 {
+.chapter-btns .btn1 {
   width: 90%;
   margin: 0 auto 20rpx auto;
 }
-.reader .chapter-btns .btn2 {
+
+.chapter-btns .btn2 {
   width: 43.5%;
   display: inline-block;
 }

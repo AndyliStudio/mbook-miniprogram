@@ -1,6 +1,5 @@
 // pages/user/user.js
 const config = require('../../../config')
-const utils = require('../../../utils/util')
 const app = getApp()
 
 Page({
@@ -115,13 +114,11 @@ Page({
             self.showToast('获取分享参数失败', 'bottom')
           }
         } else {
-          utils.debug('获取助力参数失败', res)
           self.showToast('获取分享参数失败', 'bottom')
         }
       },
       fail: function(err) {
         console.warn(err)
-        utils.debug('获取助力参数失败', err)
         self.showToast('获取分享参数失败', 'bottom')
         reject(false)
       }
@@ -143,12 +140,10 @@ Page({
           })
         } else {
           self.setData({ loading: false, loadFail: true })
-          utils.debug('获取助力书籍失败', res)
         }
       },
       fail: err => {
         self.setData({ loading: false, loadFail: true })
-        utils.debug('获取助力书籍失败', err)
       }
     })
   },
@@ -176,13 +171,13 @@ Page({
           })
         } else {
           self.showToast('获取助力书籍失败', 'bottom')
-          utils.debug('获取助力书籍失败', res)
+          
         }
       },
       fail: err => {
         wx.hideLoading()
         self.showToast('获取助力书籍失败', 'bottom')
-        utils.debug('获取助力书籍失败', err)
+        
       }
     })
   },

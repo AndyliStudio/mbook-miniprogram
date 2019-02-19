@@ -50,11 +50,11 @@ App({
       header: { Authorization: 'Bearer ' + self.globalData.token },
       success: function(res) {
         if (!res.data.ok) {
-          utils.debug('提交formId失败', res)
+          
         }
       },
       fail: function(err) {
-        utils.debug('提交formId失败', err)
+        
       }
     })
   },
@@ -70,7 +70,7 @@ App({
     }, 300)
   },
   onError: function(error) {
-    utils.debug('小程序错误', error)
+    
   },
   globalData: {
     token: '',

@@ -1,6 +1,5 @@
 // pages/user/user.js
 const config = require('../../config')
-const utils = require('../../utils/util')
 const app = getApp()
 
 Page({
@@ -23,12 +22,12 @@ Page({
         if (res.data.ok) {
           self.setData({ minute: res.data.minute, num: res.data.num })
         } else {
-          utils.debug('获取阅读时长失败', res)
+          
           self.showToast('获取阅读时长失败', 'bottom')
         }
       },
       fail: err => {
-        utils.debug('获取阅读时长失败', err)
+        
         self.showToast('获取阅读时长失败', 'bottom')
       }
     })
@@ -51,12 +50,12 @@ Page({
               url: '../loading/loading?need_login_again=1'
             })
           } else {
-            utils.debug('时长兑换书币失败', res)
+            
             self.showToast('时长兑换书币失败', 'bottom')
           }
         },
         fail: err => {
-          utils.debug('时长兑换书币失败', err)
+          
           self.showToast('时长兑换书币失败', 'bottom')
         }
       })

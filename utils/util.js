@@ -1,10 +1,3 @@
-// const Raven = require('./raven.min.js')
-// Raven.config('https://542d0e319d474f619ec53c9b24b9f978@sentry.io/1311196', {
-//   release: 'v1.11.0',
-//   environment: 'production', // 指定为production才会上报
-//   allowDuplicates: true, // 允许相同错误重复上报
-//   sampleRate: 0.5 // 采样率
-// }).install()
 /**
  * 格式化日期，转变成'2017/11/19 00:00:00'
  */
@@ -83,15 +76,6 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
-/*
- * 微信小程序错误上报函数
- */
-const debug = (name = '小程序错误', message = {}) => {
-  // Raven.setExtraContext({ message })
-  // Raven.captureException(name, { level: 'error' })
-  return
-}
-
 /**
  * 判断当前字符串是否json字符串
  */
@@ -126,7 +110,6 @@ module.exports = {
   transDate: transDate,
   getCurrentPages: getCurrentPageUrl,
   getCurrentPageUrlWithArgs: getCurrentPageUrlWithArgs,
-  debug: debug,
   isJsonString: isJsonString,
   copyObject: copyObject
 }

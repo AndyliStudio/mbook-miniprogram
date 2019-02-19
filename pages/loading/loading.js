@@ -1,7 +1,6 @@
 // pages/user/user.js
 const config = require('../../config')
 const utils = require('../../utils/util')
-const Promise = require('../../utils/bluebird.min')
 const app = getApp()
 
 Page({
@@ -34,13 +33,13 @@ Page({
           if (res.code) {
             resolve(res.code)
           } else {
-            utils.debug('调用wx.login失败', res)
+            
             this.setData({ buttonType: 'reLogin' })
             reject(false)
           }
         },
         fail: function(err) {
-          utils.debug('调用wx.login失败', err)
+          
           this.setData({ buttonType: 'reLogin' })
           reject(false)
         }
@@ -55,13 +54,13 @@ Page({
           if (res.userInfo) {
             resolve(res.userInfo)
           } else {
-            utils.debug('调用wx.getUserInfo失败', res)
+            
             this.setData({ buttonType: 'getUserInfo' })
             reject(false)
           }
         },
         fail: err => {
-          utils.debug('调用wx.getUserInfo失败', err)
+          
           this.setData({ buttonType: 'getUserInfo' })
           reject(false)
         }
@@ -104,7 +103,7 @@ Page({
         }
       })
       .catch(err => {
-        utils.debug('登录失败', err)
+        
         wx.showToast({ title: '当前阅读人数可能过多\n请点击下方登录按钮尝试重新登录', icon: 'none', duration: 2000 })
         this.setData({ loading: false, text: '', success: false })
       })
@@ -160,14 +159,14 @@ Page({
                     reject(false)
                   })
               } else {
-                utils.debug('登录失败', res)
+                
                 wx.showToast({ title: '登录失败' + (res.data.msg ? '，' + res.data.msg : ''), icon: 'none', duration: 2000 })
                 this.setData({ buttonType: 'reLogin' })
                 reject(false)
               }
             },
             fail: err => {
-              utils.debug('登录失败', err)
+              
               wx.showToast({ title: '当前阅读人数可能过多\n请点击下方登录按钮尝试重新登录', icon: 'none', duration: 2000 })
               this.setData({ buttonType: 'reLogin' })
               reject(false)
@@ -208,14 +207,14 @@ Page({
                   this.setData({ text: '遇见你，真高兴~' })
                   resolve(true)
                 } else {
-                  utils.debug('注册失败', res)
+                  
                   wx.showToast({ title: '注册失败' + (res.data.msg ? '，' + res.data.msg : ''), icon: 'none', duration: 2000 })
                   this.setData({ buttonType: 'reLogin' })
                   reject(false)
                 }
               },
               fail: err => {
-                utils.debug('注册失败', err)
+                
                 wx.showToast({ title: '当前阅读人数可能过多\n请点击下方登录按钮尝试重新登录', icon: 'none', duration: 2000 })
                 this.setData({ buttonType: 'reLogin' })
                 reject(false)
@@ -242,7 +241,7 @@ Page({
             url: '../../loading/loading?need_login_again=1'
           })
         } else {
-          utils.debug('接受邀请失败', res)
+          
           if (!res.data.inviteself) {
             wx.showToast({ title: '接收邀请失败' + (res.data.msg ? '，' + res.data.msg : ''), icon: 'none', duration: 2000 })
           }
@@ -253,7 +252,7 @@ Page({
         }, 1000)
       },
       fail: err => {
-        utils.debug('接受邀请失败', err)
+        
         wx.showToast({ title: '接收邀请失败', icon: 'none', duration: 2000 })
         setTimeout(function() {
           wx.switchTab({ url: '../index/index' })
@@ -281,12 +280,12 @@ Page({
             url: '../../loading/loading?need_login_again=1'
           })
         } else {
-          utils.debug('获取应用设置失败', res)
+          
           wx.showToast({ title: '获取应用设置失败' + (res.data.msg ? '，' + res.data.msg : ''), icon: 'none', duration: 2000 })
         }
       },
       fail: err => {
-        utils.debug('获取应用设置失败', err)
+        
         wx.showToast({ title: '获取应用设置失败', icon: 'none', duration: 2000 })
         setTimeout(function() {
           wx.switchTab({ url: '../index/index' })
