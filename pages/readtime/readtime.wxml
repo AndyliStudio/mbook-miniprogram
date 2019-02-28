@@ -1,4 +1,3 @@
-<toast toast="{{toast}}"></toast>
 <fixed-btn></fixed-btn>
 <view class="read-time">
 	<view class="panel">

@@ -1,9 +1,5 @@
 <!--index.wxml-->
 <toast toast="{{toast}}"></toast>
-<!-- 弹窗 -->
-<modal class="index-modal" data-model="modal.show" hidden="{{!modal || !modal.show}}" visible="{{modal.show}}" title="{{modal.title}}" position="{{modal.position}}" fullscreen="{{modal.options.fullscreen}}" opacity="{{modal.opacity}}" show-close="{{modal.options.showclose}}" show-footer="{{modal.options.showfooter}}" close-on-click-modal="{{modal.options.closeonclickmodal}}" confirm-text="{{modal.options.confirmText}}" bindconfirm="handleModalConfirm">
-  <view class="des">{{modal.content}}</view>
-</modal>
 <!-- 悬浮框 -->
 <fixed-btn wx:if="{{showFixedBtn}}"></fixed-btn>
 <!-- 红包 -->
@@ -13,7 +9,7 @@
     <block wx:for="{{banner_urls}}" wx:key="item._id">
       <swiper-item>
         <navigator url="{{item.url}}">
-          <image src="{{item.img_url}}" class="slide-image" lazy-load="1"></image>
+          <image src="{{item.img_url}}" class="slide-image"></image>
         </navigator>
       </swiper-item>
     </block>
@@ -62,7 +58,7 @@
       </view>
     </navigator>
   </view>
-  <view class="theme" wx:if="{{themes.length > 0 ? true : false}}" wx:for="{{themes}}" wx:key="item._id">
+  <view class="theme" wx:if="{{themes.length > 0 ? true : false}}" wx:for="{{themes}}" wx:key="item._id" wx:for-index="index">
     <view class="theme-title">
       <icon class="iconfont icon-hengxian"></icon>
       {{item.name}}
@@ -71,8 +67,7 @@
     </view>
     <view class="{{'layout' + item.layout}}">
       <view class="{{'book-item item' + bookIndex}}" wx:for="{{item.books}}" wx:for-index="bookIndex" wx:for-item="bookItem" wx:key="bookItem._id" data-bookid="{{bookItem._id}}" data-name="{{bookItem.name}}" bindtap="gotoDetail">
-        <lazyload-img class="book-img" src="{{bookItem.img_url}}"></lazyload-img>
-        <!-- <image class="book-img fade-in" src="../../static/img/book-loading.svg"></image> -->
+        <image class="book-img {{'img-' + index + '-' + bookIndex}}" data-index="{{index + '-' + bookIndex}}" src="{{bookItem.show ? bookItem.img_url : 'https://fs.andylistudio.com/mbook/book-loading.svg'}}"></image>
         <view class="book-info">
           <text class="book-name">{{bookItem.name}}</text>
           <text class="book-des">{{bookItem.des}}</text>

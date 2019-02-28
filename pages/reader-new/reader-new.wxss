@@ -1,0 +1,65 @@
+.reader {
+  padding: 30rpx;
+  color: #272727;
+  background: #f7f7f7;
+  min-height: 100vh;
+}
+
+.reader .header-info {
+  font-size: 40rpx;
+  margin-bottom: 60rpx;
+  font-weight: bold;
+}
+
+.reader .content {
+  font-size: 36rpx;
+  line-height: 54rpx;
+  text-indent:50rpx;
+  user-select: none;
+}
+
+.reader .bottom-btn {
+  display: flex;
+  display: -webkit-flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.reader .bottom-btn {
+  margin-top: 60rpx;
+}
+
+.reader .bottom-btn > button {
+  background: #ffffff;
+  width: 200rpx;
+  padding: 20rpx;
+  font-size: 30rpx;
+  line-height: 1;
+}
+
+.reader button::after {
+  content: '';
+  border: none;
+}
+
+.reader .loading {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  background: #f7f7f7;
+}
+
+.reader .loading > image {
+  height: 200rpx;
+  width: 200rpx;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -130rpx;
+  margin-left: -130rpx;
+}
+
+.reader .menu {
+  
+}

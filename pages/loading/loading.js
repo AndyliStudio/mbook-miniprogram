@@ -29,17 +29,15 @@ Page({
     return new Promise((resolve, reject) => {
       // 微信登录
       wx.login({
-        success: function(res) {
+        success: res => {
           if (res.code) {
             resolve(res.code)
           } else {
-            
             this.setData({ buttonType: 'reLogin' })
             reject(false)
           }
         },
-        fail: function(err) {
-          
+        fail: err => {
           this.setData({ buttonType: 'reLogin' })
           reject(false)
         }
@@ -54,13 +52,11 @@ Page({
           if (res.userInfo) {
             resolve(res.userInfo)
           } else {
-            
             this.setData({ buttonType: 'getUserInfo' })
             reject(false)
           }
         },
         fail: err => {
-          
           this.setData({ buttonType: 'getUserInfo' })
           reject(false)
         }
@@ -97,13 +93,10 @@ Page({
           }
         } else {
           // 重新登录后返回上一页
-          wx.navigateBack({
-            delta: 1
-          })
+          wx.navigateBack({ delta: 1 })
         }
       })
       .catch(err => {
-        
         wx.showToast({ title: '当前阅读人数可能过多\n请点击下方登录按钮尝试重新登录', icon: 'none', duration: 2000 })
         this.setData({ loading: false, text: '', success: false })
       })
@@ -159,14 +152,12 @@ Page({
                     reject(false)
                   })
               } else {
-                
                 wx.showToast({ title: '登录失败' + (res.data.msg ? '，' + res.data.msg : ''), icon: 'none', duration: 2000 })
                 this.setData({ buttonType: 'reLogin' })
                 reject(false)
               }
             },
             fail: err => {
-              
               wx.showToast({ title: '当前阅读人数可能过多\n请点击下方登录按钮尝试重新登录', icon: 'none', duration: 2000 })
               this.setData({ buttonType: 'reLogin' })
               reject(false)
@@ -207,14 +198,12 @@ Page({
                   this.setData({ text: '遇见你，真高兴~' })
                   resolve(true)
                 } else {
-                  
                   wx.showToast({ title: '注册失败' + (res.data.msg ? '，' + res.data.msg : ''), icon: 'none', duration: 2000 })
                   this.setData({ buttonType: 'reLogin' })
                   reject(false)
                 }
               },
               fail: err => {
-                
                 wx.showToast({ title: '当前阅读人数可能过多\n请点击下方登录按钮尝试重新登录', icon: 'none', duration: 2000 })
                 this.setData({ buttonType: 'reLogin' })
                 reject(false)
@@ -241,7 +230,6 @@ Page({
             url: '../../loading/loading?need_login_again=1'
           })
         } else {
-          
           if (!res.data.inviteself) {
             wx.showToast({ title: '接收邀请失败' + (res.data.msg ? '，' + res.data.msg : ''), icon: 'none', duration: 2000 })
           }
@@ -252,7 +240,6 @@ Page({
         }, 1000)
       },
       fail: err => {
-        
         wx.showToast({ title: '接收邀请失败', icon: 'none', duration: 2000 })
         setTimeout(function() {
           wx.switchTab({ url: '../index/index' })
@@ -285,9 +272,8 @@ Page({
         }
       },
       fail: err => {
-        
         wx.showToast({ title: '获取应用设置失败', icon: 'none', duration: 2000 })
-        setTimeout(function() {
+        setTimeout(() => {
           wx.switchTab({ url: '../index/index' })
         }, 1000)
       }

@@ -67,10 +67,10 @@
 		<icon class="iconfont icon-liebiao  {{control.target == 'mulu'? 'blod': ''}}" style="color: {{colorStyle.control_fontColor}}"></icon>
 	</view>
 	<view class="control-item" data-control="jingdu" bindtap="gotoControlDetail">
-		<icon class="{{control.target == 'jingdu'? 'iconfont icon-vertical-slide blod': 'iconfont icon-tubiao1diaozhengjindu'}}" style="color23282c: {{colorStyle.control_fontColor}}"></icon>
+		<icon class="{{control.target == 'jingdu'? 'iconfont icon-vertical-slide blod': 'iconfont icon-progress'}}" style="color23282c: {{colorStyle.control_fontColor}}"></icon>
 	</view>
 	<view class="control-item" data-control="color" bindtap="gotoControlDetail">
-		<icon class="{{control.target == 'color'? 'iconfont icon-taiyang01svg blod': 'iconfont icon-icon113'}}" style="color: {{colorStyle.control_fontColor}}"></icon>
+		<icon class="{{control.target == 'color'? 'iconfont icon-dark blod': 'iconfont icon-light'}}" style="color: {{colorStyle.control_fontColor}}"></icon>
 	</view>
 	<view class="control-item" data-control="font" bindtap="gotoControlDetail">
 		<icon class="iconfont icon-icon-yxj-font {{control.target == 'font'? 'blod': ''}}" style="color: {{colorStyle.control_fontColor}}"></icon>
@@ -97,7 +97,7 @@
 	</view>
 	<view class="color-detail" style="display:{{control.target == 'color'? 'block': 'none'}}">
 		<view class="brightness">
-			<icon class="iconfont icon-tubiao1diaozhengjindu" style="color: {{colorStyle.control_fontColor}}"></icon>
+			<icon class="iconfont icon-progress" style="color: {{colorStyle.control_fontColor}}"></icon>
 			<slider class="bright-slider" bindchange="brightSliderChange" activeColor="{{colorStyle.slider_active_bg}}" backgroundColor="{{colorStyle.slider_noactive_bg}}" min="0" max="100" value="{{allSliderValue.bright*100}}" />
 			<icon class="iconfont icon-vertical-slide bigger" style="color: {{colorStyle.control_fontColor}}"></icon>
 		</view>

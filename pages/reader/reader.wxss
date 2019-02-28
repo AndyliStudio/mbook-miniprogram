@@ -176,11 +176,11 @@
 }
 
 .control-item .iconfont.icon-vertical-slide,
-.control-item .iconfont.icon-tubiao1diaozhengjindu {
+.control-item .iconfont.icon-progress {
   font-size: 58rpx;
 }
 
-.control-item .iconfont.icon-tubiao1diaozhengjindu {
+.control-item .iconfont.icon-progress {
   position: relative;
   top: 2rpx;
 }

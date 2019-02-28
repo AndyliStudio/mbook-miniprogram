@@ -392,7 +392,7 @@ Page({
   goToReader: function(event) {
     const formId = event.detail.formId
     app.reportFormId('read', formId, this.data.bookid)
-    wx.navigateTo({ url: '../reader/reader?bookid=' + this.data.bookid })
+    wx.navigateTo({ url: '../reader-new/reader-new?bookid=' + this.data.bookid })
   },
   gotoIndex: function() {
     wx.switchTab({

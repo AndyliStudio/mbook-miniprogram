@@ -23,7 +23,6 @@ Page({
     banner_urls: [],
     is_show_banner: true,
     themes: [],
-    click_times: {}, // 换一批点击次数
     loaded: false,
     shutChargeTips: false,
     redpock: {
@@ -32,26 +31,41 @@ Page({
     },
     showFixedBtn: false
   },
+  other: {
+    click_times: {}, // 换一批点击次数
+  },
   onLoad: function() {
-    let self = this
-    self.setData({ shutChargeTips: app.globalData.globalSetting.shut_charge_tips || false })
+    this.setData({ shutChargeTips: app.globalData.globalSetting.shut_charge_tips || false })
     // 获取banner和栏目信息，使用promise来控制两个请求的同步
-    let bannerP = self.getBanner()
-    let themeP = self.getTheme()
-    self.getDialogSetting()
+    let bannerP = this.getBanner()
+    let themeP = this.getTheme()
+    this.getDialogSetting()
 
     // 当两个请求完成之后隐藏loading
     Promise.all([bannerP, themeP])
       .then(results => {
-        self.setData({ loaded: true })
+        this.setData({ loaded: true })
+          // 图片懒加载
+          for(let i=0; i<this.data.themes.length; i++) {
+            for(let j=0; j<this.data.themes[i].books.length; j++) {
+              this.observe = wx.createIntersectionObserver(this);
+              this.observe.relativeToViewport().observe(`.img-${i}-${j}`, (res) => {
+                if (res.intersectionRatio > 0){
+                  let indexArr = res.dataset.index.split('-')
+                  //如果图片进入可视区，将其设置为 show
+                  let key1 = 'themes[' + indexArr[0] + '].books[' + indexArr[1] + '].show'
+                  this.setData({ [key1]: true })
+                }
+              })
+            }
+          }
       })
-      .catch(err => {
-        
-      })
+  },
+  onUnload: function onUnload() {
+    if (this.observe) this.observe.disconnect();
   },
   // 设置分享
   onShareAppMessage: function(res) {
-    let self = this
     // 获取分享出去的图片地址
     const shareParams = app.globalData.globalSetting.share
     const code = app.globalData.shareCode + '|' + Date.now()
@@ -62,23 +76,15 @@ Page({
         imageUrl: shareParams.imageUrl
       }
     } else {
-      self.showToast('获取分享参数失败', 'bottom')
+      wx.showToast({ title: '获取分享参数失败', icon: 'none', duration: 2000 })
       return false
     }
   },
-  showToast: function(content, position) {
-    let self = this
-    self.setData({ toast: { show: true, content: content, position: position } })
-    setTimeout(function() {
-      self.setData({ toast: { show: false, content: '', position: 'bottom' } })
-    }, 3000)
-  },
   getBanner: function() {
-    let self = this
     return new Promise((resolve, reject) => {
       wx.request({
         url: config.base_url + '/api/banner/list',
-        success: function(res) {
+        success: res => {
           if (res.data.ok) {
             resolve(res)
           } else {
@@ -92,23 +98,21 @@ Page({
       })
     })
       .then(res => {
-        self.setData({ banner_urls: res.data.list })
+        this.setData({ banner_urls: res.data.list })
       })
       .catch(err => {
-        self.setData({ is_show_banner: false })
-        
+        this.setData({ is_show_banner: false })
         // 自动重新尝试
-        setTimeout(function() {
-          self.getBanner()
-        }, 1000)
+        setTimeout(() => {
+          this.getBanner()
+        }, 2000)
       })
   },
   getTheme: function() {
-    let self = this
     return new Promise((resolve, reject) => {
       wx.request({
         url: config.base_url + '/api/theme/index_list',
-        success: function(res) {
+        success: res => {
           if (res.data.ok) {
             resolve(res)
           } else {
@@ -122,21 +126,25 @@ Page({
       })
     })
       .then(res => {
-        self.setData({ themes: res.data.list })
         // 初始化换一批的点击次数
-        res.data.list.forEach(item => {
+        res.data.list = res.data.list.map(item => {
           if (item.flush) {
             let tmpObj = {}
             tmpObj[item._id] = 2
-            self.setData({ click_times: Object.assign(self.data.click_times, tmpObj) })
+            this.other.click_times = Object.assign(this.other.click_times, tmpObj)
           }
+          item.books = item.books.map(item2 => {
+            item2.show = false
+            return item2
+          })
+          return item
         })
+        this.setData({ themes: res.data.list })
       })
       .catch(err => {
-        
-        setTimeout(function() {
-          self.getTheme()
-        }, 1000)
+        setTimeout(() => {
+          this.getTheme()
+        }, 2000)
       })
   },
   // 获取弹窗设置
@@ -182,12 +190,10 @@ Page({
             })
           }
         } else {
-          
           wx.showToast({ title: '获取弹窗设置失败' + (res.data.msg ? '，' + res.data.msg : ''), icon: 'none', duration: 2000 })
         }
       },
       fail: err => {
-        
         wx.showToast({ title: '获取弹窗设置失败', icon: 'none', duration: 2000 })
         setTimeout(function() {
           wx.switchTab({ url: '../index/index' })
@@ -196,39 +202,36 @@ Page({
     })
   },
   changeList: function(event) {
-    let self = this
     let theme_id = event.currentTarget.dataset.themeid
-    let page = parseInt(self.data.click_times[theme_id])
+    let page = parseInt(this.other.click_times[theme_id])
     if (theme_id) {
       wx.request({
         url: config.base_url + '/api/theme/change_list?page=' + page + '&theme_id=' + theme_id,
-        success: function(res) {
+        success: res => {
           if (res.data.ok) {
             if (res.data.list.length > 0) {
               // 局部更新
               let thisIndex = -1
-              self.data.themes.forEach((item, index) => {
+              this.data.themes.forEach((item, index) => {
                 if (item._id == theme_id) {
                   thisIndex = index
                 }
               })
               if (thisIndex > -1) {
                 let key1 = 'themes[' + thisIndex + '].books'
-                let key2 = 'click_times.' + theme_id
-                self.setData({ [key1]: res.data.list, [key2]: page + 1 })
+                this.other.click_times[theme_id] = page + 1
+                this.setData({ [key1]: res.data.list })
               }
             } else {
-              self.showToast('暂无更多', 'bottom')
+              wx.showToast({ title: '暂无更多', icon: 'none', duration: 2000 })
             }
           } else {
             // 隐藏banner
-            
-            self.showToast('更新栏目失败', 'bottom')
+            wx.showToast({ title: '更新栏目失败', icon: 'none', duration: 2000 })
           }
         },
         fail: function(err) {
-          
-          self.showToast('更新栏目失败', 'bottom')
+          wx.showToast({ title: '更新栏目失败', icon: 'none', duration: 2000 })
         }
       })
     }
@@ -257,5 +260,8 @@ Page({
     })
     const redpock = app.globalData.dialogSetting ? app.globalData.dialogSetting['redpock'] : ''
     if (redpock.jump_type !== 'none') wx.navigateTo({ url: redpock.jump_url  })
+  },
+  imgLoaded: function(event) {
+    console.log(event.detail)
   }
 })

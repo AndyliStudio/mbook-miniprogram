@@ -1,0 +1,87 @@
+<view class="reader {{useNightStyle ? 'night' : ''}} {{!canRead ? 'overflow' : ''}}">
+  <view class="loading" wx:if="{{loading}}">
+    <image src="https://fs.andylistudio.com/mbook/book-loading.svg"></image>
+  </view>
+  <view class="reader-tips" wx:if="{{showReaderTips}}" bindtap="closeReaderTips">
+    <view class="tips1">
+      <icon class="iconfont icon-dianji"></icon>
+      <text>点击屏幕可以打开菜单</text>
+    </view>
+    <view class="tips2">
+      <view class="circle"></view>
+      <text>点击目录可以自由选择阅读章节</text>
+    </view>
+    <view class="tips3">
+      <view class="circle"></view>
+      <text>点击设置可以修改亮度和字体大小</text>
+    </view>
+    <view class="tips4">
+      <view class="circle"></view>
+      <text>点击夜间可以切换为夜间模式</text>
+    </view>
+  </view>
+  <view class="container" bindtap="triggleMenu">
+    <view class="header-info">{{chapterInfo}}</view>
+    <text selectable="{{true}}" space="emsp" class="content" style="font-size: {{fontSize * 2}}rpx" >{{content}}</text>
+  </view>
+  <view class="bottom-btn">
+    <button bindtap="loadChapter" data-op="pre">上一章</button>
+    <button bindtap="gotoMulu">目录</button>
+    <button bindtap="loadChapter" data-op="next">下一章</button>
+  </view>
+  <view class="menu {{showMenu ? 'animated slideInUp' : 'animated slideOutDown'}} {{menuName}}">
+    <view class="menu-content">
+      <block wx:if="{{menuName === 'default'}}">
+        <view class="info">{{chapterInfo}}</view>
+        <view class="form">
+          <button bindtap="loadChapter" data-op="pre">上一章</button>
+          <slider block-size="16" activeColor="{{useNightStyle ? '#808080' : '#343434'}}" backgroundColor="{{useNightStyle ? '#4e4e4e' : '#e9e9e9'}}" block-color="{{useNightStyle ? '#808080' : '#343434'}}" bindchange="changeChapterSlide" step="1" min="1" max="{{maxChapterNum}}" value="{{chapterNum}}" />
+          <button bindtap="loadChapter" data-op="next">下一章</button>
+        </view>
+      </block>
+      <block wx:if="{{menuName === 'setting'}}">
+        <view class="bright">
+          <icon class="iconfont icon-dark"></icon>
+          <slider block-size="16" activeColor="{{useNightStyle ? '#808080' : '#343434'}}" backgroundColor="{{useNightStyle ? '#4e4e4e' : '#e9e9e9'}}" block-color="{{useNightStyle ? '#808080' : '#343434'}}" bindchange="changeBright" step="1" min="1" max="100" value="{{bright}}" />
+          <icon class="iconfont icon-light"></icon>
+        </view>
+        <view class="font-size">
+          <text>字号</text>
+          <view class="right">
+            <icon class="iconfont icon-font-size-reduce" bindtap="changeFontSize" data-op="reduce"></icon>
+            <text class="cur-font-size">{{fontSize}}</text>
+            <icon class="iconfont icon-font-size-add" bindtap="changeFontSize" data-op="add"></icon>
+          </view>
+        </view>
+        <view class="auto-buy">
+          <text>自动购买下一章</text>
+          <view class="right">
+            <switch color="#1472e0" checked="{{isAutoBuy}}" bindchange="changeAutoBuy" />
+          </view>
+        </view>
+      </block>
+    </view>
+    <view class="menu-footer">
+      <view class="menu-item" bindtap="switchMenu" data-name="menu">
+        <icon class="iconfont icon-menu"></icon>
+        <text>目录</text>
+      </view>
+      <view class="menu-item" bindtap="switchMenu" data-name="setting">
+        <icon class="iconfont icon-setting"></icon>
+        <text>设置</text>
+      </view>
+      <view class="menu-item" bindtap="switchMenu" data-name="night">
+        <icon class="iconfont icon-night"></icon>
+        <text>夜间</text>
+      </view>
+    </view>
+  </view>
+  <view class="buy" wx:if="{{!canRead}}">
+    <view class="buy-inner">
+      <button class="buy-btn" bindtap="buyChapter">使用书币阅读本章</button>
+      <button class="buy-total" bindtap="buyTotal">我是粉丝，免费阅读</button>
+      <button class="share-btn" bindtap="gotoFriendHelp">邀请好友‧免费</button>
+      <button class="cancel-btn" bindtap="buyCancel">取消</button>
+    </view>
+  </view>
+</view>

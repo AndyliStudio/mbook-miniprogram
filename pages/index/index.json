@@ -8,7 +8,6 @@
     "redpock": "../../component/redpock/redpock",
     "no-data": "../../component/nodata/nodata",
     "lazyload-img": "../../component/lazyload-img/lazyload-img",
-    "modal": "../../component/modal/modal",
     "fixed-btn": "../../component/fixed-btn/fixed-btn"
   }
 }

@@ -1,5 +1,6 @@
 // pages/notice/notice.js
 const config = require('../../config')
+const util = require('../../utils/util')
 const app = getApp()
 
 Page({
@@ -18,9 +19,8 @@ Page({
     size: 20
   },
   getCommentList: function() {
-    let self = this
     // 写死系统消息
-    if (self.data.showType === 0) {
+    if (this.data.showType === 0) {
       const registeTime = app.globalData.userInfo.create_time
       let registeStr = ''
       if (registeTime) {
@@ -28,7 +28,7 @@ Page({
       } else {
         registeStr = util.formatTime(new Date())
       }
-      self.setData({
+      this.setData({
         allCommentList: [],
         allPage: 1,
         systemNoticeCount: 1,
@@ -49,7 +49,7 @@ Page({
         method: 'GET',
         success: res => {
           if (res.data.ok) {
-            self.setData({
+            this.setData({
               allCommentList: [],
               allPage: 1,
               replyCommentCount: res.data.reply.length,
@@ -59,17 +59,13 @@ Page({
               })
             })
           } else if (res.data.authfail) {
-            wx.navigateTo({
-              url: '../loading/loading?need_login_again=1'
-            })
+            wx.navigateTo({ url: '../loading/loading?need_login_again=1' })
           } else {
-            
-            self.showToast('获取评论失败', 'bottom')
+            wx.showToast({ title: '获取评论失败', icon: 'none', duration: 2000 })
           }
         },
         fail: err => {
-          
-          self.showToast('获取评论失败', 'bottom')
+          wx.showToast({ title: '获取评论失败', icon: 'none', duration: 2000 })
         }
       })
     }
@@ -113,12 +109,5 @@ Page({
       })
     }
     this.getCommentList()
-  },
-  showToast: function(content, position) {
-    let self = this
-    self.setData({ toast: { show: true, content: content, position: position } })
-    setTimeout(function() {
-      self.setData({ toast: { show: false, content: '', position: 'bottom' } })
-    }, 3000)
   }
 })

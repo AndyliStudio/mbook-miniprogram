@@ -657,12 +657,10 @@ Page({
             sectionDataBeforeSearch = self.data.allSectionData.slice()
             scrollTopBeforeSearch = 0
           } else {
-            
             self.showToast('获取目录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
           }
         },
         fail: err => {
-          
           self.showToast('获取目录失败', 'bottom')
         }
       })
@@ -700,13 +698,11 @@ Page({
             // 记录目录搜索之前的状态
             sectionDataBeforeSearch = this.data.allSectionData.slice()
           } else {
-            
             this.showToast('获取目录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
           }
         },
         fail: err => {
           wx.hideToast();
-          
           this.showToast('获取目录失败', 'bottom')
         }
       })
