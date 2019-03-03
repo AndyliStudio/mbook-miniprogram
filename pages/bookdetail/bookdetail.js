@@ -117,12 +117,10 @@ Page({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
-          
           wx.showToast({ title: '获取书籍信息失败~', icon: 'none', duration: 2000 })
         }
       },
       fail: err => {
-        
         wx.showToast({ title: '获取书籍信息失败~', icon: 'none', duration: 2000 })
       }
     })
@@ -146,12 +144,10 @@ Page({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
-          
           wx.showToast({ title: res.data.msg || '获取评论失败~', icon: 'none', duration: 2000 })
         }
       },
       fail: err => {
-        
         wx.showToast({ title: '获取评论失败~', icon: 'none', duration: 2000 })
       }
     })
@@ -226,7 +222,6 @@ Page({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
-          
           wx.showToast({ title: '解锁失败' + (res.data.msg ? '，' + res.data.msg : ''), icon: 'none', duration: 2000 })
         }
       },
@@ -265,12 +260,10 @@ Page({
               url: '../loading/loading?need_login_again=1'
             })
           } else {
-            
             wx.showToast({ title: res.data.msg || '从书架中移除失败，请重新尝试~', icon: 'none', duration: 2000 })
           }
         },
         fail: function(err) {
-          
           wx.showToast({ title: '从书架中移除失败，请重新尝试~', icon: 'none', duration: 2000 })
         }
       })
@@ -289,12 +282,10 @@ Page({
               url: '../loading/loading?need_login_again=1'
             })
           } else {
-            
             wx.showToast({ title: res.data.msg || '加入书架失败，请重新尝试~', icon: 'none', duration: 2000 })
           }
         },
         fail: function(err) {
-          
           wx.showToast({ title: '加入书架失败，请重新尝试~', icon: 'none', duration: 2000 })
         }
       })
@@ -316,12 +307,10 @@ Page({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
-          
           wx.showToast({ title: res.data.msg || '点赞失败~', icon: 'none', duration: 2000 })
         }
       },
       fail: err => {
-        
         wx.showToast({ title: '点赞失败~', icon: 'none', duration: 2000 })
       }
     })
@@ -379,12 +368,10 @@ Page({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
-          
           wx.showToast({ title: res.data.msg || '发布书评失败~', icon: 'none', duration: 2000 })
         }
       },
       fail: err => {
-        
         wx.showToast({ title: '发布书评失败~', icon: 'none', duration: 2000 })
       }
     })
@@ -418,12 +405,10 @@ Page({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
-          
           wx.showToast({ title: res.data.msg || '订阅书籍失败，请重试', icon: 'none', duration: 2000 })
         }
       },
       fail: function(err) {
-        
         wx.showToast({ title: '订阅书籍失败，请重试', icon: 'none', duration: 2000 })
       }
     })

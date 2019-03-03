@@ -15,13 +15,13 @@
     <view class="word">{{text}}</view>
   </view>
   <view class="other">
-    <navigator url="/pages/setting/setting" open-type="navigate">
+    <!-- <navigator url="/pages/setting/setting" open-type="navigate">
       <view class="setting">
         <icon class="iconfont icon-iconzhenghe15"></icon>
         <text class="setting-text">设置</text>
         <icon class="iconfont icon-arrow-right"></icon>
       </view>
-    </navigator>
+    </navigator> -->
     <navigator url="/pages/aboutus/aboutus" open-type="navigate">
       <view class="about-us">
         <icon class="iconfont icon-guanyuwomen"></icon>

@@ -19,8 +19,8 @@
 
 .reader .content {
   font-size: 36rpx;
-  line-height: 54rpx;
-  text-indent:50rpx;
+  line-height: 1.6em;
+  text-indent: 50rpx;
   user-select: none;
 }
 
@@ -41,6 +41,13 @@
   padding: 20rpx;
   font-size: 30rpx;
   line-height: 1;
+  background-color: #8799a3;
+  color: #fff;
+  box-shadow: 6rpx 6rpx 8rpx rgba(114, 130, 138, 0.2);
+}
+
+.reader .bottom-btn > button.button-hover {
+  transform: translate(1rpx, 1rpx);
 }
 
 .reader button::after {
@@ -78,7 +85,7 @@
   font-size: 28rpx;
 }
 
-.reader .reader-tips .tip1 {
+.reader .reader-tips .tips1 {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -86,26 +93,26 @@
   text-align: center;
 }
 
-.reader .reader-tips .tip1 .iconfont {
+.reader .reader-tips .tips1 .iconfont {
   font-size: 40rpx;
   display: block;
   margin-bottom: 10rpx;
 }
 
-.reader .reader-tips .tip2 {
+.reader .reader-tips .tips2 {
   position: absolute;
   bottom: 40rpx;
   left: 10rpx;
 }
 
-.reader .reader-tips .tip2 .circle {
+.reader .reader-tips .tips2 .circle {
   width: 100rpx;
   height: 60rpx;
   border-radius: 30rpx;
   border: 1px solid #ffffff;
 }
 
-.reader .reader-tips .tip2 text {
+.reader .reader-tips .tips2 text {
   display: inline-block;
   width: 120px;
   position: absolute;
@@ -113,21 +120,21 @@
   left: 10rpx;
 }
 
-.reader .reader-tips .tip3 {
+.reader .reader-tips .tips3 {
   position: absolute;
   bottom: 40rpx;
   left: 50%;
   margin-left: -50rpx;
 }
 
-.reader .reader-tips .tip3 .circle {
+.reader .reader-tips .tips3 .circle {
   width: 100rpx;
   height: 60rpx;
   border-radius: 30rpx;
   border: 1px solid #ffffff;
 }
 
-.reader .reader-tips .tip3 text {
+.reader .reader-tips .tips3 text {
   display: inline-block;
   width: 120px;
   position: absolute;
@@ -136,20 +143,20 @@
   margin-left: -80rpx;
 }
 
-.reader .reader-tips .tip4 {
+.reader .reader-tips .tips4 {
   position: absolute;
   bottom: 40rpx;
   right: 20rpx;
 }
 
-.reader .reader-tips .tip4 .circle {
+.reader .reader-tips .tips4 .circle {
   width: 100rpx;
   height: 60rpx;
   border-radius: 30rpx;
   border: 1px solid #ffffff;
 }
 
-.reader .reader-tips .tip4 text {
+.reader .reader-tips .tips4 text {
   display: inline-block;
   width: 120px;
   position: absolute;
@@ -200,7 +207,7 @@
 
 .reader .menu.default .menu-content slider {
   display: inline-block;
-  width: 300rpx;
+  width: 340rpx;
 }
 
 .reader .menu.setting .menu-footer {
@@ -295,6 +302,29 @@
 .reader .menu .menu-footer text {
   display: block;
   font-size: 24rpx;
+}
+
+.reader .left-btns {
+  position:fixed;
+  right:0;
+  top:100rpx;
+}
+
+.reader .left-btns button {
+  font-size: 30rpx;
+  line-height: 60rpx;
+  height: 60rpx;
+  border: none;
+  border-radius: 0;
+  border-bottom-left-radius: 30rpx;
+  border-top-left-radius: 30rpx;
+  background-color: #8799a3;
+  color: #fff;
+  box-shadow: 6rpx 6rpx 8rpx rgba(114, 130, 138, 0.2);
+}
+
+.reader .left-btns button.button-hover {
+  transform: translate(1rpx, 1rpx);
 }
 
 .animated {
@@ -416,6 +446,10 @@
   border-color: #4a4a4a;
 }
 
+.reader.night .menu.setting .menu-content .bright {
+  border-color: #4a4a4a;
+}
+
 .reader.night .menu.setting .menu-content .font-size {
   border-color: #4a4a4a;
 }
@@ -425,8 +459,15 @@
 }
 
 .reader.night .bottom-btn > button {
-  background: #686868;
-  color: #7c7c7c;
+  background-color: #333;
+  color: #fff;
+  box-shadow: 6rpx 6rpx 8rpx rgba(26, 26, 26, 0.2);
+}
+
+.reader.night .left-btns > button {
+  background-color: #333;
+  color: #fff;
+  box-shadow: 6rpx 6rpx 8rpx rgba(26, 26, 26, 0.2);
 }
 
 .reader.night .buy-inner {

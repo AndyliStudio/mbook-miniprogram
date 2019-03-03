@@ -25,9 +25,12 @@
     <text selectable="{{true}}" space="emsp" class="content" style="font-size: {{fontSize * 2}}rpx" >{{content}}</text>
   </view>
   <view class="bottom-btn">
-    <button bindtap="loadChapter" data-op="pre">上一章</button>
-    <button bindtap="gotoMulu">目录</button>
-    <button bindtap="loadChapter" data-op="next">下一章</button>
+    <button class="shadow" bindtap="loadChapter" data-op="pre">上一章</button>
+    <button class="shadow" bindtap="gotoMulu">目录</button>
+    <button class="shadow" bindtap="loadChapter" data-op="next">下一章</button>
+  </view>
+  <view class="left-btns {{showMenu ? 'animated slideInRight' : 'animated slideOutRight'}}">
+    <button bindtap="gotoDetail">前往详情页</button>
   </view>
   <view class="menu {{showMenu ? 'animated slideInUp' : 'animated slideOutDown'}} {{menuName}}">
     <view class="menu-content">

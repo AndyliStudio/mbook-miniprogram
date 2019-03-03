@@ -212,7 +212,7 @@ Page({
           } else if (res.data.keep_times >= 15 && res.data.keep_times < 30) {
             statusText = '还差' + (30 - res.data.keep_times) + '天获得200积分'
           }
-          self.setData({ hasDone: res.data.has_done, keepTimes: res.data.keep_times, records: res.data.records, present: res.data.present, statusText: statusText })
+          self.setData({ hasDone: !!res.data.has_done, keepTimes: res.data.keep_times, records: res.data.records, present: res.data.present, statusText: statusText })
           self.calculateEmptyGrids(self.data.cur_year, self.data.cur_month)
           self.calculateDays(self.data.cur_year, self.data.cur_month)
         } else if (res.data.authfail) {

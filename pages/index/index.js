@@ -3,7 +3,6 @@ const app = getApp()
 
 Page({
   data: {
-    toast: { show: false, content: '', position: 'bottom' }, // 提示信息
     modal: {
       show: false,
       name: '',
@@ -260,8 +259,5 @@ Page({
     })
     const redpock = app.globalData.dialogSetting ? app.globalData.dialogSetting['redpock'] : ''
     if (redpock.jump_type !== 'none') wx.navigateTo({ url: redpock.jump_url  })
-  },
-  imgLoaded: function(event) {
-    console.log(event.detail)
   }
 })

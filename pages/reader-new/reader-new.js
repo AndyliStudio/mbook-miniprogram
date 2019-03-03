@@ -44,15 +44,20 @@ Page({
     // 获取缓存的阅读设置
     let readerSetting = wx.getStorageSync('readerSetting')
     // 获取并设置亮度
-    if (readerSetting.bright) {
-      wx.setScreenBrightness({ value: parseInt(readerSetting.bright) / 100 })
-    } else {
-      wx.getScreenBrightness({
-        success: res => {
-          this.setData({ bright: parseInt(res.value * 100) })
-        }
-      })
-    }
+    wx.getScreenBrightness({
+      success: res => {
+        this.setData({ bright: parseInt(res.value * 100) })
+      }
+    })
+    // if (readerSetting.bright) {
+    //   wx.setScreenBrightness({ value: parseInt(readerSetting.bright) / 100 })
+    // } else {
+    //   wx.getScreenBrightness({
+    //     success: res => {
+    //       this.setData({ bright: parseInt(res.value * 100) })
+    //     }
+    //   })
+    // }
     // 其他设置
     if (readerSetting) {
       this.setData(readerSetting)
@@ -68,17 +73,6 @@ Page({
     } else {
       this.setData({ showReaderTips: !readerTips })
     }
-    // 每过2s记录下阅读状态
-    this.other.scrollTopTimer = setInterval(() => {
-      let query = wx.createSelectorQuery()
-      query.selectViewport().scrollOffset()
-      query.exec(res => {
-        if (res[0].scrollTop !== this.other.scrollTopValue) {
-          this.other.readTime += 2000
-        }
-        this.other.scrollTopValue = res[0].scrollTop
-      })
-    }, 2000)
   },
   onUnload: function() {
     // 存储阅读器设置
@@ -92,9 +86,34 @@ Page({
     this.updateRead()
     clearInterval(this.other.scrollTopTimer)
   },
+  //跳出页面执行函数
+  onHide: function() {
+    // 存储阅读器设置
+    wx.setStorageSync('readerSetting', {
+      fontSize: this.data.fontSize,
+      bright: this.data.bright,
+      isAutoBuy: this.data.isAutoBuy,
+      useNightStyle: this.data.useNightStyle,
+      isAutoBuy: this.data.isAutoBuy
+    })
+    this.updateRead()
+    clearInterval(this.other.scrollTopTimer)
+  },
+  onShow: function() {
+    // 每过2s记录下阅读状态
+    this.other.scrollTopTimer = setInterval(() => {
+      let query = wx.createSelectorQuery()
+      query.selectViewport().scrollOffset()
+      query.exec(res => {
+        if (res[0].scrollTop !== this.other.scrollTopValue) {
+          this.other.readTime += 1000
+        }
+        this.other.scrollTopValue = res[0].scrollTop
+      })
+    }, 1000)
+  },
   // 即将滑动到底部的回调函数，用来预加载下一章
   onReachBottom: function() {
-    console.log('加载下一张')
     if (!this.other.preload.loaded) {
       this.preLoadChapter(this.data.chapterNum + 1)
     }
@@ -121,6 +140,14 @@ Page({
             data: ''
           }
         })
+        // 设置标题
+        wx.setNavigationBarTitle({ title: res.data.data.name })
+        // 滑动到指定位置
+        setTimeout(() => {
+          if (res.data.scroll !== 0) {
+            wx.pageScrollTo({ scrollTop: parseInt(res.data.scroll), duration: 0 })
+          }
+        }, 100)
       } else {
         this.showLoadFailPage()
       }
@@ -155,9 +182,11 @@ Page({
           // 设置标题
           wx.setNavigationBarTitle({ title: res.data.data.name })
           // 滑动到指定位置
-          if (res.data.scroll !== 0) {
-            wx.pageScrollTo({ scrollTop: parseInt(res.data.scroll), duration: 0 })
-          }
+          setTimeout(() => {
+            if (res.data.scroll !== 0) {
+              wx.pageScrollTo({ scrollTop: parseInt(res.data.scroll), duration: 0 })
+            }
+          }, 100)
         } else if (res.data.authfail) {
           // 防止多个接口失败重复打开重新登录页面
           if (utils.getCurrentPageUrlWithArgs().indexOf('/loading/loading?need_login_again=1') < 0) {
@@ -412,6 +441,16 @@ Page({
   buyCancel: function() {
     this.getChapter(this.other.preChapterNum - 1 > 0 ? this.other.preChapterNum - 1 : 1)
   },
+  gotoDetail: function() {
+    let pages = getCurrentPages()
+    let lastPage = pages.length > 2 ? pages[pages.length - 2].route : ''
+    // 判断上一页是否是书籍详情页面，如果是则返回，否则则打开书籍详情页
+    if (lastPage.indexOf('pages/bookdetail/bookdetail') > -1) {
+      wx.navigateBack({ delta: 1 })
+    } else {
+      wx.navigateTo({ url: '../bookdetail/bookdetail?id=' + this.other.bookid })
+    }
+  },
   updateRead: function() {
     wx.request({
       method: 'POST',
@@ -435,10 +474,12 @@ Page({
             })
           }
         } else {
+          console.log(res, this.other.bookid)
           wx.showToast({ title: '更新阅读进度失败', icon: 'none', duration: 2000 })
         }
       },
       fail: err => {
+        console.log(err)
         wx.showToast({ title: '更新阅读进度失败', icon: 'none', duration: 2000 })
       }
     })

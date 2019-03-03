@@ -104,9 +104,9 @@ Page({
   // 用户登录
   requestLogin: function() {
     return new Promise((resolve, reject) => {
-      // 判断本地是否有缓存的登录数据
+      // 判断本地是否有缓存的登录数据，重新登录情况下不管是否存在缓存都重新发送登录接口
       let cacheLoginData = wx.getStorageSync('cacheLoginData')
-      if (cacheLoginData && cacheLoginData.expised >= Date.now()) {
+      if (cacheLoginData && cacheLoginData.expised >= Date.now() && !this.data.loginAgain) {
         app.globalData.token = cacheLoginData.token // 登录token
         app.globalData.userInfo = cacheLoginData.userinfo // 用户信息
         this.getAppSetting()
@@ -143,6 +143,7 @@ Page({
                 resolve(true)
               } else if (!res.data.ok && res.data.registe === false) {
                 // 未注册，自动注册
+                wx.clearStorage()
                 this
                   .doRegiste()
                   .then(() => {

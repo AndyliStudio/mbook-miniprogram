@@ -1,5 +1,6 @@
 // pages/user/user.js
 const config = require('../../config')
+const util = require('../../utils/util')
 const app = getApp()
 
 Page({
