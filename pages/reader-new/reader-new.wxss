@@ -5,6 +5,12 @@
   min-height: 100vh;
 }
 
+.reader.overflow {
+  height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
 .reader .header-info {
   font-size: 40rpx;
   margin-bottom: 60rpx;
@@ -60,6 +66,478 @@
   margin-left: -130rpx;
 }
 
+.reader .reader-tips {
+  position: fixed;
+  width: 750rpx;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 20000;
+  background: rgba(0,0,0,0.6);
+  color: #ffffff;
+  font-size: 28rpx;
+}
+
+.reader .reader-tips .tip1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.reader .reader-tips .tip1 .iconfont {
+  font-size: 40rpx;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.reader .reader-tips .tip2 {
+  position: absolute;
+  bottom: 40rpx;
+  left: 10rpx;
+}
+
+.reader .reader-tips .tip2 .circle {
+  width: 100rpx;
+  height: 60rpx;
+  border-radius: 30rpx;
+  border: 1px solid #ffffff;
+}
+
+.reader .reader-tips .tip2 text {
+  display: inline-block;
+  width: 120px;
+  position: absolute;
+  bottom: 100rpx;
+  left: 10rpx;
+}
+
+.reader .reader-tips .tip3 {
+  position: absolute;
+  bottom: 40rpx;
+  left: 50%;
+  margin-left: -50rpx;
+}
+
+.reader .reader-tips .tip3 .circle {
+  width: 100rpx;
+  height: 60rpx;
+  border-radius: 30rpx;
+  border: 1px solid #ffffff;
+}
+
+.reader .reader-tips .tip3 text {
+  display: inline-block;
+  width: 120px;
+  position: absolute;
+  bottom: 100rpx;
+  left: 50%;
+  margin-left: -80rpx;
+}
+
+.reader .reader-tips .tip4 {
+  position: absolute;
+  bottom: 40rpx;
+  right: 20rpx;
+}
+
+.reader .reader-tips .tip4 .circle {
+  width: 100rpx;
+  height: 60rpx;
+  border-radius: 30rpx;
+  border: 1px solid #ffffff;
+}
+
+.reader .reader-tips .tip4 text {
+  display: inline-block;
+  width: 120px;
+  position: absolute;
+  bottom: 100rpx;
+  left: 20rpx;
+  margin-left: -90rpx;
+}
+
 .reader .menu {
-  
+  position: fixed;
+  width: 100%;
+  height: 266rpx;
+  left: 0;
+  bottom: 0;
+  background: #ffffff;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  z-index: 1000;
+}
+
+.reader .menu .menu-content {
+  height: 150rpx;
+}
+
+.reader .menu.default .menu-content .info {
+  text-align: center;
+  font-size: 28rpx;
+  padding: 24rpx 24rpx 20rpx 24rpx;
+  line-height: 1;
+}
+
+.reader .menu.default .menu-content .form {
+  height: 66rpx;
+  line-height: 66rpx;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.reader .menu.default .menu-content button {
+  display: inline-block;
+  background: none;
+  line-height: 60rpx;
+  font-size: 30rpx;
+  height: 60rpx;
+}
+
+.reader .menu.default .menu-content slider {
+  display: inline-block;
+  width: 300rpx;
+}
+
+.reader .menu.setting .menu-footer {
+  display: none;
+}
+
+.reader .menu.setting .menu-content {
+  height: 100%;
+}
+
+.reader .menu.setting .menu-content .bright {
+  height: 88rpx;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e9e9e9;
+  padding: 0 10rpx;
+}
+
+.reader .menu.setting .menu-content .bright icon {
+  display: inline-block;
+  width: 64rpx;
+  height: 64rpx;
+  line-height: 64rpx;
+  font-size: 40rpx;
+}
+
+.reader .menu.setting .menu-content .bright slider {
+  display: inline-block;
+  width: 500rpx;
+}
+
+.reader .menu.setting .menu-content .font-size {
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: left;
+  border-bottom: 1px solid #e9e9e9;
+  overflow: hidden;
+}
+
+.reader .menu.setting .menu-content .font-size text {
+  font-size: 30rpx;
+}
+
+.reader .menu.setting .menu-content .right {
+  float: right;
+}
+
+.reader .menu.setting .menu-content .right .iconfont {
+  font-size: 50rpx;
+  vertical-align: middle;
+  color: #353535;
+  padding: 0 10rpx;
+}
+
+.reader .menu.setting .menu-content .right .cur-font-size {
+  font-size: 40rpx;
+  color: #a1a1a1;
+  vertical-align: middle;
+  margin-left: 30rpx;
+  margin-right:30rpx;
+}
+
+.reader .menu.setting .menu-content .auto-buy {
+  height: 88rpx;
+  line-height: 88rpx;
+}
+
+.reader .menu.setting .menu-content .auto-buy {
+  font-size: 30rpx;
+}
+
+.reader .menu .menu-footer {
+  height: 120rpx;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #e9e9e9
+}
+
+.reader .menu .menu-footer .menu-item {
+  width: 100rpx;
+  text-align: center;
+}
+
+.reader .menu .menu-footer icon {
+  font-size: 50rpx;
+}
+
+.reader .menu .menu-footer text {
+  display: block;
+  font-size: 24rpx;
+}
+
+.animated {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+}
+
+.slideInUp {
+  -webkit-animation-name: slideInUp;
+  animation-name: slideInUp;
+}
+
+.slideOutDown {
+  -webkit-animation-name: slideOutDown;
+  animation-name: slideOutDown;
+}
+
+.slideInRight {
+  -webkit-animation-name: slideInRight;
+  animation-name: slideInRight;
+}
+
+.slideOutRight {
+  -webkit-animation-name: slideOutRight;
+  animation-name: slideOutRight;
+}
+
+.wx-switch-input {
+  width: 42px !important;
+  height: 20px !important;
+  border: 1px solid #e9e9e9; 
+}
+
+.wx-switch-input::before {
+  width:41px !important;
+  height: 20px !important;
+}
+
+.wx-switch-input::after{
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.reader .buy {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  z-index: 1800;
+  text-align: center;
+}
+
+.reader .buy-inner {
+  position: relative;
+  width: 100%;
+  margin-top: 200rpx;
+  height: calc(100% - 200rpx);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 30%, rgba(248, 247, 252, 1) 100%);
+}
+
+.reader .buy-inner button {
+  position: absolute;
+  width: 90%;
+  left: 5%;
+  height: 100rpx;
+  line-height: 100rpx;
+  border-radius: 10rpx;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 36rpx;
+  background: #dadada;
+}
+
+.reader .buy-inner .buy-btn {
+  bottom: 460rpx;
+}
+
+.reader .buy-inner .buy-total {
+  bottom: 320rpx;
+}
+
+.reader .buy-inner .share-btn {
+  bottom: 180rpx;
+}
+
+.reader .buy-inner .cancel-btn {
+  bottom: 40rpx;
+  color: #f72528;
+}
+
+.reader.night {
+  color: #585858;
+  background: #161616;
+}
+
+.reader.night .loading {
+  background: #161616;
+}
+
+.reader.night .menu {
+  background: #343434;
+}
+
+.reader.night .menu::before {
+  box-shadow: 0px 0px 2rpx 2rpx #525252;
+}
+
+.reader.night .menu.default .menu-content button {
+  color: #878787;
+}
+
+.reader.night .menu {
+  color: #878787;
+}
+
+.reader.night .menu .menu-footer {
+  border-color: #4a4a4a;
+}
+
+.reader.night .menu.setting .menu-content .font-size {
+  border-color: #4a4a4a;
+}
+
+.reader.night .menu.setting .menu-content .right .iconfont {
+  color: #878787;
+}
+
+.reader.night .bottom-btn > button {
+  background: #686868;
+  color: #7c7c7c;
+}
+
+.reader.night .buy-inner {
+  background: linear-gradient(to bottom, rgba(22, 22, 22, 0) 0%, rgba(22, 22, 22, 1) 30%, rgba(22, 22, 22, 1) 100%);
+}
+
+.reader.night .buy-inner button {
+  background: #686868;
+  color: #888787;
+}
+
+@-webkit-keyframes slideInUp {
+  from {
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@-webkit-keyframes slideInRight {
+  from {
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@-webkit-keyframes slideOutDown {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+@keyframes slideOutDown {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+@-webkit-keyframes slideOutRight {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
 }
