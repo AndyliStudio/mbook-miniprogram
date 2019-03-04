@@ -141,11 +141,11 @@ Page({
           }
         })
         // 设置标题
-        wx.setNavigationBarTitle({ title: res.data.data.name })
+        wx.setNavigationBarTitle({ title: res.data.name })
         // 滑动到指定位置
         setTimeout(() => {
           if (res.data.scroll !== 0) {
-            wx.pageScrollTo({ scrollTop: parseInt(res.data.scroll), duration: 0 })
+            wx.pageScrollTo({ scrollTop: parseInt(res.scroll), duration: 0 })
           }
         }, 100)
       } else {
@@ -234,6 +234,10 @@ Page({
       if (this.data.chapterNum - 1 <=0) {
         wx.showToast({ title: '当前已经是第一章了', icon: 'none', duration: 2000 })
         return false
+      }
+      this.other.preload = {
+        loaded: false,
+        data: ''
       }
       this.getChapter(this.data.chapterNum - 1)
     } else if (event.currentTarget.dataset.op === 'next') {
