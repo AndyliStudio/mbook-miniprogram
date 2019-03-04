@@ -3,22 +3,6 @@ const app = getApp()
 
 Page({
   data: {
-    modal: {
-      show: false,
-      name: '',
-      inputValue: '',
-      title: '温馨提示',
-      opacity: 0.6,
-      position: 'center',
-      width: '80%',
-      options: {
-        fullscreen: false,
-        showclose: true,
-        showfooter: true,
-        closeonclickmodal: true,
-        confirmText: '确认'
-      }
-    },
     banner_urls: [],
     is_show_banner: true,
     themes: [],
@@ -27,6 +11,10 @@ Page({
     redpock: {
       show: false,
       text: ''
+    },
+    imgDialog: {
+      show: false,
+      src: ''
     },
     showFixedBtn: false
   },
@@ -157,19 +145,36 @@ Page({
           // 展示首页弹窗
           const dialog = res.data.dialog['index-dialog']
           if (dialog && dialog.type === 'normal-text') {
-            this.setData({
-              'modal.show': true,
-              'modal.title': dialog.title || '温馨提示',
-              'modal.content': dialog.content
+            wx.showModal({
+              title: dialog.title || '温馨提示',
+              content: dialog.content,
+              success: res => {
+                if (res.confirm) {
+                  wx.setClipboardData({
+                    data: dialog.copy,
+                    success: () => {
+                      wx.showToast({ title: '复制成功', icon: 'success' })
+                    }
+                  })
+                }
+              }
             })
           } else if (dialog && dialog.type === 'copy-text') {
-            this.setData({
-              'modal.show': true,
-              'modal.title': dialog.title || '温馨提示',
-              'modal.content': dialog.content
+            wx.showModal({
+              title: dialog.title || '温馨提示',
+              content: dialog.content,
+              success: res => {
+                if (res.confirm) {
+                  if (dialog.jump_type !== 'none') wx.navigateTo({ url: dialog.jump_url  })
+                }
+              }
             })
           } else if (dialog && dialog.type === 'img') {
             // TODO
+            this.setData({
+              'imgDialog.show': true,
+              'imgDialog.src': dialog.img_url
+            })
           }
 
           // 红包
@@ -240,24 +245,28 @@ Page({
     let name = event.currentTarget.dataset.name
     wx.navigateTo({ url: '../bookdetail/bookdetail?id=' + bookid + '&name=' + name })
   },
-  handleModalConfirm: function() {
-    const dialog = app.globalData.dialogSetting ? app.globalData.dialogSetting['index-dialog'] : ''
-    if (dialog && dialog.type === 'copy-text' && dialog.copy) {
-      wx.setClipboardData({
-        data: dialog.copy,
-        success: function(res) {
-          wx.showToast({ title: '复制成功', icon: 'success' })
-        }
-      })
-    } else if (dialog && dialog.type === 'normal-text') {
-      if (dialog.jump_type !== 'none') wx.navigateTo({ url: dialog.jump_url  })
-    }
-  },
   openRedPock: function() {
     this.setData({
       'redpock.show': false
     })
     const redpock = app.globalData.dialogSetting ? app.globalData.dialogSetting['redpock'] : ''
     if (redpock.jump_type !== 'none') wx.navigateTo({ url: redpock.jump_url  })
+  },
+  clickImgDialog: function() {
+    const dialog = app.globalData.dialogSetting ? app.globalData.dialogSetting['index-dialog'] : ''
+    if (dialog.jump_type === 'erweima') {
+      wx.showToast({ title: '长按即可识别二维码', icon: 'none', duration: 2000 })
+      wx.previewImage({
+        current: this.data.imgDialog.src,
+        urls: [this.data.imgDialog.src]
+      })
+    } else if (dialog.jump_type !== 'none') {
+      wx.navigateTo({ url: dialog.jump_url  })
+    }
+  },
+  closeImgDialog: function() {
+    this.setData({
+      'imgDialog.show': false
+    })
   }
 })

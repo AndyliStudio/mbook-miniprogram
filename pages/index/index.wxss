@@ -22,6 +22,12 @@
   height: 100%;
 }
 
+.index.overflow {
+  height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
 /* 轮播样式 */
 swiper.square-dot .wx-swiper-dot {
   background: #fff;
@@ -390,4 +396,60 @@ swiper.round-dot .wx-swiper-dot.wx-swiper-dot-active {
   font-size: 32rpx;
   text-align: left;
   padding: 30rpx 15rpx;
+}
+
+.img-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 10000;
+  border-radius: 30rpx;
+  overflow: hidden;
+  transform: translate(-50%, -50%);
+  width: 480rpx;
+  height: auto;
+}
+
+.img-dialog image {
+  width: 100%;
+}
+
+.img-dialog icon {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  font-weight: bold;
+}
+
+.zoomIn {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: zoomIn;
+  animation-name: zoomIn;
+}
+
+@-webkit-keyframes zoomIn {
+  from {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
