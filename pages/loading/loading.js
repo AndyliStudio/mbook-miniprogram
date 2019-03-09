@@ -80,7 +80,7 @@ Page({
             wx.redirectTo({ url: '../invite/invite?fhcode=' + this.data.params.fhcode })
           } else if (this.data.params && this.data.params.bookid) {
             // 跳转书籍详情页
-            wx.redirectTo({ url: '../bookdetail/bookdetail?id=' + this.data.params.bookid + '&indexbtn=1' })
+            wx.redirectTo({ url: '../bookdetail/bookdetail?id=' + this.data.params.bookid + '&indexbtn=1' + (this.data.params.auto_secret ? '&auto_secret=1' : '') })
           } else if (this.data.params && this.data.params.goto) {
             // 跳转其他页面
             if (this.data.params.goto === 'share') {
@@ -263,12 +263,12 @@ Page({
           }
           app.globalData.globalSetting = res.data.data.setting // 系统全局设置
           app.globalData.shareCode = res.data.data.share.code // 用户分享码
+          app.globalData.shareWhiteList = res.data.data.share_white_list // 是否是分享白名单用户
         } else if (res.data.authfail) {
           wx.navigateTo({
             url: '../../loading/loading?need_login_again=1'
           })
         } else {
-          
           wx.showToast({ title: '获取应用设置失败' + (res.data.msg ? '，' + res.data.msg : ''), icon: 'none', duration: 2000 })
         }
       },

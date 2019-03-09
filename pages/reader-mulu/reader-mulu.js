@@ -113,6 +113,13 @@ Page({
     }, 100)
   },
   gotoReader: function(event) {
-    wx.navigateTo({ url: '../reader-new/reader-new?bookid=' + this.other.bookid + '&chapterid=' + event.currentTarget.dataset.id })
+    let pages = getCurrentPages();//当前页面
+    let prevPage = pages[pages.length-2];//上一页面
+    prevPage.other.backFromMulu = true;
+    prevPage.other.backFromMuluId = event.currentTarget.dataset.id;
+    wx.navigateBack({//返回
+      delta:1
+    })
+    // wx.navigateTo({ url: '../reader-new/reader-new?bookid=' + this.other.bookid + '&chapterid=' + event.currentTarget.dataset.id })
   }
 })

@@ -30,7 +30,9 @@ Page({
     scrollTopTimer: null,
     scrollTopValue: 0,
     readTime: 0,
-    preChapterNum: 1
+    preChapterNum: 1,
+    backFromMulu: false,
+    backFromMuluId: ''
   },
   onLoad: function(options) {
     if (!options.bookid) {
@@ -100,6 +102,12 @@ Page({
     clearInterval(this.other.scrollTopTimer)
   },
   onShow: function() {
+    // 判断是否从目录返回，如果是则加载指定章节
+    if (this.other.backFromMulu && this.other.backFromMuluId) {
+      this.getChapter('', this.other.backFromMuluId)
+      this.other.backFromMulu = false
+      this.other.backFromMuluId = ''
+    }
     // 每过2s记录下阅读状态
     this.other.scrollTopTimer = setInterval(() => {
       let query = wx.createSelectorQuery()
@@ -478,12 +486,10 @@ Page({
             })
           }
         } else {
-          console.log(res, this.other.bookid)
           wx.showToast({ title: '更新阅读进度失败', icon: 'none', duration: 2000 })
         }
       },
       fail: err => {
-        console.log(err)
         wx.showToast({ title: '更新阅读进度失败', icon: 'none', duration: 2000 })
       }
     })

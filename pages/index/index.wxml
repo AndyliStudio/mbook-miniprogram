@@ -4,11 +4,11 @@
 <!-- 红包 -->
 <redpock wx:if="{{redpock.show}}" text="{{redpock.text}}" bindopen="openRedPock"></redpock>
 <!-- 首页图片弹窗 -->
-<view wx:if="{{imgDialog.show}}" class="img-dialog zoomIn">
+<view wx:if="{{loaded && imgDialog.show}}" class="img-dialog zoomIn">
   <image src="{{imgDialog.src}}" mode="aspectFill" bindtap="clickImgDialog" bindload="dialogImgLoad" style="height: {{imgDialog.height + 'px'}}"></image>
   <icon type="cancel" color="#ffffff" size="36" bindtap="closeImgDialog"></icon>
 </view>
-<view class="img-dialog-backdrop" wx:if="{{imgDialog.show}}"></view>
+<view wx:if="{{loaded && imgDialog.show}}" class="img-dialog-backdrop"></view>
 <view class="container index {{redpock.show || imgDialog.show ? 'overflow' : ''}}" scroll-y="true" wx:if="{{loaded}}">
   <swiper class="screen-swiper square-dot" wx:if="{{is_show_banner}}" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
     <block wx:for="{{banner_urls}}" wx:key="item._id">

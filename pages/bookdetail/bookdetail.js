@@ -4,7 +4,6 @@ const app = getApp()
 
 Page({
   data: {
-    toast: { show: false, content: '', position: 'bottom' }, // 提示信息
     modal: {
       show: false,
       name: '',
@@ -21,10 +20,8 @@ Page({
         confirmText: ''
       }
     },
-    wxcode: '',
     detail: {},
     isInList: false,
-    bookid: '',
     showAllDes: false,
     goodInfo: '',
     comments: [],
@@ -38,9 +35,14 @@ Page({
     isShowRss: true,
     hasRssTheBook: false
   },
+  other: {
+    bookid: '',
+    wxcode: '',
+    auto_secret: false, // 是否自动解锁书籍
+  },
   onShow: function() {
     let hasRssBookArr = wx.getStorageSync('hasRssBookArr') || []
-    if (hasRssBookArr.indexOf(this.data.bookid) > -1) {
+    if (hasRssBookArr.indexOf(this.other.bookid) > -1) {
       this.setData({ hasRssTheBook: true })
     }
   },
@@ -58,20 +60,23 @@ Page({
       isShowRss = false
     }
     this.setData({
-      bookid: options.id,
       showIndexBtn: options.indexbtn === '1',
-      wxcode: app.globalData.globalSetting.wxcode || 'haitianyise_hl',
       secretTips: secretTips,
       shutChargeTips: app.globalData.globalSetting.shut_charge_tips || false,
       isShowRss: isShowRss
     })
+    this.other.auto_secret = !!options.auto_secret
+    this.other.bookid = options.id
+    this.other.wxcode = app.globalData.globalSetting.wxcode || 'haitianyise_hl'
   },
   // 分享逻辑
   onShareAppMessage: function(res) {
+    // 是否是分享白名单里的用户
+    const auto_secret = app.globalData.shareWhiteList
     // 获取分享出去的图片地址
     return {
       title: '我正在阅读《' + this.data.detail.name + '》，进来看看吧~',
-      path: '/pages/loading/loading?bookid=' + this.data.detail._id
+      path: '/pages/loading/loading?bookid=' + this.other.bookid + (auto_secret ? ('&auto_secret=1') : '')
     }
   },
   getBookDetail: function(id) {
@@ -109,6 +114,10 @@ Page({
           this.setData({ detail: res.data.data, isInList: res.data.isInList, goodInfo: goodInfo, hasUnLock: res.data.data.hasUnLock, hasRssTheBook: !!res.data.data.rss })
           if (!res.data.isInList) {
             this.addOrRemove()
+          }
+          // 如果页面带有auto_secret参数，则帮当前用户自动解锁书籍
+          if (!res.data.data.hasUnLock && this.other.auto_secret) {
+            this.autoUnLockBook()
           }
           wx.setNavigationBarTitle({ title: res.data.data.name })
           wx.hideNavigationBarLoading()
@@ -207,7 +216,7 @@ Page({
       return false
     }
     wx.request({
-      url: config.base_url + '/api/secret/open?bookid=' + this.data.bookid + '&secret=' + this.data.modal.inputValue,
+      url: config.base_url + '/api/secret/open?bookid=' + this.other.bookid + '&secret=' + this.data.modal.inputValue,
       header: { Authorization: 'Bearer ' + app.globalData.token },
       success: res => {
         if (res.data.ok) {
@@ -248,7 +257,7 @@ Page({
   addOrRemove: function() {
     if (this.data.isInList) {
       wx.request({
-        url: config.base_url + '/api/booklist/remove_book?id=' + this.data.bookid,
+        url: config.base_url + '/api/booklist/remove_book?id=' + this.other.bookid,
         header: {
           Authorization: 'Bearer ' + app.globalData.token
         },
@@ -269,7 +278,7 @@ Page({
       })
     } else {
       wx.request({
-        url: config.base_url + '/api/booklist/add_book?id=' + this.data.bookid,
+        url: config.base_url + '/api/booklist/add_book?id=' + this.other.bookid,
         header: {
           Authorization: 'Bearer ' + app.globalData.token
         },
@@ -322,19 +331,20 @@ Page({
     this.setData({ [key]: !this.data.comments[index].isOpenMoreComment })
   },
   toWriteComment: function(event) {
+    console.log(event)
     if (event.currentTarget.id == 'write') {
       this.setData({ commentInputHide: false, commentType: null })
     } else {
       const commentid = event.currentTarget.dataset.commentid
       const username = event.currentTarget.dataset.username
       const storeUsername = app.globalData.userInfo.username
-      if (storeUsername === username) {
+      if (storeUsername === username) { 
         wx.showToast({ title: '自己不能回复自己', icon: 'none', duration: 2000 })
       } else {
         this.setData({ commentInputHide: false, commentType: { id: commentid, username: username } })
       }
     }
-    app.reportFormId('comment', event.detail.formId, this.data.bookid)
+    app.reportFormId('comment', event.detail.formId, this.other.bookid)
   },
   hideCommentBar: function() {
     this.setData({ commentInputHide: true })
@@ -351,7 +361,7 @@ Page({
       url: config.base_url + '/api/comment/add',
       header: { Authorization: 'Bearer ' + app.globalData.token },
       data: {
-        bookid: this.data.bookid,
+        bookid: this.other.bookid,
         content: content,
         father: this.data.commentType ? this.data.commentType.id : ''
       },
@@ -362,7 +372,7 @@ Page({
           comments.unshift(res.data.data)
           // 清空当前评论内容，重新加载comment
           this.setData({ currentCommentValue: '' })
-          this.getCommentList(this.data.bookid)
+          this.getCommentList(this.other.bookid)
         } else if (res.data.authfail) {
           wx.navigateTo({
             url: '../loading/loading?need_login_again=1'
@@ -378,8 +388,8 @@ Page({
   },
   goToReader: function(event) {
     const formId = event.detail.formId
-    app.reportFormId('read', formId, this.data.bookid)
-    wx.navigateTo({ url: '../reader-new/reader-new?bookid=' + this.data.bookid })
+    app.reportFormId('read', formId, this.other.bookid)
+    wx.navigateTo({ url: '../reader-new/reader-new?bookid=' + this.other.bookid })
   },
   gotoIndex: function() {
     wx.switchTab({
@@ -394,7 +404,7 @@ Page({
       url: config.base_url + '/api/booklist/rss',
       header: { Authorization: 'Bearer ' + app.globalData.token },
       data: {
-        bookid: this.data.bookid,
+        bookid: this.other.bookid,
         rss: rss ? 1 : 0
       },
       success: res => {
@@ -413,12 +423,39 @@ Page({
       }
     })
   },
+  autoUnLockBook: function() {
+    wx.request({
+      method: 'GET',
+      url: config.base_url + '/api/secret/auto_open',
+      header: { Authorization: 'Bearer ' + app.globalData.token },
+      data: {
+        bookid: this.other.bookid
+      },
+      success: res => {
+        if (res.data.ok) {
+          wx.showToast({ title: '已为您自动解锁书籍', icon: 'success' })
+          this.setData({ hasUnLock: true })
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../loading/loading?need_login_again=1'
+          })
+        } else if (res.data.repeat) {
+          return
+        } else {
+          wx.showToast({ title: res.data.msg || '自动解锁书籍失败', icon: 'none', duration: 2000 })
+        }
+      },
+      fail: function(err) {
+        wx.showToast({ title: '自动解锁书籍失败', icon: 'none', duration: 2000 })
+      }
+    })
+  },
   // 订阅提示不再显示
   rssNoShow: function() {
     let noRssShowArr = wx.getStorageSync('noRssShowArr') || [];
     this.setData({ 'isShowRss': false });
-    if (noRssShowArr.indexOf(this.data.bookid) < 0) {
-      noRssShowArr.push(this.data.bookid)
+    if (noRssShowArr.indexOf(this.other.bookid) < 0) {
+      noRssShowArr.push(this.data.other)
       wx.setStorageSync('noRssShowArr', noRssShowArr)
     }
   }
