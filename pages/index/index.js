@@ -14,7 +14,8 @@ Page({
     },
     imgDialog: {
       show: false,
-      src: ''
+      src: '',
+      height: 0
     },
     showFixedBtn: false
   },
@@ -267,6 +268,11 @@ Page({
   closeImgDialog: function() {
     this.setData({
       'imgDialog.show': false
+    })
+  },
+  dialogImgLoad: function(event) {
+    this.setData({
+      'imgDialog.height': event.detail.height * (240 / event.detail.width)
     })
   }
 })
