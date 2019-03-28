@@ -33,20 +33,25 @@ Page({
     shutChargeTips: false, // 是否屏蔽充值提示
     showIndexBtn: '', // 是否展示返回首页按钮
     isShowRss: true,
-    hasRssTheBook: false
+    hasRssTheBook: false,
+    isInShareWhiteList: false // 当前用户是否处于分享白名单里
   },
   other: {
     bookid: '',
     wxcode: '',
     auto_secret: false, // 是否自动解锁书籍
+    auto_secret_code: '',
+    auto_unlock_code: ''
   },
-  onShow: function() {
+  onShow: function () {
     let hasRssBookArr = wx.getStorageSync('hasRssBookArr') || []
     if (hasRssBookArr.indexOf(this.other.bookid) > -1) {
-      this.setData({ hasRssTheBook: true })
+      this.setData({
+        hasRssTheBook: true
+      })
     }
   },
-  onLoad: function(options) {
+  onLoad: function (options) {
     // 隐藏分享按钮
     wx.hideShareMenu()
     let secretTips =
@@ -63,30 +68,37 @@ Page({
       showIndexBtn: options.indexbtn === '1',
       secretTips: secretTips,
       shutChargeTips: app.globalData.globalSetting.shut_charge_tips || false,
-      isShowRss: isShowRss
+      isShowRss: isShowRss,
+      isInShareWhiteList: app.globalData.shareWhiteList
     })
-    this.other.auto_secret = !!options.auto_secret
+    this.other.auto_unlock_code = options.auto_secret
     this.other.bookid = options.id
     this.other.wxcode = app.globalData.globalSetting.wxcode || 'haitianyise_hl'
   },
   // 分享逻辑
-  onShareAppMessage: function(res) {
+  onShareAppMessage: function (res) {
     // 是否是分享白名单里的用户
     const auto_secret = app.globalData.shareWhiteList
     // 获取分享出去的图片地址
     return {
       title: '我正在阅读《' + this.data.detail.name + '》，进来看看吧~',
-      path: '/pages/loading/loading?bookid=' + this.other.bookid + (auto_secret ? ('&auto_secret=1') : '')
+      path: '/pages/loading/loading?bookid=' + this.other.bookid + (auto_secret && this.other.auto_secret_code ? ('&auto_secret=' + this.other.auto_secret_code) : '')
     }
   },
-  getBookDetail: function(id) {
+  getBookDetail: function (id) {
     if (!id) {
-      wx.showToast({ title: '获取书籍信息失败~', icon: 'none', duration: 2000 })
+      wx.showToast({
+        title: '获取书籍信息失败~',
+        icon: 'none',
+        duration: 2000
+      })
       return false
     }
     wx.request({
       url: config.base_url + '/api/book/get_detail?id=' + id,
-      header: { Authorization: 'Bearer ' + app.globalData.token },
+      header: {
+        Authorization: 'Bearer ' + app.globalData.token
+      },
       success: res => {
         if (res.data.ok) {
           // devide des into shortDes and des;
@@ -111,67 +123,99 @@ Page({
             goodInfo = '全书免费'
           }
           // 如果当前书籍没在书架中，自动加入书架
-          this.setData({ detail: res.data.data, isInList: res.data.isInList, goodInfo: goodInfo, hasUnLock: res.data.data.hasUnLock, hasRssTheBook: !!res.data.data.rss })
+          this.setData({
+            detail: res.data.data,
+            isInList: res.data.isInList,
+            goodInfo: goodInfo,
+            hasUnLock: res.data.data.hasUnLock,
+            hasRssTheBook: !!res.data.data.rss
+          })
           if (!res.data.isInList) {
             this.addOrRemove()
           }
           // 如果页面带有auto_secret参数，则帮当前用户自动解锁书籍
-          if (!res.data.data.hasUnLock && this.other.auto_secret) {
+          if (!res.data.data.hasUnLock && this.other.auto_unlock_code) {
             this.autoUnLockBook()
           }
-          wx.setNavigationBarTitle({ title: res.data.data.name })
+          wx.setNavigationBarTitle({
+            title: res.data.data.name
+          })
           wx.hideNavigationBarLoading()
         } else if (res.data.authfail) {
           wx.navigateTo({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
-          wx.showToast({ title: '获取书籍信息失败~', icon: 'none', duration: 2000 })
+          wx.showToast({
+            title: '获取书籍信息失败~',
+            icon: 'none',
+            duration: 2000
+          })
         }
       },
       fail: err => {
-        wx.showToast({ title: '获取书籍信息失败~', icon: 'none', duration: 2000 })
+        wx.showToast({
+          title: '获取书籍信息失败~',
+          icon: 'none',
+          duration: 2000
+        })
       }
     })
   },
-  getCommentList: function(id) {
+  getCommentList: function (id) {
     if (!id) {
       return false
     }
     wx.request({
       url: config.base_url + '/api/comment/list?bookid=' + id,
-      header: { Authorization: 'Bearer ' + app.globalData.token },
+      header: {
+        Authorization: 'Bearer ' + app.globalData.token
+      },
       success: res => {
         if (res.data.ok) {
           res.data.list = res.data.list.map(item => {
             item.isOpenMoreComment = false
             return item
           })
-          this.setData({ comments: res.data.list })
+          this.setData({
+            comments: res.data.list
+          })
         } else if (res.data.authfail) {
           wx.navigateTo({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
-          wx.showToast({ title: res.data.msg || '获取评论失败~', icon: 'none', duration: 2000 })
+          wx.showToast({
+            title: res.data.msg || '获取评论失败~',
+            icon: 'none',
+            duration: 2000
+          })
         }
       },
       fail: err => {
-        wx.showToast({ title: '获取评论失败~', icon: 'none', duration: 2000 })
+        wx.showToast({
+          title: '获取评论失败~',
+          icon: 'none',
+          duration: 2000
+        })
       }
     })
   },
-  showAllDes: function() {
+  showAllDes: function () {
     if (this.data.detail.shortDes) {
       if (this.data.showAllDes) {
-        this.setData({ showAllDes: false })
+        this.setData({
+          showAllDes: false
+        })
       } else {
-        this.setData({ showAllDes: true })
+        this.setData({
+          showAllDes: true
+        })
       }
     }
   },
   // 输入秘钥解锁
-  openSecret: function() {
+  openSecret: function () {
     this.setData({
       modal: {
         show: true,
@@ -192,32 +236,38 @@ Page({
     })
   },
   // 打开复制客服微信的弹窗
-  openContact: function() {
+  openContact: function () {
     this.setData({
       'modal.name': 'contact'
     })
   },
   // 我已有秘钥
-  hasSecret: function() {
+  hasSecret: function () {
     this.setData({
       'modal.title': '请输入您的粉丝凭证',
       'modal.name': 'input'
     })
   },
-  bindKeyInput: function(e) {
+  bindKeyInput: function (e) {
     this.setData({
       'modal.inputValue': e.detail.value
     })
   },
   // 完成秘钥输入
-  finishSecretInput: function() {
+  finishSecretInput: function () {
     if (!this.data.modal.inputValue) {
-      wx.showToast({ title: '请输入粉丝凭证', icon: 'none', duration: 2000 })
+      wx.showToast({
+        title: '请输入粉丝凭证',
+        icon: 'none',
+        duration: 2000
+      })
       return false
     }
     wx.request({
       url: config.base_url + '/api/secret/open?bookid=' + this.other.bookid + '&secret=' + this.data.modal.inputValue,
-      header: { Authorization: 'Bearer ' + app.globalData.token },
+      header: {
+        Authorization: 'Bearer ' + app.globalData.token
+      },
       success: res => {
         if (res.data.ok) {
           // 隐藏购买提示
@@ -225,36 +275,50 @@ Page({
             'modal.show': false,
             'hasUnLock': true
           })
-          wx.showToast({ title: '解锁成功', icon: 'success' })
+          wx.showToast({
+            title: '解锁成功',
+            icon: 'success'
+          })
         } else if (res.data.authfail) {
           wx.navigateTo({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
-          wx.showToast({ title: '解锁失败' + (res.data.msg ? '，' + res.data.msg : ''), icon: 'none', duration: 2000 })
+          wx.showToast({
+            title: '解锁失败' + (res.data.msg ? '，' + res.data.msg : ''),
+            icon: 'none',
+            duration: 2000
+          })
         }
       },
       fail: err => {
-        wx.showToast({ title: '解锁失败，请重试' + (res.data.msg ? '，' + res.data.msg : ''), icon: 'none', duration: 2000 })
+        wx.showToast({
+          title: '解锁失败，请重试' + (res.data.msg ? '，' + res.data.msg : ''),
+          icon: 'none',
+          duration: 2000
+        })
       }
     })
   },
   // 复制微信号
-  copyWxcode: function() {
+  copyWxcode: function () {
     wx.setClipboardData({
       data: this.data.wxcode,
       success: res => {
-        wx.showToast({ title: '复制成功', icon: 'success' })
+        wx.showToast({
+          title: '复制成功',
+          icon: 'success'
+        })
         this.setData({
           'modal.show': false
         })
-        setTimeout(function() {
+        setTimeout(function () {
           wx.hideToast()
         }, 2000)
       }
     })
   },
-  addOrRemove: function() {
+  addOrRemove: function () {
     if (this.data.isInList) {
       wx.request({
         url: config.base_url + '/api/booklist/remove_book?id=' + this.other.bookid,
@@ -263,17 +327,27 @@ Page({
         },
         success: res => {
           if (res.data.ok) {
-            this.setData({ isInList: false })
+            this.setData({
+              isInList: false
+            })
           } else if (res.data.authfail) {
             wx.navigateTo({
               url: '../loading/loading?need_login_again=1'
             })
           } else {
-            wx.showToast({ title: res.data.msg || '从书架中移除失败，请重新尝试~', icon: 'none', duration: 2000 })
+            wx.showToast({
+              title: res.data.msg || '从书架中移除失败，请重新尝试~',
+              icon: 'none',
+              duration: 2000
+            })
           }
         },
-        fail: function(err) {
-          wx.showToast({ title: '从书架中移除失败，请重新尝试~', icon: 'none', duration: 2000 })
+        fail: function (err) {
+          wx.showToast({
+            title: '从书架中移除失败，请重新尝试~',
+            icon: 'none',
+            duration: 2000
+          })
         }
       })
     } else {
@@ -285,81 +359,124 @@ Page({
         success: res => {
           if (res.data.ok) {
             // wx.showToast({ title: '加入书架成功', icon: 'success' })
-            this.setData({ isInList: true })
+            this.setData({
+              isInList: true
+            })
           } else if (res.data.authfail) {
             wx.navigateTo({
               url: '../loading/loading?need_login_again=1'
             })
           } else {
-            wx.showToast({ title: res.data.msg || '加入书架失败，请重新尝试~', icon: 'none', duration: 2000 })
+            wx.showToast({
+              title: res.data.msg || '加入书架失败，请重新尝试~',
+              icon: 'none',
+              duration: 2000
+            })
           }
         },
-        fail: function(err) {
-          wx.showToast({ title: '加入书架失败，请重新尝试~', icon: 'none', duration: 2000 })
+        fail: function (err) {
+          wx.showToast({
+            title: '加入书架失败，请重新尝试~',
+            icon: 'none',
+            duration: 2000
+          })
         }
       })
     }
   },
-  addLikeNum: function(event) {
+  addLikeNum: function (event) {
     let commentid = event.currentTarget.dataset.commentid
     let index = event.currentTarget.dataset.index
     wx.request({
       url: config.base_url + '/api/comment/like?commentid=' + commentid + '&op=' + (this.data.comments[index].is_like ? 'remove' : 'add'),
-      header: { Authorization: 'Bearer ' + app.globalData.token },
+      header: {
+        Authorization: 'Bearer ' + app.globalData.token
+      },
       success: res => {
         if (res.data.ok) {
           let key1 = 'comments[' + index + '].like_num'
           let key2 = 'comments[' + index + '].is_like'
-          this.setData({ [key1]: res.data.current, [key2]: this.data.comments[index].is_like ? false : true })
+          this.setData({
+            [key1]: res.data.current,
+            [key2]: this.data.comments[index].is_like ? false : true
+          })
         } else if (res.data.authfail) {
           wx.navigateTo({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
-          wx.showToast({ title: res.data.msg || '点赞失败~', icon: 'none', duration: 2000 })
+          wx.showToast({
+            title: res.data.msg || '点赞失败~',
+            icon: 'none',
+            duration: 2000
+          })
         }
       },
       fail: err => {
-        wx.showToast({ title: '点赞失败~', icon: 'none', duration: 2000 })
+        wx.showToast({
+          title: '点赞失败~',
+          icon: 'none',
+          duration: 2000
+        })
       }
     })
   },
-  readMoreComments: function(event) {
+  readMoreComments: function (event) {
     let commentid = event.currentTarget.dataset.commentid
     let index = event.currentTarget.dataset.index
     let key = 'comments[' + index + '].isOpenMoreComment'
-    this.setData({ [key]: !this.data.comments[index].isOpenMoreComment })
+    this.setData({
+      [key]: !this.data.comments[index].isOpenMoreComment
+    })
   },
-  toWriteComment: function(event) {
+  toWriteComment: function (event) {
     console.log(event)
     if (event.currentTarget.id == 'write') {
-      this.setData({ commentInputHide: false, commentType: null })
+      this.setData({
+        commentInputHide: false,
+        commentType: null
+      })
     } else {
       const commentid = event.currentTarget.dataset.commentid
       const username = event.currentTarget.dataset.username
       const storeUsername = app.globalData.userInfo.username
-      if (storeUsername === username) { 
-        wx.showToast({ title: '自己不能回复自己', icon: 'none', duration: 2000 })
+      if (storeUsername === username) {
+        wx.showToast({
+          title: '自己不能回复自己',
+          icon: 'none',
+          duration: 2000
+        })
       } else {
-        this.setData({ commentInputHide: false, commentType: { id: commentid, username: username } })
+        this.setData({
+          commentInputHide: false,
+          commentType: {
+            id: commentid,
+            username: username
+          }
+        })
       }
     }
     app.reportFormId('comment', event.detail.formId, this.other.bookid)
   },
-  hideCommentBar: function() {
-    this.setData({ commentInputHide: true })
+  hideCommentBar: function () {
+    this.setData({
+      commentInputHide: true
+    })
   },
-  stageCommentValue: function(e) {
-    this.setData({ currentCommentValue: e.detail.value })
+  stageCommentValue: function (e) {
+    this.setData({
+      currentCommentValue: e.detail.value
+    })
   },
-  saveFormId: function(event) {
-  },
-  sendComment: function(event) {
+  saveFormId: function (event) { },
+  sendComment: function (event) {
     let content = event.detail.value
     wx.request({
       method: 'POST',
       url: config.base_url + '/api/comment/add',
-      header: { Authorization: 'Bearer ' + app.globalData.token },
+      header: {
+        Authorization: 'Bearer ' + app.globalData.token
+      },
       data: {
         bookid: this.other.bookid,
         content: content,
@@ -367,74 +484,181 @@ Page({
       },
       success: res => {
         if (res.data.ok) {
-          wx.showToast({ title: '发布书评成功', icon: 'success' })
+          wx.showToast({
+            title: '发布书评成功',
+            icon: 'success'
+          })
           let comments = this.data.comments
           comments.unshift(res.data.data)
           // 清空当前评论内容，重新加载comment
-          this.setData({ currentCommentValue: '' })
+          this.setData({
+            currentCommentValue: ''
+          })
           this.getCommentList(this.other.bookid)
         } else if (res.data.authfail) {
           wx.navigateTo({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
-          wx.showToast({ title: res.data.msg || '发布书评失败~', icon: 'none', duration: 2000 })
+          wx.showToast({
+            title: res.data.msg || '发布书评失败~',
+            icon: 'none',
+            duration: 2000
+          })
         }
       },
       fail: err => {
-        wx.showToast({ title: '发布书评失败~', icon: 'none', duration: 2000 })
+        wx.showToast({
+          title: '发布书评失败~',
+          icon: 'none',
+          duration: 2000
+        })
       }
     })
   },
-  goToReader: function(event) {
+  goToReader: function (event) {
     const formId = event.detail.formId
     app.reportFormId('read', formId, this.other.bookid)
-    wx.navigateTo({ url: '../reader-new/reader-new?bookid=' + this.other.bookid })
+    wx.navigateTo({
+      url: '../reader-new/reader-new?bookid=' + this.other.bookid
+    })
   },
-  gotoIndex: function() {
+  gotoIndex: function () {
     wx.switchTab({
       url: '/pages/index/index'
     })
   },
   // 订阅或者取消本书
-  rssThisBook: function(event) {
+  rssThisBook: function (event) {
     let rss = parseInt(event.target.dataset.rrs)
     wx.request({
       method: 'POST',
       url: config.base_url + '/api/booklist/rss',
-      header: { Authorization: 'Bearer ' + app.globalData.token },
+      header: {
+        Authorization: 'Bearer ' + app.globalData.token
+      },
       data: {
         bookid: this.other.bookid,
         rss: rss ? 1 : 0
       },
       success: res => {
         if (res.data.ok) {
-          this.setData({ hasRssTheBook: !!rss })
+          this.setData({
+            hasRssTheBook: !!rss
+          })
         } else if (res.data.authfail) {
           wx.navigateTo({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
-          wx.showToast({ title: res.data.msg || '订阅书籍失败，请重试', icon: 'none', duration: 2000 })
+          wx.showToast({
+            title: res.data.msg || '订阅书籍失败，请重试',
+            icon: 'none',
+            duration: 2000
+          })
         }
       },
-      fail: function(err) {
-        wx.showToast({ title: '订阅书籍失败，请重试', icon: 'none', duration: 2000 })
+      fail: function (err) {
+        wx.showToast({
+          title: '订阅书籍失败，请重试',
+          icon: 'none',
+          duration: 2000
+        })
       }
     })
   },
-  autoUnLockBook: function() {
+  openShareModal: function () {
+    this.setData({
+      modal: {
+        show: true,
+        name: 'share',
+        title: '选择分享类型',
+        inputValue: '',
+        opacity: 0.6,
+        position: 'center',
+        width: '80%',
+        options: {
+          fullscreen: false,
+          showclose: true,
+          showfooter: false,
+          closeonclickmodal: true,
+          confirmText: ''
+        }
+      }
+    })
+  },
+  // 获取自动解锁分享秘钥
+  autoUnLockShare: function () {
     wx.request({
-      method: 'GET',
-      url: config.base_url + '/api/secret/auto_open',
-      header: { Authorization: 'Bearer ' + app.globalData.token },
+      method: 'POST',
+      url: config.base_url + '/api/secret/pre_create',
+      header: {
+        Authorization: 'Bearer ' + app.globalData.token
+      },
       data: {
         bookid: this.other.bookid
       },
       success: res => {
         if (res.data.ok) {
-          wx.showToast({ title: '已为您自动解锁书籍', icon: 'success' })
-          this.setData({ hasUnLock: true })
+          this.setData({
+            modal: {
+              show: true,
+              name: 'auto_unlock',
+              title: '温馨提示',
+              inputValue: '',
+              opacity: 0.6,
+              position: 'center',
+              width: '80%',
+              options: {
+                fullscreen: false,
+                showclose: true,
+                showfooter: false,
+                closeonclickmodal: true,
+                confirmText: ''
+              }
+            }
+          })
+          this.other.auto_secret_code = res.data.data
+        } else if (res.data.authfail) {
+          wx.navigateTo({
+            url: '../loading/loading?need_login_again=1'
+          })
+        } else {
+          wx.showToast({
+            title: res.data.msg || '获取自动解锁秘钥失败',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      },
+      fail: function (err) {
+        wx.showToast({
+          title: '获取自动解锁秘钥失败',
+          icon: 'none',
+          duration: 2000
+        })
+      }
+    })
+  },
+  autoUnLockBook: function () {
+    wx.request({
+      method: 'POST',
+      url: config.base_url + '/api/secret/pre_secret_open',
+      header: {
+        Authorization: 'Bearer ' + app.globalData.token
+      },
+      data: {
+        pre_secret: this.other.auto_unlock_code
+      },
+      success: res => {
+        if (res.data.ok) {
+          wx.showToast({
+            title: '已为您自动解锁书籍',
+            icon: 'success'
+          })
+          this.setData({
+            hasUnLock: true
+          })
         } else if (res.data.authfail) {
           wx.navigateTo({
             url: '../loading/loading?need_login_again=1'
@@ -442,18 +666,33 @@ Page({
         } else if (res.data.repeat) {
           return
         } else {
-          wx.showToast({ title: res.data.msg || '自动解锁书籍失败', icon: 'none', duration: 2000 })
+          wx.showToast({
+            title: res.data.msg || '自动解锁书籍失败',
+            icon: 'none',
+            duration: 2000
+          })
         }
       },
-      fail: function(err) {
-        wx.showToast({ title: '自动解锁书籍失败', icon: 'none', duration: 2000 })
+      fail: function (err) {
+        wx.showToast({
+          title: '自动解锁书籍失败',
+          icon: 'none',
+          duration: 2000
+        })
       }
     })
   },
+  closeModal: function () {
+    this.setData({
+      'modal.show': false
+    })
+  },
   // 订阅提示不再显示
-  rssNoShow: function() {
+  rssNoShow: function () {
     let noRssShowArr = wx.getStorageSync('noRssShowArr') || [];
-    this.setData({ 'isShowRss': false });
+    this.setData({
+      'isShowRss': false
+    });
     if (noRssShowArr.indexOf(this.other.bookid) < 0) {
       noRssShowArr.push(this.data.other)
       wx.setStorageSync('noRssShowArr', noRssShowArr)

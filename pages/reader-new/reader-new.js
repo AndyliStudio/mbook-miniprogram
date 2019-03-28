@@ -42,7 +42,7 @@ Page({
     }
     this.other.bookid = options.bookid
     // 获取章节
-    this.getChapter('', options.chapterid)
+    this.getChapter('', options.chapterid, true, false)
     // 获取缓存的阅读设置
     let readerSetting = wx.getStorageSync('readerSetting')
     // 获取并设置亮度
@@ -104,7 +104,7 @@ Page({
   onShow: function() {
     // 判断是否从目录返回，如果是则加载指定章节
     if (this.other.backFromMulu && this.other.backFromMuluId) {
-      this.getChapter('', this.other.backFromMuluId)
+      this.getChapter('', this.other.backFromMuluId, true, true)
       this.other.backFromMulu = false
       this.other.backFromMuluId = ''
     }
@@ -127,9 +127,13 @@ Page({
     }
   },
   // 获取章节数据
-  getChapter: function(num, chapterid) {
+  /**
+   * skipPreload 忽略已经预加载的数据
+   * scrollTopAuto 是否自动滚动到顶部
+   */
+  getChapter: function(num, chapterid, skipPreload, scrollTopAuto) {
     this.other.preChapterNum = this.data.chapterNum
-    if (this.other.preload.loaded) {
+    if (!skipPreload && num && this.other.preload.loaded) {
       let res = this.other.preload.data
       if (res.ok) {
         this.setData({
@@ -152,7 +156,9 @@ Page({
         wx.setNavigationBarTitle({ title: res.data.name })
         // 滑动到指定位置
         setTimeout(() => {
-          if (res.data.scroll !== 0) {
+          if (scrollTopAuto) {
+            wx.pageScrollTo({ scrollTop: 0, duration: 0 })
+          } else {
             wx.pageScrollTo({ scrollTop: parseInt(res.scroll), duration: 0 })
           }
         }, 100)
@@ -191,7 +197,9 @@ Page({
           wx.setNavigationBarTitle({ title: res.data.data.name })
           // 滑动到指定位置
           setTimeout(() => {
-            if (res.data.scroll !== 0) {
+            if (scrollTopAuto) {
+              wx.pageScrollTo({ scrollTop: 0, duration: 0 })
+            } else {
               wx.pageScrollTo({ scrollTop: parseInt(res.data.scroll), duration: 0 })
             }
           }, 100)
@@ -247,7 +255,7 @@ Page({
         loaded: false,
         data: ''
       }
-      this.getChapter(this.data.chapterNum - 1)
+      this.getChapter(this.data.chapterNum - 1, '', true, true)
     } else if (event.currentTarget.dataset.op === 'next') {
       // 点击下一章
       if (this.data.chapterNum + 1 > this.data.maxChapterNum) {
@@ -329,7 +337,7 @@ Page({
   },
   // 章节滑块的change事件
   changeChapterSlide: function(event) {
-    this.getChapter(event.detail.value)
+    this.getChapter(event.detail.value, '', true, true)
   },
   // 字体改变的change事件
   changeFontSize: function(event) {
@@ -451,7 +459,7 @@ Page({
   },
   // 取消购买，返回上一次阅读章节
   buyCancel: function() {
-    this.getChapter(this.other.preChapterNum - 1 > 0 ? this.other.preChapterNum - 1 : 1)
+    this.getChapter(this.other.preChapterNum - 1 > 0 ? this.other.preChapterNum - 1 : 1, '', true, true)
   },
   gotoDetail: function() {
     let pages = getCurrentPages()

@@ -80,7 +80,7 @@ Page({
             wx.redirectTo({ url: '../invite/invite?fhcode=' + this.data.params.fhcode })
           } else if (this.data.params && this.data.params.bookid) {
             // 跳转书籍详情页
-            wx.redirectTo({ url: '../bookdetail/bookdetail?id=' + this.data.params.bookid + '&indexbtn=1' + (this.data.params.auto_secret ? '&auto_secret=1' : '') })
+            wx.redirectTo({ url: '../bookdetail/bookdetail?id=' + this.data.params.bookid + '&indexbtn=1' + (this.data.params.auto_secret ? ('&auto_secret=' + this.data.params.auto_secret) : '') })
           } else if (this.data.params && this.data.params.goto) {
             // 跳转其他页面
             if (this.data.params.goto === 'share') {
@@ -93,7 +93,8 @@ Page({
           }
         } else {
           // 重新登录后返回上一页
-          wx.navigateBack({ delta: 1 })
+          wx.reLaunch({ url: '../index/index' })
+          // wx.navigateBack({ delta: 1 })
         }
       })
       .catch(err => {

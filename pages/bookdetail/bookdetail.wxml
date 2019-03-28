@@ -14,6 +14,14 @@
   	<view class="des">请添加微信号<text class="bold">{{wxcode}}</text>为好友。</view>
     <button class="btn" bindtap="copyWxcode">复制客服微信</button>
   </view>
+  <view wx:if="{{modal.name === 'share'}}">
+    <button class="btn" open-type="share" bindtap="closeModal">普通分享</button>
+    <button class="btn" bindtap="autoUnLockShare">自动解锁分享</button>
+  </view>
+  <view wx:if="{{modal.name === 'auto_unlock'}}">
+    <view class="des">已为您创建自动解锁分享秘钥，请点击下方按钮分享给用户</view>
+    <button class="btn" open-type="share" bindtap="closeModal">立即分享</button>
+  </view>
 </modal>
 <view class="container detail">
   <view class="head">
@@ -61,7 +69,8 @@
         </view>
       </block>
     </view>
-    <button class="share-btn" open-type="share"><text class="iconfont icon-fenxiang"></text>分享书籍</button>
+    <button wx:if="{{isInShareWhiteList}}" class="share-btn" bindtap="openShareModal"><text class="iconfont icon-fenxiang"></text>分享书籍</button>
+    <button wx:else class="share-btn" open-type="share"><text class="iconfont icon-fenxiang"></text>分享书籍</button>
   </view>
   <view class="book-des">
     <view class="des-content" bindtap="showAllDes">{{showAllDes || !detail.shortDes ? detail.des : detail.shortDes}}
