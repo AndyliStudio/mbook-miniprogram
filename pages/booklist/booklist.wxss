@@ -93,6 +93,38 @@ page {
   border-radius: 50%;
 }
 
+.books .book-item .sign-update {
+  width: 50rpx;
+  height: 30rpx;
+  background: linear-gradient(-45deg, #d2723f 0%, #e81210 100%);
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 20rpx;
+  color: #ffffff;
+  text-align: center;
+  line-height: 30rpx;
+  border-bottom-left-radius: 6rpx;
+  border-top-right-radius: 6rpx;
+  opacity: 0.8;
+}
+
+.books .book-item .sign-over {
+  width: 50rpx;
+  height: 30rpx;
+  background: linear-gradient(-45deg, #ffb37d 0%, #d67f1e 100%);
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 20rpx;
+  color: #ffffff;
+  text-align: center;
+  line-height: 30rpx;
+  border-bottom-left-radius: 6rpx;
+  border-top-right-radius: 6rpx;
+  opacity: 0.8;
+}
+
 .books .add .image {
   box-sizing: border-box;
   background-color: #dddddd;

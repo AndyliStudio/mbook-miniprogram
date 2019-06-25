@@ -16,7 +16,8 @@ Page({
     isAutoBuy: true,
     useNightStyle: false,
     showReaderTips: false,
-    canRead: true
+    canRead: true,
+    loadFail: false, // 章节加载失败
   },
   other: {
     bookid: '',
@@ -34,7 +35,7 @@ Page({
     backFromMulu: false,
     backFromMuluId: ''
   },
-  onLoad: function(options) {
+  onLoad: function (options) {
     if (!options.bookid) {
       wx.showToast({ title: '页面参数错误', icon: 'none', duration: 2000 })
       wx.navigateBack({ delta: 1 })
@@ -76,7 +77,7 @@ Page({
       this.setData({ showReaderTips: !readerTips })
     }
   },
-  onUnload: function() {
+  onUnload: function () {
     // 存储阅读器设置
     wx.setStorageSync('readerSetting', {
       fontSize: this.data.fontSize,
@@ -89,7 +90,7 @@ Page({
     clearInterval(this.other.scrollTopTimer)
   },
   //跳出页面执行函数
-  onHide: function() {
+  onHide: function () {
     // 存储阅读器设置
     wx.setStorageSync('readerSetting', {
       fontSize: this.data.fontSize,
@@ -101,7 +102,7 @@ Page({
     this.updateRead()
     clearInterval(this.other.scrollTopTimer)
   },
-  onShow: function() {
+  onShow: function () {
     // 判断是否从目录返回，如果是则加载指定章节
     if (this.other.backFromMulu && this.other.backFromMuluId) {
       this.getChapter('', this.other.backFromMuluId, true, true)
@@ -121,7 +122,7 @@ Page({
     }, 1000)
   },
   // 即将滑动到底部的回调函数，用来预加载下一章
-  onReachBottom: function() {
+  onReachBottom: function () {
     if (!this.other.preload.loaded) {
       this.preLoadChapter(this.data.chapterNum + 1)
     }
@@ -131,7 +132,7 @@ Page({
    * skipPreload 忽略已经预加载的数据
    * scrollTopAuto 是否自动滚动到顶部
    */
-  getChapter: function(num, chapterid, skipPreload, scrollTopAuto) {
+  getChapter: function (num, chapterid, skipPreload, scrollTopAuto) {
     this.other.preChapterNum = this.data.chapterNum
     if (!skipPreload && num && this.other.preload.loaded) {
       let res = this.other.preload.data
@@ -223,7 +224,7 @@ Page({
     })
   },
   // 章节预加载函数
-  preLoadChapter: function(num) {
+  preLoadChapter: function (num) {
     wx.request({
       url: config.base_url + '/api/chapter/detail?bookid=' + this.other.bookid + '&chapter_num=' + num,
       header: { Authorization: 'Bearer ' + app.globalData.token },
@@ -236,18 +237,18 @@ Page({
     })
   },
   // 章节加载失败的回调函数
-  showLoadFailPage: function() {
-    this.setData({ loading: false })
+  showLoadFailPage: function () {
+    this.setData({ loading: false, loadFail: true, chapterNum: this.other.preChapterNum + 1 })
   },
   // 跳转到目录页面
-  gotoMulu: function() {
+  gotoMulu: function () {
     wx.navigateTo({ url: '../reader-mulu/reader-mulu?bookid=' + this.other.bookid + '&name=' + this.other.name })
   },
   // 点击上一章或者下一章的执行函数
-  loadChapter: function(event) {
+  loadChapter: function (event) {
     if (event.currentTarget.dataset.op === 'pre') {
       // 点击上一章
-      if (this.data.chapterNum - 1 <=0) {
+      if (this.data.chapterNum - 1 <= 0) {
         wx.showToast({ title: '当前已经是第一章了', icon: 'none', duration: 2000 })
         return false
       }
@@ -336,11 +337,11 @@ Page({
     wx.pageScrollTo({ scrollTop: 0, duration: 0 })
   },
   // 章节滑块的change事件
-  changeChapterSlide: function(event) {
+  changeChapterSlide: function (event) {
     this.getChapter(event.detail.value, '', true, true)
   },
   // 字体改变的change事件
-  changeFontSize: function(event) {
+  changeFontSize: function (event) {
     if (event.currentTarget.dataset.op === 'reduce') {
       this.setData({ fontSize: this.data.fontSize - 1 })
     } else if (event.currentTarget.dataset.op === 'add') {
@@ -348,13 +349,13 @@ Page({
     }
   },
   // 字体滑块的change事件
-  changeBright: function(event) {
+  changeBright: function (event) {
     let bright = event.detail.value / 100
     wx.setScreenBrightness({ value: bright })
     this.setData({ bright: event.detail.value })
   },
   // 是否选择自动购买下一章
-  changeAutoBuy: function(event) {
+  changeAutoBuy: function (event) {
     this.setData({ isAutoBuy: event.detail.value })
     wx.request({
       url: config.base_url + '/api/user/put_user_setting',
@@ -380,7 +381,7 @@ Page({
     })
   },
   // 点击阅读器触发的菜单的显示和隐藏函数
-  triggleMenu: function() {
+  triggleMenu: function () {
     if (this.data.showMenu) {
       this.setData({ showMenu: false, menuName: 'default' })
     } else {
@@ -388,7 +389,7 @@ Page({
     }
   },
   // 切换目录面板
-  switchMenu: function(event) {
+  switchMenu: function (event) {
     let name = event.currentTarget.dataset.name
     if (name === 'night') {
       // 修改状态栏颜色
@@ -403,15 +404,15 @@ Page({
       this.setData({ menuName: name })
     }
   },
-  closeReaderTips: function() {
+  closeReaderTips: function () {
     this.setData({ showReaderTips: false, showMenu: false, menuName: 'default' })
     wx.setStorageSync('readerTips', true)
   },
-  gotoFriendHelp: function() {
-     wx.navigateTo({ url: '../activities/friendHelp/friendHelp' })
+  gotoFriendHelp: function () {
+    wx.navigateTo({ url: '../activities/friendHelp/friendHelp' })
   },
   // 购买该章节
-  buyChapter: function() {
+  buyChapter: function () {
     wx.request({
       url: config.base_url + '/api/chapter/buy?bookid=' + this.other.bookid + '&chapter_num=' + this.data.chapterNum,
       header: { Authorization: 'Bearer ' + app.globalData.token },
@@ -428,7 +429,7 @@ Page({
           // 费用不足
           wx.showModal({
             title: '温馨提示',
-            content: '书币不足，您可以通过分享、签到、充值的方式获得书币。',
+            content: '书币不足，您可以通过分享、签到等方式获得书币。',
             confirmText: '前往签到',
             success(res) {
               if (res.confirm) {
@@ -445,10 +446,10 @@ Page({
       }
     })
   },
-  buyTotal: function() {
+  buyTotal: function () {
     wx.showModal({
       title: '温馨提示',
-      content: '请前往书籍详情页使用秘钥解锁书籍',
+      content: '请前往书籍详情页成为粉丝',
       confirmText: '立即前往',
       success: res => {
         if (res.confirm) {
@@ -458,10 +459,10 @@ Page({
     })
   },
   // 取消购买，返回上一次阅读章节
-  buyCancel: function() {
+  buyCancel: function () {
     this.getChapter(this.other.preChapterNum - 1 > 0 ? this.other.preChapterNum - 1 : 1, '', true, true)
   },
-  gotoDetail: function() {
+  gotoDetail: function () {
     let pages = getCurrentPages()
     let lastPage = pages.length > 2 ? pages[pages.length - 2].route : ''
     // 判断上一页是否是书籍详情页面，如果是则返回，否则则打开书籍详情页
@@ -471,7 +472,7 @@ Page({
       wx.navigateTo({ url: '../bookdetail/bookdetail?id=' + this.other.bookid })
     }
   },
-  updateRead: function() {
+  updateRead: function () {
     wx.request({
       method: 'POST',
       url: config.base_url + '/api/booklist/update_read',
@@ -501,5 +502,8 @@ Page({
         wx.showToast({ title: '更新阅读进度失败', icon: 'none', duration: 2000 })
       }
     })
+  },
+  reloadCurChapter: function () {
+    this.getChapter(this.data.chapterNum, '', true, true)
   }
 })

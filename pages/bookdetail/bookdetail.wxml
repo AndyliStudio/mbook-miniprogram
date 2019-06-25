@@ -58,7 +58,7 @@
         </view>
         <view class="addToList" wx:if="{{goodInfo !== '全书免费' && hasUnLock}}">
           <view class="iconfont icon-rightline"></view>
-          <text>已解锁</text>
+          <text>粉丝你好</text>
         </view>
       </block>
       <!-- 返回首页按钮 -->

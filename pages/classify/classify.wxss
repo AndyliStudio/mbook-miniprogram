@@ -33,7 +33,7 @@ page {
   height: 80rpx;
   display: inline-block;
   margin-right: 45rpx;
-  width: 120rpx;
+  width: auto;
   text-align: center;
   font-size: 30rpx;
   color: #888888;

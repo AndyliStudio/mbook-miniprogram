@@ -12,7 +12,7 @@
 		<!-- <button class="charge-btn" bindtap="gotoCharge" wx:if="{{!shutChargeTips}}">充值</button> -->
 	</view>
 	<view class="tab">
-      <view class="tab-item {{currentPageNum === 1 ? 'active' : ''}}" data-page="1" bindtap="changePage">奖励和充值</view>
+      <view class="tab-item {{currentPageNum === 1 ? 'active' : ''}}" data-page="1" bindtap="changePage">奖励和获赠</view>
       <view class="tab-item {{currentPageNum === 2 ? 'active' : ''}}" data-page="2" bindtap="changePage">消费记录</view>
     </view>
     <view class="content">

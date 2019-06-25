@@ -14,10 +14,12 @@
             <image src="{{item.img_url}}"></image>
           </button>
         </form>
+        <view wx:if="{{item.sign === 'update'}}" class='sign-update'>更新</view>
+        <view wx:if="{{item.sign === 'over'}}" class='sign-over'>读完</view>
         <icon wx:if="{{removing}}" type="clear" size="16" color="#f76260" data-bookid="{{item.bookid}}" bindtap="removeBook" />
       </view>
       <view hover-start-time="2000" class="book-item add" bindtap="gotoShop">
-        <view class="image"></view>  
+        <view class="image"></view>
         <icon class="iconfont icon-add"></icon>
       </view>
     </view>

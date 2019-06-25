@@ -64,6 +64,7 @@ Page({
     if (noRssShowArr.indexOf(options.id) > -1) {
       isShowRss = false
     }
+    console.log('是否为分享白名单', app.globalData.shareWhiteList)
     this.setData({
       showIndexBtn: options.indexbtn === '1',
       secretTips: secretTips,
@@ -134,6 +135,7 @@ Page({
             this.addOrRemove()
           }
           // 如果页面带有auto_secret参数，则帮当前用户自动解锁书籍
+          console.log('debug', res.data.data.hasUnLock, this.other.auto_unlock_code)
           if (!res.data.data.hasUnLock && this.other.auto_unlock_code) {
             this.autoUnLockBook()
           }
@@ -276,7 +278,7 @@ Page({
             'hasUnLock': true
           })
           wx.showToast({
-            title: '解锁成功',
+            title: '开始阅读吧~',
             icon: 'success'
           })
         } else if (res.data.authfail) {
@@ -285,7 +287,7 @@ Page({
           })
         } else {
           wx.showToast({
-            title: '解锁失败' + (res.data.msg ? '，' + res.data.msg : ''),
+            title: (res.data.msg || ''),
             icon: 'none',
             duration: 2000
           })
@@ -293,7 +295,7 @@ Page({
       },
       fail: err => {
         wx.showToast({
-          title: '解锁失败，请重试' + (res.data.msg ? '，' + res.data.msg : ''),
+          title: '请重试' + (res.data.msg ? '，' + res.data.msg : ''),
           icon: 'none',
           duration: 2000
         })
@@ -625,7 +627,7 @@ Page({
           })
         } else {
           wx.showToast({
-            title: res.data.msg || '获取自动解锁秘钥失败',
+            title: res.data.msg || '好像不对哦~',
             icon: 'none',
             duration: 2000
           })
@@ -633,7 +635,7 @@ Page({
       },
       fail: function (err) {
         wx.showToast({
-          title: '获取自动解锁秘钥失败',
+          title: '好像不对哦~',
           icon: 'none',
           duration: 2000
         })
@@ -653,7 +655,7 @@ Page({
       success: res => {
         if (res.data.ok) {
           wx.showToast({
-            title: '已为您自动解锁书籍',
+            title: '开始阅读吧~',
             icon: 'success'
           })
           this.setData({
@@ -667,7 +669,7 @@ Page({
           return
         } else {
           wx.showToast({
-            title: res.data.msg || '自动解锁书籍失败',
+            title: res.data.msg || '好像不对哦~',
             icon: 'none',
             duration: 2000
           })
@@ -675,7 +677,7 @@ Page({
       },
       fail: function (err) {
         wx.showToast({
-          title: '自动解锁书籍失败',
+          title: '好像不对哦~',
           icon: 'none',
           duration: 2000
         })

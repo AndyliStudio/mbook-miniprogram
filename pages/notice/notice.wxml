@@ -1,13 +1,13 @@
 <fixed-btn></fixed-btn>
 <view class="comments">
-    <view class="h">
-        <view class="item {{ showType == 0 ? 'active' : ''}}" bindtap="switchTab">
-            <view class="txt">系统通知{{systemNoticeCount ? '(' + systemNoticeCount + ')' : ''}}</view>
-        </view>
-        <view class="item {{ showType == 0 ? '' : 'active'}}" bindtap="switchTab">
-            <view class="txt">评论回复{{replyCommentCount ? '(' + replyCommentCount + ')' : ''}}</view>
-        </view>
+  <view class="h">
+    <view class="item {{ showType == 0 ? 'active' : ''}}" bindtap="switchTab">
+      <view class="txt">系统通知{{systemNoticeCount ? '(' + systemNoticeCount + ')' : ''}}</view>
     </view>
+    <view class="item {{ showType == 0 ? '' : 'active'}}" bindtap="switchTab">
+      <view class="txt">评论回复{{replyCommentCount ? '(' + replyCommentCount + ')' : ''}}</view>
+    </view>
+  </view>
   <view class="b">
     <view class="item" wx:for="{{comments}}" wx:key="{{item.commentid}}" data-bookid="{{item.bookid}}" bindtap="gotoBookDetail">
       <view class="info">
@@ -19,5 +19,8 @@
       </view>
       <view class="comment">{{item.content}}</view>
     </view>
+    <no-data wx:if="{{comments.length == 0 ? true : false}}" text="暂无消息" sub-text="" btn-text="" show-btn="{{false}}">
+      <icon class="iconfont icon-zanwushuju"></icon>
+    </no-data>
   </view>
 </view>

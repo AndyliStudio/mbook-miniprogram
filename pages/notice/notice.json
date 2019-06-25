@@ -5,6 +5,7 @@
   "navigationBarTextStyle": "white",
   "usingComponents": {
     "toast": "../../component/toast/toast",
-    "fixed-btn": "../../component/fixed-btn/fixed-btn"
+    "fixed-btn": "../../component/fixed-btn/fixed-btn",
+    "no-data": "../../component/nodata/nodata"
   }
 }

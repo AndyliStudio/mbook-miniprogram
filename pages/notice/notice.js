@@ -36,9 +36,9 @@ Page({
           {
             commentid: 1,
             avatar: 'https://fs.andylistudio.com/1526117366025.jpeg',
-            name: 'mbook小助手',
+            name: '美景小助手',
             time: registeStr,
-            content: '欢迎来到mbook，在这里开启您的阅读之旅吧~'
+            content: '欢迎来到美景阅读，在这里开启您的阅读之旅吧~'
           }
         ]
       })

@@ -36,7 +36,7 @@ Page({
     this.getInfo()
   },
   onLoad: function() {
-    let chargeTips = app.globalData.globalSetting.charge_tips || '暂不支持微信支付，请加客服(haitianyise_hl)为好友，按照1元兑换10书币的价格转账之后，客服人员会为您充值书币。'
+    let chargeTips = app.globalData.globalSetting.charge_tips || '暂不支持微信支付，请加客服(haitianyise_hl)为好友，按照1元兑换10书币的价格转账之后，客服人员会为您添加书币。'
     this.setData({
       wxcode: app.globalData.globalSetting.wxcode || 'haitianyise_hl',
       chargeTips: chargeTips,
@@ -84,11 +84,11 @@ Page({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
-          self.showToast('获取奖励和充值记录失败', 'bottom')
+          self.showToast('获取奖励记录失败', 'bottom')
         }
       },
       fail: err => {
-        self.showToast('获取奖励和充值记录失败', 'bottom')
+        self.showToast('获取奖励记录失败', 'bottom')
       }
     })
   },
@@ -115,11 +115,11 @@ Page({
             url: '../loading/loading?need_login_again=1'
           })
         } else {
-          self.showToast('获取奖励和充值记录失败', 'bottom')
+          self.showToast('获取奖励记录失败', 'bottom')
         }
       },
       fail: err => {
-        self.showToast('获取奖励和充值记录失败', 'bottom')
+        self.showToast('获取奖励记录失败', 'bottom')
       }
     })
   },

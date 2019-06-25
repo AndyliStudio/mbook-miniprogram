@@ -4,5 +4,8 @@
   "navigationBarTitleText": "请稍后...",
   "navigationBarTextStyle": "white",
   "onReachBottomDistance": 800,
-  "enablePullDownRefresh": false
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "no-data": "../../component/nodata/nodata"
+  }
 }

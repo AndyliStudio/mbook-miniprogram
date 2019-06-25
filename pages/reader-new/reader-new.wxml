@@ -20,10 +20,21 @@
       <text>点击夜间可以切换为夜间模式</text>
     </view>
   </view>
-  <view class="container" bindtap="triggleMenu">
-    <view class="header-info">{{chapterInfo}}</view>
-    <text selectable="{{true}}" space="emsp" class="content" style="font-size: {{fontSize * 2}}rpx" >{{content}}</text>
-  </view>
+  
+  <block wx:if="{{!loadFail}}">
+    <view class="container" bindtap="triggleMenu">
+      <view class="header-info">{{chapterInfo}}</view>
+      <text selectable="{{true}}" space="emsp" class="content" style="font-size: {{fontSize * 2}}rpx" >{{content}}</text>
+    </view>
+  </block>
+  <block wx:else>
+    <view class="load-fail">
+      <icon class="iconfont icon-zanwushuju"></icon>
+      <view class="load-fail-text">加载章节失败</view>
+      <view class="load-fail-sub-text">服务器繁忙，请点击下方按钮重新尝试</view>
+      <button class="load-fail-btn" type="default" size="mini" bindtap="reloadCurChapter">重新加载</button>
+    </view>
+  </block>
   <view class="bottom-btn">
     <button class="shadow" bindtap="loadChapter" data-op="pre">上一章</button>
     <button class="shadow" bindtap="gotoMulu">目录</button>

@@ -1116,6 +1116,7 @@ Page({
     let self = this
     self.setData({ backupSectionNum: self.data.currentSectionNum })
     let callback = function(res, isLoadCallback) {
+      console.log(res)
       if (res.data.ok) {
         self.setData({
           bindTopValue: 0,
@@ -1396,7 +1397,7 @@ Page({
             'modal.show': false
           })
           self.initPage(self.data.currentSectionNum)
-          wx.showToast({ title: '解锁成功', icon: 'success' })
+          wx.showToast({ title: '开始阅读吧~', icon: 'success' })
         } else if (res.data.authfail) {
           // 防止多个接口失败重复打开重新登录页面
           if (utils.getCurrentPageUrlWithArgs().indexOf('/loading/loading?need_login_again=1') < 0) {
@@ -1405,13 +1406,12 @@ Page({
             })
           }
         } else {
-          
-          self.showToast('解锁失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
+          self.showToast((res.data.msg ? '，' + res.data.msg : ''), 'bottom')
         }
       },
       fail: err => {
         
-        self.showToast('解锁失败，请重试', 'bottom')
+        self.showToast('请重试', 'bottom')
       }
     })
   },

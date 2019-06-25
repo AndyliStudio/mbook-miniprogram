@@ -2,7 +2,7 @@
 <toast toast="{{toast}}"></toast>
 <modal class="reader-modal" data-model="modal.show" visible="{{modal.show}}" title="{{modal.title}}" position="{{modal.position}}" fullscreen="{{modal.options.fullscreen}}" opacity="{{modal.opacity}}" show-close="{{modal.options.showclose}}" show-footer="{{modal.options.showfooter}}" close-on-click-modal="{{modal.options.closeonclickmodal}}" confirm-text="{{modal.options.confirmText}}" bindconfirm="handleModalConfirm">
   <view wx:if="{{modal.name === 'buyfail'}}">
-  	<view class="des">书币不足，您可以通过分享、签到、充值的方式获得书币。</view>
+  	<view class="des">书币不足，您可以通过分享、签到等方式获得书币。</view>
     <button class="btn" open-type="share">分享给朋友</button>
     <button wx:if="{{!shutChargeTips}}" class="btn" bindtap="gotoAccount">立即充值</button>
     <button class="btn" bindtap="gotoAttendance">前往签到</button>

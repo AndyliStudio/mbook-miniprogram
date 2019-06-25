@@ -1,0 +1,52 @@
+{
+  "rules": [
+    {
+      "action": "allow",
+      "page": "pages/index/index",
+      "params": [],
+      "matching": "exact"
+    },
+    {
+      "action": "allow",
+      "page": "pages/invite/invite",
+      "params": ["fhcode"],
+      "matching": "inclusive"
+    },
+    {
+      "action": "allow",
+      "page": "pages/activities/share/share",
+      "params": [],
+      "matching": "inclusive"
+    },
+    {
+      "action": "allow",
+      "page": "pages/bookdetail/bookdetail",
+      "params": ["id"],
+      "matching": "inclusive"
+    },
+    {
+      "action": "allow",
+      "page": "pages/attandence/attandence",
+      "params": [],
+      "matching": "inclusive"
+    },
+    {
+      "action": "allow",
+      "page": "pages/search/search",
+      "params": [],
+      "matching": "inclusive"
+    },
+    {
+      "action": "allow",
+      "page": "pages/reader-new/reader-new",
+      "params": [],
+      "matching": "inclusive"
+    },
+    {
+      "action": "allow",
+      "page": "pages/user/user",
+      "params": [],
+      "matching": "inclusive"
+    }
+  ]
+}
