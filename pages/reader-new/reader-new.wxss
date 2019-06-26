@@ -380,40 +380,30 @@
 }
 
 .reader .buy-inner {
-  position: relative;
-  width: 100%;
-  margin-top: 200rpx;
-  height: calc(100% - 200rpx);
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 30%, rgba(248, 247, 252, 1) 100%);
+  position:relative;
+  width:100%;
+  margin-top:200rpx;
+  height:calc(100% - 200rpx);
+  background:linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 30%, rgba(248, 247, 252, 1) 100%);
+  display:flex;
+  flex-flow:column nowrap;
+  justify-content:flex-end;
+  align-items:center;
 }
 
 .reader .buy-inner button {
-  position: absolute;
-  width: 90%;
-  left: 5%;
-  height: 100rpx;
-  line-height: 100rpx;
-  border-radius: 10rpx;
-  box-sizing: border-box;
-  text-align: center;
-  font-size: 36rpx;
-  background: #dadada;
-}
-
-.reader .buy-inner .buy-btn {
-  bottom: 460rpx;
-}
-
-.reader .buy-inner .buy-total {
-  bottom: 320rpx;
-}
-
-.reader .buy-inner .share-btn {
-  bottom: 180rpx;
+  width:90%;
+  height:100rpx;
+  line-height:100rpx;
+  border-radius:10rpx;
+  box-sizing:border-box;
+  text-align:center;
+  font-size:36rpx;
+  background:#dadada;
+  margin-bottom:40rpx;
 }
 
 .reader .buy-inner .cancel-btn {
-  bottom: 40rpx;
   color: #f72528;
 }
 

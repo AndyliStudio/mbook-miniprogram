@@ -18,6 +18,7 @@ Page({
     showReaderTips: false,
     canRead: true,
     loadFail: false, // 章节加载失败
+    shutChargeTips: false, // 是否关闭充值引导
   },
   other: {
     bookid: '',
@@ -33,7 +34,7 @@ Page({
     readTime: 0,
     preChapterNum: 1,
     backFromMulu: false,
-    backFromMuluId: ''
+    backFromMuluId: '',
   },
   onLoad: function (options) {
     if (!options.bookid) {
@@ -72,9 +73,9 @@ Page({
     // 是否展示阅读提示
     let readerTips = wx.getStorageSync('readerTips')
     if (!readerTips) {
-      this.setData({ showReaderTips: !readerTips, showMenu: true, menuName: 'default' })
+      this.setData({ showReaderTips: !readerTips, showMenu: true, menuName: 'default', shutChargeTips: app.globalData.globalSetting.shut_charge_tips })
     } else {
-      this.setData({ showReaderTips: !readerTips })
+      this.setData({ showReaderTips: !readerTips, shutChargeTips: app.globalData.globalSetting.shut_charge_tips })
     }
   },
   onUnload: function () {
