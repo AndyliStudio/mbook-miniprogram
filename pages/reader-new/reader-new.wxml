@@ -92,9 +92,9 @@
   </view>
   <view class="buy" wx:if="{{!canRead}}">
     <view class="buy-inner">
-      <button class="buy-btn" bindtap="buyChapter">使用书币阅读本章</button>
-      <button class="buy-total" bindtap="buyTotal">我是粉丝，免费阅读</button>
-      <button class="share-btn" bindtap="gotoFriendHelp">邀请好友‧免费</button>
+      <button bindtap="buyChapter">使用书币阅读本章</button>
+      <button wx:if="{{!shutChargeTips}}" bindtap="buyTotal">我是粉丝，免费阅读</button>
+      <button wx:if="{{!shutChargeTips}}" bindtap="gotoFriendHelp">邀请好友‧免费</button>
       <button class="cancel-btn" bindtap="buyCancel">取消</button>
     </view>
   </view>
