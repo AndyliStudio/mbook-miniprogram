@@ -17,13 +17,16 @@ Page({
       src: '',
       height: 0
     },
-    showFixedBtn: false
+    showFixedBtn: false,
+    unReadMessageNum: 0 // 未读消息数量
   },
   other: {
     click_times: {}, // 换一批点击次数
   },
   onLoad: function() {
-    this.setData({ shutChargeTips: app.globalData.globalSetting.shut_charge_tips || false })
+    this.setData({
+      shutChargeTips: app.globalData.globalSetting.shut_charge_tips || false,
+    })
     // 获取banner和栏目信息，使用promise来控制两个请求的同步
     let bannerP = this.getBanner()
     let themeP = this.getTheme()
@@ -48,6 +51,14 @@ Page({
             }
           }
       })
+  },
+  // 刷新未读消息
+  onShow: function() {  
+    const hasReadMessages = wx.getStorageSync('hasReadMessages') || []
+    const unReadMessages = app.globalData.unReadMessages.filter(item => hasReadMessages.indexOf(item) < 0)
+    this.setData({
+      unReadMessageNum: unReadMessages.length
+    })
   },
   onUnload: function onUnload() {
     if (this.observe) this.observe.disconnect();

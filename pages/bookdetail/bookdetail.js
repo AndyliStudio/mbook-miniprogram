@@ -135,7 +135,6 @@ Page({
             this.addOrRemove()
           }
           // 如果页面带有auto_secret参数，则帮当前用户自动解锁书籍
-          console.log('debug', res.data.data.hasUnLock, this.other.auto_unlock_code)
           if (!res.data.data.hasUnLock && this.other.auto_unlock_code) {
             this.autoUnLockBook()
           }
@@ -432,7 +431,6 @@ Page({
     })
   },
   toWriteComment: function (event) {
-    console.log(event)
     if (event.currentTarget.id == 'write') {
       this.setData({
         commentInputHide: false,

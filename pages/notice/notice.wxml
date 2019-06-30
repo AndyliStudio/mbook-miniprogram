@@ -1,14 +1,31 @@
 <fixed-btn></fixed-btn>
-<view class="comments">
+<view class="notice">
   <view class="h">
     <view class="item {{ showType == 0 ? 'active' : ''}}" bindtap="switchTab">
       <view class="txt">系统通知{{systemNoticeCount ? '(' + systemNoticeCount + ')' : ''}}</view>
     </view>
-    <view class="item {{ showType == 0 ? '' : 'active'}}" bindtap="switchTab">
+    <view class="item {{ showType == 1 ? '' : 'active'}}" bindtap="switchTab">
       <view class="txt">评论回复{{replyCommentCount ? '(' + replyCommentCount + ')' : ''}}</view>
     </view>
   </view>
-  <view class="b">
+  <scroll-view class="b" wx:if="{{showType == 0}}" scroll-y="true" ower-threshold="100" bindscrolltolower="getNextPage">
+    <view class="item" wx:for="{{notices}}" wx:key="{{item.commentid}}" data-type="{{item.type}}" data-id="{{item._id}}" bindtap="clickNotice">
+      <view class="info">
+        <view class="user">
+          <icon class="{{item.hasRead ? 'read' : ''}}" wx:if="{{item.type === 'system'}}" class="iconfont icon-notice"></icon>
+          <icon wx:if="{{item.type === 'update'}}" class="iconfont icon-yuedu"></icon>
+          <text class="{{item.hasRead ? 'read' : ''}}">{{item.title}}</text>
+        </view>
+        <view class="time">{{item.time}}</view>
+      </view>
+      <view class="comment {{item.hasRead ? 'read' : ''}}">{{item.preview || '暂无内容'}}</view>
+    </view>
+    <no-data wx:if="{{notices.length == 0 ? true : false}}" text="暂无通知" sub-text="" btn-text="" show-btn="{{false}}">
+      <icon class="iconfont icon-zanwushuju"></icon>
+    </no-data>
+    <view class="no-more">到底了，没有更多消息了~</view>
+  </scroll-view>
+  <scroll-view class="b" wx:if="{{showType == 1}}" scroll-y="{{true}}">
     <view class="item" wx:for="{{comments}}" wx:key="{{item.commentid}}" data-bookid="{{item.bookid}}" bindtap="gotoBookDetail">
       <view class="info">
         <view class="user">
@@ -22,5 +39,5 @@
     <no-data wx:if="{{comments.length == 0 ? true : false}}" text="暂无消息" sub-text="" btn-text="" show-btn="{{false}}">
       <icon class="iconfont icon-zanwushuju"></icon>
     </no-data>
-  </view>
+  </scroll-view>
 </view>

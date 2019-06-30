@@ -113,6 +113,7 @@ swiper.round-dot .wx-swiper-dot.wx-swiper-dot-active {
 .index .nav .nav-item {
   width: 100rpx;
   text-align: center;
+  position: relative;
 }
 
 .index .nav .nav-item icon {
@@ -131,6 +132,19 @@ swiper.round-dot .wx-swiper-dot.wx-swiper-dot-active {
   font-size: 30rpx;
   margin-top: 15rpx;
   color: #333;
+}
+
+.index .nav .nav-item .bridge {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: -8rpx;
+  right: -8rpx;
+  background: #ff6687;
+  border-radius: 50%;
+  line-height: 16px;
+  font-size: 10px;
+  color: #ffffff;
 }
 
 .index .theme {

@@ -1116,7 +1116,6 @@ Page({
     let self = this
     self.setData({ backupSectionNum: self.data.currentSectionNum })
     let callback = function(res, isLoadCallback) {
-      console.log(res)
       if (res.data.ok) {
         self.setData({
           bindTopValue: 0,

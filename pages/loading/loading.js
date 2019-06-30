@@ -265,6 +265,9 @@ Page({
           app.globalData.globalSetting = res.data.data.setting // 系统全局设置
           app.globalData.shareCode = res.data.data.share.code // 用户分享码
           app.globalData.shareWhiteList = res.data.data.share_white_list // 是否是分享白名单用户
+          // 获取最新通知数量
+          const hasReadMessages = wx.getStorageSync('hasReadMessages') || []
+          app.globalData.unReadMessages = res.data.notices instanceof Array ? res.data.notices.filter(item => hasReadMessages.indexOf(item) < 0) : []
         } else if (res.data.authfail) {
           wx.navigateTo({
             url: '../../loading/loading?need_login_again=1'
