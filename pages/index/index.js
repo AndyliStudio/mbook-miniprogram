@@ -55,7 +55,7 @@ Page({
   // 刷新未读消息
   onShow: function() {  
     const hasReadMessages = wx.getStorageSync('hasReadMessages') || []
-    const unReadMessages = app.globalData.unReadMessages.filter(item => hasReadMessages.indexOf(item) < 0)
+    const unReadMessages = app.globalData.unReadMessages instanceof Array ?  app.globalData.unReadMessages.filter(item => hasReadMessages.indexOf(item) < 0) : []
     this.setData({
       unReadMessageNum: unReadMessages.length
     })

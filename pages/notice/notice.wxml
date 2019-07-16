@@ -1,15 +1,15 @@
 <fixed-btn></fixed-btn>
 <view class="notice">
   <view class="h">
-    <view class="item {{ showType == 0 ? 'active' : ''}}" bindtap="switchTab">
+    <view class="item {{showType === 0 ? 'active' : ''}}" data-type="{{0}}" bindtap="switchTab">
       <view class="txt">系统通知{{systemNoticeCount ? '(' + systemNoticeCount + ')' : ''}}</view>
     </view>
-    <view class="item {{ showType == 1 ? '' : 'active'}}" bindtap="switchTab">
+    <view class="item {{showType === 1 ? 'active' : ''}}" data-type="{{1}}" bindtap="switchTab">
       <view class="txt">评论回复{{replyCommentCount ? '(' + replyCommentCount + ')' : ''}}</view>
     </view>
   </view>
   <scroll-view class="b" wx:if="{{showType == 0}}" scroll-y="true" ower-threshold="100" bindscrolltolower="getNextPage">
-    <view class="item" wx:for="{{notices}}" wx:key="{{item.commentid}}" data-type="{{item.type}}" data-id="{{item._id}}" bindtap="clickNotice">
+    <view class="item" wx:for="{{notices}}" wx:key="{{item.commentid}}" data-id="{{item._id}}" bindtap="clickNotice">
       <view class="info">
         <view class="user">
           <icon class="{{item.hasRead ? 'read' : ''}}" wx:if="{{item.type === 'system'}}" class="iconfont icon-notice"></icon>

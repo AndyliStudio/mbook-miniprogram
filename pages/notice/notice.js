@@ -14,6 +14,10 @@ Page({
     systemNoticeCount: 0,
     replyCommentCount: 0,
   },
+  other: {
+    noticeLoaded: false,
+    commentLoaded: false,
+  },
   getData: function(num) {
     wx.showLoading({ title: '数据加载中' })
     if (this.data.showType === 0) {
@@ -53,6 +57,7 @@ Page({
               systemNoticeCount: res.data.total,
               notices: newNotices,
             })
+            this.other.noticeLoaded = true;
           } else if (res.data.authfail) {
             wx.navigateTo({ url: '../loading/loading?need_login_again=1' })
           } else {
@@ -80,6 +85,7 @@ Page({
                 return item
               })
             })
+            this.other.commentLoaded = true;
           } else if (res.data.authfail) {
             wx.navigateTo({ url: '../loading/loading?need_login_again=1' })
           } else {
@@ -104,16 +110,30 @@ Page({
     const num = this.data.curNoticePage + 1;
     this.getData(num)
   },
-  onShow: function(options) {
+  onLoad: function() {
     this.getData()
     // 当前页面不予许分享
     wx.hideShareMenu()
   },
-  switchTab: function() {
+  // 下拉刷新
+  onPullDownRefresh: function() {
+    this.setData({ notices: [], comments: [] })
+    this.getData();
+    // 停止下拉刷新
+    setTimeout(() => {
+      wx.stopPullDownRefresh();
+    }, 400);
+  },
+  switchTab: function(event) {
+    const type = event.currentTarget.dataset.type;
     this.setData({
-      showType: this.data.showType == 1 ? 0 : 1
+      showType: type
     })
-    this.getData()
+    if (type === 0 && !this.other.noticeLoaded) {
+      this.getData()
+    } else if (type === 1 && !this.other.commentLoaded) {
+      this.getData()
+    }
   },
   gotoBookDetail: function(event) {
     const bookid = event.currentTarget.dataset.bookid
@@ -125,6 +145,7 @@ Page({
   },
   clickNotice: function(event) {
     const id = event.currentTarget.dataset.id
+    console.log('id')
     const notice = this.data.notices.filter(item => item._id === id)[0]
     // 已阅读
     const hasReadMessages = wx.getStorageSync('hasReadMessages') || []
@@ -134,7 +155,7 @@ Page({
     }
     if (notice.type === 'system') {
       wx.navigateTo({
-        url: '../webpage/webpage?url=https://mbook.andylistudio.com/notice-detail?id=' + id
+        url: '../webpage/webpage?url=https://mbook.andylistudio.com/notice-detail/' + id
       })
     } else if (notice.type === 'update') {
       wx.navigateTo({

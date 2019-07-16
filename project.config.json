@@ -11,6 +11,8 @@
 	"libVersion": "2.0.0",
 	"appid": "wx883fa96a6f6461bb",
 	"projectname": "mbook-miniprogram",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
