@@ -1,6 +1,6 @@
 // pages/notice/notice.js
 const config = require('../../config')
-const util = require('../../utils/util')
+const utils = require('../../utils/util')
 const app = getApp()
 
 Page({
@@ -33,7 +33,7 @@ Page({
           if (res.data.ok) {
             const notices = this.data.notices.slice()
             let newNotices = notices.concat(res.data.list.map(item => {
-              item.time = util.formatTime(new Date(item.create_time))
+              item.time = utils.formatTime(new Date(item.create_time))
               item.name = ''
               switch(item.type) {
                 case 'update':
@@ -81,7 +81,7 @@ Page({
             this.setData({
               replyCommentCount: res.data.reply.length,
               comments: res.data.reply.map(item => {
-                item.time = util.formatTime(new Date(item.time))
+                item.time = utils.formatTime(new Date(item.time))
                 return item
               })
             })

@@ -8,7 +8,7 @@ Component({
   attached: function() {
     let showFixedBtn = false
     let imgUrl = ''
-    const setting = app.globalData.dialogSetting['fixed-btn']
+    const setting = app.globalData.dialogSetting ? app.globalData.dialogSetting['fixed-btn'] : {}
     if (setting && setting.img_url) {
       if (setting.only_index) {
         if (utils.getCurrentPageUrlWithArgs().indexOf('/index/index') > -1) {

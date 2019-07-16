@@ -22,6 +22,7 @@ Page({
   },
   other: {
     click_times: {}, // 换一批点击次数
+    timer: null,
   },
   onLoad: function() {
     this.setData({
@@ -53,15 +54,22 @@ Page({
       })
   },
   // 刷新未读消息
-  onShow: function() {  
-    const hasReadMessages = wx.getStorageSync('hasReadMessages') || []
-    const unReadMessages = app.globalData.unReadMessages instanceof Array ?  app.globalData.unReadMessages.filter(item => hasReadMessages.indexOf(item) < 0) : []
-    this.setData({
-      unReadMessageNum: unReadMessages.length
-    })
+  onShow: function() {
+    // 使用计时器等待getAppSetting消息返回
+    this.other.timer = setInterval(() => {
+      if (typeof app.globalData.unReadMessages !== 'undefine') {
+        clearInterval(this.other.timer)
+        const hasReadMessages = wx.getStorageSync('hasReadMessages') || []
+        const unReadMessages = app.globalData.unReadMessages instanceof Array ?  app.globalData.unReadMessages.filter(item => hasReadMessages.indexOf(item) < 0) : []
+        this.setData({
+          unReadMessageNum: unReadMessages.length
+        })
+      }
+    }, 1000)
   },
   onUnload: function onUnload() {
-    if (this.observe) this.observe.disconnect();
+    if (this.observe) this.observe.disconnect()
+    if (this.other.timer) clearInterval(this.other.timer)
   },
   // 设置分享
   onShareAppMessage: function(res) {

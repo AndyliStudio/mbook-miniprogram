@@ -3,7 +3,6 @@ const config = require('../../config')
 
 Page({
   data: {
-    toast: { show: false, content: '', position: 'bottom' }, // 提示信息
     classifyTypes: ['全部书籍', '玄幻·奇幻', '修真·仙侠', '都市·青春', '历史·军事', '网游·竞技', '科幻·灵异', '言情·穿越', '耽美·同人', '侦探·推理'],
     page: 1,
     total: 0,
@@ -68,7 +67,7 @@ Page({
     let page = this.data.page + 1
     if (page >= Math.ceil(this.data.total / 8) + 1) {
       if (!this.data.hasScrollBottom) {
-        this.showToast('暂无更多数据~', 'bottom')
+        wx.showToast({ title: '暂无更多数据~' })
         this.setData({ hasScrollBottom: true })
       }
     } else {
@@ -89,13 +88,5 @@ Page({
   },
   reloadData: function() {
     this.getClassifyData(this.data.currentIndex, this.data.page)
-  },
-  // 弹出消息函数
-  showToast: function(content, position) {
-    let self = this
-    self.setData({ toast: { show: true, content: content, position: position } })
-    setTimeout(function() {
-      self.setData({ toast: { show: false, content: '', position: 'bottom' } })
-    }, 3000)
   }
 })

@@ -165,8 +165,7 @@ Page({
         timingFunc: 'easeIn'
       },
       fail: () => {
-        
-        this.showToast('设置背景色失败', 'bottom')
+        wx.showToast({ title: '设置背景色失败' })
       }
     })
     // 初始化页面
@@ -225,7 +224,7 @@ Page({
         path: shareParams.page + '?code=' + code
       }
     } else {
-      this.showToast('获取分享参数失败', 'bottom')
+      wx.showToast({ title: '获取分享参数失败' })
       return false
     }
   },
@@ -698,12 +697,12 @@ Page({
             // 记录目录搜索之前的状态
             sectionDataBeforeSearch = this.data.allSectionData.slice()
           } else {
-            this.showToast('获取目录失败' + (res.data.msg ? '，' + res.data.msg : ''), 'bottom')
+            wx.showToast({ title: '获取目录失败' + (res.data.msg ? '，' + res.data.msg : '') })
           }
         },
         fail: err => {
           wx.hideToast();
-          this.showToast('获取目录失败', 'bottom')
+          wx.showToast({ title: '获取目录失败' })
         }
       })
       // 提前设置currentPage
@@ -1433,23 +1432,4 @@ Page({
     self.setData({ loadFail: false })
     self.initPage(self.data.currentSectionNum)
   },
-  showToast: function(content, position) {
-    let self = this
-    self.setData({
-      toast: {
-        show: true,
-        content: content,
-        position: position
-      }
-    })
-    setTimeout(function() {
-      self.setData({
-        toast: {
-          show: false,
-          content: '',
-          position: 'bottom'
-        }
-      })
-    }, 3000)
-  }
 })

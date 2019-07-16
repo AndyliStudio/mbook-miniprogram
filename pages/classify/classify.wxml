@@ -1,5 +1,4 @@
 <!--pages/fenlei/fenlei.wxml-->
-<toast toast="{{toast}}"></toast>
 <fixed-btn></fixed-btn>
 <view class="classify-container">
   <view class="tab">

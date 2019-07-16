@@ -1,5 +1,6 @@
 // pages/user/user.js
 const config = require('../../config')
+const utils = require('../../utils/util')
 const app = getApp()
 
 Page({
@@ -296,11 +297,11 @@ Page({
                           url: '../loading/loading?need_login_again=1'
                         })
                       } else {
-                        this.showToast(res.data.msg || '订阅书籍失败，请重试', 'bottom')
+                        wx.showToast({ title: res.data.msg || '订阅书籍失败，请重试' })
                       }
                     },
                     fail: err => {
-                      this.showToast('订阅书籍失败，请重试', 'bottom')
+                      wx.showToast({ title: '订阅书籍失败，请重试' })
                     }
                   })
                 }
