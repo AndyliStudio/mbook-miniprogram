@@ -10,7 +10,7 @@ Component({
     },
     src: {
       type: String,
-      value: 'https://fs.andylistudio.com/mbook/book-loading.svg' // 默认加载loading图片
+      value: 'https://file.lantingshucheng.com/mbook/book-loading.svg' // 默认加载loading图片
     }
   },
   data: {

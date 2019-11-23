@@ -5,7 +5,7 @@
   <button class="btn" open-type="share">立即分享</button>
 </modal>
 <scroll-view class="friend-help" enable-back-to-top="true" scroll-y="true" bindscrolltolower="loadMoreData">
-  <image class="bg" src="https://fs.andylistudio.com/1537973910409.jpeg"></image>
+  <image class="bg" src="https://file.lantingshucheng.com/1537973910409.jpeg"></image>
   <view class="content">
      <view class="title">
        <view class="name">分享免费书籍</view>
@@ -13,7 +13,7 @@
      </view>
      <view class="books">
        <block wx:if="{{loading}}">
-          <image class="loading-img" src="https://fs.andylistudio.com/mbook/book-loading.svg"></image>
+          <image class="loading-img" src="https://file.lantingshucheng.com/mbook/book-loading.svg"></image>
           <view class="loading-text">正在加载数据</view>
        </block>
        <block wx:else>

@@ -48,7 +48,7 @@ page {
   color: #ffffff;
   font-size: 32rpx;
   text-align: center;
-  background: url(https://fs.andylistudio.com/mbook/v3/images/title_bg.png) no-repeat;
+  background: url(https://file.lantingshucheng.com/mbook/v3/images/title_bg.png) no-repeat;
   background-size: 100% auto;
   background-position: center center;
 }
@@ -286,7 +286,7 @@ page {
 .icon-friend {
   display: block;
   margin: 0 auto;
-  background: url(https://fs.andylistudio.com/1532025842740.png) no-repeat;
+  background: url(https://file.lantingshucheng.com/1532025842740.png) no-repeat;
   background-size: 100% 100%;
   width: 80rpx;
   height: 80rpx;
@@ -294,7 +294,7 @@ page {
 .icon-friendQ {
   display: block;
   margin: 0 auto;
-  background: url(https://fs.andylistudio.com/1532025842748.png) no-repeat;
+  background: url(https://file.lantingshucheng.com/1532025842748.png) no-repeat;
   background-size: 100% 100%;
   width: 80rpx;
   height: 80rpx;
@@ -302,7 +302,7 @@ page {
 .icon-qq {
   display: block;
   margin: 0 auto;
-  background: url(https://fs.andylistudio.com/1532025842763.png) no-repeat;
+  background: url(https://file.lantingshucheng.com/1532025842763.png) no-repeat;
   background-size: 100% 100%;
   width: 80rpx;
   height: 80rpx;

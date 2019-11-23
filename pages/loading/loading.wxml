@@ -1,5 +1,5 @@
 <view class="load-page">
-  <image class="app-logo" src="https://fs.andylistudio.com/mbook/v3/images/logo.png"></image>
+  <image class="app-logo" src="https://file.lantingshucheng.com/mbook/v3/images/logo.png"></image>
   <view class="app-name">美景阅读</view>
   <view class="status">
     <view class="status-item" wx:if="{{loading}}"><image class="loading" src="../../static/img/book-loading.svg"></image>登录中...</view>

@@ -1,6 +1,6 @@
 <view class="reader {{useNightStyle ? 'night' : ''}} {{!canRead ? 'overflow' : ''}}">
   <view class="loading" wx:if="{{loading}}">
-    <image src="https://fs.andylistudio.com/mbook/book-loading.svg"></image>
+    <image src="https://file.lantingshucheng.com/mbook/book-loading.svg"></image>
   </view>
   <view class="reader-tips" wx:if="{{showReaderTips}}" bindtap="closeReaderTips">
     <view class="tips1">

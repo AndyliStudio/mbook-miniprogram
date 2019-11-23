@@ -1,7 +1,7 @@
 <fixed-btn></fixed-btn>
 <view class="aboutus">
   <view class="header">
-    <image class="logo" src="https://fs.andylistudio.com/1544350770984.jpeg"></image>
+    <image class="logo" src="https://file.lantingshucheng.com/1544350770984.jpeg"></image>
     <view class="name">美景阅读</view>
   </view>
   <view class="infos">

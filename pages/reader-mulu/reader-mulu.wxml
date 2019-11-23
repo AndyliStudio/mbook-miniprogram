@@ -1,12 +1,12 @@
 <view class="chapter-mulu">
   <view class="loading" wx:if="{{loading}}">
-    <image src="https://fs.andylistudio.com/mbook/book-loading.svg"></image>
+    <image src="https://file.lantingshucheng.com/mbook/book-loading.svg"></image>
   </view>
   <view class="search-header">
     <view class="input-box">
-      <image class="icon" src="https://fs.andylistudio.com/1548171055699.png"></image>
+      <image class="icon" src="https://file.lantingshucheng.com/1548171055699.png"></image>
       <input name="input" class="keywrod" value="{{keyword}}" confirm-type="search" bindconfirm="searchChapter" placeholder="请输入章节名或者章节序号" />
-      <image class="del" wx:if="{{keyword}}" bindtap="clearKeyword" src="https://fs.andylistudio.com/1548171050359.png"></image>
+      <image class="del" wx:if="{{keyword}}" bindtap="clearKeyword" src="https://file.lantingshucheng.com/1548171050359.png"></image>
     </view>
     <view class="right" bindtap="clearKeyword">取消</view>
   </view>
@@ -26,7 +26,7 @@
     <view class="no-data" wx:if="{{searchDatas.length === 0}}">找不到此章节~</view> 
   </view>
   <view class="chapter-loading" wx:if="{{nextLoading}}">
-    <image src="https://fs.andylistudio.com/mbook/book-loading.svg"></image>
+    <image src="https://file.lantingshucheng.com/mbook/book-loading.svg"></image>
     <text>章节加载中，请稍后...</text>
   </view>
   <view class="nomore" wx:if="{{!hasMore}}">

@@ -39,11 +39,11 @@
     <!-- 任务状态 start -->
     <view class="task-status">
       <block wx:if="{{info.status === 1}}">
-        <image src="https://fs.andylistudio.com/1539488338035.png"></image>
+        <image src="https://file.lantingshucheng.com/1539488338035.png"></image>
         <view>该好友助力任务已完成!</view>
       </block>
       <block wx:if="{{info.status === 2}}">
-        <image src="https://fs.andylistudio.com/1539489267437.png"></image>
+        <image src="https://file.lantingshucheng.com/1539489267437.png"></image>
         <view>抱歉，由于未能在指定时间内完成分享助力，该任务已经过期。</view>
       </block>
     </view>
@@ -64,7 +64,7 @@
   <view class="mask"></view>
   <view class="content">
     <view class="close" bindtap="closeDialog"></view>
-    <image src="https://fs.andylistudio.com/1539619838436.png"></image>
+    <image src="https://file.lantingshucheng.com/1539619838436.png"></image>
     <view class="lists">
       <view class="list-item" wx:for="{{records}}" wx:key="{{index}}" style="background: {{item.color}}">
         <block wx:if="{{item.name}}">

@@ -17,7 +17,7 @@
   </view>
 </modal>
 <view class="loading" wx:if="{{loading}}" style="background-color: {{colorStyle.content_bg}}">
-  <image src="https://fs.andylistudio.com/mbook/book-loading.svg"></image>
+  <image src="https://file.lantingshucheng.com/mbook/book-loading.svg"></image>
 </view>
 <!-- 加载失败 -->
 <view class="load-fail" wx:if="{{loadFail}}">

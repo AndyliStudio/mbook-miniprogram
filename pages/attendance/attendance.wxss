@@ -411,7 +411,7 @@ page {
 }
 
 .foot-bg {
-  background: url('https://fs.andylistudio.com/mbook/foot.png') no-repeat;
+  background: url('https://file.lantingshucheng.com/mbook/foot.png') no-repeat;
   color: #868ee1;
   background-size: 100% 100%;
 }

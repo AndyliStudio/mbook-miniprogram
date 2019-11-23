@@ -15,7 +15,7 @@
     </navigator> -->
     <view class="content">
       <view class="content-item" wx:if="{{currentPageNum === 1}}">
-        <image class="ad" src="http://fs.andylistudio.com/mbook/charge/banner.png"></image>
+        <image class="ad" src="http://file.lantingshucheng.com/mbook/charge/banner.png"></image>
         <view class="title">
           请选择充值的阅币数量（1元兑换100阅币）:
         </view>
